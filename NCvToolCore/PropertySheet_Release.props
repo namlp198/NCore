@@ -6,7 +6,7 @@
     <OPENCV_LIB_DIR>$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib</OPENCV_LIB_DIR>
   </PropertyGroup>
   <PropertyGroup>
-    <OutDir>$(SolutionDir)output\lib\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)NCvToolCore\output\lib\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)_Release64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
