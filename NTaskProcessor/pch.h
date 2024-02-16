@@ -11,8 +11,9 @@
 #include "framework.h"
 #include <afxv_dll.h>
 #include <afxver_.h>
-#include <afxstr.h>
+//#include <afxstr.h>
 #include <afxmt.h>
+#include <cstringt.h>
 
 #ifdef _DEBUG
 #pragma comment(lib, "opencv_core480d.lib")

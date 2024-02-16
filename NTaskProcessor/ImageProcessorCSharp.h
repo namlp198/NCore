@@ -14,4 +14,4 @@ extern "C"
 	__declspec(dllexport) bool               ClearBufferImage(ImageProcessor* pProcessor, int nBuff);
 
 	__declspec(dllexport) bool               Initialize(ImageProcessor* pProcessor);
-}
+};

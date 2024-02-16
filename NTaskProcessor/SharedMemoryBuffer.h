@@ -8,7 +8,7 @@ public:
 	BOOL	CreateSharedMemory(CString strMapFileName, DWORD64 dw64MemSize);
 	void	DeleteSharedMemory();
 
-	BYTE* GetSharedBuffer() { return m_pSharedMemory; }
+	BYTE*   GetSharedBuffer() { return m_pSharedMemory; }
 
 	BOOL	SetFrameImage(DWORD dwFrame, LPBYTE pBuf);
 	LPBYTE  GetFrameImage(DWORD dwFrame);

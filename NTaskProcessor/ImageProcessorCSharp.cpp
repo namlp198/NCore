@@ -26,11 +26,21 @@ BYTE* GetBufferImage(ImageProcessor* pProcessor, int nBuff, int nY)
 bool LoadImageBuffer(ImageProcessor* pProcessor, int nBuff, char* pFilePath)
 {
 	if (pProcessor == NULL)
-		return;
+		return false;
 
 	CString strPath = (CString)pFilePath;
 	BOOL bRetValue = pProcessor->LoadImageBuffer(nBuff, strPath);
 
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
+bool ClearBufferImage(ImageProcessor* pProcessor, int nBuff)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRetValue = pProcessor->ClearBufferImage(nBuff);
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }

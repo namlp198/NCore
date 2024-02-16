@@ -23,6 +23,7 @@ public:
 	virtual LPBYTE                    GetBufferImage(int nBuff, UINT nY);
 	BOOL                              LoadImageBuffer(int nBuff, CString strFilePath);
 	BOOL                              CreateBuffer();
+	BOOL                              ClearBufferImage(int nBuff);
 	BOOL							  Initialize();
 
 private:

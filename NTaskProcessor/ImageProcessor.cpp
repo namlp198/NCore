@@ -136,6 +136,14 @@ BOOL ImageProcessor::CreateBuffer()
 	return TRUE;
 }
 
+BOOL ImageProcessor::ClearBufferImage(int nBuff)
+{
+	if (m_pImageBuffer[nBuff] == NULL)
+		return FALSE;
+
+	return m_pImageBuffer[nBuff]->ClearBufferImage();
+}
+
 BOOL ImageProcessor::Initialize()
 {
 	// Create Image Buffer..
