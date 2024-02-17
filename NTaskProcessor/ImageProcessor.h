@@ -25,6 +25,7 @@ public:
 	BOOL                              CreateBuffer();
 	BOOL                              ClearBufferImage(int nBuff);
 	BOOL							  Initialize();
+	BOOL                              Destroy();
 
 private:
 	// Image Buffer
