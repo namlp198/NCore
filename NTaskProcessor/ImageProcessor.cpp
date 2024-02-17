@@ -3,10 +3,15 @@
 
 ImageProcessor::ImageProcessor()
 {
+	for (int i = 0; i < MAX_BUFF; i++)
+	{
+		m_pImageBuffer[i] = NULL;
+	}
 }
 
 ImageProcessor::~ImageProcessor()
 {
+	Destroy();
 }
 
 void ImageProcessor::FindLineWithHoughLine_Offline(std::string pathImg, cv::Rect rectROI)
@@ -151,4 +156,19 @@ BOOL ImageProcessor::Initialize()
 	{
 		return FALSE;
 	}
+}
+
+BOOL ImageProcessor::Destroy()
+{
+	for (int i = 0; i < MAX_BUFF; i++)
+	{
+		if (m_pImageBuffer[i] != NULL)
+		{
+			m_pImageBuffer[i]->DeleteSharedMemory();
+			delete m_pImageBuffer[i];
+			m_pImageBuffer[i] = NULL;
+		}
+	}
+
+	return TRUE;
 }
