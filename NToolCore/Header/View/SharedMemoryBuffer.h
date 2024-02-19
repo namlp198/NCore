@@ -4,7 +4,7 @@
 #define		MAP_FILE_NAME_ALIGN_BUFFER				_T("MAP_FILE_ALIGN_BUFFER")
 #define		MAP_FILE_NAME_ALIGN_RESULT_BUFFER		_T("MAP_FILE_ALIGN_RESULT_BUFFER")
 
-class AFX_EXT_CLASS CSharedMemoryBuffer
+class CSharedMemoryBuffer
 {
 public:
 	CSharedMemoryBuffer(void);

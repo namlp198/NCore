@@ -14,94 +14,16 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\Tools">
-      <UniqueIdentifier>{3f936350-88e1-48a7-b8b7-e18d5c300865}</UniqueIdentifier>
+      <UniqueIdentifier>{6ffb5d16-8e6f-4946-aefd-b9e8d2a9369f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Tools">
-      <UniqueIdentifier>{7bad7f61-f7fc-43d5-90e3-7eb495422b14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Camera">
-      <UniqueIdentifier>{39cbffc0-c440-4df3-9291-eee19ff2746c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\ThreadPool">
-      <UniqueIdentifier>{46ad5c08-65c9-4363-80dc-f62bcffa5065}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\ConfigFile">
-      <UniqueIdentifier>{729fb83f-40a0-4b97-92f2-7135f73445c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Dnn">
-      <UniqueIdentifier>{60d51d9d-fdae-42bc-a134-0f2b8996c4cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Excel">
-      <UniqueIdentifier>{b631f085-3cf7-4a70-8fdf-db961e39f775}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\GridControl">
-      <UniqueIdentifier>{66ee5d11-f383-49b7-bbf4-fa50ff126f8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\IOControl">
-      <UniqueIdentifier>{86f1933b-53ee-4375-b9d9-b8e38589c0a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Lighting">
-      <UniqueIdentifier>{8143b7c7-6349-4d03-9653-de3ef8c7f73a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Log">
-      <UniqueIdentifier>{c9ecd428-66fd-4b91-a761-9e0f4d88399e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Matrox">
-      <UniqueIdentifier>{0665e4a6-e5ab-4ba1-88dc-dc3697978db5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Network">
-      <UniqueIdentifier>{34ef1160-ba95-4aff-9284-1ea244ab49e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\Time">
-      <UniqueIdentifier>{780cfb2f-c029-4a2b-9d5a-89a73dcec444}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Tools\UI">
-      <UniqueIdentifier>{97882215-06b4-45e5-a21e-7791137365ea}</UniqueIdentifier>
+      <UniqueIdentifier>{545f46c4-4e14-4cc4-baf7-5c575f1b3bde}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Tools\View">
-      <UniqueIdentifier>{edc985fa-6e88-438a-adbc-4e7b1ddb7d76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Camera">
-      <UniqueIdentifier>{2a2889a6-294d-46a2-8323-53bceced6a9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\ConfigFile">
-      <UniqueIdentifier>{47dd2634-9029-4c9d-94c6-7db8f79d1e2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Dnn">
-      <UniqueIdentifier>{9162db3a-382c-4e40-a27a-1d6b2f7dc9fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Excel">
-      <UniqueIdentifier>{94b95101-7044-469a-9025-19f19ad2194b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\GridControl">
-      <UniqueIdentifier>{9937ce2c-ab96-433d-8f5b-83d0e2b13ecf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\IOControl">
-      <UniqueIdentifier>{55f69128-88e4-4592-b3e9-c3ef34d852d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Lighting">
-      <UniqueIdentifier>{ca3d6fa2-60b1-457c-aa63-95c15f591f9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Log">
-      <UniqueIdentifier>{7eb9be06-cfda-41e4-8d33-e6e5e4a552f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Matrox">
-      <UniqueIdentifier>{d7f43208-2a93-4f00-aa2d-e97c06994342}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Network">
-      <UniqueIdentifier>{75a8f3d7-affe-48c3-a9e8-a7ebb28d24b1}</UniqueIdentifier>
+      <UniqueIdentifier>{43ff2e7d-bfb1-460d-9294-4df0af6410ae}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Tools\View">
-      <UniqueIdentifier>{3ce91b1c-df9c-4992-8915-d59751558b88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\UI">
-      <UniqueIdentifier>{2ffec8a7-18bf-4bc3-845a-32f3aeee7e80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\Time">
-      <UniqueIdentifier>{0d9fe80c-9ed2-45c8-b344-51778b6e7cca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tools\ThreadPool">
-      <UniqueIdentifier>{e10cb63f-034c-486b-82b8-1598ccc20a42}</UniqueIdentifier>
+      <UniqueIdentifier>{ce6b729d-2759-450f-94b3-4eda33e572ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,119 +33,8 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Camera\FrameGrabber.h">
-      <Filter>Header Files\Tools\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Camera\FrameGrabber_MVS_GigE.h">
-      <Filter>Header Files\Tools\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Camera\FrameGrabberParam.h">
-      <Filter>Header Files\Tools\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Camera\MvCamera.h">
-      <Filter>Header Files\Tools\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\BasedConfig.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\Config.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\FileIOInterface.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\FileList.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\FileMap.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\FileVersionManager.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\IniManager.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ConfigFile\Registery.h">
-      <Filter>Header Files\Tools\ConfigFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Log\FolderScheduling.h">
-      <Filter>Header Files\Tools\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Log\ListBoxLog.h">
-      <Filter>Header Files\Tools\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Network\TCPServer.h">
-      <Filter>Header Files\Tools\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Network\TCPSocket.h">
-      <Filter>Header Files\Tools\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\PriorityThread.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\ThreadData.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\ThreadPool.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\TimerThreadPool.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\WaitThreadPool.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\WorkThreadArray.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ThreadPool\WorkThreadPool.h">
-      <Filter>Header Files\Tools\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Time\TimeCalculator.h">
-      <Filter>Header Files\Tools\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\View\BufferDC.h">
-      <Filter>Header Files\Tools\View</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\View\ControlMemDC.h">
-      <Filter>Header Files\Tools\View</Filter>
-    </ClInclude>
     <ClInclude Include="Header\View\SharedMemoryBuffer.h">
       <Filter>Header Files\Tools\View</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI\HWChecker.h">
-      <Filter>Header Files\Tools\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\UI\LogView.h">
-      <Filter>Header Files\Tools\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\IOControls.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\IOControls_PLC_MxComponent.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\IOControls_Simulation.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\IOControlsParam.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\mvcp.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\Mvedio128mbTcp.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\mvtype.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\IOControl\MxComponent.h">
-      <Filter>Header Files\Tools\IOControl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,110 +44,8 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\Camera\FrameGrabber.cpp">
-      <Filter>Source Files\Tools\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Camera\FrameGrabber_MVS_GigE.cpp">
-      <Filter>Source Files\Tools\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Camera\M_FrameGrabber.cpp">
-      <Filter>Source Files\Tools\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Camera\M_FrameGrabber_MVS.cpp">
-      <Filter>Source Files\Tools\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Camera\MvCamera.cpp">
-      <Filter>Source Files\Tools\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\BasedConfig.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\Config.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\FileIOInterface.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\FileList.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\FileMap.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\FileVersionManager.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\IniManager.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ConfigFile\Registery.cpp">
-      <Filter>Source Files\Tools\ConfigFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Log\FolderScheduling.cpp">
-      <Filter>Source Files\Tools\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Log\ListBoxLog.cpp">
-      <Filter>Source Files\Tools\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Network\TCPServer.cpp">
-      <Filter>Source Files\Tools\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Network\TCPSocket.cpp">
-      <Filter>Source Files\Tools\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp">
-      <Filter>Source Files\Tools\ThreadPool</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp">
-      <Filter>Source Files\Tools\ThreadPool</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ThreadPool\TimerThreadPool.cpp">
-      <Filter>Source Files\Tools\ThreadPool</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ThreadPool\WaitThreadPool.cpp">
-      <Filter>Source Files\Tools\ThreadPool</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ThreadPool\WorkThreadArray.cpp">
-      <Filter>Source Files\Tools\ThreadPool</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\ThreadPool\WorkThreadPool.cpp">
-      <Filter>Source Files\Tools\ThreadPool</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Time\TimeCalculator.cpp">
-      <Filter>Source Files\Tools\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\View\BufferDC.cpp">
-      <Filter>Source Files\Tools\View</Filter>
-    </ClCompile>
     <ClCompile Include="Tools\View\SharedMemoryBuffer.cpp">
       <Filter>Source Files\Tools\View</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\UI\HWChecker.cpp">
-      <Filter>Source Files\Tools\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\UI\LogView.cpp">
-      <Filter>Source Files\Tools\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\IOControls.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\IOControls_PLC_MxComponent.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\IOControls_Simulation.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\mvcp.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\Mvedio128mbTcp.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\mvtype.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\IOControl\MxComponent.cpp">
-      <Filter>Source Files\Tools\IOControl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
