@@ -14,4 +14,6 @@ extern "C"
 	__declspec(dllexport) bool               ClearBufferImage(ImageProcessor* pProcessor, int nBuff);
 
 	__declspec(dllexport) bool               Initialize(ImageProcessor* pProcessor);
+
+	__declspec(dllexport) bool               FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, cv::Mat* mat, cv::Rect rectROI);
 };

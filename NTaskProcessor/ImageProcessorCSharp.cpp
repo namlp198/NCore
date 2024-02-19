@@ -55,4 +55,13 @@ bool Initialize(ImageProcessor* pProcessor)
 	else                    return true;
 }
 
+bool FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, cv::Mat* mat, cv::Rect rectROI)
+{
+	if (pProcessor == NULL)
+		return false;
+	BOOL bRetValue = pProcessor->FindLineWithHoughLine_Simul(mat, rectROI);
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
 

@@ -10,8 +10,8 @@
 #include "SharedMemoryBuffer.h"
 
 #define MAX_BUFF 1
-#define FRAME_WIDTH 1280
-#define FRAME_HEIGHT 1024
+#define FRAME_WIDTH 2464
+#define FRAME_HEIGHT 2056
 #define FRAME_COUNT 1
 
 class AFX_EXT_CLASS ImageProcessor
@@ -19,7 +19,7 @@ class AFX_EXT_CLASS ImageProcessor
 public:
 	ImageProcessor();
 	~ImageProcessor();
-	void                              FindLineWithHoughLine_Offline(std::string pathImg, cv::Rect rectROI);
+	BOOL                              FindLineWithHoughLine_Simul(cv::Mat* mat, cv::Rect rectROI);
 	virtual LPBYTE                    GetBufferImage(int nBuff, UINT nY);
 	BOOL                              LoadImageBuffer(int nBuff, CString strFilePath);
 	BOOL                              CreateBuffer();

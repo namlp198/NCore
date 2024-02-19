@@ -19,6 +19,9 @@
     <Filter Include="View">
       <UniqueIdentifier>{9103b19a-1f69-493c-b825-4ffbacebf4b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThreadPool">
+      <UniqueIdentifier>{8bcd4187-0c8a-4882-bc05-7b0871be85dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -36,6 +39,9 @@
     <ClInclude Include="ImageProcessorCSharp.h">
       <Filter>ImageProcessor</Filter>
     </ClInclude>
+    <ClInclude Include="ImageSystemSetting.h">
+      <Filter>ImageProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -48,6 +54,9 @@
       <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="ImageProcessorCSharp.cpp">
+      <Filter>ImageProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSystemSetting.cpp">
       <Filter>ImageProcessor</Filter>
     </ClCompile>
   </ItemGroup>

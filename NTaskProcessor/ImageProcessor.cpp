@@ -14,20 +14,12 @@ ImageProcessor::~ImageProcessor()
 	Destroy();
 }
 
-void ImageProcessor::FindLineWithHoughLine_Offline(std::string pathImg, cv::Rect rectROI)
+BOOL ImageProcessor::FindLineWithHoughLine_Simul(cv::Mat* mat, cv::Rect rectROI)
 {
-    //cv::namedWindow("source", cv::WINDOW_AUTOSIZE);
-    cv::Mat mat = cv::imread(pathImg, cv::IMREAD_COLOR);
-    if (mat.empty())
-    {
-        std::cout << "Load image error" << std::endl;
-        return;
-    }
-
     // Find line
     FindLineTool finder;
     std::vector<cv::Point2f> vPoints;
-    finder.FindLineWithHoughLine(&mat, rectROI, vPoints);
+    finder.FindLineWithHoughLine(mat, rectROI, vPoints);
 }
 
 LPBYTE ImageProcessor::GetBufferImage(int nBuff, UINT nY)
@@ -50,7 +42,7 @@ BOOL ImageProcessor::LoadImageBuffer(int nBuff, CString strFilePath)
 
 	strExt.MakeUpper();
 
-	if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
+	if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")) != 0 && strExt.CompareNoCase(_T("TIF")) != 0)
 		return FALSE;
 
 	CString strImagePath = strFilePath;
