@@ -135,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)NCvToolCore\header;$(SolutionDir)NTaskProcessor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)NCvToolCore\header;..\NToolCore\Header\View</AdditionalIncludeDirectories>
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)NCvToolCore\output\lib\Release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)NCvToolCore\output\lib\Release;..\NToolCore\output\Release</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Link>
@@ -153,21 +153,17 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageProcessor.h" />
     <ClInclude Include="ImageProcessorCSharp.h" />
-    <ClInclude Include="ImageSystemSetting.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="SharedMemoryBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImageProcessor.cpp" />
     <ClCompile Include="ImageProcessorCSharp.cpp" />
-    <ClCompile Include="ImageSystemSetting.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SharedMemoryBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

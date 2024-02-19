@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ImageProcessor.h"
+#include "SharedMemoryBuffer.h"
 
 ImageProcessor::ImageProcessor()
 {
@@ -20,6 +21,7 @@ BOOL ImageProcessor::FindLineWithHoughLine_Simul(cv::Mat* mat, cv::Rect rectROI)
     FindLineTool finder;
     std::vector<cv::Point2f> vPoints;
     finder.FindLineWithHoughLine(mat, rectROI, vPoints);
+	return TRUE;
 }
 
 LPBYTE ImageProcessor::GetBufferImage(int nBuff, UINT nY)

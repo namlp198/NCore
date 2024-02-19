@@ -43,6 +43,7 @@
 #pragma comment(lib, "opencv_aruco480.lib")
 
 #pragma comment(lib, "NCvToolCore_Release64.lib")
+#pragma comment(lib, "NToolCore_Release64.lib")
 
 #endif // _DEBUG
 
