@@ -25,6 +25,8 @@ namespace wfTestTaskProcessor
             set { bInspectRuning = value; }
         }
 
+        public static IntPtr pBuffer = IntPtr.Zero;
+
         public void LoadImage(int nBuff)
         {
             Thread imgLoadThread;
@@ -38,7 +40,7 @@ namespace wfTestTaskProcessor
         {
             int nBuff = (int)objnBuff;
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Image file(*.bmp, *.jpg, *.png) | *.BMP;*.JPG;*.PNG;*.bmp;*.jpg;*.png; |All Files(*.*)|*.*||";
+            ofd.Filter = "Image file(*.bmp, *.jpg, *.png, *.tif) | *.BMP;*.JPG;*.PNG;*.TIF;*.bmp;*.jpg;*.png;*.tif; |All Files(*.*)|*.*||";
             ofd.Multiselect = false;
 
             if (ofd.ShowDialog() != DialogResult.OK)
