@@ -38,14 +38,23 @@ namespace NViewer
         private double m_dFitViewRatio_X = 1.0;
         private double m_dFitViewRatio_Y = 1.0;
 
-        private int m_nFrameWidth = 640;
-        private int m_nFrameHeight = 486;
+        //private int m_nFrameWidth = 640;
+        //private int m_nFrameHeight = 486;
+        private int m_nFrameWidth = 2464;
+        private int m_nFrameHeight = 2056;
         private double m_dPixelSizeX_um = 10.0;
         private double m_dPixelSizeY_um = 10.0;
 
         // Cam Mode
         public bool m_bCamLive = true;
         public int m_nAlignPosIdx = -1;
+
+        // Pan image mode
+        //private const bool m_bPan = true;
+        //private int startPanX = 0;
+        //private int startPanY = 0;
+        //private int imgX = 0;
+        //private int imgY = 0;
 
 
         public double ZoomRatio
@@ -89,8 +98,8 @@ namespace NViewer
 
             picNViewer.ContextMenuStrip = contextMenuStrip_ViewMenu;
 
-            fitViewToolStripMenuItem.Checked = true;
-            zoomViewToolStripMenuItem.Checked = false;
+            fitViewToolStripMenuItem.Checked = false;
+            zoomViewToolStripMenuItem.Checked = true;
 
             startendLineToolStripMenuItem.Checked = true;
             sideLineToolStripMenuItem.Checked = true;
@@ -107,7 +116,7 @@ namespace NViewer
             m_ptMousePos.X = -1;
             m_ptMousePos.Y = -1;
 
-            m_strViewTitle = string.Format("Cam {0}", nViewIdx+1);
+            m_strViewTitle = string.Format("Cam {0}", nViewIdx + 1);
             m_nViewIdx = nViewIdx;
 
             m_bMeasureStart_New = false;
@@ -122,6 +131,19 @@ namespace NViewer
             //m_nFrameHeight = InterfaceManager.Instance.m_SettingManager.m_VisionSetting.m_nAlignCamera_1_FrameHeight;
             //m_dPixelSizeX_um = InterfaceManager.Instance.m_SettingManager.m_VisionSetting.m_dAlignCamera_1_PixelSizeX;
             //m_dPixelSizeY_um = InterfaceManager.Instance.m_SettingManager.m_VisionSetting.m_dAlignCamera_1_PixelSizeY;
+
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            //if (e.Delta > 0)
+            //{
+            //    ZoomOut();
+            //}
+            //else if (e.Delta < 0)
+            //{
+            //    ZoomIn();
+            //}
         }
 
         public void ZoomIn()
@@ -130,6 +152,7 @@ namespace NViewer
                 return;
 
             m_dZoomRatio = m_dZoomRatio * 2.0;
+            //m_dZoomRatio = Math.Max(m_dZoomRatio - 0.1d, 0.01d);
 
             SetScrollRange();
 
@@ -142,6 +165,7 @@ namespace NViewer
                 return;
 
             m_dZoomRatio = m_dZoomRatio / 2.0;
+            //m_dZoomRatio += 0.1d;
 
             SetScrollRange();
 
@@ -284,11 +308,11 @@ namespace NViewer
             {
                 m_nCurrentViewPositionX = 0;
                 m_nCurrentViewPositionY = 0;
-                m_dFitViewRatio_X = ((double) m_nFrameWidth) / ((double) this.picNViewer.Size.Width);
-                m_dFitViewRatio_Y = ((double) m_nFrameHeight) / ((double) this.picNViewer.Size.Height);
+                m_dFitViewRatio_X = ((double)m_nFrameWidth) / ((double)this.picNViewer.Size.Width);
+                m_dFitViewRatio_Y = ((double)m_nFrameHeight) / ((double)this.picNViewer.Size.Height);
             }
 
-            
+
 
             if (fitViewToolStripMenuItem.Checked == false)
             {
@@ -420,7 +444,7 @@ namespace NViewer
             Bitmap pImageBMP = Canvas;
 
 
-            //this.pictureBox_BufferView.Image = pImageBMP;
+            //this.picNViewer.Image = pImageBMP;
             Rectangle rtView = new Rectangle(0, 0, nViewWidth, nViewHeight);
             e.Graphics.DrawImage(pImageBMP, rtView, 0, 0, nViewRealWidth, nViewRealHeight, GraphicsUnit.Pixel);
         }
@@ -523,7 +547,7 @@ namespace NViewer
 
             float fWidth_wnd = picNViewer.Width;
             float fHeight_wnd = picNViewer.Height;
-            float fWidth_half_wnd = fWidth_wnd / (float) 2.0;
+            float fWidth_half_wnd = fWidth_wnd / (float)2.0;
             float fHeight_half_wnd = fHeight_wnd / (float)2.0;
 
             e.Graphics.DrawLine(drawLinePen, new PointF(fWidth_half_wnd, 0), new PointF(fWidth_half_wnd, fHeight_wnd));
@@ -536,15 +560,15 @@ namespace NViewer
         {
             Pen drawLinePen = new Pen(Color.Red, 1);
 
-            float fFrameWidth = (float) m_nFrameWidth;
-            float fFrameHeight = (float) m_nFrameHeight;
-            float fFrameWidth_Half = (float) m_nFrameWidth / (float) 2.0;
-            float fFrameHeight_Half = (float) m_nFrameHeight / (float) 2.0;
+            float fFrameWidth = (float)m_nFrameWidth;
+            float fFrameHeight = (float)m_nFrameHeight;
+            float fFrameWidth_Half = (float)m_nFrameWidth / (float)2.0;
+            float fFrameHeight_Half = (float)m_nFrameHeight / (float)2.0;
 
-            float fFrameWidth_wnd = (float) ((fFrameWidth - (float) m_nCurrentViewPositionX) * m_dZoomRatio);
-            float fFrameHeight_wnd = (float) ((fFrameHeight - (float) m_nCurrentViewPositionY) * m_dZoomRatio);
-            float fFrameWidth_Half_wnd = (float) ((fFrameWidth_Half - (float) m_nCurrentViewPositionX) * m_dZoomRatio);
-            float fFrameHeight_Half_wnd = (float) ((fFrameHeight_Half - (float) m_nCurrentViewPositionY) * m_dZoomRatio);
+            float fFrameWidth_wnd = (float)((fFrameWidth - (float)m_nCurrentViewPositionX) * m_dZoomRatio);
+            float fFrameHeight_wnd = (float)((fFrameHeight - (float)m_nCurrentViewPositionY) * m_dZoomRatio);
+            float fFrameWidth_Half_wnd = (float)((fFrameWidth_Half - (float)m_nCurrentViewPositionX) * m_dZoomRatio);
+            float fFrameHeight_Half_wnd = (float)((fFrameHeight_Half - (float)m_nCurrentViewPositionY) * m_dZoomRatio);
 
             e.Graphics.DrawLine(drawLinePen, new PointF(fFrameWidth_Half_wnd, 0), new PointF(fFrameWidth_Half_wnd, fFrameHeight_wnd));
             e.Graphics.DrawLine(drawLinePen, new PointF(0, fFrameHeight_Half_wnd), new PointF(fFrameWidth_wnd, fFrameHeight_Half_wnd));
@@ -821,6 +845,8 @@ namespace NViewer
 
         private void pictureBox_BufferView_MouseMove(object sender, MouseEventArgs e)
         {
+            //if (!m_bPan)
+            //{
             m_ptMousePos.X = e.X;
             m_ptMousePos.Y = e.Y;
 
@@ -858,6 +884,20 @@ namespace NViewer
                         m_ptMeasureEndPos = new Point((int)(nX * m_dFitViewRatio_X), (int)(nY * m_dFitViewRatio_Y));
                 }
             }
+            //}
+            //else
+            //{
+            //    MouseEventArgs mouse = e as MouseEventArgs;
+            //    if (mouse.Button == MouseButtons.Left)
+            //    {
+            //        Point mousePosNow = mouse.Location;
+            //        int deltaX = mousePosNow.X - m_ptMousePos.X;
+            //        int deltaY = mousePosNow.Y - m_ptMousePos.Y;
+
+            //        imgX = (int)(startPanX + (deltaX / m_dZoomRatio));
+            //        imgY = (int)(startPanY + (deltaY / m_dZoomRatio));
+            //    }
+            //}
 
             ReDraw();
         }
@@ -947,7 +987,7 @@ namespace NViewer
 
         private void MouseLeftClickEvent(object sender, MouseEventArgs e)
         {
-            if(zoomViewToolStripMenuItem.Checked == true)
+            if (zoomViewToolStripMenuItem.Checked == true)
                 MouseLeftClickEvent_Measure_ZoomView(sender, e);
             else
                 MouseLeftClickEvent_Measure_FitView(sender, e);
@@ -1344,5 +1384,20 @@ namespace NViewer
                 GrayscalePalette.Entries[i] = Color.FromArgb(i, i, i);
             Image.Palette = GrayscalePalette;
         }
+
+        //private void picNViewer_MouseDown(object sender, MouseEventArgs e)
+        //{
+        //    MouseEventArgs mouse = e as MouseEventArgs;
+        //    if (mouse.Button == MouseButtons.Left)
+        //    {
+        //        if (m_bPan)
+        //        {
+        //            m_ptMousePos = mouse.Location;
+        //            startPanX = imgX;
+        //            startPanY = imgY;
+        //        }
+        //    }
+        //}
+
     }
 }
