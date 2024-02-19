@@ -1,5 +1,5 @@
 #include "pch.h"
-#include ".\header\FindLineTool.h"
+#include "FindLineTool.h"
 
 FindLineTool::FindLineTool()
 {

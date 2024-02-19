@@ -21,26 +21,26 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e109e2b7-b16f-4235-88e7-68bc5de365ac}</ProjectGuid>
-    <RootNamespace>NCvToolCore</RootNamespace>
+    <ProjectGuid>{1b5c44a6-7c23-4cda-8f5f-a8182bb64528}</ProjectGuid>
+    <RootNamespace>NToolCore</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -72,22 +72,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)NCvToolCore\output\lib\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)NToolCore\output\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)_Release64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;NCVTOOLCORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -96,32 +96,32 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;NCVTOOLCORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;NCVTOOLCORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,33 +130,106 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;NCVTOOLCORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;_AFXEXT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\opencv480_CUDA\include;..\NCvToolCore;..\NCvToolCore\Header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\NToolCore;..\Libraries\Camera_MVS\include;..\NToolCore\Header\Camera;..\NToolCore\Header\ConfigFile;..\NToolCore\Header\Dnn;..\NToolCore\Header\Excel;..\NToolCore\Header\GridControl;..\NToolCore\Header\IOControl;..\NToolCore\Header\Lighting;..\NToolCore\Header\Log;..\NToolCore\Header\Matrox;..\NToolCore\Header\Network;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Time;..\NToolCore\Header\UI;..\NToolCore\Header\View;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4819;4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="header\FindLineTool.h" />
+    <ClInclude Include="Header\Camera\FrameGrabber.h" />
+    <ClInclude Include="Header\Camera\FrameGrabberParam.h" />
+    <ClInclude Include="Header\Camera\FrameGrabber_MVS_GigE.h" />
+    <ClInclude Include="Header\Camera\MvCamera.h" />
+    <ClInclude Include="Header\ConfigFile\BasedConfig.h" />
+    <ClInclude Include="Header\ConfigFile\Config.h" />
+    <ClInclude Include="Header\ConfigFile\FileIOInterface.h" />
+    <ClInclude Include="Header\ConfigFile\FileList.h" />
+    <ClInclude Include="Header\ConfigFile\FileMap.h" />
+    <ClInclude Include="Header\ConfigFile\FileVersionManager.h" />
+    <ClInclude Include="Header\ConfigFile\IniManager.h" />
+    <ClInclude Include="Header\ConfigFile\Registery.h" />
+    <ClInclude Include="Header\IOControl\IOControls.h" />
+    <ClInclude Include="Header\IOControl\IOControlsParam.h" />
+    <ClInclude Include="Header\IOControl\IOControls_PLC_MxComponent.h" />
+    <ClInclude Include="Header\IOControl\IOControls_Simulation.h" />
+    <ClInclude Include="Header\IOControl\mvcp.h" />
+    <ClInclude Include="Header\IOControl\Mvedio128mbTcp.h" />
+    <ClInclude Include="Header\IOControl\mvtype.h" />
+    <ClInclude Include="Header\IOControl\MxComponent.h" />
+    <ClInclude Include="Header\Log\FolderScheduling.h" />
+    <ClInclude Include="Header\Log\ListBoxLog.h" />
+    <ClInclude Include="Header\Network\TCPServer.h" />
+    <ClInclude Include="Header\Network\TCPSocket.h" />
+    <ClInclude Include="Header\ThreadPool\PriorityThread.h" />
+    <ClInclude Include="Header\ThreadPool\ThreadData.h" />
+    <ClInclude Include="Header\ThreadPool\ThreadPool.h" />
+    <ClInclude Include="Header\ThreadPool\TimerThreadPool.h" />
+    <ClInclude Include="Header\ThreadPool\WaitThreadPool.h" />
+    <ClInclude Include="Header\ThreadPool\WorkThreadArray.h" />
+    <ClInclude Include="Header\ThreadPool\WorkThreadPool.h" />
+    <ClInclude Include="Header\Time\TimeCalculator.h" />
+    <ClInclude Include="Header\UI\HWChecker.h" />
+    <ClInclude Include="Header\UI\LogView.h" />
+    <ClInclude Include="Header\View\BufferDC.h" />
+    <ClInclude Include="Header\View\ControlMemDC.h" />
+    <ClInclude Include="Header\View\SharedMemoryBuffer.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cpp\FindLineTool.cpp" />
+    <ClCompile Include="NToolCore.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tools\Camera\FrameGrabber.cpp" />
+    <ClCompile Include="Tools\Camera\FrameGrabber_MVS_GigE.cpp" />
+    <ClCompile Include="Tools\Camera\MvCamera.cpp" />
+    <ClCompile Include="Tools\Camera\M_FrameGrabber.cpp" />
+    <ClCompile Include="Tools\Camera\M_FrameGrabber_MVS.cpp" />
+    <ClCompile Include="Tools\ConfigFile\BasedConfig.cpp" />
+    <ClCompile Include="Tools\ConfigFile\Config.cpp" />
+    <ClCompile Include="Tools\ConfigFile\FileIOInterface.cpp" />
+    <ClCompile Include="Tools\ConfigFile\FileList.cpp" />
+    <ClCompile Include="Tools\ConfigFile\FileMap.cpp" />
+    <ClCompile Include="Tools\ConfigFile\FileVersionManager.cpp" />
+    <ClCompile Include="Tools\ConfigFile\IniManager.cpp" />
+    <ClCompile Include="Tools\ConfigFile\Registery.cpp" />
+    <ClCompile Include="Tools\IOControl\IOControls.cpp" />
+    <ClCompile Include="Tools\IOControl\IOControls_PLC_MxComponent.cpp" />
+    <ClCompile Include="Tools\IOControl\IOControls_Simulation.cpp" />
+    <ClCompile Include="Tools\IOControl\mvcp.cpp" />
+    <ClCompile Include="Tools\IOControl\Mvedio128mbTcp.cpp" />
+    <ClCompile Include="Tools\IOControl\mvtype.cpp" />
+    <ClCompile Include="Tools\IOControl\MxComponent.cpp" />
+    <ClCompile Include="Tools\Log\FolderScheduling.cpp" />
+    <ClCompile Include="Tools\Log\ListBoxLog.cpp" />
+    <ClCompile Include="Tools\Network\TCPServer.cpp" />
+    <ClCompile Include="Tools\Network\TCPSocket.cpp" />
+    <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp" />
+    <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp" />
+    <ClCompile Include="Tools\ThreadPool\TimerThreadPool.cpp" />
+    <ClCompile Include="Tools\ThreadPool\WaitThreadPool.cpp" />
+    <ClCompile Include="Tools\ThreadPool\WorkThreadArray.cpp" />
+    <ClCompile Include="Tools\ThreadPool\WorkThreadPool.cpp" />
+    <ClCompile Include="Tools\Time\TimeCalculator.cpp" />
+    <ClCompile Include="Tools\UI\HWChecker.cpp" />
+    <ClCompile Include="Tools\UI\LogView.cpp" />
+    <ClCompile Include="Tools\View\BufferDC.cpp" />
+    <ClCompile Include="Tools\View\SharedMemoryBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
