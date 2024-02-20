@@ -134,7 +134,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -146,6 +146,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Header\Camera\Hik\FrameGrabber.h" />
+    <ClInclude Include="Header\Camera\Hik\FrameGrabberParam.h" />
+    <ClInclude Include="Header\Camera\Hik\FrameGrabber_MVS_GigE.h" />
+    <ClInclude Include="Header\Camera\Hik\MvCamera.h" />
+    <ClInclude Include="Header\ThreadPool\PriorityThread.h" />
+    <ClInclude Include="Header\ThreadPool\ThreadData.h" />
+    <ClInclude Include="Header\ThreadPool\ThreadPool.h" />
+    <ClInclude Include="Header\ThreadPool\TimerThreadPool.h" />
+    <ClInclude Include="Header\ThreadPool\WaitThreadPool.h" />
+    <ClInclude Include="Header\ThreadPool\WorkThreadArray.h" />
+    <ClInclude Include="Header\ThreadPool\WorkThreadPool.h" />
     <ClInclude Include="Header\View\SharedMemoryBuffer.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -157,6 +168,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tools\Camera\Hik\FrameGrabber.cpp" />
+    <ClCompile Include="Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp" />
+    <ClCompile Include="Tools\Camera\Hik\MvCamera.cpp" />
+    <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber.cpp" />
+    <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber_MVS.cpp" />
+    <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp" />
+    <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp" />
+    <ClCompile Include="Tools\ThreadPool\TimerThreadPool.cpp" />
+    <ClCompile Include="Tools\ThreadPool\WaitThreadPool.cpp" />
+    <ClCompile Include="Tools\ThreadPool\WorkThreadArray.cpp" />
+    <ClCompile Include="Tools\ThreadPool\WorkThreadPool.cpp" />
     <ClCompile Include="Tools\View\SharedMemoryBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

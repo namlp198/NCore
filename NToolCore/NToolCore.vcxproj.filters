@@ -25,6 +25,30 @@
     <Filter Include="Source Files\Tools\View">
       <UniqueIdentifier>{ce6b729d-2759-450f-94b3-4eda33e572ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools\ThreadPool">
+      <UniqueIdentifier>{d401d0c2-1171-4001-bec5-2fde1dce1ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\ThreadPool">
+      <UniqueIdentifier>{15765b38-8a09-4886-8375-5f0bcf27b4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera">
+      <UniqueIdentifier>{03e78593-34a3-4113-a10a-1d81337198ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera\Hik">
+      <UniqueIdentifier>{79fae297-eefd-4f1c-8caf-1889f1f5a79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera\Basler">
+      <UniqueIdentifier>{0e4cfcbf-7f4f-40c9-8d03-beccb47066a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera">
+      <UniqueIdentifier>{cfa1bbda-8732-47de-89dd-2e3c6ce0f132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera\Hik">
+      <UniqueIdentifier>{97f7d891-6adb-47b1-ab5a-dcbf5a522342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera\Basler">
+      <UniqueIdentifier>{8dba0d62-981c-4cad-8a76-ecbcbe70228f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -36,6 +60,39 @@
     <ClInclude Include="Header\View\SharedMemoryBuffer.h">
       <Filter>Header Files\Tools\View</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ThreadPool\PriorityThread.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ThreadPool\ThreadData.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ThreadPool\ThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ThreadPool\TimerThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ThreadPool\WaitThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ThreadPool\WorkThreadArray.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ThreadPool\WorkThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Camera\Hik\FrameGrabber.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Camera\Hik\FrameGrabber_MVS_GigE.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Camera\Hik\FrameGrabberParam.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Camera\Hik\MvCamera.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NToolCore.cpp">
@@ -46,6 +103,39 @@
     </ClCompile>
     <ClCompile Include="Tools\View\SharedMemoryBuffer.cpp">
       <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ThreadPool\TimerThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ThreadPool\WaitThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ThreadPool\WorkThreadArray.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\ThreadPool\WorkThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\Hik\FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber_MVS.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\Hik\MvCamera.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
