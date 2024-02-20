@@ -11,5 +11,5 @@ class FindLineTool
 public:
 	FindLineTool();
 	~FindLineTool();
-	void FindLineWithHoughLine(cv::Mat* pMatSrc, cv::Rect rectROI, std::vector<cv::Point2f>& vPoints);
+	void FindLineWithHoughLine(cv::Mat* pMatSrc, int top, int left, int width, int height, std::vector<cv::Point2f>& vPoints);
 };
