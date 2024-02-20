@@ -1,5 +1,6 @@
 #pragma once
 #include "ImageProcessor.h"
+#include "InspectResult.h"
 
 extern "C"
 {
@@ -15,5 +16,7 @@ extern "C"
 
 	__declspec(dllexport) bool               Initialize(ImageProcessor* pProcessor);
 
-	__declspec(dllexport) bool               FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, cv::Mat* mat, cv::Rect rectROI);
+	__declspec(dllexport) bool               FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, int top, int left, int width, int height, int nBuff);
+
+	__declspec(dllexport) bool               GetInspectData(ImageProcessor* pProcessor, InspectResult* pInspectData);
 };

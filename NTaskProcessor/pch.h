@@ -44,6 +44,7 @@
 
 #pragma comment(lib, "NCvToolCore_Release64.lib")
 #pragma comment(lib, "NToolCore_Release64.lib")
+#pragma comment(lib, "MvCameraControl.lib")
 
 #endif // _DEBUG
 

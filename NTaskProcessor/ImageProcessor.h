@@ -8,10 +8,11 @@
 #include <opencv2/imgcodecs.hpp>
 #include <FindLineTool.h>
 #include "SharedMemoryBuffer.h"
+#include "InspectResult.h"
 
 #define MAX_BUFF 1
-#define FRAME_WIDTH 2464
-#define FRAME_HEIGHT 2056
+#define FRAME_WIDTH 1280
+#define FRAME_HEIGHT 1024
 #define FRAME_COUNT 1
 
 class AFX_EXT_CLASS ImageProcessor
@@ -19,7 +20,7 @@ class AFX_EXT_CLASS ImageProcessor
 public:
 	ImageProcessor();
 	~ImageProcessor();
-	BOOL                              FindLineWithHoughLine_Simul(cv::Mat* mat, cv::Rect rectROI);
+	BOOL                              FindLineWithHoughLine_Simul(int top, int left, int width, int height, int nBuff);
 	virtual LPBYTE                    GetBufferImage(int nBuff, UINT nY);
 	BOOL                              LoadImageBuffer(int nBuff, CString strFilePath);
 	BOOL                              CreateBuffer();
@@ -27,7 +28,11 @@ public:
 	BOOL							  Initialize();
 	BOOL                              Destroy();
 
+	BOOL                              GetInspectData(InspectResult* pInspectData);
+
 private:
 	// Image Buffer
 	CSharedMemoryBuffer*                     m_pImageBuffer[MAX_BUFF];
+	std::vector<cv::Point2f>                 vPoints;
+	//cv::Mat* pMat;
 };

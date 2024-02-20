@@ -15,12 +15,26 @@ ImageProcessor::~ImageProcessor()
 	Destroy();
 }
 
-BOOL ImageProcessor::FindLineWithHoughLine_Simul(cv::Mat* mat, cv::Rect rectROI)
+BOOL ImageProcessor::FindLineWithHoughLine_Simul(int top, int left, int width, int height, int nBuff)
 {
+	// Get buffer
+	LPBYTE pBuffer = GetBufferImage(nBuff, 0);
+
+	int frameWidth = m_pImageBuffer[nBuff]->GetFrameWidth();
+	int frameHeight = m_pImageBuffer[nBuff]->GetFrameHeight();
+	cv::Mat mat(frameHeight, frameWidth, CV_8UC1, pBuffer);
+
     // Find line
     FindLineTool finder;
-    std::vector<cv::Point2f> vPoints;
-    finder.FindLineWithHoughLine(mat, rectROI, vPoints);
+    finder.FindLineWithHoughLine(&mat, top, left, width, height, vPoints);
+
+	// Set Frame into buffer
+	/*LPBYTE pBuffer = m_pImageBuffer[nBuff]->GetSharedBuffer();
+	ZeroMemory(pBuffer, frameWidth * frameHeight);
+	for (int i = 0; i < frameHeight; i++)
+		memcpy(pBuffer + (i * frameWidth), &mat.data[i * mat.step1()], frameWidth);
+	
+	m_pImageBuffer[nBuff]->SetFrameImage(0, pBuffer);*/
 	return TRUE;
 }
 
@@ -52,6 +66,7 @@ BOOL ImageProcessor::LoadImageBuffer(int nBuff, CString strFilePath)
 	int nFrameWidth = m_pImageBuffer[nBuff]->GetFrameWidth();
 	int nFrameHeight = m_pImageBuffer[nBuff]->GetFrameHeight();
 	int nFrameCount = m_pImageBuffer[nBuff]->GetFrameCount();
+	int nFrameSize = m_pImageBuffer[nBuff]->GetFrameSize();
 
 	USES_CONVERSION;
 	char strTemp[1024] = {};
@@ -70,7 +85,7 @@ BOOL ImageProcessor::LoadImageBuffer(int nBuff, CString strFilePath)
 	int nCopyHeight = (nFrameHeight * nFrameCount < pOpenImage.rows) ? nFrameHeight * nFrameCount : pOpenImage.rows;
 	int nCopyWidth = (nFrameWidth < pOpenImage.cols) ? nFrameWidth : pOpenImage.cols;
 
-	ZeroMemory(pBuffer, nFrameWidth * nFrameHeight * nFrameCount);
+	ZeroMemory(pBuffer, nFrameSize * nFrameCount);
 
 	for (int i = 0; i < nCopyHeight; i++)
 		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);
@@ -164,5 +179,14 @@ BOOL ImageProcessor::Destroy()
 		}
 	}
 
+	return TRUE;
+}
+
+BOOL ImageProcessor::GetInspectData(InspectResult* pInspectData)
+{
+	pInspectData->m_nX1 = vPoints[0].x;
+	pInspectData->m_nY1 = vPoints[0].y;
+	pInspectData->m_nX2 = vPoints[1].x;
+	pInspectData->m_nY2 = vPoints[1].y;
 	return TRUE;
 }

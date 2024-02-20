@@ -55,11 +55,27 @@ bool Initialize(ImageProcessor* pProcessor)
 	else                    return true;
 }
 
-bool FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, cv::Mat* mat, cv::Rect rectROI)
+bool FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, int top, int left, int width, int height, int nBuff)
 {
 	if (pProcessor == NULL)
 		return false;
-	BOOL bRetValue = pProcessor->FindLineWithHoughLine_Simul(mat, rectROI);
+	BOOL bRetValue = pProcessor->FindLineWithHoughLine_Simul(top, left, width, height, nBuff);
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
+bool GetInspectData(ImageProcessor* pProcessor, InspectResult* pInspectData)
+{
+	if (pProcessor == NULL)
+		return FALSE;
+	if (pInspectData == NULL)
+		return FALSE;
+
+	ZeroMemory(pInspectData, sizeof(InspectResult));
+	InspectResult inspectData;
+
+	BOOL bRetValue = pProcessor->GetInspectData(&inspectData);
+	CopyMemory(pInspectData, &inspectData, sizeof(InspectResult));
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }
