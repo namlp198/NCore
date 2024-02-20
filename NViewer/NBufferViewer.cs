@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define _TEST_IMAGE_5MP
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -40,8 +42,13 @@ namespace NViewer
 
         //private int m_nFrameWidth = 640;
         //private int m_nFrameHeight = 486;
+#if TEST_IMAGE_5MP
         private int m_nFrameWidth = 2464;
         private int m_nFrameHeight = 2056;
+#else
+        private int m_nFrameWidth = 1280;
+        private int m_nFrameHeight = 1024;
+#endif
         private double m_dPixelSizeX_um = 10.0;
         private double m_dPixelSizeY_um = 10.0;
 
@@ -55,6 +62,16 @@ namespace NViewer
         //private int startPanY = 0;
         //private int imgX = 0;
         //private int imgY = 0;
+
+        // Draw Line (Test)
+        private bool m_bDrawLineTest = false;
+        public bool IsDrawLineTest
+        {
+            get { return m_bDrawLineTest; }
+            set { m_bDrawLineTest = value;}
+        }
+        public Point m_p1 = new Point(506, 260);
+        public Point m_p2 = new Point(766, 260);
 
 
         public double ZoomRatio
@@ -326,6 +343,8 @@ namespace NViewer
                 // Draw Measure
                 if (toolStripMenuItem_Measure.Checked == true)
                     DrawMouseMeasure_ZoomView(sender, bufferedgraphic);
+                if (m_bDrawLineTest == true)
+                    DrawLineTest(sender, bufferedgraphic);
 
                 DrawCenterLine_ZoomView(sender, bufferedgraphic);
             }
@@ -347,6 +366,30 @@ namespace NViewer
             DrawTitle(sender, bufferedgraphic);
 
             bufferedgraphic.Render(e.Graphics);
+        }
+
+        private void DrawLineTest(object sender, BufferedGraphics e)
+        {
+            Pen MouseMeasurePen_Point = new Pen(Color.LightGreen, 1);
+            Pen lineLimitPen = new Pen(Color.Red, 1);
+
+            Point ptMeasureStart = m_p1;
+            Point ptMeasureEnd = m_p2;
+
+            ptMeasureStart.Offset(-m_nCurrentViewPositionX, -m_nCurrentViewPositionY);
+            ptMeasureStart.X = (int)(ptMeasureStart.X * m_dZoomRatio);
+            ptMeasureStart.Y = (int)(ptMeasureStart.Y * m_dZoomRatio);
+
+            ptMeasureEnd.Offset(-m_nCurrentViewPositionX, -m_nCurrentViewPositionY);
+            ptMeasureEnd.X = (int)(ptMeasureEnd.X * m_dZoomRatio);
+            ptMeasureEnd.Y = (int)(ptMeasureEnd.Y * m_dZoomRatio);
+
+            e.Graphics.DrawLine(MouseMeasurePen_Point, ptMeasureStart, ptMeasureEnd);
+            e.Graphics.DrawLine(lineLimitPen, new Point(ptMeasureStart.X, ptMeasureStart.Y - 3), new Point(ptMeasureStart.X, ptMeasureStart.Y + 3));
+            e.Graphics.DrawLine(lineLimitPen, new Point(ptMeasureEnd.X, ptMeasureEnd.Y - 3), new Point(ptMeasureEnd.X, ptMeasureEnd.Y + 3));
+
+            MouseMeasurePen_Point.Dispose();
+            lineLimitPen.Dispose();
         }
 
         private void DrawImage_ZoomMode(object sender, BufferedGraphics e)
