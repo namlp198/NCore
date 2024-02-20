@@ -10,6 +10,15 @@ using System.Threading.Tasks;
 
 namespace wfTestTaskProcessor
 {
+    // Inspect Resutl
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct InspectResult
+    {
+        public int m_nX1;
+        public int m_nY1;
+        public int m_nX2;
+        public int m_nY2;
+    }
     internal class ImageProcessorDll
     {
         IntPtr m_ImageProcessor;
@@ -76,6 +85,25 @@ namespace wfTestTaskProcessor
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static bool ClearBufferImage(IntPtr imageProcessor, int nBuff);
         public bool ClearBufferImage(int nBuff) { return ClearBufferImage(m_ImageProcessor, nBuff); }
+
+       
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool FindLineWithHoughLine_Simul(IntPtr imageProcessor, int top, int left, int width, int height, int nBuff);
+        public bool FindLineWithHoughLine_Simul(int top, int left, int width, int height, int nBuff) { return FindLineWithHoughLine_Simul(m_ImageProcessor, top, left, width, height, nBuff); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool GetInspectData(IntPtr imageProcessor, IntPtr inspectData);
+        public bool GetInspectData(ref InspectResult inspectResult)
+        {
+            InspectResult pResult = new InspectResult();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pResult));
+
+            Marshal.StructureToPtr(pResult, pPointer, false);
+            bool bRetValue = GetInspectData(m_ImageProcessor, pPointer);
+            inspectResult = (InspectResult)Marshal.PtrToStructure(pPointer, typeof(InspectResult));
+            return bRetValue;
+        }
 
         // KERNEL FUNCTIONS
         [DllImport("kernel32.dll")]

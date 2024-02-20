@@ -15,6 +15,7 @@ namespace wfTestTaskProcessor
     {
         private int nBuff = 0;
         NBufferViewer nBufferViewer = new NBufferViewer(0);
+        InspectResult inspectData = new InspectResult();
         public wfTestNViewer()
         {
             InitializeComponent();
@@ -30,6 +31,11 @@ namespace wfTestTaskProcessor
         {
             this.BeginInvoke(new Action(() =>
             {
+                if(nBufferViewer.IsDrawLineTest)
+                {
+                    nBufferViewer.m_p1 = new Point(InterfaceManager.Instance.m_simulationThread.inspectData.m_nX1, InterfaceManager.Instance.m_simulationThread.inspectData.m_nY1);
+                    nBufferViewer.m_p2 = new Point(InterfaceManager.Instance.m_simulationThread.inspectData.m_nX2, InterfaceManager.Instance.m_simulationThread.inspectData.m_nY2);
+                }
                 nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBufferImage(nBuff, 0);
                 nBufferViewer.Refresh();
             }));
@@ -48,6 +54,12 @@ namespace wfTestTaskProcessor
         private void wfTestNViewer_FormClosed(object sender, FormClosedEventArgs e)
         {
             InterfaceManager.Instance.m_imageProcessorManager.Release();
+        }
+
+        private void btnFindLine_Click(object sender, EventArgs e)
+        {
+            nBufferViewer.IsDrawLineTest = true;
+            InterfaceManager.Instance.m_simulationThread.FindLineTest(nBuff);
         }
     }
 }

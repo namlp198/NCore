@@ -25,6 +25,8 @@ namespace wfTestTaskProcessor
             set { bInspectRuning = value; }
         }
 
+        public InspectResult inspectData = new InspectResult();
+
         public static IntPtr pBuffer = IntPtr.Zero;
 
         public void LoadImage(int nBuff)
@@ -52,6 +54,27 @@ namespace wfTestTaskProcessor
             string filePath = ofd.FileName;
 
             InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.LoadImageBuffer(nBuff, filePath);
+
+            UpdateUI?.Invoke(nBuff);
+        }
+
+        public void FindLineTest(int nBuff)
+        {
+            Thread findLineThread;
+            findLineThread = new Thread(() => FindLineTestThread(nBuff));
+            findLineThread.SetApartmentState(ApartmentState.STA);
+            findLineThread.IsBackground = true;
+            findLineThread.Start();
+        }
+
+        private void FindLineTestThread(object objBuff)
+        {
+            int nBuff = (int)objBuff;
+            
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.FindLineWithHoughLine_Simul(192, 506, 260, 100, nBuff);
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetInspectData(ref inspectData);
+            //string s = string.Format("p1: {0}-{1} , p2: {2}-{3}", inspectData.m_nX1, inspectData.m_nY1, inspectData.m_nX2, inspectData.m_nY2);
+            //MessageBox.Show(s);
 
             UpdateUI?.Invoke(nBuff);
         }
