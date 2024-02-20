@@ -33,6 +33,9 @@
     <ClInclude Include="InspectResult.h">
       <Filter>ImageProcessor</Filter>
     </ClInclude>
+    <ClInclude Include="InspectCore.h">
+      <Filter>ImageProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -45,6 +48,9 @@
       <Filter>ImageProcessor</Filter>
     </ClCompile>
     <ClCompile Include="InspectResult.cpp">
+      <Filter>ImageProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectCore.cpp">
       <Filter>ImageProcessor</Filter>
     </ClCompile>
   </ItemGroup>
