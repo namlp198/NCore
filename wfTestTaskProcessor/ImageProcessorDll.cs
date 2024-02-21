@@ -93,6 +93,11 @@ namespace wfTestTaskProcessor
 
 
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static IntPtr GetHikCamBufferImage(IntPtr imageProcessor, int nCamIdx);
+        public IntPtr GetHikCamBufferImage(int nCamIdx) { return GetHikCamBufferImage(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static bool GetInspectData(IntPtr imageProcessor, IntPtr inspectData);
         public bool GetInspectData(ref InspectResult inspectResult)
         {

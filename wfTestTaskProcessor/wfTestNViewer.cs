@@ -14,6 +14,7 @@ namespace wfTestTaskProcessor
     public partial class wfTestNViewer : Form
     {
         private int nBuff = 0;
+        private int m_nCamIdx = 0;
         NBufferViewer nBufferViewer = new NBufferViewer(0);
         InspectResult inspectData = new InspectResult();
         public wfTestNViewer()
@@ -31,7 +32,7 @@ namespace wfTestTaskProcessor
         {
             this.BeginInvoke(new Action(() =>
             {
-                if(nBufferViewer.IsDrawLineTest)
+                if (nBufferViewer.IsDrawLineTest)
                 {
                     nBufferViewer.m_p1 = new Point(InterfaceManager.Instance.m_simulationThread.inspectData.m_nX1, InterfaceManager.Instance.m_simulationThread.inspectData.m_nY1);
                     nBufferViewer.m_p2 = new Point(InterfaceManager.Instance.m_simulationThread.inspectData.m_nX2, InterfaceManager.Instance.m_simulationThread.inspectData.m_nY2);
@@ -48,7 +49,7 @@ namespace wfTestTaskProcessor
 
         private void wfTestNViewer_Load(object sender, EventArgs e)
         {
-            InterfaceManager.Instance.m_imageProcessorManager.Initialize();
+            //InterfaceManager.Instance.m_imageProcessorManager.Initialize();
         }
 
         private void wfTestNViewer_FormClosed(object sender, FormClosedEventArgs e)
@@ -60,6 +61,31 @@ namespace wfTestTaskProcessor
         {
             nBufferViewer.IsDrawLineTest = true;
             InterfaceManager.Instance.m_simulationThread.FindLineTest(nBuff);
+        }
+
+        private void btnInit_Click(object sender, EventArgs e)
+        {
+            InterfaceManager.Instance.m_imageProcessorManager.Initialize();
+
+            btnCameraLive.Enabled = true;
+            btnFindLine.Enabled = true;
+            btnLoadImage.Enabled = true;
+            btnTrigger.Enabled = true;
+
+            btnInit.Enabled = false;
+
+            timer_Cam_Live.Enabled = true;
+        }
+
+        private void timer_Cam_Live_Tick(object sender, EventArgs e)
+        {
+            nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetHikCamBufferImage(m_nCamIdx);
+            nBufferViewer.SetViewIdx(m_nCamIdx);
+        }
+
+        private void btnCameraLive_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

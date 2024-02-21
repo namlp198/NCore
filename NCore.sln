@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NViewer", "NViewer\NViewer.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NToolCore", "NToolCore\NToolCore.vcxproj", "{6D17464E-4F83-4B1D-9D64-9D3D7A9F5CE0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestShareBuffer", "TestShareBuffer\TestShareBuffer.vcxproj", "{36D470BE-FC27-473C-84FF-E8315EEEAE8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{6D17464E-4F83-4B1D-9D64-9D3D7A9F5CE0}.Release|x64.Build.0 = Release|x64
 		{6D17464E-4F83-4B1D-9D64-9D3D7A9F5CE0}.Release|x86.ActiveCfg = Release|Win32
 		{6D17464E-4F83-4B1D-9D64-9D3D7A9F5CE0}.Release|x86.Build.0 = Release|Win32
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Debug|Any CPU.Build.0 = Debug|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Debug|x64.ActiveCfg = Debug|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Debug|x64.Build.0 = Debug|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Debug|x86.ActiveCfg = Debug|Win32
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Debug|x86.Build.0 = Debug|Win32
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Release|Any CPU.ActiveCfg = Release|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Release|Any CPU.Build.0 = Release|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Release|x64.ActiveCfg = Release|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Release|x64.Build.0 = Release|x64
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Release|x86.ActiveCfg = Release|Win32
+		{36D470BE-FC27-473C-84FF-E8315EEEAE8D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

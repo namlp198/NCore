@@ -32,7 +32,7 @@ namespace NViewer
         Point m_ptMeasureEndPos;
         const int m_nPointSelectRange = 5;
 
-        private double m_dZoomRatio = 0.5;
+        private double m_dZoomRatio = 1.0;
         const double m_dZoomMax = 16.0;
         const double m_dZoomMin = 0.125;//0.25;
 
