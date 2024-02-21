@@ -80,4 +80,16 @@ bool GetInspectData(ImageProcessor* pProcessor, InspectResult* pInspectData)
 	else                    return true;
 }
 
+BYTE* GetHikCamBufferImage(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	InspectionHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return NULL;
+
+	return pHikCam->GetBufferImage(nCamIdx);
+}
+
 

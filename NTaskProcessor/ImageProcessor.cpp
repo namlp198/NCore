@@ -127,7 +127,7 @@ BOOL ImageProcessor::CreateBuffer()
 		DWORD64 dw64Size = (DWORD64)dwFrameCount * dwFrameSize;
 
 		CString strMemory;
-		strMemory.Format(_T("%s_%d"), "Buffer", i);
+		strMemory.Format(_T("%s_%d"), "BufferOffline", i);
 
 		bRetValue = m_pImageBuffer[i]->CreateSharedMemory(strMemory, dw64Size);
 
@@ -165,6 +165,17 @@ BOOL ImageProcessor::Initialize()
 	{
 		return FALSE;
 	}
+
+	// Inspection Hik Cam
+	if (m_pInspHikCam != NULL)
+	{
+		m_pInspHikCam->Destroy();
+		delete m_pInspHikCam, m_pInspHikCam = NULL;
+	}
+	m_pInspHikCam = new InspectionHikCam();
+	m_pInspHikCam->Initialize();
+
+	return TRUE;
 }
 
 BOOL ImageProcessor::Destroy()
@@ -179,6 +190,13 @@ BOOL ImageProcessor::Destroy()
 		}
 	}
 
+	if (m_pInspHikCam != NULL)
+	{
+		m_pInspHikCam->Destroy();
+		delete m_pInspHikCam;
+		m_pInspHikCam = NULL;
+	}
+
 	return TRUE;
 }
 
@@ -190,3 +208,4 @@ BOOL ImageProcessor::GetInspectData(InspectResult* pInspectData)
 	pInspectData->m_nY2 = vPoints[1].y;
 	return TRUE;
 }
+

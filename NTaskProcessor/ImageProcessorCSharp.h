@@ -19,4 +19,6 @@ extern "C"
 	__declspec(dllexport) bool               FindLineWithHoughLine_Simul(ImageProcessor* pProcessor, int top, int left, int width, int height, int nBuff);
 
 	__declspec(dllexport) bool               GetInspectData(ImageProcessor* pProcessor, InspectResult* pInspectData);
+
+	__declspec(dllexport) BYTE*              GetHikCamBufferImage(ImageProcessor* pProcessor, int nCamIdx);
 };

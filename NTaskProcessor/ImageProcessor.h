@@ -9,13 +9,15 @@
 #include <FindLineTool.h>
 #include "SharedMemoryBuffer.h"
 #include "InspectResult.h"
+#include "InspectCore.h"
+#include "InspectionHikCam.h"
 
 #define MAX_BUFF 1
 #define FRAME_WIDTH 1280
 #define FRAME_HEIGHT 1024
 #define FRAME_COUNT 1
 
-class AFX_EXT_CLASS ImageProcessor
+class AFX_EXT_CLASS ImageProcessor : public IInspectCoreToParent
 {
 public:
 	ImageProcessor();
@@ -29,10 +31,15 @@ public:
 	BOOL                              Destroy();
 
 	BOOL                              GetInspectData(InspectResult* pInspectData);
+	InspectionHikCam*                 GetHikCamControl() { return m_pInspHikCam; }
 
 private:
 	// Image Buffer
 	CSharedMemoryBuffer*                     m_pImageBuffer[MAX_BUFF];
 	std::vector<cv::Point2f>                 vPoints;
+
+	InspectCore*                             m_pInspectCore;
+	InspectionHikCam*                        m_pInspHikCam;
+	
 	//cv::Mat* pMat;
 };
