@@ -350,6 +350,7 @@ void CFrameGrabber_BaslerCam::Destroy()
 
     if (m_pCameraImageBuffer != NULL)
     {
+        m_pCameraImageBuffer->DeleteSharedMemory();
         delete m_pCameraImageBuffer;
         m_pCameraImageBuffer = NULL;
     }
