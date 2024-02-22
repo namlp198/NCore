@@ -10,7 +10,14 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+#include <afx.h>
 #include <afxmt.h>
 #include <cstringt.h>
+
+// Include files to use the pylon API.
+#include <pylon/PylonIncludes.h>
+
+// Make the string converter from this project available globally.
+#include "PylonStringHelpers.h"
 
 #endif //PCH_H

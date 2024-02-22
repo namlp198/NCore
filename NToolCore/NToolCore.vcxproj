@@ -134,7 +134,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;..\Libraries\Camera_Basler\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -146,6 +146,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Header\Camera\Basler\FrameGrabber_BaslerCam.h" />
+    <ClInclude Include="Header\Camera\Basler\PylonStringHelpers.h" />
     <ClInclude Include="Header\Camera\Hik\FrameGrabber.h" />
     <ClInclude Include="Header\Camera\Hik\FrameGrabberParam.h" />
     <ClInclude Include="Header\Camera\Hik\FrameGrabber_MVS_GigE.h" />
@@ -168,6 +170,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tools\Camera\Basler\FrameGrabber_BaslerCam.cpp" />
+    <ClCompile Include="Tools\Camera\Basler\PylonStringHelpers.cpp" />
     <ClCompile Include="Tools\Camera\Hik\FrameGrabber.cpp" />
     <ClCompile Include="Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp" />
     <ClCompile Include="Tools\Camera\Hik\MvCamera.cpp" />
