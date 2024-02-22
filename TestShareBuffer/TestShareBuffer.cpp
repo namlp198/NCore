@@ -39,9 +39,9 @@
 #endif
 
 #define MAX_BUFF 1
-#define FRAME_WIDTH 600
-#define FRAME_HEIGHT 450
-#define FRAME_COUNT 3
+#define FRAME_WIDTH 512
+#define FRAME_HEIGHT 512
+#define FRAME_COUNT 1
 
 CSharedMemoryBuffer* m_pImageBuffer[MAX_BUFF];
 
@@ -52,8 +52,8 @@ int main()
 
 	DWORD dwFrameWidth = (DWORD)FRAME_WIDTH;
 	DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT;
-	DWORD dwFrameCount = 0;
-	DWORD dwFrameSize = dwFrameWidth * dwFrameHeight;
+	DWORD dwFrameCount = 1;
+	DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * 3;
 
 	DWORD64 dwTotalFrameCount = 0;
 
@@ -103,7 +103,7 @@ int main()
 	std::string strStd(pszConvertedAnsiString);
 	std::cout << strStd << std::endl;
 
-	CString strImagePath = _T("D:\\entry\\src\\APP_DIP_Cpp\\All_Projects\\ImageTest\\beer.jpg");
+	CString strImagePath = _T("D:\\entry\\src\\APP_DIP_Cpp\\All_Projects\\ImageTest\\lena.png");
 
 	USES_CONVERSION;
 	char strTemp[1024] = {};
@@ -117,11 +117,15 @@ int main()
 	LPBYTE pBuffer1 = m_pImageBuffer[0]->GetSharedBuffer();
 	int nCopyHeight = (dwFrameHeight * dwFrameCount < pOpenImage.rows) ? dwFrameHeight * dwFrameCount : pOpenImage.rows;
 	int nCopyWidth = (dwFrameWidth < pOpenImage.cols) ? dwFrameWidth : pOpenImage.cols;
-	ZeroMemory(pBuffer1, dwFrameCount * dwFrameSize);
+	//ZeroMemory(pBuffer1, dwFrameCount * dwFrameSize);
 
 	/*for (int i = 0; i < nCopyHeight; i++)
 		memcpy(pBuffer1 + (i * dwFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
-	memcpy(pBuffer1, pOpenImage.data, dwFrameCount * dwFrameSize);
+
+	//memcpy(pBuffer1, pOpenImage.data, dwFrameCount * dwFrameSize);
+
+	//ZeroMemory(m_pImageBuffer[0], dwFrameCount * dwFrameSize);
+	m_pImageBuffer[0]->SetFrameImage(0, pOpenImage.data);
 
 	LPBYTE pBuffer2 = m_pImageBuffer[0]->GetBufferImage(0);
 	cv::Mat matCopy(dwFrameHeight, dwFrameWidth, CV_8UC3, pBuffer2);
