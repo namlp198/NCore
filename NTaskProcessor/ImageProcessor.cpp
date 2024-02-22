@@ -172,7 +172,7 @@ BOOL ImageProcessor::Initialize()
 		m_pInspHikCam->Destroy();
 		delete m_pInspHikCam, m_pInspHikCam = NULL;
 	}
-	m_pInspHikCam = new InspectionHikCam();
+	m_pInspHikCam = new InspectionHikCam;
 	m_pInspHikCam->Initialize();*/
 
 	// Inspection Basler Cam
@@ -181,7 +181,7 @@ BOOL ImageProcessor::Initialize()
 		m_pInspBaslerCam->Destroy();
 		delete m_pInspBaslerCam, m_pInspBaslerCam = NULL;
 	}
-	m_pInspBaslerCam = new CInspectionBaslerCam();
+	m_pInspBaslerCam = new CInspectionBaslerCam;
 	m_pInspBaslerCam->Initialize();
 
 	return TRUE;

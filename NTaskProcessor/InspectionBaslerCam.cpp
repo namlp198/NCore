@@ -57,7 +57,7 @@ BOOL CInspectionBaslerCam::Destroy()
 		if (m_pBaslerCam[i] != NULL)
 		{
 			m_pBaslerCam[i]->Destroy();
-			delete m_pBaslerCam, m_pBaslerCam[i] = NULL;
+			delete m_pBaslerCam[i], m_pBaslerCam[i] = NULL;
 		}
 	}
 	return TRUE;
