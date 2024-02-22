@@ -135,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)NCvToolCore\header;..\NToolCore\Header\View;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\NTaskProcessor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)NCvToolCore\header;..\NToolCore\Header\View;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\NTaskProcessor;..\Libraries\Camera_Basler\include;..\Libraries\Camera_Basler\include\pylon</AdditionalIncludeDirectories>
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)NCvToolCore\output\lib\Release;..\NToolCore\output\Release;..\Libraries\Camera_MVS\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)NCvToolCore\output\lib\Release;..\NToolCore\output\Release;..\Libraries\Camera_MVS\lib;..\Libraries\Camera_Basler\lib\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Link>
@@ -154,6 +154,7 @@
     <ClInclude Include="ImageProcessor.h" />
     <ClInclude Include="ImageProcessorCSharp.h" />
     <ClInclude Include="InspectCore.h" />
+    <ClInclude Include="InspectionBaslerCam.h" />
     <ClInclude Include="InspectionHikCam.h" />
     <ClInclude Include="InspectResult.h" />
     <ClInclude Include="pch.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="ImageProcessor.cpp" />
     <ClCompile Include="ImageProcessorCSharp.cpp" />
     <ClCompile Include="InspectCore.cpp" />
+    <ClCompile Include="InspectionBaslerCam.cpp" />
     <ClCompile Include="InspectionHikCam.cpp" />
     <ClCompile Include="InspectResult.cpp" />
     <ClCompile Include="pch.cpp">

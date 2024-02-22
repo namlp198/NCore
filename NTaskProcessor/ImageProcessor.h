@@ -11,6 +11,7 @@
 #include "InspectResult.h"
 #include "InspectCore.h"
 #include "InspectionHikCam.h"
+#include "InspectionBaslerCam.h"
 
 #define MAX_BUFF 1
 #define FRAME_WIDTH 1280
@@ -32,6 +33,7 @@ public:
 
 	BOOL                              GetInspectData(InspectResult* pInspectData);
 	InspectionHikCam*                 GetHikCamControl() { return m_pInspHikCam; }
+	CInspectionBaslerCam*             GetBaslerCamControl() { return m_pInspBaslerCam; }
 
 private:
 	// Image Buffer
@@ -40,6 +42,7 @@ private:
 
 	InspectCore*                             m_pInspectCore;
 	InspectionHikCam*                        m_pInspHikCam;
+	CInspectionBaslerCam*                    m_pInspBaslerCam;
 	
 	//cv::Mat* pMat;
 };

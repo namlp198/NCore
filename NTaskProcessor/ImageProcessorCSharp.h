@@ -21,4 +21,8 @@ extern "C"
 	__declspec(dllexport) bool               GetInspectData(ImageProcessor* pProcessor, InspectResult* pInspectData);
 
 	__declspec(dllexport) BYTE*              GetHikCamBufferImage(ImageProcessor* pProcessor, int nCamIdx);
+
+	__declspec(dllexport) BYTE*              GetBaslerCamBufferImage(ImageProcessor* pProcessor, int nCamIdx);
+
+	__declspec(dllexport) bool               LiveBaslerCam(ImageProcessor* pProcessor, int nCamIdx);
 };

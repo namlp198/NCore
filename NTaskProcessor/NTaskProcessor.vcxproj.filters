@@ -39,6 +39,9 @@
     <ClInclude Include="InspectionHikCam.h">
       <Filter>ImageProcessor</Filter>
     </ClInclude>
+    <ClInclude Include="InspectionBaslerCam.h">
+      <Filter>ImageProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -57,6 +60,9 @@
       <Filter>ImageProcessor</Filter>
     </ClCompile>
     <ClCompile Include="InspectionHikCam.cpp">
+      <Filter>ImageProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectionBaslerCam.cpp">
       <Filter>ImageProcessor</Filter>
     </ClCompile>
   </ItemGroup>

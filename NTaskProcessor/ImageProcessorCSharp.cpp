@@ -92,4 +92,29 @@ BYTE* GetHikCamBufferImage(ImageProcessor* pProcessor, int nCamIdx)
 	return pHikCam->GetBufferImage(nCamIdx);
 }
 
+BYTE* GetBaslerCamBufferImage(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	CInspectionBaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
+	if (pBaslerCam == NULL)
+		return NULL;
+	return pBaslerCam->GetBufferImage(nCamIdx);
+}
+
+bool LiveBaslerCam(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionBaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
+	if (pBaslerCam == NULL)
+		return false;
+
+	BOOL bRetValue = pBaslerCam->LiveCamera(nCamIdx);
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
 
