@@ -98,6 +98,16 @@ namespace wfTestTaskProcessor
 
 
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static IntPtr GetBaslerCamBufferImage(IntPtr imageProcessor, int nCamIdx);
+        public IntPtr GetBaslerCamBufferImage(int nCamIdx) { return GetBaslerCamBufferImage(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool LiveBaslerCam(IntPtr imageProcessor, int nCamIdx);
+        public bool LiveBaslerCam(int nCamIdx) { return LiveBaslerCam(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static bool GetInspectData(IntPtr imageProcessor, IntPtr inspectData);
         public bool GetInspectData(ref InspectResult inspectResult)
         {
@@ -109,6 +119,7 @@ namespace wfTestTaskProcessor
             inspectResult = (InspectResult)Marshal.PtrToStructure(pPointer, typeof(InspectResult));
             return bRetValue;
         }
+
 
         // KERNEL FUNCTIONS
         [DllImport("kernel32.dll")]

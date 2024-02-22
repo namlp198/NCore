@@ -66,6 +66,7 @@ namespace wfTestTaskProcessor
         private void btnInit_Click(object sender, EventArgs e)
         {
             InterfaceManager.Instance.m_imageProcessorManager.Initialize();
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.LiveBaslerCam(m_nCamIdx);
 
             btnCameraLive.Enabled = true;
             btnFindLine.Enabled = true;
@@ -79,11 +80,19 @@ namespace wfTestTaskProcessor
 
         private void timer_Cam_Live_Tick(object sender, EventArgs e)
         {
-            nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetHikCamBufferImage(m_nCamIdx);
+            //nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetHikCamBufferImage(m_nCamIdx);
+            //nBufferViewer.SetViewIdx(m_nCamIdx);
+
+            nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBaslerCamBufferImage(m_nCamIdx);
             nBufferViewer.SetViewIdx(m_nCamIdx);
         }
 
         private void btnCameraLive_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLiveBaslerCam_Click(object sender, EventArgs e)
         {
 
         }

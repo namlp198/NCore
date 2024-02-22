@@ -32,12 +32,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnInit = new System.Windows.Forms.Button();
             this.btnFindLine = new System.Windows.Forms.Button();
             this.btnTrigger = new System.Windows.Forms.Button();
             this.btnCameraLive = new System.Windows.Forms.Button();
             this.btnLoadImage = new System.Windows.Forms.Button();
-            this.btnInit = new System.Windows.Forms.Button();
             this.timer_Cam_Live = new System.Windows.Forms.Timer(this.components);
+            this.btnLiveBaslerCam = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +73,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnLiveBaslerCam);
             this.panel2.Controls.Add(this.btnInit);
             this.panel2.Controls.Add(this.btnFindLine);
             this.panel2.Controls.Add(this.btnTrigger);
@@ -84,11 +86,21 @@
             this.panel2.Size = new System.Drawing.Size(312, 771);
             this.panel2.TabIndex = 1;
             // 
+            // btnInit
+            // 
+            this.btnInit.Location = new System.Drawing.Point(37, 46);
+            this.btnInit.Name = "btnInit";
+            this.btnInit.Size = new System.Drawing.Size(235, 48);
+            this.btnInit.TabIndex = 2;
+            this.btnInit.Text = "Initialize All";
+            this.btnInit.UseVisualStyleBackColor = true;
+            this.btnInit.Click += new System.EventHandler(this.btnInit_Click);
+            // 
             // btnFindLine
             // 
             this.btnFindLine.Enabled = false;
             this.btnFindLine.Location = new System.Drawing.Point(37, 357);
-            this.btnFindLine.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnFindLine.Margin = new System.Windows.Forms.Padding(4);
             this.btnFindLine.Name = "btnFindLine";
             this.btnFindLine.Size = new System.Drawing.Size(235, 58);
             this.btnFindLine.TabIndex = 1;
@@ -131,19 +143,19 @@
             this.btnLoadImage.UseVisualStyleBackColor = true;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
-            // btnInit
-            // 
-            this.btnInit.Location = new System.Drawing.Point(37, 46);
-            this.btnInit.Name = "btnInit";
-            this.btnInit.Size = new System.Drawing.Size(235, 48);
-            this.btnInit.TabIndex = 2;
-            this.btnInit.Text = "Initialize All";
-            this.btnInit.UseVisualStyleBackColor = true;
-            this.btnInit.Click += new System.EventHandler(this.btnInit_Click);
-            // 
             // timer_Cam_Live
             // 
             this.timer_Cam_Live.Tick += new System.EventHandler(this.timer_Cam_Live_Tick);
+            // 
+            // btnLiveBaslerCam
+            // 
+            this.btnLiveBaslerCam.Location = new System.Drawing.Point(37, 481);
+            this.btnLiveBaslerCam.Name = "btnLiveBaslerCam";
+            this.btnLiveBaslerCam.Size = new System.Drawing.Size(235, 63);
+            this.btnLiveBaslerCam.TabIndex = 3;
+            this.btnLiveBaslerCam.Text = "Live Basler Camera";
+            this.btnLiveBaslerCam.UseVisualStyleBackColor = true;
+            this.btnLiveBaslerCam.Click += new System.EventHandler(this.btnLiveBaslerCam_Click);
             // 
             // wfTestNViewer
             // 
@@ -173,5 +185,6 @@
         private System.Windows.Forms.Button btnFindLine;
         private System.Windows.Forms.Button btnInit;
         private System.Windows.Forms.Timer timer_Cam_Live;
+        private System.Windows.Forms.Button btnLiveBaslerCam;
     }
 }
