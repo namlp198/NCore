@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Header\Camera\Basler\FrameGrabber_BaslerCam.h" />
+    <ClInclude Include="Header\Camera\Basler\FrameGrabber_BaslerCam_New.h" />
     <ClInclude Include="Header\Camera\Basler\PylonStringHelpers.h" />
     <ClInclude Include="Header\Camera\Hik\FrameGrabber.h" />
     <ClInclude Include="Header\Camera\Hik\FrameGrabberParam.h" />
@@ -171,6 +172,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tools\Camera\Basler\FrameGrabber_BaslerCam.cpp" />
+    <ClCompile Include="Tools\Camera\Basler\FrameGrabber_BaslerCam_New.cpp" />
     <ClCompile Include="Tools\Camera\Basler\PylonStringHelpers.cpp" />
     <ClCompile Include="Tools\Camera\Hik\FrameGrabber.cpp" />
     <ClCompile Include="Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp" />

@@ -99,6 +99,9 @@
     <ClInclude Include="Header\Camera\Basler\PylonStringHelpers.h">
       <Filter>Header Files\Tools\Camera\Basler</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Camera\Basler\FrameGrabber_BaslerCam_New.h">
+      <Filter>Header Files\Tools\Camera\Basler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NToolCore.cpp">
@@ -147,6 +150,9 @@
       <Filter>Source Files\Tools\Camera\Basler</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Camera\Basler\PylonStringHelpers.cpp">
+      <Filter>Source Files\Tools\Camera\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\Basler\FrameGrabber_BaslerCam_New.cpp">
       <Filter>Source Files\Tools\Camera\Basler</Filter>
     </ClCompile>
   </ItemGroup>
