@@ -117,4 +117,15 @@ bool LiveBaslerCam(ImageProcessor* pProcessor, int nCamIdx)
 	else                    return true;
 }
 
+BYTE* GetBaslerCamBufferImage_New(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	CInspectionBaslerCam_New* pBaslerCam_New = pProcessor->GetBaslerCamControl_New();
+	if (pBaslerCam_New == NULL)
+		return NULL;
+	return pBaslerCam_New->GetBufferImage(nCamIdx);
+}
+
 

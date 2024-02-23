@@ -155,6 +155,7 @@
     <ClInclude Include="ImageProcessorCSharp.h" />
     <ClInclude Include="InspectCore.h" />
     <ClInclude Include="InspectionBaslerCam.h" />
+    <ClInclude Include="InspectionBaslerCam_New.h" />
     <ClInclude Include="InspectionHikCam.h" />
     <ClInclude Include="InspectResult.h" />
     <ClInclude Include="pch.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="ImageProcessorCSharp.cpp" />
     <ClCompile Include="InspectCore.cpp" />
     <ClCompile Include="InspectionBaslerCam.cpp" />
+    <ClCompile Include="InspectionBaslerCam_New.cpp" />
     <ClCompile Include="InspectionHikCam.cpp" />
     <ClCompile Include="InspectResult.cpp" />
     <ClCompile Include="pch.cpp">

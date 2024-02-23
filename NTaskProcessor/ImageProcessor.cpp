@@ -176,13 +176,22 @@ BOOL ImageProcessor::Initialize()
 	m_pInspHikCam->Initialize();*/
 
 	// Inspection Basler Cam
-	if (m_pInspBaslerCam != NULL)
+	/*if (m_pInspBaslerCam != NULL)
 	{
 		m_pInspBaslerCam->Destroy();
 		delete m_pInspBaslerCam, m_pInspBaslerCam = NULL;
 	}
 	m_pInspBaslerCam = new CInspectionBaslerCam;
-	m_pInspBaslerCam->Initialize();
+	m_pInspBaslerCam->Initialize();*/
+
+	// Inspection Basler Camera New
+	if (m_pInspBaslerCam_New != NULL)
+	{
+		m_pInspBaslerCam_New->Destroy();
+		delete m_pInspBaslerCam_New, m_pInspBaslerCam_New = NULL;
+	}
+	m_pInspBaslerCam_New = new CInspectionBaslerCam_New;
+	m_pInspBaslerCam_New->Initialize();
 
 	return TRUE;
 }
@@ -211,6 +220,13 @@ BOOL ImageProcessor::Destroy()
 		m_pInspBaslerCam->Destroy();
 		delete m_pInspBaslerCam;
 		m_pInspBaslerCam = NULL;
+	}
+
+	if (m_pInspBaslerCam_New != NULL)
+	{
+		m_pInspBaslerCam_New->Destroy();
+		delete m_pInspBaslerCam_New;
+		m_pInspBaslerCam_New = NULL;
 	}
 
 	return TRUE;
