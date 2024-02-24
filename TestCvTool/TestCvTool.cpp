@@ -50,7 +50,7 @@ int main()
     cv::Rect rectROI = cv::selectROI("source", mat, false);
     FindLineTool finder;
     std::vector<cv::Point2f> vPoints;
-    finder.FindLineWithHoughLine(&mat, rectROI, vPoints);
+    //finder.FindLineWithHoughLine(&mat, rectROI, vPoints);
 
     cv::imshow("source", mat);
     cv::waitKey(0);

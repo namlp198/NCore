@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FrameGrabber_BaslerCam_New.h"
 
-CFrameGrabber_BaslerCam_New::CFrameGrabber_BaslerCam_New(int nIndex /*= 0*/, IFrameGrabber2Parent* pIFG2P /*= NULL*/)
+CFrameGrabber_BaslerCam_New::CFrameGrabber_BaslerCam_New(int nIndex /*= 0*/, IFrameGrabber2Parent* pIFG2P /*= NULL*/) : CFrameGrabber(nIndex, pIFG2P)
 {
 	Pylon::PylonInitialize();
 	m_pCamera = new Pylon::CBaslerUniversalInstantCamera;
