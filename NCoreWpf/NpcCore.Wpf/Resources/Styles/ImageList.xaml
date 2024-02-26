@@ -1,0 +1,757 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="IMG_NODATA"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/NoData.png" />
+    <!--  Login  -->
+    <BitmapImage x:Key="IMG_IC_INPUT_ERROR_N"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_error.png" />
+    <BitmapImage x:Key="IMG_IC_INPUT_ERROR_N2"    
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_error@2x.png" />
+    <BitmapImage x:Key="IMG_IC_INPUT_ERROR_N3"    
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_error@3x.png" />
+    <BitmapImage x:Key="IMG_IC_INPUT_SUCCESS_N"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_success.png" />
+    <BitmapImage x:Key="IMG_IC_INPUT_SUCCESS_N2" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_success@2x.png" />
+    <BitmapImage x:Key="IMG_IC_INPUT_SUCCESS_N3"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_success@3x.png" />
+    <BitmapImage x:Key="IMG_ACCOUNT_MANAGEMENT"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/AccountManagement.png" />
+    <BitmapImage x:Key="IMG_IC_ID_N"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_id.png" />
+    <BitmapImage x:Key="IMG_IC_ID_N2"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_id@2x.png" />
+    <BitmapImage x:Key="IMG_IC_ID_N3"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_id@3x.png" />
+    <BitmapImage x:Key="IMG_IC_PW_N"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_pw.png" />
+    <BitmapImage x:Key="IMG_IC_PW_N2"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_pw@2x.png" />
+    <BitmapImage x:Key="IMG_IC_PW_N3"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_pw@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Input_ArrowDown_N" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_arrowdown.png" />
+    <BitmapImage x:Key="IMG_IC_Input_ArrowDown_N2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_arrowdown@2x.png" />
+    <BitmapImage x:Key="IMG_IC_Input_ArrowDown_N3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_arrowdown@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Input_ArrowUp_N"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_arrowdup.png" />
+    <BitmapImage x:Key="IMG_IC_Input_ArrowUp_N2"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_arrowdup@2x.png" />
+    <BitmapImage x:Key="IMG_IC_Input_ArrowUp_N3"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_input_arrowdup@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Barcode_W_N"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode_w.png" />
+    <BitmapImage x:Key="IMG_IC_Barcode_W_N2"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode_w@2x.png" />
+    <BitmapImage x:Key="IMG_IC_Barcode_W_N3"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode_w@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Barcode_B_N"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode_b.png" />
+    <BitmapImage x:Key="IMG_IC_Barcode_B_N2"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode_b@2x.png" />
+    <BitmapImage x:Key="IMG_IC_Barcode_B_N3"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode_b@3x.png" />
+    <BitmapImage x:Key="IMG_IC_BarcodeError_D_N"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror01_d.png" />
+    <BitmapImage x:Key="IMG_IC_BarcodeError_D_N2" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror01_d@2x.png" />
+    <BitmapImage x:Key="IMG_IC_BarcodeError_D_N3" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror01_d@3x.png" />
+    <BitmapImage x:Key="IMG_IC_BarcodeError_B_N"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror_b.png" />
+    <BitmapImage x:Key="IMG_IC_BarcodeError_B_N2" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror_b@2x.png" />
+    <BitmapImage x:Key="IMG_IC_BarcodeError_B_N3" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror_b@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Time"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/time_icon.png" />
+
+    <!--  Button  -->                             
+    <BitmapImage x:Key="IMG_Btn_CloseType02_N"    
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_closetype02_n.png" />
+    <BitmapImage x:Key="IMG_Btn_CloseType02_N2"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_closetype02_n@2x.png" />
+    <BitmapImage x:Key="IMG_Btn_CloseType02_N3"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_closetype02_n@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_Global_Close_N"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_global-close_n.png" />
+    <BitmapImage x:Key="IMG_arrow_down"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_arrow_down.png" />
+    <BitmapImage x:Key="IC_Search"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_search_l_n@3x.png" />
+ 
+                                                  
+    <!--  New Job  -->
+    <BitmapImage x:Key="IMG_Conveyor_Size"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Canveyor_Size_Temp.png" />
+    <BitmapImage x:Key="IMG_Teaching_Recipe_Step_1"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_number1.png" />
+    <BitmapImage x:Key="IMG_Teaching_Recipe_Step_2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_number2.png" />
+    <BitmapImage x:Key="IMG_Teaching_Recipe_Step_3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_number3.png" />
+    <BitmapImage x:Key="IMG_Teaching_Recipe_Step_4"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_number4.png" />
+    <BitmapImage x:Key="IMG_Teaching_Recipe_Step_5"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_number5.png" />
+    <BitmapImage x:Key="IMG_Conveyor_Width"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Conveyor_Size_Temp.png" />
+    <BitmapImage x:Key="IMG_Complete_Preview"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_complete_preview.png" />
+    <BitmapImage x:Key="IMG_Status_Warning"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_status_warning.png" />
+    <BitmapImage x:Key="IMG_Scan_Pcb_Profile"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_scan_pcb_profile.png" />
+    <BitmapImage x:Key="IMG_Conveyor_Width_Board" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/img_conveyor_board@3x.png" />
+
+    <!--  Board Setting Image  -->
+    <BitmapImage x:Key="IMG_Board_Setting_Button_Close"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/btn_close_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Button_More"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/btn_mores_w_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Ic_Add_Array"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/ic_addarraytype_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Ic_Arrow2_Down"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/ic_arrow2_down_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Ic_Global_Fiducial"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/ic_globalfiducial_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Ic_Local_Fiducial"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/ic_localfiducial_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Button_Navigator_Off"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/navigator_off_n@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Button_Navigator_Off_O"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/navigator_off_o@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Button_Navigator_Off_ON"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/navigator_on@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Background"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_background_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Delete"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_delete_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Dropdown_Down"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_dropdown_down_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Mouse_Point"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_mousepoint_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Move"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_move_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Redo"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_redo_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Ruler"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_ruler_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Undo"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_undo_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Zoom_In"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_zoom_in_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Info_Lenght_X"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/X(Length)@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Info_Width_Y"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/Y(Width)@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Image"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/ic_boardImage_n@3x.png" />
+
+    <BitmapImage x:Key="IMG_Board_Setting_Tool_Zoom_Out"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/tool_zoom_out_n.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Button_Close_N"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/BoardSettingImage/btn_list_delete_n_28.png" />
+
+    <!--  -Btn Square Rotate  -->
+    <BitmapImage x:Key="IMG_Btn_SquareNormal"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_square24_n@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_SquareMouseOver"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_square24_o@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_SquareSelected"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_square24_s@3x.png" />
+
+    <!--  PCB Scan  -->
+    <BitmapImage x:Key="IMG_Board_Scan_Button_Restart"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_restart_n@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Scan_Button_Restart_O"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_restart_o@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Scan_Button_Pause_N"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_pause_n@3x.png" />
+
+    <BitmapImage x:Key="IMG_Board_Scan_Button_Stop"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_stop_n@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Scan_Button_Stop_O"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_stop_o@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Scan_Button_Stop_D"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_stop_d@3x.png" />
+
+   
+    <!--  Recipe  -->
+    <BitmapImage x:Key="IMG_HideListIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_hide_n.png" />
+    <BitmapImage x:Key="IMG_LockListIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_lock_n.png" />
+    <BitmapImage x:Key="IMG_ConnectedIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_connected_n.png" />
+    <BitmapImage x:Key="IMG_DisConnectedIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_disconnected_n.png" />
+    <BitmapImage x:Key="IMG_Btn_DetailLock"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_detail_lock_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Circle"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_circle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Rectangle"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_rectangle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Cross"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_cross_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Diamond"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_dimond_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Corner"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_corner_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Triangle"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_triangle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Edge"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_edge_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Hash"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_hash_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_NonCoating"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_non-coating@3x.png" />
+    <BitmapImage x:Key="IMG_IC_NonCoatingRec"    
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nc_rectangle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_NonCoatingPolygon" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nc_polygon_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_NonCoatingCircle" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nc_circle_n@3x.png" />
+
+    <BitmapImage x:Key="IMG_IC_Coating"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_coating@3x.png" />
+    <BitmapImage x:Key="IMG_IC_UserDefined"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_user_defined@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Hole"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_hole@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Pad"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_pad@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Footprint"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_footprint@3x.png" />
+    <BitmapImage x:Key="IMG_IC_File"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_file@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Underfill"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_underfill@3x.png" />
+    <BitmapImage x:Key="IMG_IC_GoTeaching"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_gt_footprint.png" />
+    <BitmapImage x:Key="IMG_IC_GoTeachingS"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_gt_footprint_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_GoTeachingBarcode" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_gt_barcode_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_GoTeachingBarcodeS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_gt_barcode_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_GoTeachingBadmark" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_gt_badmark_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_GoTeachingBadmarkS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_gt_badmark_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_RecipePolygon"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_c_polygon_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_RecipeCircle"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_c_circle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_RecipeRectangle"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_c_rectangle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_ToolbarEraser"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_eraser_n@3x.png" />
+                                                  
+    <BitmapImage x:Key="IMG_IC_OT_Rectangle"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ot_rectangle_n.png" />
+    <BitmapImage x:Key="IMG_IC_OT_Circle"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ot_circle_n.png" />
+    <BitmapImage x:Key="IMG_IC_OT_Polygon"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ot_polygon_n.png" />
+
+    <!--  [NCS-1080] 상태버튼 (안이 비여있는 normal image)  -->
+    <BitmapImage x:Key="IMG_IC_StatusComplete_n"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_good_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusGood_n"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_good_tranfer@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusNG_n"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_ng_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusFail_n"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_fail_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusModify_n"    
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_modify_n@3x.png" />
+
+    <!--  [NCS-1080] 상태버튼 (안이 채워진 select image)  -->
+    <BitmapImage x:Key="IMG_IC_StatusComplete"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_good@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusNG"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_ng@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusNG_Tranfer"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_ng_tranfer@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusSuccess"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_sucess@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusFail"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_fail@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusModify"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_modify@3x.png" />
+    <BitmapImage x:Key="IMG_IC_StatusNone"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/status_no_data@3x.png" />
+
+    <!--  [NCS-1080] 필터 이미지  -->
+    <BitmapImage x:Key="IMG_IC_Filter_n"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_filter_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Filter_o"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_filter_o@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Filter_s"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_filter_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Filter_d"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_filter_d@3x.png" />
+
+    <!--  삭제버튼(Polygon,Circle) 추가 [NCS-627]  -->
+    <BitmapImage x:Key="IMG_IC_ToolbarEraserCircle"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_eraser_circle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_ToolbarEraserPolygon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_eraser_polygon_n@3x.png" />
+
+    <BitmapImage x:Key="IMG_IC_BaseTeaching"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_baseteaching_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_BaseTeachingS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_baseteaching_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_MeasurementExpansion"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_expansion_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Measurement"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement0_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_MeasurementReduction"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_reduction_n@3x.png" />
+
+    <BitmapImage x:Key="IMG_IC_MeasurementExpansion_S"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_expansion_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Measurement_N"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement0_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_MeasurementReduction_S"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_reduction_s@3x.png" />
+
+    <!--  [NCS-1533 : 2021-02-19 : 김성배 3D Chip Property 관련 이미지  -->
+    <BitmapImage x:Key="IMG_IC_Measurement10um"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_10um_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Measurement20um"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_20um_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Measurement40um"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_40um_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_MeasurementUserDefine"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_measurement_ud_n@3x.png" />
+
+    <!--  Recipe Teaching  -->
+    <BitmapImage x:Key="IMG_GrayscaleHistogram"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/grayscale_histogram.png" />
+    <BitmapImage x:Key="IMG_ZPositionFar"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/img_zposition_far.png" />
+    <BitmapImage x:Key="IMG_ZPositionClose"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/img_zposition_close.png" />
+    <BitmapImage x:Key="IMG_IC_2D_VIEW_TEMP"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/IC2DView_Temp.png" />
+
+    <!--  Recipe Teaching  -->
+    <BitmapImage x:Key="IMG_IC_Exclude"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_exclude_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_ExcludeS"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_exclude_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_Include"           
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_include_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_IncludeS"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_include_s@3x.png" />
+    <BitmapImage x:Key="IMG_IC_BottomFoldCloseN"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_bottom_foldclose_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_BottomFoldCloseUpN"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_bottom_foldclose_up_n@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_ChartNext"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_chartnext2_n@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_ChartPre"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_chartpre2_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_ArrowEnter"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_arrow_enter_n@3x.png" />
+
+    <!--  Recipe Toolbar  -->
+    <BitmapImage x:Key="IMG_ToolbarDeleteIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_delete_n.png" />
+    <BitmapImage x:Key="IMG_ToolbarEraserIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_Eraseroff_n.png" />
+    <BitmapImage x:Key="IMG_ToolbarZoomToFit"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/zoom_to_fit_n@3x.png" />
+    <BitmapImage x:Key="IMG_ToolbarZoomToFitO"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/zoom_to_fit_o@3x.png" />
+    <BitmapImage x:Key="IMG_ToolbarZoomToFitS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/zoom_to_fit_s@3x.png" />
+    <BitmapImage x:Key="IMG_ToolbarZoomToSelectedOff"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/zoom_to_selected_off@3x.png" />
+    <BitmapImage x:Key="IMG_ToolbarZoomToSelectedOn"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/zoom_to_selected_on@3x.png" />
+    <BitmapImage x:Key="IMG_ToolbarZoomToSelectedOffO"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/zoom_to_selected_off_o@3x.png" />
+    <BitmapImage x:Key="IMG_IcComp"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_iccomp_d@3x.png" />
+    <BitmapImage x:Key="IMG_ICThickness"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_3dtickness_d@3x.png" />
+    <BitmapImage x:Key="IMG_ICIgnore"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ignore_d@3x.png" />
+    <BitmapImage x:Key="IMG_Toolbar_Cursor"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_cursor_n@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_undo"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_undo_n@3x.png" />
+    <BitmapImage x:Key="IMG_Btn_Redo"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_redo_n@3x.png" />
+    <BitmapImage x:Key="IMG_ViewOption"           
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_Recipe_viewoption_n@3x.png" />
+    <BitmapImage x:Key="IMG_CrossToolBar"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_new_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_Rectangle"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_rectangle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_Circle"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_circle_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_FindComp"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_findcomp_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_FindHole"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_findhole_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_Frame"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_frame_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_Polygon"           
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_polygon_n@3x.png" />
+    <BitmapImage x:Key="IMG_IG_Ring"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_ig_ring_n@3x.png" />
+                                                  
+    <BitmapImage x:Key="IMG_ToolbarUserIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/user.png" />
+   
+    <BitmapImage x:Key="IMG_SideBarStartIcon"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/start_d.png" />
+    <BitmapImage x:Key="IMG_SideBarSelectTestIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_selecttest_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarStopIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/stop_d.png" />
+    <BitmapImage x:Key="IMG_SideBarRunStopIcon_N" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_stop_n.png" />
+    <BitmapImage x:Key="IMG_SideBarRunStopIcon_O" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_stop_o.png" />
+    <BitmapImage x:Key="IMG_SideBarRunStopIcon_S" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_stop_s.png" />
+    <BitmapImage x:Key="IMG_SideBarRunStopIcon_D" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_stop_d.png" />
+    <BitmapImage x:Key="IMG_SideBarReplayIcon"    
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/replay_d.png" />
+    <BitmapImage x:Key="IMG_SideBarResetIcon"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_reset_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarJumpIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/jump_d.png" />
+    <BitmapImage x:Key="IMG_SideBarPcbIcon"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/pcb_n.png" />
+    <BitmapImage x:Key="IMG_SideBarBeltIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/belt_n.png" />
+    <BitmapImage x:Key="IMG_SideBarDownIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/down_n.png" />
+    <BitmapImage x:Key="IMG_SideBarArraySetting"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_arraysetting_n.png" />
+    <BitmapImage x:Key="IMG_SideBarBaseSetting"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_basesetting_n.png" />
+    <BitmapImage x:Key="IMG_SideBarFovOpt"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_fovopt_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarLiveViewJog"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_liveviewjog_n.png" />
+    <BitmapImage x:Key="IMG_SideBarMore"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_more_n.png" />
+   
+    <BitmapImage x:Key="IMG_SideBarLImage"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/L.png" />
+    <BitmapImage x:Key="IMG_SideBarMImage"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/M.png" />
+    <BitmapImage x:Key="IMG_SideBarHImage"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/H.png" />
+    <BitmapImage x:Key="IMG_SideBarRImage"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/R.png" />
+    <BitmapImage x:Key="IMG_SideBarRunImage"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_run_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarByPassImage"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_bypass_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarWorkOutImage"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_workout_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarFlipImage"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_flip_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarOpenFlipperImage"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_open_flipper_clamp_o@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarLightTeaching_N"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_lightteaching_n.png" />
+    <BitmapImage x:Key="IMG_SideBarLightTeaching_N2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_lightteaching_n@2x.png" />
+    <BitmapImage x:Key="IMG_SideBarLightTeaching_N3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_lightteaching_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarMarkTeacing_N" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_markteaching_n.png" />
+    <BitmapImage x:Key="IMG_SideBarMarkTeacing_N2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_markteaching_n@2x.png" />
+    <BitmapImage x:Key="IMG_SideBarMarkTeacing_N3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_markteaching_n@3x.png" />
+    <BitmapImage x:Key="IMG_SideBarOriginSetting" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/SideBarOriginSetting.png" />
+
+    <!--  Global  -->
+    <BitmapImage x:Key="IMG_ToolbarMoreIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_mores_w_n.png" />
+    <BitmapImage x:Key="IMG_BarcodeIcon"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode.png" />
+    <BitmapImage x:Key="IMG_BarcodeIcon_3x"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcode@3x.png" />
+    <BitmapImage x:Key="IMG_Refresh"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_refresh_n.png" />
+    <BitmapImage x:Key="IMG_FileDialog_01"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/FileDialog_Temp_01.png" />
+    <BitmapImage x:Key="IMG_FileDialog_02"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/FileDialog_Temp_02.png" />
+    <BitmapImage x:Key="IMG_ArrowListOpen"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/arrow_list_open_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_OPEN_RECIPE_N"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_open_recipe_n.png" />
+    <BitmapImage x:Key="IMG_IC_OPEN_RECIPE_N_2x"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_open_recipe_n@2x.png" />
+    <BitmapImage x:Key="IMG_IC_OPEN_RECIPE_N_3x"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_open_recipe_n@3x.png" />
+
+    <!--  저장버튼 추가 [NCS-627]  -->
+    <BitmapImage x:Key="IMG_SaveIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_save_n@2x.png" />
+    <BitmapImage x:Key="IMG_SaveLargeIcon"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_save_n@3x.png" />
+
+    <!--  매뉴얼 버튼 추가 [NCS-3000]  -->
+    <BitmapImage x:Key="IMG_ManualIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_manual_n@2x.png" />
+    <BitmapImage x:Key="IMG_ManualLargeIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_manual_n@3x.png" />
+
+    <!--  Production  -->
+    <BitmapImage x:Key="IMG_Production_Fiducial_01"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Production_Fiducial01_Temp.png" />
+                                                  
+    <BitmapImage x:Key="IMG_Production_Badmark"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Production_Badmark_Temp.png" />
+
+    <!--  Mark Teaching  -->
+    <BitmapImage x:Key="IMG_MarkTeaching_Brightness"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Fiducial_Brightness_Temp.png" />
+    <BitmapImage x:Key="IMG_MarkTeaching_Threshold"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Fiducial_Threshold_Temp.png" />
+    <BitmapImage x:Key="IMG3_MarkTeaching_Brightness"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_brightness_n@3x.png" />
+    <BitmapImage x:Key="IMG3_MarkTeaching_Threshold"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_threshold_n@3x.png" />
+    <BitmapImage x:Key="IMG_IC_NODEFECTS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nodefects.png" />
+
+    <!--  Review  -->
+    <BitmapImage x:Key="IMG_PinN"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_pin_n@3x.png" />
+    <BitmapImage x:Key="IMG_PinS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_pin_s@3x.png" />
+    <BitmapImage x:Key="IMG_Refresh_Review"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_refresh_n@3x.png" />
+    <BitmapImage x:Key="IMG_Refresh_Selected_Review"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_refresh_s@3x.png" />
+    <BitmapImage x:Key="IMG_Array_Down"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/arrow_down_b_n@3x.png" />
+
+
+    <BitmapImage x:Key="IMG_TOOLBAR_CHANGE_IMAGE"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_img_move_n.png" />
+    <BitmapImage x:Key="IMG_TOOLBAR_X_PURPLE"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_x_purple.png" />
+    <BitmapImage x:Key="IMG_TOOLBAR_X_BLUE"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_x_blue.png" />
+    <BitmapImage x:Key="IMG_TOOLBAR_X_BROWN"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_x_brown.png" />
+
+    <!--  FOV Teaching  -->
+    <BitmapImage x:Key="IMG_BW_FOVLive"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_bnw_n@3x.png" />
+    <BitmapImage x:Key="IMG_RGB_FOVLive"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_rgb_n@3x.png" />
+    <BitmapImage x:Key="IMG_Board_Setting_Button_Navigator_On"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/navigator_on@3x.png" />
+
+    <!--  Ruler  -->
+    <BitmapImage x:Key="IMG_Combo_RulerRectangle_n"
+                 UriSource="/Koh.Wpf.CCI.Resources;component/DefaultTheme/Images/ic_toolbar_ruler_item_n@3x.png" />
+    <BitmapImage x:Key="IMG_Combo_RulerRectangle_s"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_ruler_rectangle_s_2.png" />
+    <BitmapImage x:Key="IMG_Combo_RulerDistance"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_ruler_s_2.png" />
+    <BitmapImage x:Key="IMG_Combo_RulerRectangle2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_ruler_rectangle_n.png" />
+    <BitmapImage x:Key="IMG_Combo_RulerDistance2" 
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_toolbar_ruler_n.png" />
+
+    <!--  Inspection  -->
+    <BitmapImage x:Key="IMG_FullScreen"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_fullscreen_n@3x.png" />
+    <BitmapImage x:Key="IMG_FullScreen2"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_fullscreen_n@2x.png" />
+    <BitmapImage x:Key="IMG_AddFile"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_add file_n@3x.png" />
+    <BitmapImage x:Key="IMG_AddFile_N"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_add file_n.png" />
+    <BitmapImage x:Key="IMG_AddFile_D"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_add file_d.png" />
+
+    <BitmapImage x:Key="IMG_InspectionGoTeaching"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_btnarrow_n@3x.png" />
+    <BitmapImage x:Key="IMG_InspectionGoTeachingS"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_btnarrow_s@3x.png" />
+    <BitmapImage x:Key="IMG_FiducialError"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_fiducialerror@3x.png" />
+    <BitmapImage x:Key="IMG_BarcodeError"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_barcoderror@3x.png" />
+    <BitmapImage x:Key="IMG_FiducialArrow"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_fiducialarrow_n@3x.png" />
+    <BitmapImage x:Key="IMG_BtnInfo"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_info_n@3x.png" />
+    <BitmapImage x:Key="IMG_UnuseArray"           
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_unusearray_n@3x.png" />
+    <BitmapImage x:Key="IMG_UnuseArrayS"          
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_unusearray_s@3x.png" />
+    <BitmapImage x:Key="IMG_ConnectArray"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_connectarray_n@3x.png" />
+    <BitmapImage x:Key="IMG_ConnectArrayS"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_connectarray_s@3x.png" />
+    <BitmapImage x:Key="IMG_Unlinked"             
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_unlinked@3x.png" />
+    <BitmapImage x:Key="IMG_Linked"               
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_linked@3x.png" />
+    <BitmapImage x:Key="IMG_ArrowListClose"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/arrow_list_close_d@3x.png" />
+    <BitmapImage x:Key="IMG_BtnInfoSelected"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_info_selected@3x.png" />
+                                                  
+    <BitmapImage x:Key="IMG_Information_N_26"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_information_n_26.png" />
+    <BitmapImage x:Key="IMG_Information_N_26x2"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_information_n_26@2x.png" />
+    <BitmapImage x:Key="IMG_Information_N_26x3"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_information_n_26@3x.png" />
+                                                  
+    <BitmapImage x:Key="IMG_Information_O_26"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_information_o_26.png" />
+    <BitmapImage x:Key="IMG_Information_O_26x2"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_information_o_26@2x.png" />
+    <BitmapImage x:Key="IMG_Information_O_26x3"   
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_information_o_26@3x.png" />
+                                                  
+    <!--  IC Component  -->                       
+    <BitmapImage x:Key="IMG_PackageNewIcon"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_packageadd_n@3x.png" />
+    <BitmapImage x:Key="IMG_PackageEditIcon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_packageedit2_n@3x.png" />
+
+   
+    <BitmapImage x:Key="IMG_CountUp"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_count_up_n@3x.png" />
+    <BitmapImage x:Key="IMG_CountDown"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_count_down_n@3x.png" />
+    <BitmapImage x:Key="IMG_RotateHandle"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_rotatehandle@3x.png" />
+
+
+    <!--  Recipe Result  -->
+    <BitmapImage x:Key="IMG_preButton"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_chartpre3_s@3x.png" />
+    <BitmapImage x:Key="IMG_NextButton"           
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_chartnext3_s@3x.png" />
+    <BitmapImage x:Key="IMG_NoNavigation"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nonavigation@3x.png" />
+    <BitmapImage x:Key="IMG_NoDefects"            
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nodefects@3x.png" />
+    <BitmapImage x:Key="IMG_EnterButton"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_enter2_n@3x.png" />
+    <BitmapImage x:Key="IMG_ICChartTolerance"     
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_chart_tolerance@3x.png" />
+    <BitmapImage x:Key="IMG_DefectMode_Icon"      
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_defect_s.png" />
+    <BitmapImage x:Key="IMG_HeightmapMode_Icon"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_height+map_n.png" />
+
+    <!--  Base Teaching  -->
+    <BitmapImage x:Key="IMG_BaseTeaching_Tooltip_Concave"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/img_concave_base@3x.png" />
+    <BitmapImage x:Key="IMG_BaseTeaching_Tooltip_Convex"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/img_convex_base@3x.png" />
+    <BitmapImage x:Key="IMG_BaseTeaching_Tooltip_Flat"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/img_flat_base@3x.png" />
+  
+    <BitmapImage x:Key="IMG_BaseTeaching_Tooltip_Status_X"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_status_x@3x.png" />
+    <BitmapImage x:Key="IMG_BaseTeaching_Tooltip_Status_OK"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_status_ok@3x.png" />
+
+    <!--  View Options  -->
+    <BitmapImage x:Key="IMG_IC_handler"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/handler.png" />
+    <BitmapImage x:Key="IMG_IC_assistline"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/assistline.png" />
+    <BitmapImage x:Key="IMG_IC_gridsubdivision"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/gridsubdivision.png" />
+
+    <!--  Cursor : [ NCS-478 : Custom Mouse Cursor ]  -->
+    <BitmapImage x:Key="IMG_Cursor_IgnoreExclude"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_ig_exclude_n.png" />
+    <BitmapImage x:Key="IMG_Cursor_IgnoreInclude"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_ig_include_n.png" />
+    <BitmapImage x:Key="IMG_Cursor_CoatingExclude"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_pipette_exclude_n.png" />
+    <BitmapImage x:Key="IMG_Cursor_CoatingInclude"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_pipette_include_n.png" />
+    <BitmapImage x:Key="IMG_Cursor_Eraser"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_dragdrop_c_eraser_n.png" />
+    <BitmapImage x:Key="IMG_Cursor_Rotate"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_rotate.png" />
+    <BitmapImage x:Key="IMG_Cursor_CrossWhite"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_dragdrop.png" />
+    <BitmapImage x:Key="IMG_Cursor_CrossBlack"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_dragdrop_close.png" />
+    <BitmapImage x:Key="IMG_Cursor_ColorPicker"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/mc_colorpicker.png" />
+    <BitmapImage x:Key="IMG_Cursor_ColorPicker_Mouse"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/color_picker_mouse.png" />
+    <BitmapImage x:Key="IMG_Cursor_ColorPickerWhite"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/color_picker.png" />
+    <BitmapImage x:Key="IMG_Cursor_Move"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Cursor/cursor_move_w.png" />
+
+    <!--  Chip  -->
+    <BitmapImage x:Key="IMG_Light"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/Fiducial_Light_Temp.png" />
+    <BitmapImage x:Key="IMG_COLOR_PICKER"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_include_n@3x.png" />
+    <BitmapImage x:Key="IMG_COLOR_PICKERS"       
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_include_s@3x.png" />
+                                                  
+    <!--  Offset teaching  -->                    
+    <BitmapImage x:Key="IMG_IC_Bookmark"         
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_bookmark.png" />
+    <BitmapImage x:Key="IMG_IC_Bookmark_Outline"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_bookmark-outline.png" />
+    <BitmapImage x:Key="IMG_Range"                
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/range.png" />
+    <BitmapImage x:Key="IMG_Reverse"              
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/reverse.png" />
+    <BitmapImage x:Key="IMG_Range_Reverse"        
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/range_reverse.png" />
+                                                  
+    <BitmapImage x:Key="IMG_CHIP_IC_HEATMAP_NEW"  
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_color_map_n@3x.png" />
+                                                  
+    <BitmapImage x:Key="IMG_IC_NOCHART"           
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/ic_nochart@2x.png" />
+                                                  
+    <BitmapImage x:Key="IMG_SideBarSelectTurnIcon"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_tuning_n@3x.png" />
+   
+
+    <Style x:Key="ImageButtonInforStyle"
+           TargetType="{x:Type Image}">
+        <Setter Property="Source"
+                Value="{DynamicResource IMG_BtnInfo}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Source"
+                        Value="{DynamicResource IMG_BtnInfoSelected}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

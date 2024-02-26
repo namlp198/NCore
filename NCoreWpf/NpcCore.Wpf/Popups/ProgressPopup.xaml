@@ -1,0 +1,47 @@
+﻿<a:PopupWindowBase x:Class="NpcCore.Wpf.Popups.ProgressPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:a="http://schema.Npc.com/wpf/components"
+        mc:Ignorable="d"  
+        x:Name="View"
+        Style="{DynamicResource PopupWindowStyle}"
+        SizeToContent="WidthAndHeight" MinWidth="510" MaxWidth="641" Width="641"
+        Background="{DynamicResource Background.Transparent}" Foreground="{DynamicResource Popup.Foreground}">
+    <Border Width="Auto" Height="Auto" CornerRadius="3" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="135" /> 
+                <RowDefinition Height="64" x:Name="rdBottom" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="grProgress" Grid.Row="0" Margin="40, 25, 40, 40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30*" />
+                    <RowDefinition Height="40*" />
+                    <RowDefinition Height="30*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding TaskTitle, ElementName=View}" Foreground="#777777" FontSize="13" FontWeight="Bold" VerticalAlignment="Top"/>
+                <Grid Grid.Row="1">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                        <TextBlock Text="{Binding ProgressValue, ElementName=View}" Foreground="{StaticResource Popup.Foreground}" FontSize="30" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                        <TextBlock Text="% to Complete" Foreground="{StaticResource Popup.Foreground}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"> 
+                        <TextBlock Text="{Binding ElapsedTime, ElementName=View}" Foreground="#777777" FontSize="12" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                        <TextBlock Text="Seconds Left." Foreground="#777777" FontWeight="Bold" FontSize="12" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </Grid>
+                <ProgressBar Grid.Row="2" Minimum="0" Maximum="100" Value="{Binding ProgressValue, ElementName=View}" Height="10" Style="{DynamicResource ProgressBarStyle1}" VerticalAlignment="Bottom"/>
+            </Grid>
+ 
+            <Border Grid.Row="3" Height="1" BorderThickness="1" VerticalAlignment="Top" BorderBrush="#e9e9e9"/> 
+            <StackPanel Grid.Row="1" Height="32" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,13,0">
+                <Button x:Name="CancelButton" Content="Cancel" Style="{DynamicResource PopupButtonStyle}" Margin="3,0" Width="120" Click="CancelButton_Click"/>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</a:PopupWindowBase>
+

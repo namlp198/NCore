@@ -1,0 +1,862 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C67B2E81-370B-4EF6-8BFE-DEDCB25D658C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NpcCore.Wpf</RootNamespace>
+    <AssemblyName>NpcCore.Wpf</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\Binaries\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\..\Libraries\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism">
+      <HintPath>..\..\Libraries\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Unity.Wpf">
+      <HintPath>..\..\Libraries\packages\Prism.Unity.8.1.97\lib\net47\Prism.Unity.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf">
+      <HintPath>..\..\Libraries\packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\Solution\NpcSolution\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\Libraries\packages\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Unity.Abstractions">
+      <HintPath>..\..\Libraries\packages\Unity.Abstractions.5.11.7\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\Libraries\packages\Unity.Container.5.11.11\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviors\ListBoxSelectionBehavior.cs" />
+    <Compile Include="Behaviors\MouseLeftButtonContextMenuSupportBehavior.cs" />
+    <Compile Include="Behaviors\MultiSelectionDataGridBehavior.cs" />
+    <Compile Include="Behaviors\MultiSelectTreeViewBehavior.cs" />
+    <Compile Include="Behaviors\PopupBehavior.cs" />
+    <Compile Include="Behaviors\TextBoxDecimalPointBehavior.cs" />
+    <Compile Include="Behaviors\TextBoxNumberBehavior.cs" />
+    <Compile Include="Behaviors\TextBoxSelectAllTextOnFocusBehavior.cs" />
+    <Compile Include="Behaviors\TreeViewMultipleSelectionBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyButtonBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyCheckBoxBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyComboBoxBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyDualRangeSliderBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyGridBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyPasswordBoxBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyRadioButtonBehavior.cs" />
+    <Compile Include="Behaviors\UserApplySliderBehavior.cs" />
+    <Compile Include="Behaviors\UserApplySpinButtonBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyStackPanelBehavior.cs" />
+    <Compile Include="Behaviors\UserApplyTextBoxBehavior.cs" />
+    <Compile Include="Common\MandatoryRule.cs" />
+    <Compile Include="Common\NumberRangeRule.cs" />
+    <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Common\Tracer.cs" />
+    <Compile Include="Common\TraceValidationRule.cs" />
+    <Compile Include="Common\ValidationError.cs" />
+    <Compile Include="Common\ValidationErrorContainer.cs" />
+    <Compile Include="Common\ViewBase.cs" />
+    <Compile Include="Common\ViewModel.cs" />
+    <Compile Include="Controls\ButtonControl.cs" />
+    <Compile Include="Controls\CalendarControl.xaml.cs">
+      <DependentUpon>CalendarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CheckBoxControl.cs" />
+    <Compile Include="Controls\ClippingBorder.cs" />
+    <Compile Include="Controls\ColourSliderControl.cs" />
+    <Compile Include="Controls\ComboBoxControl.cs" />
+    <Compile Include="Controls\DropDownButton.cs" />
+    <Compile Include="Controls\Image3DViewerControl.xaml.cs">
+      <DependentUpon>Image3DViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageExt.cs" />
+    <Compile Include="Controls\ImageProcessControl.xaml.cs">
+      <DependentUpon>ImageProcessControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InnerGlowBorder.cs" />
+    <Compile Include="Controls\ItemCustomControl.cs" />
+    <Compile Include="Controls\OuterGlowBorder.cs" />
+    <Compile Include="Controls\OverFlowControl.cs" />
+    <Compile Include="Controls\ScrollViewerExt.cs" />
+    <Compile Include="Controls\SliderControl.cs" />
+    <Compile Include="Controls\TextBoxControl.cs" />
+    <Compile Include="Controls\TextBoxUpDownControl.cs" />
+    <Compile Include="Controls\ZoomBorder.cs" />
+    <Compile Include="Converters\InvertableBooleanToVisibilityConveter.cs" />
+    <Compile Include="Converters\UnitConveter.cs" />
+    <Compile Include="Core\BasePlaneSection.cs" />
+    <Compile Include="Core\BitmapPixelMaker.cs" />
+    <Compile Include="Core\CrossSection.cs" />
+    <Compile Include="Core\D3.cs" />
+    <Compile Include="Core\ImageConstants.cs" />
+    <Compile Include="Core\MaterialHelper.cs" />
+    <Compile Include="Core\MeshCreator.cs" />
+    <Compile Include="Core\MeshExtensions.cs" />
+    <Compile Include="Core\MouseWheelBehavior.cs" />
+    <Compile Include="Core\PalletImageMaker.cs" />
+    <Compile Include="Core\Point3DExtensions.cs" />
+    <Compile Include="Enums\Model3DEnum.cs" />
+    <Compile Include="Enums\TextureType.cs" />
+    <Compile Include="Extensions\DataRowExtensions.cs" />
+    <Compile Include="Ex\BubbleContextMenu.cs" />
+    <Compile Include="Ex\ButtonEx.cs" />
+    <Compile Include="Ex\CircleNumber.cs" />
+    <Compile Include="Ex\ComboBoxEx.cs" />
+    <Compile Include="Ex\CursorControl.xaml.cs">
+      <DependentUpon>CursorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ex\DottedBorder.cs" />
+    <Compile Include="Ex\DualRangeSlider.cs" />
+    <Compile Include="Ex\EditableTextBlock.xaml.cs">
+      <DependentUpon>EditableTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ex\IntegerInputTextBox.cs" />
+    <Compile Include="Ex\ListofHorizotalTextBox.cs" />
+    <Compile Include="Ex\ListofVerticalTextBox.cs" />
+    <Compile Include="Ex\NumberInputTextBox.cs" />
+    <Compile Include="Ex\TextRangeTextBlock.cs" />
+    <Compile Include="Ex\ToogleDropDownButton.cs" />
+    <Compile Include="Helper\ArrayHelper.cs" />
+    <Compile Include="Helper\BitmapSourceHelper.cs" />
+    <Compile Include="Helper\ExtentionHelper.cs" />
+    <Compile Include="Helper\ImageProcessingHelper.cs" />
+    <Compile Include="MVVM\AsyncCommandBase.cs" />
+    <Compile Include="MVVM\AsyncRelayCommand.cs" />
+    <Compile Include="MVVM\CommandBase.cs" />
+    <Compile Include="MVVM\RelayCommand.cs" />
+    <Compile Include="MVVM\IView.cs" />
+    <Compile Include="MVVM\IViewModel.cs" />
+    <Compile Include="MVVM\ModelBase.cs" />
+    <Compile Include="MVVM\ViewBase.cs" />
+    <Compile Include="MVVM\ViewConnector.cs" />
+    <Compile Include="MVVM\ViewModelBase.cs" />
+    <Compile Include="Panels\LogicalLocationCanvas.cs" />
+    <Compile Include="Panels\NonClipingStackPanel.cs" />
+    <Compile Include="Panels\RatioLocationPanel.cs" />
+    <Compile Include="Panels\RatioPanel.cs" />
+    <Compile Include="Panels\ViewStackGrid.cs" />
+    <Compile Include="Panels\ZoomGridGuiderControl.cs" />
+    <Compile Include="Popups\ExitPopup.xaml.cs">
+      <DependentUpon>ExitPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Popups\MessageInfoBox.xaml.cs">
+      <DependentUpon>MessageInfoBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Popups\ProgressPopup.xaml.cs">
+      <DependentUpon>ProgressPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Resource Include="Resources\Fonts\Segoe UI Bold Italic.ttf" />
+    <Resource Include="Resources\Fonts\Segoe UI Bold.ttf" />
+    <Resource Include="Resources\Fonts\Segoe UI Italic.ttf" />
+    <Resource Include="Resources\Fonts\Segoe UI Semibold.ttf" />
+    <Resource Include="Resources\Fonts\Segoe UI.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\CalendarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Image3DViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ImageProcessControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ex\CursorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ex\EditableTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Popups\ExitPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Popups\MessageInfoBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Popups\ProgressPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Border.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Brushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Buttons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ImageList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ItemsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\PopupWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\SolidColorBrushCommon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Tooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\BorderStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\CheckBoxStyel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ColourSliderStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ItemsControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\OverFlowStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ScrollViewStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\SliderStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TextBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\DefaultTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_arrow_down.png" />
+    <Resource Include="Resources\Images\ic_search_l_n%403x.png" />
+    <Resource Include="Resources\Images\time_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Npc.Foundation\Npc.Foundation.csproj">
+      <Project>{0a0acab9-6c9e-4ebc-bcc2-d53aba6b7dce}</Project>
+      <Name>Npc.Foundation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NpcCore.Toolkit\NpcCore.Toolkit.csproj">
+      <Project>{35a8e986-852d-4f7e-9f9b-a95d92dd9ae0}</Project>
+      <Name>NpcCore.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\AccountManagement.png" />
+    <Resource Include="Resources\Images\arrow_down_b_n%403x.png" />
+    <Resource Include="Resources\Images\arrow_list_close_d%403x.png" />
+    <Resource Include="Resources\Images\arrow_list_close_d.png" />
+    <Resource Include="Resources\Images\arrow_list_open_n%403x.png" />
+    <Resource Include="Resources\Images\assistline.png" />
+    <Resource Include="Resources\Images\bar_chart_image_Temp.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\btn_close_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\btn_list_delete_n_28.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\btn_mores_w_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\ic_addarraytype_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\ic_arrow2_down_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\ic_boardImage_n%403x.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\ic_globalfiducial_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\ic_localfiducial_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\navigator_off_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_background_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_delete_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_dropdown_down_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_mousepoint_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_move_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_redo_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_ruler_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_undo_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_zoom_in_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\tool_zoom_out_n.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\X%28Length%29%403x.png" />
+    <Resource Include="Resources\Images\BoardSettingImage\Y%28Width%29%403x.png" />
+    <Resource Include="Resources\Images\btn_add file_d.png" />
+    <Resource Include="Resources\Images\btn_add file_n%403x.png" />
+    <Resource Include="Resources\Images\btn_chartnext2_n%403x.png" />
+    <Resource Include="Resources\Images\btn_chartnext3_s%403x.png" />
+    <Resource Include="Resources\Images\btn_chartpre2_n%403x.png" />
+    <Resource Include="Resources\Images\btn_chartpre3_s%403x.png" />
+    <Resource Include="Resources\Images\btn_closetype02_n%402x.png" />
+    <Resource Include="Resources\Images\btn_closetype02_n%403x.png" />
+    <Resource Include="Resources\Images\btn_closetype02_n.png" />
+    <Resource Include="Resources\Images\btn_close_n.png" />
+    <Resource Include="Resources\Images\btn_connected_n.png" />
+    <Resource Include="Resources\Images\btn_count_down_n%403x.png" />
+    <Resource Include="Resources\Images\btn_count_up_n%403x.png" />
+    <Resource Include="Resources\Images\btn_detail_lock_n%403x.png" />
+    <Resource Include="Resources\Images\btn_disconnected_n.png" />
+    <Resource Include="Resources\Images\btn_enter2_n%403x.png" />
+    <Resource Include="Resources\Images\btn_Eraseroff_n.png" />
+    <Resource Include="Resources\Images\btn_fiducialarrow_n%403x.png" />
+    <Resource Include="Resources\Images\btn_fullscreen_n%402x.png" />
+    <Resource Include="Resources\Images\btn_fullscreen_n%403x.png" />
+    <Resource Include="Resources\Images\btn_fullscreen_n.png" />
+    <Resource Include="Resources\Images\btn_global-close_n.png" />
+    <Resource Include="Resources\Images\btn_hide_n.png" />
+    <Resource Include="Resources\Images\btn_info_n%403x.png" />
+    <Resource Include="Resources\Images\btn_info_selected%403x.png" />
+    <Resource Include="Resources\Images\btn_linked%403x.png" />
+    <Resource Include="Resources\Images\btn_lock_n.png" />
+    <Resource Include="Resources\Images\btn_manual_n%402x.png" />
+    <Resource Include="Resources\Images\btn_manual_n%403x.png" />
+    <Resource Include="Resources\Images\btn_mores_w_n%402x.png" />
+    <Resource Include="Resources\Images\btn_mores_w_n%403x.png" />
+    <Resource Include="Resources\Images\btn_mores_w_n.png" />
+    <Resource Include="Resources\Images\btn_pause_n%403x.png" />
+    <Resource Include="Resources\Images\btn_Perspective_n.png" />
+    <Resource Include="Resources\Images\btn_pin_n%403x.png" />
+    <Resource Include="Resources\Images\btn_pin_s%403x.png" />
+    <Resource Include="Resources\Images\btn_redo_n%403x.png" />
+    <Resource Include="Resources\Images\btn_refresh_n%402x.png" />
+    <Resource Include="Resources\Images\btn_refresh_n%403x.png" />
+    <Resource Include="Resources\Images\btn_refresh_n.png" />
+    <Resource Include="Resources\Images\btn_refresh_s%403x.png" />
+    <Resource Include="Resources\Images\btn_restart_n%403x.png" />
+    <Resource Include="Resources\Images\btn_restart_o%403x.png" />
+    <Resource Include="Resources\Images\btn_save_n%402x.png" />
+    <Resource Include="Resources\Images\btn_save_n%403x.png" />
+    <Resource Include="Resources\Images\btn_square24_n%403x.png" />
+    <Resource Include="Resources\Images\btn_square24_o%403x.png" />
+    <Resource Include="Resources\Images\btn_square24_s%403x.png" />
+    <Resource Include="Resources\Images\btn_stop_d%403x.png" />
+    <Resource Include="Resources\Images\btn_stop_n%403x.png" />
+    <Resource Include="Resources\Images\btn_stop_o%403x.png" />
+    <Resource Include="Resources\Images\btn_Top_n.png" />
+    <Resource Include="Resources\Images\btn_undo_n%403x.png" />
+    <Resource Include="Resources\Images\btn_unlinked%403x.png" />
+    <Resource Include="Resources\Images\Canveyor_Size_Temp.png" />
+    <Resource Include="Resources\Images\Conveyor_Size_Temp.png" />
+    <Resource Include="Resources\Images\Cursor\color_picker.png" />
+    <Resource Include="Resources\Images\Cursor\color_picker_mouse.png" />
+    <Resource Include="Resources\Images\Cursor\cursor_move_w%402x.png" />
+    <Resource Include="Resources\Images\Cursor\cursor_move_w%403x.png" />
+    <Resource Include="Resources\Images\Cursor\cursor_move_w.png" />
+    <Resource Include="Resources\Images\Cursor\mc_colorpicker.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop_close%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop_close%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop_close.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop_c_eraser_n%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop_c_eraser_n%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_dragdrop_c_eraser_n.png" />
+    <Resource Include="Resources\Images\Cursor\mc_ig_exclude_n%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_ig_exclude_n%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_ig_exclude_n.png" />
+    <Resource Include="Resources\Images\Cursor\mc_ig_include_n%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_ig_include_n%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_ig_include_n.png" />
+    <Resource Include="Resources\Images\Cursor\mc_pipette_exclude_n%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_pipette_exclude_n%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_pipette_exclude_n.png" />
+    <Resource Include="Resources\Images\Cursor\mc_pipette_include_n%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_pipette_include_n%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_pipette_include_n.png" />
+    <Resource Include="Resources\Images\Cursor\mc_rotate%402x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_rotate%403x.png" />
+    <Resource Include="Resources\Images\Cursor\mc_rotate.png" />
+    <Resource Include="Resources\Images\cursor_hand_paper_temp.png" />
+    <Resource Include="Resources\Images\cursor_hand_rock_temp.png" />
+    <Resource Include="Resources\Images\cursor_nor_temp.png" />
+    <Resource Include="Resources\Images\cursor_pressed_temp.png" />
+    <Resource Include="Resources\Images\Fiducial_Brightness_Temp.png" />
+    <Resource Include="Resources\Images\Fiducial_Light_Temp.png" />
+    <Resource Include="Resources\Images\Fiducial_Machine1_Temp.png" />
+    <Resource Include="Resources\Images\Fiducial_Machine2_Temp.png" />
+    <Resource Include="Resources\Images\Fiducial_Threshold_Temp.png" />
+    <Resource Include="Resources\Images\FileDialog_Temp_01.png" />
+    <Resource Include="Resources\Images\FileDialog_Temp_02.png" />
+    <Resource Include="Resources\Images\GIF_flipper.gif" />
+    <Resource Include="Resources\Images\grayscale_histogram.png" />
+    <Resource Include="Resources\Images\gridsubdivision.png" />
+    <Resource Include="Resources\Images\guide_outline_tolerance.png" />
+    <Resource Include="Resources\Images\handler.png" />
+    <Resource Include="Resources\Images\IC2DView_Temp.png" />
+    <Resource Include="Resources\Images\ic_3dtickness_d%403x.png" />
+    <Resource Include="Resources\Images\ic_add file_n.png" />
+    <Resource Include="Resources\Images\ic_arrow_enter_n%403x.png" />
+    <Resource Include="Resources\Images\ic_barcode%402x.png" />
+    <Resource Include="Resources\Images\ic_barcode%403x.png" />
+    <Resource Include="Resources\Images\ic_barcode.png" />
+    <Resource Include="Resources\Images\ic_barcoderror%403x.png" />
+    <Resource Include="Resources\Images\ic_barcoderror01_d%402x.png" />
+    <Resource Include="Resources\Images\ic_barcoderror01_d%403x.png" />
+    <Resource Include="Resources\Images\ic_barcoderror01_d.png" />
+    <Resource Include="Resources\Images\ic_barcoderror_b%402x.png" />
+    <Resource Include="Resources\Images\ic_barcoderror_b%403x.png" />
+    <Resource Include="Resources\Images\ic_barcoderror_b.png" />
+    <Resource Include="Resources\Images\ic_barcode_b%402x.png" />
+    <Resource Include="Resources\Images\ic_barcode_b%403x.png" />
+    <Resource Include="Resources\Images\ic_barcode_b.png" />
+    <Resource Include="Resources\Images\ic_barcode_w%402x.png" />
+    <Resource Include="Resources\Images\ic_barcode_w%403x.png" />
+    <Resource Include="Resources\Images\ic_barcode_w.png" />
+    <Resource Include="Resources\Images\ic_baseteaching_n%403x.png" />
+    <Resource Include="Resources\Images\ic_baseteaching_s%403x.png" />
+    <Resource Include="Resources\Images\ic_bnw_n%403x.png" />
+    <Resource Include="Resources\Images\ic_bookmark-outline.png" />
+    <Resource Include="Resources\Images\ic_bookmark.png" />
+    <Resource Include="Resources\Images\ic_bottom_foldclose_n%403x.png" />
+    <Resource Include="Resources\Images\ic_bottom_foldclose_up_n%403x.png" />
+    <Resource Include="Resources\Images\ic_brightness_n%403x.png" />
+    <Resource Include="Resources\Images\ic_btnarrow_n%403x.png" />
+    <Resource Include="Resources\Images\ic_btnarrow_s%403x.png" />
+    <Resource Include="Resources\Images\ic_chart_tolerance%403x.png" />
+    <Resource Include="Resources\Images\ic_circle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_coating%403x.png" />
+    <Resource Include="Resources\Images\ic_color_map_n%403x.png" />
+    <Resource Include="Resources\Images\ic_complete_preview.png" />
+    <Resource Include="Resources\Images\ic_connectarray_n%403x.png" />
+    <Resource Include="Resources\Images\ic_connectarray_s%403x.png" />
+    <Resource Include="Resources\Images\ic_corner_n%403x.png" />
+    <Resource Include="Resources\Images\ic_create board_n%403x.png" />
+    <Resource Include="Resources\Images\ic_create_recipe_group1.png" />
+    <Resource Include="Resources\Images\ic_create_recipe_group2.png" />
+    <Resource Include="Resources\Images\ic_create_recipe_group3.png" />
+    <Resource Include="Resources\Images\ic_cross_n%403x.png" />
+    <Resource Include="Resources\Images\ic_c_circle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_c_polygon_n%403x.png" />
+    <Resource Include="Resources\Images\ic_c_rectangle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_defect_n%403x.png" />
+    <Resource Include="Resources\Images\ic_defect_s.png" />
+    <Resource Include="Resources\Images\ic_delete_dark_n.png" />
+    <Resource Include="Resources\Images\ic_delete_n.png" />
+    <Resource Include="Resources\Images\ic_density_dense_b.png" />
+    <Resource Include="Resources\Images\ic_density_dense_w.png" />
+    <Resource Include="Resources\Images\ic_density_normal_b.png" />
+    <Resource Include="Resources\Images\ic_density_normal_w.png" />
+    <Resource Include="Resources\Images\ic_density_userdefine_b.png" />
+    <Resource Include="Resources\Images\ic_density_userdefine_w.png" />
+    <Resource Include="Resources\Images\ic_density_wide_b.png" />
+    <Resource Include="Resources\Images\ic_density_wide_w.png" />
+    <Resource Include="Resources\Images\ic_dimond_n%403x.png" />
+    <Resource Include="Resources\Images\ic_disconnect_dark.png" />
+    <Resource Include="Resources\Images\ic_edge_n%403x.png" />
+    <Resource Include="Resources\Images\ic_exclude_n%403x.png" />
+    <Resource Include="Resources\Images\ic_exclude_s%403x.png" />
+    <Resource Include="Resources\Images\ic_fiducialerror%403x.png" />
+    <Resource Include="Resources\Images\ic_file%402x.png" />
+    <Resource Include="Resources\Images\ic_file%403x.png" />
+    <Resource Include="Resources\Images\ic_file.png" />
+    <Resource Include="Resources\Images\ic_filter_d%403x.png" />
+    <Resource Include="Resources\Images\ic_filter_n%403x.png" />
+    <Resource Include="Resources\Images\ic_filter_o%403x.png" />
+    <Resource Include="Resources\Images\ic_filter_s%403x.png" />
+    <Resource Include="Resources\Images\ic_footprint%403x.png" />
+    <Resource Include="Resources\Images\ic_footprint.png" />
+    <Resource Include="Resources\Images\ic_globalbadmark_n%402x.png" />
+    <Resource Include="Resources\Images\ic_globalbadmark_n%403x.png" />
+    <Resource Include="Resources\Images\ic_globalbadmark_n.png" />
+    <Resource Include="Resources\Images\ic_globalbarcode_n%403x.png" />
+    <Resource Include="Resources\Images\ic_gt_badmark.png" />
+    <Resource Include="Resources\Images\ic_gt_badmark_n%403x.png" />
+    <Resource Include="Resources\Images\ic_gt_badmark_s%403x.png" />
+    <Resource Include="Resources\Images\ic_gt_barcode_n%403x.png" />
+    <Resource Include="Resources\Images\ic_gt_barcode_s%403x.png" />
+    <Resource Include="Resources\Images\ic_gt_footprint.png" />
+    <Resource Include="Resources\Images\ic_gt_footprint_s%403x.png" />
+    <Resource Include="Resources\Images\ic_gt_lighting.png" />
+    <Resource Include="Resources\Images\ic_gt_scan.png" />
+    <Resource Include="Resources\Images\ic_hash_n%403x.png" />
+    <Resource Include="Resources\Images\ic_height+map_n.png" />
+    <Resource Include="Resources\Images\ic_hide_dark_n.png" />
+    <Resource Include="Resources\Images\ic_hole%403x.png" />
+    <Resource Include="Resources\Images\ic_iccomponent%403x.png" />
+    <Resource Include="Resources\Images\ic_iccomp_d%403x.png" />
+    <Resource Include="Resources\Images\ic_id%402x.png" />
+    <Resource Include="Resources\Images\ic_id%403x.png" />
+    <Resource Include="Resources\Images\ic_id.png" />
+    <Resource Include="Resources\Images\ic_ignore%403x.png" />
+    <Resource Include="Resources\Images\ic_ignore_d%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_circle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_findcomp_n%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_findhole_n%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_frame_n%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_polygon_n%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_rectangle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_ig_ring_n%403x.png" />
+    <Resource Include="Resources\Images\ic_img_move_n.png" />
+    <Resource Include="Resources\Images\ic_include_n%403x.png" />
+    <Resource Include="Resources\Images\ic_include_s%403x.png" />
+    <Resource Include="Resources\Images\ic_information_n.png" />
+    <Resource Include="Resources\Images\ic_information_n_26%402x.png" />
+    <Resource Include="Resources\Images\ic_information_n_26%403x.png" />
+    <Resource Include="Resources\Images\ic_information_n_26.png" />
+    <Resource Include="Resources\Images\ic_information_o_26%402x.png" />
+    <Resource Include="Resources\Images\ic_information_o_26%403x.png" />
+    <Resource Include="Resources\Images\ic_information_o_26.png" />
+    <Resource Include="Resources\Images\ic_input_arrowdown%402x.png" />
+    <Resource Include="Resources\Images\ic_input_arrowdown%403x.png" />
+    <Resource Include="Resources\Images\ic_input_arrowdown.png" />
+    <Resource Include="Resources\Images\ic_input_arrowdup%402x.png" />
+    <Resource Include="Resources\Images\ic_input_arrowdup%403x.png" />
+    <Resource Include="Resources\Images\ic_input_arrowdup.png" />
+    <Resource Include="Resources\Images\ic_input_error%402x.png" />
+    <Resource Include="Resources\Images\ic_input_error%403x.png" />
+    <Resource Include="Resources\Images\ic_input_error.png" />
+    <Resource Include="Resources\Images\ic_input_success%402x.png" />
+    <Resource Include="Resources\Images\ic_input_success%403x.png" />
+    <Resource Include="Resources\Images\ic_input_success.png" />
+    <Resource Include="Resources\Images\ic_lattice_dense_b.png" />
+    <Resource Include="Resources\Images\ic_lattice_dense_w.png" />
+    <Resource Include="Resources\Images\ic_lattice_normal_b.png" />
+    <Resource Include="Resources\Images\ic_lattice_normal_w.png" />
+    <Resource Include="Resources\Images\ic_lattice_wide_b.png" />
+    <Resource Include="Resources\Images\ic_lattice_wide_w.png" />
+    <Resource Include="Resources\Images\ic_localbadmark_n%402x.png" />
+    <Resource Include="Resources\Images\ic_localbadmark_n%403x.png" />
+    <Resource Include="Resources\Images\ic_localbadmark_n.png" />
+    <Resource Include="Resources\Images\ic_localbarcode_n%402x.png" />
+    <Resource Include="Resources\Images\ic_localbarcode_n%403x.png" />
+    <Resource Include="Resources\Images\ic_localbarcode_n.png" />
+    <Resource Include="Resources\Images\ic_lock_dark_n.png" />
+    <Resource Include="Resources\Images\ic_measurement0_n%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement0_s%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_10um_n%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_20um_n%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_40um_n%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_expansion_n%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_expansion_s%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_reduction_n%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_reduction_s%403x.png" />
+    <Resource Include="Resources\Images\ic_measurement_ud_n%403x.png" />
+    <Resource Include="Resources\Images\ic_nc_circle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_nc_polygon_n%403x.png" />
+    <Resource Include="Resources\Images\ic_nc_rectangle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_nochart%402x.png" />
+    <Resource Include="Resources\Images\ic_nochart%403x.png" />
+    <Resource Include="Resources\Images\ic_nodefects%403x.png" />
+    <Resource Include="Resources\Images\ic_nodefects.png" />
+    <Resource Include="Resources\Images\ic_non-coating%403x.png" />
+    <Resource Include="Resources\Images\ic_nonavigation%403x.png" />
+    <Resource Include="Resources\Images\ic_number1.png" />
+    <Resource Include="Resources\Images\ic_number2.png" />
+    <Resource Include="Resources\Images\ic_number3.png" />
+    <Resource Include="Resources\Images\ic_number4.png" />
+    <Resource Include="Resources\Images\ic_number5.png" />
+    <Resource Include="Resources\Images\ic_open_recipe_n%402x.png" />
+    <Resource Include="Resources\Images\ic_open_recipe_n%403x.png" />
+    <Resource Include="Resources\Images\ic_open_recipe_n.png" />
+    <Resource Include="Resources\Images\ic_ot_circle_n.png" />
+    <Resource Include="Resources\Images\ic_ot_polygon_n.png" />
+    <Resource Include="Resources\Images\ic_ot_rectangle_n.png" />
+    <Resource Include="Resources\Images\ic_packageadd.png" />
+    <Resource Include="Resources\Images\ic_packageadd_n%402x.png" />
+    <Resource Include="Resources\Images\ic_packageadd_n%403x.png" />
+    <Resource Include="Resources\Images\ic_packageadd_n.png" />
+    <Resource Include="Resources\Images\ic_packageedit.png" />
+    <Resource Include="Resources\Images\ic_packageedit2_n%402x.png" />
+    <Resource Include="Resources\Images\ic_packageedit2_n%403x.png" />
+    <Resource Include="Resources\Images\ic_packageedit2_n.png" />
+    <Resource Include="Resources\Images\ic_pad%403x.png" />
+    <Resource Include="Resources\Images\ic_pw%402x.png" />
+    <Resource Include="Resources\Images\ic_pw%403x.png" />
+    <Resource Include="Resources\Images\ic_pw.png" />
+    <Resource Include="Resources\Images\ic_Recipe_viewoption_n%403x.png" />
+    <Resource Include="Resources\Images\ic_rectangle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_rename_dark_n.png" />
+    <Resource Include="Resources\Images\ic_rgb_n%403x.png" />
+    <Resource Include="Resources\Images\ic_rotatehandle%403x.png" />
+    <Resource Include="Resources\Images\ic_scan_pcb_profile.png" />
+    <Resource Include="Resources\Images\ic_status_ok%403x.png" />
+    <Resource Include="Resources\Images\ic_status_warning.png" />
+    <Resource Include="Resources\Images\ic_status_x%403x.png" />
+    <Resource Include="Resources\Images\ic_threshold_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_cursor_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_eraser_circle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_eraser_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_eraser_polygon_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_new_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_ruler_item_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_ruler_n%403x.png" />
+    <Resource Include="Resources\Images\ic_toolbar_ruler_n.png" />
+    <Resource Include="Resources\Images\ic_toolbar_ruler_rectangle_n.png" />
+    <Resource Include="Resources\Images\ic_toolbar_ruler_rectangle_s_2.png" />
+    <Resource Include="Resources\Images\ic_toolbar_ruler_s_2.png" />
+    <Resource Include="Resources\Images\ic_toolbar_x_blue.png" />
+    <Resource Include="Resources\Images\ic_toolbar_x_brown.png" />
+    <Resource Include="Resources\Images\ic_toolbar_x_purple.png" />
+    <Resource Include="Resources\Images\ic_triangle_n%403x.png" />
+    <Resource Include="Resources\Images\ic_underfill%403x.png" />
+    <Resource Include="Resources\Images\ic_unusearray_n%403x.png" />
+    <Resource Include="Resources\Images\ic_unusearray_s%403x.png" />
+    <Resource Include="Resources\Images\ic_user_defined%403x.png" />
+    <Resource Include="Resources\Images\ic_width_n%403x.png" />
+    <Resource Include="Resources\Images\img_concave_base%403x.png" />
+    <Resource Include="Resources\Images\img_convex_base%403x.png" />
+    <Resource Include="Resources\Images\img_conveyor_board%403x.png" />
+    <Resource Include="Resources\Images\img_flat_base%403x.png" />
+    <Resource Include="Resources\Images\img_zposition_close.png" />
+    <Resource Include="Resources\Images\img_zposition_far.png" />
+    <Resource Include="Resources\Images\line_chart_image_Temp.png" />
+    <Resource Include="Resources\Images\logo_neptunecplus%403x.png" />
+    <Resource Include="Resources\Images\mc_dragdrop%403x.png" />
+    <Resource Include="Resources\Images\navigator_off_n%403x.png" />
+    <Resource Include="Resources\Images\navigator_off_n.png" />
+    <Resource Include="Resources\Images\navigator_off_o%403x.png" />
+    <Resource Include="Resources\Images\navigator_on%403x.png" />
+    <Resource Include="Resources\Images\Production_Badmark_Temp.png" />
+    <Resource Include="Resources\Images\Production_Fiducial01_Temp.png" />
+    <Resource Include="Resources\Images\range.png" />
+    <Resource Include="Resources\Images\range_reverse.png" />
+    <Resource Include="Resources\Images\reverse.png" />
+    <Resource Include="Resources\Images\Review_DefectListView_Default.png" />
+    <Resource Include="Resources\Images\Review_DefectPatternView_Default.png" />
+    <Resource Include="Resources\Images\Review_ICComponent_DefectImage_Temp1.png" />
+    <Resource Include="Resources\Images\SideBarView\belt_n.png" />
+    <Resource Include="Resources\Images\SideBarView\down_n.png" />
+    <Resource Include="Resources\Images\SideBarView\H.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_arraysetting_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_basesetting_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_bypass_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_flip_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_fovopt_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_fovopt_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_lightteaching_n%402x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_lightteaching_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_lightteaching_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_liveviewjog_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_markteaching_n%402x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_markteaching_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_markteaching_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_more_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_open_flipper_clamp_o%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_refractiveindex_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_reset_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_run_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_selecttest_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_d%402x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_d%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_d.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_n%402x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_o%402x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_o%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_o.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_s%402x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_s%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_stop_s.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_tuning_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_wholeboardtest_n.png" />
+    <Resource Include="Resources\Images\SideBarView\ic_hw_workout_n%403x.png" />
+    <Resource Include="Resources\Images\SideBarView\jump_d.png" />
+    <Resource Include="Resources\Images\SideBarView\L.png" />
+    <Resource Include="Resources\Images\SideBarView\M.png" />
+    <Resource Include="Resources\Images\SideBarView\pcb_n.png" />
+    <Resource Include="Resources\Images\SideBarView\R.png" />
+    <Resource Include="Resources\Images\SideBarView\replay_d.png" />
+    <Resource Include="Resources\Images\SideBarView\SideBarOriginSetting.PNG" />
+    <Resource Include="Resources\Images\SideBarView\start_d.png" />
+    <Resource Include="Resources\Images\SideBarView\stop_d.png" />
+    <Resource Include="Resources\Images\status_fail%403x.png" />
+    <Resource Include="Resources\Images\status_fail_n%403x.png" />
+    <Resource Include="Resources\Images\status_good%403x.png" />
+    <Resource Include="Resources\Images\status_good_n%403x.png" />
+    <Resource Include="Resources\Images\status_good_tranfer%403x.png" />
+    <Resource Include="Resources\Images\status_modify%403x.png" />
+    <Resource Include="Resources\Images\status_modify_n%403x.png" />
+    <Resource Include="Resources\Images\status_ng%403x.png" />
+    <Resource Include="Resources\Images\status_ng_n%403x.png" />
+    <Resource Include="Resources\Images\status_ng_tranfer%403x.png" />
+    <Resource Include="Resources\Images\status_no_data%403x.png" />
+    <Resource Include="Resources\Images\status_sucess%403x.png" />
+    <Resource Include="Resources\Images\TeachingTest_Badmark_Good_Temp.png" />
+    <Resource Include="Resources\Images\TeachingTest_Badmark_NG_Temp.png" />
+    <Resource Include="Resources\Images\TeachingTest_Barcode_Good_Temp.png" />
+    <Resource Include="Resources\Images\TeachingTest_Barcode_NG_Temp.png" />
+    <Resource Include="Resources\Images\TeachingTest_Fiducial_Good_Temp.png" />
+    <Resource Include="Resources\Images\TeachingTest_Fiducial_NG_Temp.png" />
+    <Resource Include="Resources\Images\Title.png" />
+    <Resource Include="Resources\Images\user.png" />
+    <Resource Include="Resources\Images\X %28Width%29%403x.png" />
+    <Resource Include="Resources\Images\Y %28Length%29%403x.png" />
+    <Resource Include="Resources\Images\zoom_to_fit_n%403x.png" />
+    <Resource Include="Resources\Images\zoom_to_fit_o%403x.png" />
+    <Resource Include="Resources\Images\zoom_to_fit_s%403x.png" />
+    <Resource Include="Resources\Images\zoom_to_selected_off%403x.png" />
+    <Resource Include="Resources\Images\zoom_to_selected_off_o%403x.png" />
+    <Resource Include="Resources\Images\zoom_to_selected_on%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\NoData.PNG" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

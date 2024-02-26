@@ -1,0 +1,686 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="clr-namespace:NpcCore.Wpf.Controls"
+                    xmlns:Converters="clr-namespace:NpcCore.Wpf.Converters">
+    <Converters:PercentageConverter x:Key="PercententageConvert" />
+
+    <Style x:Key="CCI.ButtonStyle"
+           TargetType="{x:Type Controls:ButtonControl}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:ButtonControl}">
+                    <Grid x:Name="Grid">
+                        <Border x:Name="PART_BorderButton"
+                                Background="{TemplateBinding Panel.Background}"
+                                BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                SnapsToDevicePixels="True"
+                                Cursor="Hand">
+                            <StackPanel x:Name="StackContent"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="Center">
+                                <Image x:Name="PART_ImageIcon"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Height="{Binding Path=IconHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Width="{Binding Path=IconWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Source="{Binding Path=IconSource, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Margin="0,0,3,0" />
+                                <ContentPresenter x:Name="PART_Content"
+                                                  Content="{TemplateBinding Content}"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Margin="3,0,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HorizontalContentAlignment"
+                                 Value="Left">
+                            <Setter TargetName="StackContent"
+                                    Property="Margin"
+                                    Value="8 0 0 0" />
+                        </Trigger>
+                        <Trigger Property="HorizontalContentAlignment"
+                                 Value="Right">
+                            <Setter TargetName="StackContent"
+                                    Property="Margin"
+                                    Value="0 0 8 0" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding ElementName=PART_Content, Path=Content}"
+                                     Value="{x:Null}">
+                            <Setter TargetName="PART_Content"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
+                            <Setter TargetName="PART_Content"
+                                    Property="Margin"
+                                    Value="0" />
+                            <Setter TargetName="PART_ImageIcon"
+                                    Property="Margin"
+                                    Value="0" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=PART_ImageIcon, Path=Source}"
+                                     Value="{x:Null}">
+                            <Setter TargetName="PART_ImageIcon"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
+                            <Setter TargetName="PART_ImageIcon"
+                                    Property="Margin"
+                                    Value="0" />
+                            <Setter TargetName="PART_Content"
+                                    Property="Margin"
+                                    Value="0" />
+                        </DataTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_BorderButton"
+                                        Property="Background"
+                                        Value="#a2acbb" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_BorderButton"
+                                        Property="Background"
+                                        Value="#676f84" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Background"
+                                    Value="#ccd8eb" />
+                            <Setter TargetName="PART_Content"
+                                    Property="TextBlock.Foreground"
+                                    Value="#222222" />
+                        </Trigger>
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Background"
+                                    Value="#ccd8eb" />
+                            <Setter TargetName="PART_Content"
+                                    Property="TextBlock.Foreground"
+                                    Value="#222222" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="BorderBrush"
+                                    Value="#606679" />
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Background"
+                                    Value="#4e556a" />
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Opacity"
+                                    Value="0.2" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonStyleNormal"
+           TargetType="{x:Type Controls:ButtonControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Controls:ButtonControl">
+                    <Grid x:Name="Grid">
+                        <TextBlock x:Name="Part_TextBlockButton"
+                                   Background="Transparent"
+                                   SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <ContentPresenter x:Name="Part_Content"
+                                                  Content="{TemplateBinding Content}"
+                                                  VerticalAlignment="Center"
+                                                  Margin="2.5,0,2.5,0" />
+                            </StackPanel>
+                        </TextBlock>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="Part_TextBlockButton"
+                                    Property="TextDecorations"
+                                    Value="Underline" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="Part_TextBlockButton"
+                                    Property="Foreground"
+                                    Value="{Binding TextColorChanged, 
+                                RelativeSource={RelativeSource AncestorType={x:Type Controls:ButtonControl}}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Part_Content"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CCI.RadioButtonStyle"
+           TargetType="RadioButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <BulletDecorator>
+                        <BulletDecorator.Bullet>
+                            <Grid Height="{TemplateBinding Height}"
+                                  Width="{TemplateBinding Height}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Ellipse Name="EllipseMain"
+                                         Width="{TemplateBinding Height}"
+                                         Height="{TemplateBinding Height}"
+                                         Grid.Column="0"
+                                         Grid.ColumnSpan="4"
+                                         Grid.Row="0"
+                                         Grid.RowSpan="4"
+                                         Fill="{TemplateBinding Background}"
+                                         StrokeThickness="1"
+                                         Stroke="{TemplateBinding BorderBrush}" />
+                                <Ellipse Name="CheckMark"
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="2"
+                                         Grid.Row="1"
+                                         Grid.RowSpan="2"
+                                         Opacity="1"
+                                         Fill="#ffffff"
+                                         Height="{TemplateBinding Height, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                                         Width="{TemplateBinding Height, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          Width="{TemplateBinding Width}" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         Duration="0:0:0.3"
+                                                         To="0.5" />
+                                        <ColorAnimation Storyboard.TargetName="EllipseMain"
+                                                        Storyboard.TargetProperty="(Ellipse.Stroke).(SolidColorBrush.Color)"
+                                                        To="{TemplateBinding BorderBrush}"
+                                                        Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Height"
+                                                         Duration="0:0:0.3"
+                                                         To="{Binding ElementName=CheckMark, Path=ActualHeight}" />
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Width"
+                                                         Duration="0:0:0.3"
+                                                         To="{Binding ElementName=CheckMark, Path=ActualWidth}" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Height"
+                                                         Duration="0:0:0.2"
+                                                         To="0" />
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Width"
+                                                         Duration="0:0:0.2"
+                                                         To="0" />
+                                        <ColorAnimation Storyboard.TargetName="EllipseMain"
+                                                        Storyboard.TargetProperty="(Ellipse.Stroke).(SolidColorBrush.Color)"
+                                                        To="{TemplateBinding BorderBrush}"
+                                                        Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="EllipseMain"
+                                    Property="Opacity"
+                                    Value="0.25" />
+                            <Setter TargetName="CheckMark"
+                                    Property="Opacity"
+                                    Value="0.25" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ToggleButtonArrowStyle"
+                     TargetType="{x:Type Controls:ButtonControl}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="Border"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}">
+                <Path x:Name="Arrow"
+                      HorizontalAlignment="Right"
+                      Fill="{TemplateBinding BorderBrush}"
+                      VerticalAlignment="Center"
+                      Margin="0,0,10,0"
+                      Data="M5 6.355l-.008.008L0 1.414 1.425 0 5 3.543 8.573 0 10 1.414 5.01 6.363z" />
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="CCI.ButtonOnlyIconStyle"
+           TargetType="{x:Type Controls:ButtonControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:ButtonControl}">
+                    <Grid x:Name="Grid">
+                        <Border x:Name="PART_BorderButton"
+                                Background="Transparent"
+                                BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                BorderThickness="0"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                SnapsToDevicePixels="True"
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <Image x:Name="PART_ImageIcon"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.8"
+                                       Height="{Binding Path=IconHeight, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Width="{Binding Path=IconWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Source="{Binding Path=IconSource, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Background"
+                                    Value="#676f84" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Background"
+                                    Value="#ccd8eb" />
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Opacity"
+                                    Value="1.0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="PART_BorderButton"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                            <Setter TargetName="PART_ImageIcon"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Controls:DropDownButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:DropDownButton}">
+                    <Border x:Name="PART_Border"
+                            BorderThickness="1"
+                            BorderBrush="Transparent"
+                            Background="Transparent">
+                        <Canvas x:Name="PART_Icon"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Background="Transparent">
+                            <Path x:Name="PART_Path"
+                                  Canvas.Left="13"
+                                  Canvas.Top="5"
+                                  Height="17"
+                                  Width="3"
+                                  Fill="#a3a6b7"
+                                  Data="M0 15.5A1.5 1.5 0 1 1 1.5 17 1.5 1.5 0 0 1 0 15.5zm0-7A1.5 1.5 0 1 1 1.5 10 1.5 1.5 0 0 1 0 8.5zm0-7A1.5 1.5 0 1 1 1.5 3 1.5 1.5 0 0 1 0 1.5z">
+                            </Path>
+                        </Canvas>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!--<Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="#676f84" />
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="White" />
+                        </Trigger>-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="False" />
+                                <Condition Property="IsMenuItemOpen"
+                                           Value="False" />
+                                <Condition Property="IsFocusedItem"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="Transparent" />
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="#434c62" />
+                        </MultiTrigger>
+
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsMenuItemOpen"
+                                           Value="False" />
+                                <Condition Property="IsFocusedItem"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="#1A262f4b" />
+
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="#434c62" />
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMenuItemOpen"
+                                           Value="True" />
+                                <Condition Property="IsFocusedItem"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="#33262f4b" />
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="#434c62" />
+                        </MultiTrigger>
+
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMenuItemOpen"
+                                           Value="True" />
+                                <Condition Property="IsFocusedItem"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="#33ffffff" />
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="#ffffff" />
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="False" />
+                                <Condition Property="IsMenuItemOpen"
+                                           Value="False" />
+                                <Condition Property="IsFocusedItem"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="Transparent" />
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="#a3a6b7" />
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver"
+                                           Value="True" />
+                                <Condition Property="IsMenuItemOpen"
+                                           Value="False" />
+                                <Condition Property="IsFocusedItem"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="#1Affffff" />
+                            <Setter Property="Fill"
+                                    TargetName="PART_Path"
+                                    Value="#878a9a" />
+                        </MultiTrigger>
+
+
+                        <!--<Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="PART_Border"
+                                    Value="#ccd8eb" />
+                        </Trigger>-->
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="PART_Icon"
+                                    Property="Opacity"
+                                    Value="0.2" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GoTeachingButtonStyle"
+           TargetType="{x:Type Controls:ButtonControl}">
+        <Setter Property="MinWidth"
+                Value="50" />
+        <Setter Property="MinHeight"
+                Value="20" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="Black" />
+        <Setter Property="Background"
+                Value="#ffffff" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:ButtonControl}">
+                    <Border  BorderThickness="{TemplateBinding BorderThickness}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             Background="{TemplateBinding Background}"
+                             CornerRadius="{Binding Path=CornerRadius,RelativeSource={RelativeSource AncestorType={x:Type Controls:ButtonControl}}}"
+                             x:Name="Border">
+                        <Grid x:Name="Grid"
+                              Background="Transparent">
+                            <TextBlock       x:Name="Content"
+                                             Margin="20 0 0 0"
+                                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                             Text="{Binding Path=Content,RelativeSource={RelativeSource AncestorType={x:Type Controls:ButtonControl}} }"
+                                             VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                             FontSize="13" />
+                            <Image x:Name="imgn"
+                                   HorizontalAlignment="Right"
+                                   Margin="0 7 10 7"
+                                   Width="18"
+                                   Height="18"
+                                   Source="{DynamicResource IMG_InspectionGoTeaching}" />
+                            <Image x:Name="imgs"
+                                   HorizontalAlignment="Right"
+                                   Margin="0 7 10 7"
+                                   Width="18"
+                                   Height="18"
+                                   Source="{DynamicResource IMG_InspectionGoTeachingS}"
+                                   Visibility="Hidden" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="Border"
+                                    Value="#e9e9ec" />
+                            <Setter Property="BorderBrush"
+                                    Value="#000000" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="Border"
+                                    Value="#262f4b" />
+                            <Setter Property="Foreground"
+                                    TargetName="Content"
+                                    Value="#ffffff" />
+                            <Setter Property="Visibility"
+                                    TargetName="imgs"
+                                    Value="Visible" />
+                            <Setter Property="Visibility"
+                                    TargetName="imgn"
+                                    Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="Content"
+                                    Property="Opacity"
+                                    Value="0.4" />
+                            <Setter Property="BorderBrush"
+                                    Value="#FF333333" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- Inspection Button when Error Happening -->
+
+    <Style x:Key="InspectionButtonStyle"
+           TargetType="{x:Type Controls:ButtonControl}">
+        <Setter Property="MinWidth"
+                Value="50" />
+        <Setter Property="MinHeight"
+                Value="20" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="Black" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:ButtonControl}">
+                    <Border  BorderThickness="{TemplateBinding BorderThickness}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             Background="{TemplateBinding Background}"
+                             CornerRadius="{Binding Path=CornerRadius,RelativeSource={RelativeSource AncestorType={x:Type Controls:ButtonControl}}}"
+                             x:Name="Border">
+                        <Grid x:Name="Grid"
+                              Background="Transparent">
+                            <TextBlock       x:Name="Content"
+                                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                             Text="{Binding Path=Content,RelativeSource={RelativeSource AncestorType={x:Type Controls:ButtonControl}} }"
+                                             VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                             FontSize="13" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="Border"
+                                    Value="#e9e9ec" />
+                            <Setter Property="BorderBrush"
+                                    Value="#000000" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    TargetName="Border"
+                                    Value="#262f4b" />
+                            <Setter Property="Foreground"
+                                    TargetName="Content"
+                                    Value="#ffffff" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="Content"
+                                    Property="Opacity"
+                                    Value="0.4" />
+                            <Setter Property="BorderBrush"
+                                    Value="#FF333333" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>

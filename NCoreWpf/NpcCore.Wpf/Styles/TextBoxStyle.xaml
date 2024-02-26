@@ -1,0 +1,338 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="clr-namespace:NpcCore.Wpf.Controls">
+
+    <ControlTemplate x:Key="ValidatedTextBoxTemplate">
+        <DockPanel>
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Bottom">
+                <Grid Width="12"
+                      Height="12">
+                    <TextBlock Foreground="Red"
+                               FontWeight="Heavy"
+                               FontSize="8"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               ToolTip="{Binding ElementName=ErrorAdorner, 
+                                   Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">*</TextBlock>
+                </Grid>
+                <TextBlock Foreground="Red"
+                           FontWeight="Bold"
+                           Text="{Binding ElementName=ErrorAdorner, 
+                               Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
+            </StackPanel>
+            <AdornedElementPlaceholder x:Name="ErrorAdorner">
+
+            </AdornedElementPlaceholder>
+        </DockPanel>
+    </ControlTemplate>
+
+    <Style x:Key="ToolTipStyle"
+           TargetType="{x:Type ToolTip}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToolTip}">
+                    <Border Background="Gray"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            Height="Auto">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   Foreground="Aqua" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#region Input Field -->
+    <!--Input Field with Place Holder Style-->
+    <Style x:Key="TextBoxWithPlaceHolderStyle"
+           TargetType="{x:Type Controls:TextBoxControl}"
+           BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:TextBoxControl}">
+                    <ContentControl>
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Panel.Background}"
+                                BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              Margin="10,0,0,0"
+                                              Width="Auto" />
+                                <StackPanel Orientation="Horizontal">
+                                    <ContentPresenter x:Name="PART_PromptHost"
+                                                      Margin="10,0,0,0"
+                                                      Content="{TemplateBinding Tag}"
+                                                      ContentTemplate="{TemplateBinding TagTemplate}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      IsHitTestVisible="False"
+                                                      Visibility="Collapsed" />
+                                </StackPanel>
+                                <TextBlock x:Name="PART_Content"
+                                           Text="jghjgjjggj"
+                                           Visibility="Collapsed" />
+                            </Grid>
+                        </Border>
+                    </ContentControl>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="UIElement.IsEnabled"
+                                           Value="True" />
+                                <Condition Property="TextBox.Text"
+                                           Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_PromptHost"
+                                        Property="Visibility"
+                                        Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled"
+                                           Value="False" />
+                                <Condition Property="Text"
+                                           Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_PromptHost"
+                                        Property="Visibility"
+                                        Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter TargetName="Border"
+                                    Property="BorderBrush"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="Border"
+                                    Property="Panel.Background"
+                                    Value="#282e3e" />
+                            <Setter TargetName="Border"
+                                    Property="Opacity"
+                                    Value="0.25" />
+                            <Setter Property="TextElement.Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="VerticalContentAlignment"
+                                 Value="Top">
+                            <Setter Property="Margin"
+                                    TargetName="PART_ContentHost"
+                                    Value="10,5,0,0" />
+                            <Setter Property="Margin"
+                                    TargetName="PART_PromptHost"
+                                    Value="10,5,0,0" />
+                        </Trigger>
+                        <Trigger Property="HorizontalContentAlignment"
+                                 Value="Right">
+                            <Setter Property="Margin"
+                                    TargetName="PART_ContentHost"
+                                    Value="0,0,10,0" />
+                            <Setter Property="Margin"
+                                    TargetName="PART_PromptHost"
+                                    Value="10,0,10,0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Input Field with Standard With Label Style-->
+    <Style x:Key="TextBoxWithLabelStyle"
+           TargetType="{x:Type Controls:TextBoxControl}"
+           BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:TextBoxControl}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal">
+                            <ContentPresenter x:Name="PART_PromptHost"
+                                              Content="{TemplateBinding Tag}"
+                                              ContentTemplate="{TemplateBinding TagTemplate}"
+                                              VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                              IsHitTestVisible="False"
+                                              Visibility="Visible"
+                                              Margin="0,0,0,10" />
+                        </StackPanel>
+                        <Border x:Name="Border"
+                                Grid.Row="1"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              Margin="10,0,0,0" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag"
+                                 Value="">
+                            <Setter TargetName="PART_PromptHost"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsFocused"
+                                 Value="True">
+                            <Setter TargetName="Border"
+                                    Property="BorderBrush"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="Border"
+                                    Property="Panel.Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter TargetName="Border"
+                                    Property="Opacity"
+                                    Value="0.25" />
+                            <Setter Property="TextElement.Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="VerticalContentAlignment"
+                                 Value="Top">
+                            <Setter Property="Margin"
+                                    TargetName="PART_ContentHost"
+                                    Value="10,5,0,0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+    <!--TextBox style with up and down button-->
+    <Style x:Key="TextBoxWithUpDownButtonStyle"
+           TargetType="{x:Type Controls:TextBoxUpDownControl}">
+        <Setter Property="CornerRadius"
+                Value="2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:TextBoxUpDownControl}">
+                    <Border Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            BorderThickness="1"
+                            BorderBrush="Gray"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="20" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0"
+                                  Width="20"
+                                  Background="{TemplateBinding Background}">
+                                <Button x:Name="PART_DownButton"
+                                        BorderThickness="0,0,1,0"
+                                        Grid.Column="0"
+                                        Width="20"
+                                        Height="{TemplateBinding Height}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Background="{TemplateBinding Background}">
+                                    <Path Data="M0 0l4.25 4.25L0 8.5"
+                                          Stroke="Gray"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        <Path.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="-1" />
+                                                <TranslateTransform X="5"
+                                                                    Y="1" />
+                                            </TransformGroup>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Button>
+
+                            </Grid>
+                            <Grid Grid.Column="1"
+                                  Background="{TemplateBinding Background}">
+                                <TextBox BorderThickness="0"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         Background="{TemplateBinding Background}"
+                                         Width="{TemplateBinding Width}"
+                                         Height="{TemplateBinding Height}"
+                                         Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Controls:TextBoxUpDownControl}}}"
+                                         TextAlignment="Center"
+                                         VerticalContentAlignment="Center" />
+                            </Grid>
+                            <Grid Grid.Column="2"
+                                  Width="20"
+                                  Background="{TemplateBinding Background}">
+                                <Button x:Name="PART_UpButton"
+                                        BorderThickness="1,0,0,0"
+                                        Background="{TemplateBinding Background}"
+                                        Grid.Column="2"
+                                        Width="20"
+                                        Height="{TemplateBinding Height}">
+                                    <Path Data="M0 0l4.25 4.25L0 8.5"
+                                          Stroke="Gray"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsReadOnly"
+                                 Value="True">
+                            <Setter TargetName="PART_DownButton"
+                                    Property="IsEnabled"
+                                    Value="False" />
+                            <Setter TargetName="PART_UpButton"
+                                    Property="IsEnabled"
+                                    Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ContentTextBoxStyle"
+           TargetType="TextBox">
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontStyle"
+                Value="Normal" />
+        <Setter Property="FontWeight"
+                Value="Normal" />
+        <Setter Property="Foreground"
+                Value="#FFFFFFFF" />
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,320 @@
+﻿<UserControl x:Class="NpcCore.Wpf.Controls.ImageProcessControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:NpcCore.Wpf.Controls"
+             xmlns:Controls="clr-namespace:NpcCore.Wpf.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
+                <Border Name="Border"
+                    Background="#00465168"
+                    BorderBrush="#465168"
+                    BorderThickness="1">
+                    <TextBlock x:Name="Content" Text="{TemplateBinding Content}" Cursor="Hand" FontSize="13" FontFamily="SegoeUI" FontWeight="Normal" Foreground="#878a9a"
+                           UseLayoutRounding="True" VerticalAlignment="Center"
+                           HorizontalAlignment="Center"  />
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked" Value="true">
+                        <Setter TargetName="Border" Property="Background" Value="#465168"/>
+                        <Setter TargetName="Content" Property="FontWeight" Value="Bold" />
+                        <Setter TargetName="Content" Property="Foreground" Value="#ffffff" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.3"/>
+                    </Trigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver" Value="True"/>
+                            <Condition Property="IsChecked" Value="False"/>
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.Setters>
+                            <Setter TargetName="Border" Property="Background" Value="#7F465168"/>
+                        </MultiTrigger.Setters>
+                    </MultiTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <Style TargetType="{x:Type ListBox}" x:Key="ListBoxImagesStyle">
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border BorderThickness="1" BorderBrush="Cyan" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="5 0">
+                                <Grid>
+                                    <Image Source="{Binding ImageSource}" Width="100" Height="100"/>
+                                    <Grid Width="15" Height="15" Background="Gray" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding ImageIndex}" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type Button}" x:Key="AddImageButtonStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border BorderThickness="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                <Border.BorderBrush>
+                                    <VisualBrush>
+                                        <VisualBrush.Visual>
+                                            <Rectangle Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" StrokeThickness="1" Stroke="Gray" StrokeDashArray="4 4" Fill="Transparent"/>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Border.BorderBrush>
+                                <Grid>
+                                    <Rectangle Width="20" Height="2" Fill="Gray"/>
+                                    <Rectangle Width="2" Height="20" Fill="Gray"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border BorderThickness="1 0 1 0" BorderBrush="#7081af">
+        <Grid Background="#202738">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton x:Name="TeachingButton" Grid.Column="0" Content="Teaching" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsChecked="True" Cursor="Hand" Click="ToggleButton_Click" Template="{DynamicResource ToggleButtonTemplate}"/>
+                <RadioButton x:Name="VerifycationButton" Grid.Column="1" Content="Verifycation" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsChecked="False" Cursor="Hand" Click="ToggleButton_Click" Template="{DynamicResource ToggleButtonTemplate}"/>
+            </Grid>
+            <Grid Grid.Row="1" x:Name="TeachingView" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                        <TextBlock Text="Registered Images" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White"/>
+                    </StackPanel>
+                    <Controls:ButtonControl Grid.Column="1" Content="Delete" Width="50" Height="20" CornerRadius="2" Background="#4e556a" Foreground="White"
+                                            Style="{StaticResource CCI.ButtonStyle }" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid Grid.Row="1" Margin="10 0">
+                    <ScrollViewer SnapsToDevicePixels="True" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Style="{DynamicResource ScrollViewerStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <ListBox Height="100" ItemsSource="{Binding ImagesSource, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" 
+                                     SelectedItem="{Binding ImageSelected, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                     Background="#222222" BorderThickness="0" Style="{DynamicResource ListBoxImagesStyle}" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                            <Button x:Name="LoadImage" Width="100" Height="100" Click="LoadImage_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource AddImageButtonStyle}" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+                <StackPanel Orientation="Vertical" Grid.Row="2" Margin="10">
+                    <Grid>
+                        <TextBlock Text="Order of inspection" FontSize="12" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ComboBox Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#2f3546" Foreground="White" Style="{DynamicResource ComboBoxRoundedRectangleStyle}">
+                            <ComboBoxItem Content="1" IsSelected="True"/>
+                        </ComboBox>
+                    </Grid>
+                    <Grid Margin="0 30 0 0">
+                        <TextBlock Text="Mode" FontSize="12" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ComboBox Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#2f3546" Foreground="White" Style="{DynamicResource ComboBoxRoundedRectangleStyle}">
+                            <ComboBoxItem Content="Color" IsSelected="True"/>
+                        </ComboBox>
+                    </Grid>
+                    <Grid Margin="0 15 0 0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Image Plane" FontSize="12" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Controls:ButtonControl Content="Reset" Width="50" Height="18" BorderThickness="1" CornerRadius="2" Style="{DynamicResource CCI.ButtonStyle}" Background="#4e556a" Foreground="White" HorizontalAlignment="Left" Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <ComboBox Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#2f3546" Foreground="White" Style="{DynamicResource ComboBoxRoundedRectangleStyle}">
+                            <ComboBoxItem Content="Image Plane" IsSelected="True"/>
+                        </ComboBox>
+                    </Grid>
+                    <Grid Margin="0 15 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="5">
+                            <TextBlock Text="Light intensity" FontSize="12" Foreground="White" Margin="5"/>
+                            <TextBlock Text="Brightness" FontSize="12" Foreground="White" Margin="5"/>
+                            <TextBlock Text="Contrast" FontSize="12" Foreground="White" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                            <Controls:SliderControl Minimum="1" Maximum="100" Start="{Binding LightIntensity, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" Thickness="4" Style="{StaticResource OneSliderStyle2}"
+                                                    FontWeight="Normal" HighlightBackground="#ffffff" UnHighlightBackground="#a3a6b7" Foreground="White" FontFamily="14" Margin="0 5 5 5"/>
+                            <Controls:SliderControl Minimum="-50" Maximum="50" Start="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" Thickness="4" Style="{StaticResource OneSliderStyle2}"
+                                                    FontWeight="Normal" HighlightBackground="#ffffff" UnHighlightBackground="#a3a6b7" Foreground="White" FontFamily="14" Margin="0 5 5 5"/>
+                            <Controls:SliderControl Minimum="-50" Maximum="50" Start="{Binding Constrast, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" Thickness="4" Style="{StaticResource OneSliderStyle2}"
+                                                    FontWeight="Normal" HighlightBackground="#ffffff" UnHighlightBackground="#a3a6b7" Foreground="White" FontFamily="14" Margin="0 5 5 5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center">
+                            <Controls:TextBoxControl Text="{Binding LightIntensity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" FontSize="12" Foreground="White"
+                                                     Width="40" Height="20" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168" Style="{DynamicResource TextBoxWithPlaceHolderStyle}" Margin="3"/>
+                            <Controls:TextBoxControl Text="{Binding Brightness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" FontSize="12" Foreground="White"
+                                                     Width="40" Height="20" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168" Style="{DynamicResource TextBoxWithPlaceHolderStyle}" Margin="3"/>
+                            <Controls:TextBoxControl Text="{Binding Constrast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" FontSize="12" Foreground="White"
+                                                     Width="40" Height="20" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168" Style="{DynamicResource TextBoxWithPlaceHolderStyle}" Margin="3"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Margin="0 15 0 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <TextBlock Text="Threshold" FontSize="14" FontWeight="Bold" Foreground="Gray"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Margin="10 10 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                <TextBlock  Text="Color Picker" FontSize="12" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <Ellipse    Width="20" Height="20"  Fill="{Binding SelectedPickerColor,RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" Margin="15 0 0 0" >
+                                </Ellipse>
+                            </StackPanel>
+                            <Button Grid.Column="1" Width="30" Height="30" Click="PickerColorClick" >
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <Image  Source="../Resources/color_picker_mouse1.png" Width="30" Height="30"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                               
+                         
+                            <Controls:SliderControl Grid.Column="2" Minimum="1" Maximum="5" Start="{Binding ColorPickerSize, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" Style="{DynamicResource OneSliderRange}" FontSize="18" Foreground="White" HorizontalAlignment="Stretch" Margin="10 0 5 0"/>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="10 10 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="167"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+                                <TextBlock Text="Color Range" FontSize="12" Foreground="White" VerticalAlignment="Center"/>
+                                <Controls:ButtonControl Content="+" Width="50" Height="25" FontSize="12" Foreground="White" Click="ButtonAddedControl_Click" Background="#4e556a" BorderThickness="1" CornerRadius="2" Style="{DynamicResource CCI.ButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                                <Controls:ButtonControl Content="-" Width="50" Height="25" FontSize="12" Foreground="White" Click="ButtonSubtractControl_Click" Background="#4e556a" BorderThickness="1" CornerRadius="2" Style="{DynamicResource CCI.ButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                            </StackPanel>
+                            <Controls:SliderControl Grid.Column="2" Minimum="1" Maximum="9" Start="{Binding ColorRangeValueChange, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" Style="{DynamicResource OneSliderRange}" FontSize="18" Foreground="White" HorizontalAlignment="Stretch" Margin="10 0 5 0"/>
+                        </Grid>
+                    </Grid>
+                    <Grid Margin="0 15 5 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="HSV" FontSize="14" Foreground="White"/>
+                        <Grid Grid.Row="1" Background="#293247" Margin="0 10 0 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="15 10 15 0">
+                                <TextBlock Text="Hue(0~360)" FontWeight="SemiBold" FontSize="12" Foreground="White"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <TextBlock Text="Min" FontSize="12" Foreground="White" Margin="0 0 5 0"/>
+                                    <Controls:TextBoxControl Width="40" Height="20" FontSize="12" Foreground="White" Text="{Binding HueMin, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"
+                                                         Style="{DynamicResource TextBoxWithPlaceHolderStyle}" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168"/>
+                                    <TextBlock Text="Max" FontSize="12" Foreground="White" Margin="0 0 5 0"/>
+                                    <Controls:TextBoxControl Width="40" Height="20" FontSize="12" Foreground="White" Text="{Binding HueMax, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"
+                                                         Style="{DynamicResource TextBoxWithPlaceHolderStyle}" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168"/>
+                                    <Controls:CheckBoxControl Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                      x:Name="CbReverseHue" Content=""
+                                                      Click="CbHue_Click"
+                                                      FontSize="12"
+                                                      Foreground="Black"
+                                                      Background="White"
+                                                      Style="{StaticResource CheckBoxStyle}"
+                                                      BorderBrush="#878a9a" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="1" Margin="20 10 15 0">
+                                <Controls:SliderControl x:Name="SliderControlHue" Style="{DynamicResource HueSliderStyle}" HighlightBackground="#a3a6b7" UnHighlightBackground="Transparent" Minimum="0" Maximum="360" Start="{Binding HueMin, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" 
+                                                        End="{Binding HueMax, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" />
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="15 10 15 0">
+                                <TextBlock Text="Staturation(0~100)" FontWeight="SemiBold" FontSize="12" Foreground="White"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <TextBlock Text="Min" FontSize="12" Foreground="White" Margin="0 0 5 0"/>
+                                    <Controls:TextBoxControl Width="40" Height="20" FontSize="12" Foreground="White" Text="{Binding SaturationMin, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"
+                                                         Style="{DynamicResource TextBoxWithPlaceHolderStyle}" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168"/>
+                                    <TextBlock Text="Max" FontSize="12" Foreground="White" Margin="0 0 5 0"/>
+                                    <Controls:TextBoxControl Width="40" Height="20" FontSize="12" Foreground="White" Text="{Binding SaturationMax, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"
+                                                         Style="{DynamicResource TextBoxWithPlaceHolderStyle}" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168"/>
+                                    
+                                    <Controls:CheckBoxControl Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                      Content=""
+                                                      FontSize="12"
+                                                      Foreground="Black"
+                                                      Background="White"
+                                                      Click="CbStaturation_Click"
+                                                      Style="{StaticResource CheckBoxStyle}"
+                                                      BorderBrush="#878a9a" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="3" Margin="20 10 15 0">
+                                <Controls:SliderControl x:Name="SliderControlSaturation" Style="{DynamicResource SaturationSliderStyle}" HighlightBackground="#a3a6b7" UnHighlightBackground="Transparent" Minimum="0" Maximum="100" Start="{Binding SaturationMin, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" 
+                                                        End="{Binding SaturationMax, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}"
+                                                        SliderProcessColor="{Binding SelectedPickerColor,RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" />
+                            </Grid>
+                            <Grid Grid.Row="4" Margin="15 10 15 0">
+                                <TextBlock Text="Value(0~100)" FontWeight="SemiBold" FontSize="12" Foreground="White"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <TextBlock Text="Min" FontSize="12" Foreground="White" Margin="0 0 5 0"/>
+                                    <Controls:TextBoxControl Width="40" Height="20" FontSize="12" Foreground="White" Text="{Binding ValueMin, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"
+                                                         Style="{DynamicResource TextBoxWithPlaceHolderStyle}" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168"/>
+                                    <TextBlock Text="Max" FontSize="12" Foreground="White" Margin="0 0 5 0"/>
+                                    <Controls:TextBoxControl Width="40" Height="20" FontSize="12" Foreground="White" Text="{Binding ValueMax, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"
+                                                         Style="{DynamicResource TextBoxWithPlaceHolderStyle}" BorderThickness="1" CornerRadius="2" Background="#2f3546" BorderBrush="#465168"/>
+                                    <Button Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="5" Margin="20 10 15 15">
+                                <Controls:SliderControl Style="{DynamicResource HueSliderStyle}" Tag="Value" HighlightBackground="#a3a6b7" UnHighlightBackground="Transparent" Minimum="0" Maximum="100" Start="{Binding ValueMin, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}" 
+                                                        End="{Binding ValueMax, RelativeSource={RelativeSource AncestorType={x:Type Controls:ImageProcessControl}}}"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1" x:Name="VerifycationView" Visibility="Collapsed">
+                <TextBlock Text="Verifycation" Foreground="White"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

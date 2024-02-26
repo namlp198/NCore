@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <SolidColorBrush x:Key="MainTabMenuBackground" Color="#FF293247" />
+    <SolidColorBrush x:Key="MainTabMenuCheckedBackground" Color="#FF465168" />
+
+    <SolidColorBrush x:Key="RecipeToolbarTextForeground" Color="#FFECECEC" />
+    <SolidColorBrush x:Key="RecipeAttributeTextForeground" Color="#ffffff" />
+    <SolidColorBrush x:Key="RecipePropertiesHeaderTextForeground" Color="#ffffff" />
+    <SolidColorBrush x:Key="RecipePropertiesItemTextForeground" Color="#bec1d1" />
+    <SolidColorBrush x:Key="RecipePropertiesItemTextForegroundD1" Color="#FF7D7D8F" />
+    <SolidColorBrush x:Key="RecipePropertiesItemTextForegroundW1" Color="#878a9a" />
+    <SolidColorBrush x:Key="RecipePropertiesItemTextForegroundW2" Color="#bec1d1" />
+
+    <SolidColorBrush x:Key="ToolbarToggleNormalBorderBrush" Color="#FF424158" />
+    <SolidColorBrush x:Key="ToolbarToggleNormalBackground" Color="#FF161A35" />
+    <SolidColorBrush x:Key="ToolbarToggleOverBackground" Color="#FF242A48" />
+    <SolidColorBrush x:Key="ToolbarToggleSelectedBackground" Color="#FF4B5068" />
+
+    <!-- SideBar -->
+    <SolidColorBrush x:Key="SidebarBackground" Color="#202738" />
+    <SolidColorBrush x:Key="SidebarMouseOverBackground" Color="#373d4c" />
+    <SolidColorBrush x:Key="SidebarSelectedBackground" Color="#4d5260" />
+    
+
+    <SolidColorBrush x:Key="SnackBarBackgroundColor" Color="#FF4a4a4a" />
+    <SolidColorBrush x:Key="SnackbarForegroundColor" Color="#FFFFFFFF" />
+
+
+</ResourceDictionary>

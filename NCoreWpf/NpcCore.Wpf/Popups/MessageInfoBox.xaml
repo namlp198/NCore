@@ -1,0 +1,72 @@
+﻿<a:PopupWindowBase x:Class="NpcCore.Wpf.Popups.MessageInfoBox"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:a="http://schema.Npc.com/wpf/components"
+                   xmlns:prism="http://prismlibrary.com/"
+                   mc:Ignorable="d"
+                   Title="{Binding Title, ElementName=View}"
+                   x:Name="View"
+                   WindowStartupLocation="CenterOwner"
+                   Style="{DynamicResource PopupWindowStyle}"
+                   Width="800"
+                   Height="600">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+
+            <a:PopupWindowTitlebar Grid.Row="0"
+                                   Style="{DynamicResource PopupWindowTitlebarStyle}"
+                                   Title="{Binding Title, ElementName=View}" />
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TabControl x:Name="radTabMGMT">
+                    <TabItem Header="Message">
+                        <TabItem.Content>
+                            <TextBox x:Name="tbxMsg"
+                                     VerticalContentAlignment="Top"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding Message, ElementName=View}"
+                                     Padding="8"
+                                     IsReadOnly="True"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Header="Detail">
+                        <TabItem.Content>
+                            <TextBox x:Name="tbxDtlMsg"
+                                     VerticalContentAlignment="Top"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding DetailMessage, ElementName=View}"
+                                     Padding="8"
+                                     IsReadOnly="True"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,5"
+                            VerticalAlignment="Center">
+                    <Button x:Name="OKButton"
+                            Content="OK"
+                            Style="{DynamicResource PopupButtonStyle}"
+                            Margin="5,0"
+                            Click="OKButton_Click" />
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</a:PopupWindowBase>

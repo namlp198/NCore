@@ -1,0 +1,2230 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Control="clr-namespace:NpcCore.Wpf.Controls"
+                    xmlns:ControlEx="clr-namespace:NpcCore.Wpf.Ex"
+                    xmlns:Converters="clr-namespace:NpcCore.Wpf.Converters">
+    <!--<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Styles/TextBoxStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>-->
+    
+    <Converters:PercentageConverter x:Key="PercententageConvert" />
+    <Converters:ValueToStringConverter x:Key="ValueToStringConverter" />
+    <Converters:MarginThumbControlConverter x:Key="MarginThumbControlConverter" />
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    <Converters:InvertableBooleanToVisibilityConverter x:Key="InvertBoolToVis" />
+    
+    <Style TargetType="Thumb"
+           x:Key="SliderThumbStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid x:Name="OutBox"
+                          Width="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                          Height="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                          Margin="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}, 
+                                   Converter={StaticResource MarginThumbControlConverter}, ConverterParameter=Horizontal}">
+                        <Ellipse Fill="{Binding HighlightBackground, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}" />
+                        <Ellipse x:Name="InBox"
+                                 Fill="#373d4e"
+                                 Margin="{Binding Path=ThicknessThumb, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Orientation, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                     Value="Vertical">
+                            <Setter Property="Margin"
+                                    TargetName="OutBox"
+                                    Value="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}, 
+                                    Converter={StaticResource MarginThumbControlConverter}, ConverterParameter=Vertical}" />
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="InBox"
+                                    Property="Fill"
+                                    Value="#464b56" />
+                        </Trigger>
+                        <Trigger Property="IsDragging"
+                                 Value="True">
+                            <Setter TargetName="InBox"
+                                    Property="Fill"
+                                    Value="#ccd8eb" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Thumb"
+           x:Key="SliderThumbStyle2">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid x:Name="OutBox"
+                          Width="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                          Height="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                          Margin="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}, 
+                                   Converter={StaticResource MarginThumbControlConverter}, ConverterParameter=Horizontal}">
+                        <Ellipse Fill="#ffffff" />
+                        <Ellipse x:Name="InBox"
+                                 Fill="#0c0f15"
+                                 Margin="{Binding Path=ThicknessThumb, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Orientation, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                     Value="Vertical">
+                            <Setter Property="Margin"
+                                    TargetName="OutBox"
+                                    Value="{Binding Path=ThumbSize, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}, 
+                                    Converter={StaticResource MarginThumbControlConverter}, ConverterParameter=Vertical}" />
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="InBox"
+                                    Property="Fill"
+                                    Value="#464b56" />
+                        </Trigger>
+                        <Trigger Property="IsDragging"
+                                 Value="True">
+                            <Setter TargetName="InBox"
+                                    Property="Fill"
+                                    Value="#ccd8eb" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Thumb"
+           x:Key="ColorRangeThumbLeftStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid>
+                        <Path Data="M429,418.5 L428.5,318 536,222.5 536,417.5 z"
+                              Width="7"
+                              Height="18"
+                              Fill="White"
+                              Stretch="Fill"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Bottom"
+                              Margin="-7 0 0 0" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Thumb"
+           x:Key="ColorRangeThumbRightStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid>
+                        <Path Data="M615.75,401.5 L615.5,202.75 716.75,289 717.25,400.75 z"
+                              Width="7"
+                              Height="18"
+                              Fill="White"
+                              Stretch="Fill"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Bottom"
+                              Margin="0 0 -7 0" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="TwoSliderControlHasInputTemplate">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="PART_SliderMaxMin"
+                      Grid.Row="0"
+                      Width="{TemplateBinding Width}"
+                      Height="Auto">
+                    <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                               HorizontalAlignment="Right" />
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Row="1"
+                      Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border x:Name="PART_StartLength"
+                            Grid.Column="0"
+                            Background="{TemplateBinding UnHighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                    <Border x:Name="PART_MiddleLength"
+                            Grid.Column="1"
+                            Background="{TemplateBinding HighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.1}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                    <Border x:Name="PART_EndLength"
+                            Grid.Column="2"
+                            Background="{TemplateBinding UnHighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.4}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                    <Thumb x:Name="PART_StartThumb"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                    <Thumb x:Name="PART_EndThumb"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Style="{TemplateBinding EndThumbStyle}"
+                           ToolTip="{TemplateBinding EndThumbToolTip}" />
+                </Grid>
+                <Grid Grid.Row="2"
+                      Width="{TemplateBinding Width}"
+                      Height="Auto">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="0,20,0,0">
+                        <TextBlock Text="Min."
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0" />
+                        <Control:TextBoxControl x:Name="PART_MinValue"
+                                                Width="50"
+                                                Height="25"
+                                                CornerRadius="2"
+                                                HorizontalContentAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding Start, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                       RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}, 
+                                                       NotifyOnValidationError=True, ValidatesOnExceptions=True}"
+                                                Style="{StaticResource TextBoxWithPlaceHolderStyle}"
+                                                Validation.ErrorTemplate="{StaticResource ValidatedTextBoxTemplate}"
+                                                FontSize="{TemplateBinding FontSize}"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                FontStyle="{TemplateBinding FontStyle}"
+                                                Background="{TemplateBinding InputBackground}"
+                                                BorderBrush="{TemplateBinding InputBorderBrush}"
+                                                BorderThickness="1">
+                        </Control:TextBoxControl>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,20,0,0">
+                        <TextBlock Text="Max."
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0" />
+                        <Control:TextBoxControl x:Name="PART_MaxValue"
+                                                Width="50"
+                                                Height="25"
+                                                CornerRadius="2"
+                                                HorizontalContentAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding End, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                       RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                                Style="{StaticResource TextBoxWithPlaceHolderStyle}"
+                                                Validation.ErrorTemplate="{StaticResource ValidatedTextBoxTemplate}"
+                                                FontSize="{TemplateBinding FontSize}"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                FontStyle="{TemplateBinding FontStyle}"
+                                                Background="{TemplateBinding InputBackground}"
+                                                BorderBrush="{TemplateBinding InputBorderBrush}"
+                                                BorderThickness="1" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+                <Setter TargetName="PART_MiddleLength"
+                        Property="Background"
+                        Value="{Binding ElementName=PART_StartLength, Path=Background}" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+                <Setter TargetName="PART_MinValue"
+                        Property="IsReadOnly"
+                        Value="True" />
+                <Setter TargetName="PART_MaxValue"
+                        Property="IsReadOnly"
+                        Value="True" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="TwoSliderControlTemplate">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="PART_SliderMaxMin"
+                      Grid.Row="0"
+                      Width="{TemplateBinding Width}"
+                      Height="Auto">
+                    <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="{TemplateBinding MediumValue, Converter={StaticResource ValueToStringConverter}}"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                               HorizontalAlignment="Right" />
+                </Grid>
+                <Grid Grid.Row="1"
+                      Width="{TemplateBinding Width}"
+                      Background="Transparent">
+                    <Separator Grid.Column="1"
+                               Width="16"
+                               Height="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom">
+                        <Separator.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="90" />
+                                <TranslateTransform X="8"
+                                                    Y="2" />
+                            </TransformGroup>
+                        </Separator.RenderTransform>
+                    </Separator>
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Row="2"
+                      Background="Transparent"
+                      Width="{TemplateBinding Width}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="PART_StartLength"
+                                Grid.Column="0"
+                                Background="{TemplateBinding UnHighlightBackground}"
+                                Height="{TemplateBinding Thickness}"
+                                Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                        <Border x:Name="PART_MiddleLength"
+                                Grid.Column="1"
+                                Background="{TemplateBinding HighlightBackground}"
+                                Height="{TemplateBinding Thickness}"
+                                Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.1}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                        <Border x:Name="PART_EndLength"
+                                Grid.Column="2"
+                                Background="{TemplateBinding UnHighlightBackground}"
+                                Height="{TemplateBinding Thickness}"
+                                Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.4}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                        <Thumb x:Name="PART_StartThumb"
+                               Grid.Column="0"
+                               HorizontalAlignment="Right"
+                               Style="{TemplateBinding StartThumbStyle}"
+                               ToolTip="{TemplateBinding StartThumbToolTip}" />
+                        <Thumb x:Name="PART_EndThumb"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               Style="{TemplateBinding EndThumbStyle}"
+                               ToolTip="{TemplateBinding EndThumbToolTip}" />
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          Margin="0,5,0,0"
+                          Width="{TemplateBinding Width}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="PART_StartValueArea"
+                                Grid.Column="0"
+                                MaxWidth="{TemplateBinding Width}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                            <StackPanel Width="30"
+                                        Margin="-15,0,-15,0">
+                                <TextBlock x:Name="PART_StartLabel"
+                                           Text="{Binding Start, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                              RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <Border x:Name="PART_EndValueArea"
+                                Grid.Column="1"
+                                MaxWidth="{TemplateBinding Width}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                            <StackPanel Width="30"
+                                        Margin="-15,0,-15,0">
+                                <TextBlock Text="{Binding End, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                              RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+                <Setter TargetName="PART_MiddleLength"
+                        Property="Background"
+                        Value="{Binding ElementName=PART_StartLength, Path=Background}" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderControlTemplate">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="PART_SliderMaxMin"
+                      Grid.Row="0"
+                      Width="{TemplateBinding Width}"
+                      Height="Auto">
+                    <StackPanel Width="20"
+                                Margin="-10,0,0,0"
+                                HorizontalAlignment="Left">
+                        <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Width="40"
+                                Margin="0,0,-20,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <Border x:Name="PART_StartValueArea"
+                            Width="20"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Start, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                          RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </Border>
+
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Row="1"
+                      Background="Transparent"
+                      Width="{TemplateBinding Width}"
+                      Margin="0,0,0,0">
+                    <Border Grid.Column="0"
+                            Background="{TemplateBinding HighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                    <Border x:Name="PART_StartArea"
+                            HorizontalAlignment="Left"
+                            Grid.Column="0"
+                            IsHitTestVisible="False" />
+                    <Border x:Name="PART_EndArea"
+                            Width="Auto"
+                            Height="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Right"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding UnHighlightBackground}" />
+                    <Thumb x:Name="PART_StartThumb"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderControlStyle2Template">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="PART_SliderMinValue"
+                      Grid.Column="0"
+                      Width="Auto"
+                      Height="Auto">
+                    <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="{TemplateBinding FontSize}"
+                               FontStyle="{TemplateBinding FontStyle}"
+                               FontWeight="{TemplateBinding FontWeight}"
+                               Foreground="{TemplateBinding Foreground}"
+                               Margin="0,0,8,0" />
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Column="1"
+                      Background="Transparent"
+                      Margin="0,0,8,0">
+                    <Border Background="{TemplateBinding HighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center" />
+                    <Border x:Name="PART_StartArea"
+                            HorizontalAlignment="Left"
+                            IsHitTestVisible="False" />
+                    <Border x:Name="PART_EndArea"
+                            Width="Auto"
+                            Height="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Right"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding UnHighlightBackground}" />
+                    <Thumb x:Name="PART_StartThumb"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+                <Grid x:Name="PART_SliderMaxValue"
+                      Grid.Column="2"
+                      Width="Auto"
+                      Height="Auto">
+                    <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="{TemplateBinding FontSize}"
+                               FontStyle="{TemplateBinding FontStyle}"
+                               FontWeight="{TemplateBinding FontWeight}"
+                               Foreground="{TemplateBinding Foreground}" />
+                </Grid>
+
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderControlOnlyThumbTemplate">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Background="Transparent"
+                      Margin="0,0,8,0">
+                    <Border Background="Transparent"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding ActualWidth}"
+                            CornerRadius="1.5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                    <Border x:Name="PART_StartArea"
+                            HorizontalAlignment="Left"
+                            IsHitTestVisible="False"
+                            Height="{TemplateBinding Thickness}"
+                            Background="{TemplateBinding HighlightBackground}" />
+                    <Border x:Name="PART_EndArea"
+                            Width="Auto"
+                            Height="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Right"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding UnHighlightBackground}" />
+                    <Thumb x:Name="PART_StartThumb"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderControlVerticalTemplate">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding ActualWidth}"
+                Height="{TemplateBinding ActualHeight}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="PART_SliderMaxMin"
+                      Grid.Column="0"
+                      Height="{TemplateBinding ActualHeight}"
+                      Width="Auto"
+                      Margin="0,0,10,0"
+                      Visibility="{TemplateBinding ShowInputValue, Converter={StaticResource BoolToVis}}">
+                    <StackPanel Width="Auto"
+                                Height="20"
+                                Margin="0,0,0,-10"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom">
+                        <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Width="Auto"
+                                Height="20"
+                                Margin="0,-10,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top">
+                        <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Right"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <Border x:Name="PART_StartValueArea"
+                            Height="20"
+                            Width="Auto"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom">
+                        <TextBlock Text="{Binding Start, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                          RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </Border>
+
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Column="1"
+                      Background="Transparent"
+                      Height="{TemplateBinding ActualHeight}"
+                      Width="{TemplateBinding ActualWidth}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Top">
+                    <Border x:Name="PART_EndArea"
+                            Width="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding UnHighlightBackground}" />
+                    <Border x:Name="PART_StartArea"
+                            Width="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding HighlightBackground}" />
+                    <Thumb x:Name="PART_StartThumb"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderAndInputControlTemplateType2">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0"
+                      Margin="0,0,0,10"
+                      HorizontalAlignment="Right">
+                    <Control:TextBoxUpDownControl x:Name="PART_StartValue"
+                                                  Width="80"
+                                                  Height="25"
+                                                  Step="1"
+                                                  Minimum="0"
+                                                  Maximum="100"
+                                                  Value="{Binding Start, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                                  Style="{StaticResource TextBoxWithUpDownButtonStyle}"
+                                                  Foreground="{TemplateBinding Foreground}"
+                                                  FontSize="{TemplateBinding FontSize}"
+                                                  FontStyle="{TemplateBinding  FontStyle}"
+                                                  Background="{TemplateBinding InputBackground}"
+                                                  BorderBrush="{TemplateBinding InputBorderBrush}" />
+                </Grid>
+                <Grid x:Name="PART_SliderMaxMin"
+                      Grid.Row="1"
+                      Width="{TemplateBinding Width}"
+                      Height="Auto">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right">
+                        <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Text="{TemplateBinding MediumValue, Converter={StaticResource ValueToStringConverter}}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center" />
+                </Grid>
+                <Grid Grid.Row="2"
+                      Width="{TemplateBinding Width}"
+                      Height="Auto">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            Height="10">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0, 0"
+                                                 EndPoint="1, 0">
+                                <GradientStop x:Name="PART_TopGlowStop0"
+                                              Offset="0"
+                                              Color="Black" />
+                                <GradientStop x:Name="PART_TopGlowStop1"
+                                              Offset="1"
+                                              Color="White" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                    </Border>
+                    <Separator Width="8"
+                               Height="2"
+                               Background="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        <Separator.LayoutTransform>
+                            <RotateTransform Angle="90" />
+                        </Separator.LayoutTransform>
+                    </Separator>
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Row="3"
+                      Background="Transparent"
+                      Width="{TemplateBinding Width}"
+                      Margin="0,-1,0,0">
+                    <Border Grid.Column="0"
+                            Background="{TemplateBinding UnHighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                    <Border x:Name="PART_StartArea"
+                            HorizontalAlignment="Left"
+                            Grid.Column="0"
+                            IsHitTestVisible="False" />
+                    <Border x:Name="PART_EndArea"
+                            Width="Auto"
+                            Height="{TemplateBinding ThumbSize}"
+                            HorizontalAlignment="Right"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding HighlightBackground}" />
+                    <Thumb x:Name="PART_StartThumb"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+                <Setter TargetName="PART_EndArea"
+                        Property="Background"
+                        Value="Gray" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter TargetName="PART_StartValue"
+                        Property="IsReadOnly"
+                        Value="True" />
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderAndInputControlTemplateType1">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0"
+                      Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.2}"
+                      Margin="-10,16,20,0"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Left">
+                    <Control:TextBoxControl x:Name="PART_StartValue"
+                                            Height="25"
+                                            CornerRadius="2"
+                                            HorizontalContentAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            TextAlignment="Center"
+                                            Text="{Binding Start, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                   RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}"
+                                            Style="{StaticResource TextBoxWithPlaceHolderStyle}"
+                                            Validation.ErrorTemplate="{StaticResource ValidatedTextBoxTemplate}"
+                                            FontSize="{TemplateBinding FontSize}"
+                                            FontStyle="{TemplateBinding FontStyle}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            Background="{TemplateBinding InputBackground}"
+                                            BorderBrush="{TemplateBinding InputBorderBrush}"
+                                            BorderThickness="1" />
+                </Grid>
+                <Grid Grid.Column="1"
+                      Margin="-5,0,-5,0"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="PART_SliderMaxMin"
+                          Grid.Row="0"
+                          Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.8}"
+                          Height="Auto">
+                        <StackPanel HorizontalAlignment="Left">
+                            <TextBlock Text="{TemplateBinding Minimum, Converter={StaticResource ValueToStringConverter}}"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right">
+                            <TextBlock Text="{TemplateBinding Maximum, Converter={StaticResource ValueToStringConverter}}"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{TemplateBinding MediumValue, Converter={StaticResource ValueToStringConverter}}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center" />
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.8}"
+                          Height="Auto">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                Height="10">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0, 0"
+                                                     EndPoint="1, 0">
+                                    <GradientStop x:Name="PART_TopGlowStop0"
+                                                  Offset="0"
+                                                  Color="Black" />
+                                    <GradientStop x:Name="PART_TopGlowStop1"
+                                                  Offset="1"
+                                                  Color="White" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+
+                        </Border>
+                        <Separator Width="8"
+                                   Height="{TemplateBinding Thickness}"
+                                   Background="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <Separator.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </Separator.LayoutTransform>
+                        </Separator>
+                    </Grid>
+                    <Grid x:Name="PART_SliderContainer"
+                          Grid.Row="2"
+                          Background="Transparent"
+                          Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.8}"
+                          Margin="0,-1,0,0">
+                        <Border Grid.Column="0"
+                                Background="{TemplateBinding UnHighlightBackground}"
+                                Height="{TemplateBinding Thickness}"
+                                Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.8}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                        <Border x:Name="PART_StartArea"
+                                HorizontalAlignment="Left"
+                                Grid.Column="0"
+                                IsHitTestVisible="False" />
+                        <Border x:Name="PART_EndArea"
+                                Width="Auto"
+                                Height="{TemplateBinding ThumbSize}"
+                                HorizontalAlignment="Right"
+                                IsHitTestVisible="False"
+                                Background="{TemplateBinding HighlightBackground}" />
+                        <Thumb x:Name="PART_StartThumb"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left"
+                               Style="{TemplateBinding StartThumbStyle}"
+                               ToolTip="{TemplateBinding StartThumbToolTip}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+                <Setter TargetName="PART_EndArea"
+                        Property="Background"
+                        Value="Gray" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter TargetName="PART_StartValue"
+                        Property="IsReadOnly"
+                        Value="True" />
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="HueSliderTemplate">
+        <ControlTemplate.Resources>
+            <!--<LinearGradientBrush x:Key="SaturationGradientBrush" StartPoint="0, 0" EndPoint="1, 0">
+                <GradientStop Offset="0" Color="Gray" />
+                <GradientStop Offset="1" Color="Red" />
+            </LinearGradientBrush>-->
+            <LinearGradientBrush x:Key="ValueGradientBrush"
+                                 StartPoint="0, 0"
+                                 EndPoint="1, 0">
+                <GradientStop Offset="0"
+                              Color="Black" />
+                <GradientStop Offset="1"
+                              Color="White" />
+            </LinearGradientBrush>
+        </ControlTemplate.Resources>
+        <Grid Width="{TemplateBinding Width}">
+            <Grid Width="{TemplateBinding Width}"
+                  Height="10"
+                  Background="Transparent"
+                  VerticalAlignment="Top"
+                  x:Name="Border_SliderContainer">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="ColorRange"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        Height="10"
+                        CornerRadius="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="-1">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0, 0"
+                                             EndPoint="1, 0">
+                            <GradientStop Offset="0"
+                                          Color="#ff0000" />
+                            <GradientStop Offset="0.17"
+                                          Color="#ffff00" />
+                            <GradientStop Offset="0.34"
+                                          Color="#00ff00" />
+                            <GradientStop Offset="0.51"
+                                          Color="#00ffff" />
+                            <GradientStop Offset="0.68"
+                                          Color="#0000ff" />
+                            <GradientStop Offset="0.85"
+                                          Color="#ff00ff" />
+                            <GradientStop Offset="1"
+                                          Color="#ff0000" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Border x:Name="Border_StartLength"
+                        Grid.Column="0"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        BorderBrush="Aqua"
+                        BorderThickness="2"
+                        Height="10"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Visibility="{TemplateBinding BorderControlSliderVisible, Converter={StaticResource InvertBoolToVis},ConverterParameter=Inverted}" />
+                <Border x:Name="Border_MiddleLength"
+                        Grid.Column="1"
+                        Background="Transparent"
+                        Height="Auto"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.1}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Visibility="{TemplateBinding BorderControlSliderVisible, Converter={StaticResource InvertBoolToVis},ConverterParameter=Inverted}">
+                    <Grid>
+                        <Rectangle Height="17"
+                                   Width="2"
+                                   Fill="Transparent"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   Panel.ZIndex="1" />
+                        <Border   Width="{Binding ElementName=Border_MiddleLength, Path=Width}"
+                                  Height="9"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  x:Name="Border_InsideMiddleLength"
+                                  BorderBrush="Aqua"
+                                  Panel.ZIndex="0"
+                                  BorderThickness="2" />
+                    </Grid>
+                </Border>
+                <Border x:Name="Border_EndLength"
+                        Grid.Column="2"
+                        BorderBrush="Aqua"
+                        BorderThickness="2"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        Height="10"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Visibility="{TemplateBinding BorderControlSliderVisible, Converter={StaticResource InvertBoolToVis},ConverterParameter=Inverted}" />
+            </Grid>
+
+            <Grid x:Name="PART_SliderContainer"
+                  Background="Transparent"
+                  Width="{TemplateBinding Width}"
+                  Height="36"
+                  VerticalAlignment="Bottom"
+                  Visibility="{TemplateBinding BorderControlSliderVisible,Converter={StaticResource BoolToVis}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="18" />
+                    <RowDefinition Height="18" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="PART_StartLength"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        Height="8"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom" />
+                <Border x:Name="PART_MiddleLength"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Background="Transparent"
+                        Height="Auto"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.1}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom">
+                    <Grid>
+                        <Rectangle Height="17"
+                                   Width="2"
+                                   Fill="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   Panel.ZIndex="1" />
+                        <Rectangle Width="{Binding ElementName=PART_MiddleLength, Path=Width}"
+                                   Height="8"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Bottom"
+                                   Fill="{TemplateBinding HighlightBackground}"
+                                   Panel.ZIndex="0" />
+                    </Grid>
+                </Border>
+                <Border x:Name="PART_EndLength"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        Height="8"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom" />
+                <Thumb x:Name="PART_StartThumb"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Style="{TemplateBinding StartThumbStyle}"
+                       ToolTip="{TemplateBinding StartThumbToolTip}" />
+                <Thumb x:Name="PART_EndThumb"
+                       Grid.Row="0"
+                       Grid.Column="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Style="{TemplateBinding EndThumbStyle}"
+                       ToolTip="{TemplateBinding EndThumbToolTip}" />
+
+                <Grid Grid.Row="1"
+                      Grid.ColumnSpan="4">
+                    <TextBlock x:Name="PART_StartThumbValue"
+                               Text=""
+                               Foreground="White"
+                               HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock x:Name="PART_EndThumbValue"
+                               Text=""
+                               Foreground="White"
+                               HorizontalAlignment="Right"></TextBlock>
+                </Grid>
+
+                <Thumb x:Name="PART_StartThumbReverse"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Visibility="Collapsed"
+                       Background="{TemplateBinding UnHighlightBackground}"
+                       Style="{TemplateBinding EndThumbStyle}"
+                       ToolTip="{TemplateBinding StartThumbToolTip}">
+                </Thumb>
+                <Thumb x:Name="PART_EndThumbReverse"
+                       Grid.Row="0"
+                       Grid.Column="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Visibility="Collapsed"
+                       Background="{TemplateBinding UnHighlightBackground}"
+                       Style="{TemplateBinding StartThumbStyle}"
+                       ToolTip="{TemplateBinding EndThumbToolTip}">
+                </Thumb>
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+                <Setter TargetName="PART_MiddleLength"
+                        Property="Background"
+                        Value="{Binding ElementName=PART_StartLength, Path=Background}" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+            <Trigger Property="Tag"
+                     Value="Saturation">
+                <Setter TargetName="ColorRange"
+                        Property="Background"
+                        Value="{DynamicResource ResourceKey=SaturationGradientBrush}" />
+                <Setter TargetName="ColorRange"
+                        Property="Tag"
+                        Value="Red" />
+            </Trigger>
+            <Trigger Property="Tag"
+                     Value="Value">
+                <Setter TargetName="ColorRange"
+                        Property="Background"
+                        Value="{DynamicResource ResourceKey=ValueGradientBrush}" />
+            </Trigger>
+            <Trigger Property="IsReverse"
+                     Value="True">
+                <Setter TargetName="PART_StartThumbReverse"
+                        Property="Visibility"
+                        Value="Visible" />
+                <Setter TargetName="PART_EndThumbReverse"
+                        Property="Visibility"
+                        Value="Visible" />
+                <Setter TargetName="PART_StartThumb"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_EndThumb"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_MiddleLength"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_StartThumb"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_StartLength"
+                        Property="Background"
+                        Value="#a3a6b7" />
+                <Setter TargetName="PART_EndLength"
+                        Property="Background"
+                        Value="#a3a6b7" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="SaturationSliderTemplate">
+        <Grid Width="{TemplateBinding Width}">
+            <Grid Width="{TemplateBinding Width}"
+                  Height="10"
+                  Background="Transparent"
+                  VerticalAlignment="Top"
+                  x:Name="Border_SliderContainer">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="ColorRange"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        Height="10"
+                        CornerRadius="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Panel.ZIndex="-1">
+                    <Border.Background>
+                        <LinearGradientBrush x:Name="abc"
+                                             StartPoint="0, 0"
+                                             EndPoint="1, 0">
+                            <GradientStop Offset="0"
+                                          Color="Gray" />
+                            <GradientStop Offset="1"
+                                          Color="{Binding SliderProcessColor,Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type Control:SliderControl}}}" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Border x:Name="Border_StartLength"
+                        Grid.Column="0"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        BorderBrush="Aqua"
+                        Height="10"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Visibility="{TemplateBinding BorderControlSliderVisible, Converter={StaticResource InvertBoolToVis},ConverterParameter=Inverted}" />
+                <Border x:Name="Border_MiddleLength"
+                        Grid.Column="1"
+                        Background="Transparent"
+                        Height="Auto"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.1}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Visibility="{TemplateBinding BorderControlSliderVisible, Converter={StaticResource InvertBoolToVis},ConverterParameter=Inverted}">
+                    <Grid>
+                        <Rectangle Height="17"
+                                   Width="2"
+                                   Fill="Transparent"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   Panel.ZIndex="1" />
+                        <Border   Width="{Binding ElementName=Border_MiddleLength, Path=Width}"
+                                  Height="9"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  BorderBrush="Aqua"
+                                  Panel.ZIndex="0"
+                                  BorderThickness="2"
+                                  x:Name="Border_InsideMiddleLength" />
+                    </Grid>
+                </Border>
+                <Border x:Name="Border_EndLength"
+                        Grid.Column="2"
+                        BorderBrush="Aqua"
+                        BorderThickness="2"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        Height="10"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Visibility="{TemplateBinding BorderControlSliderVisible, Converter={StaticResource InvertBoolToVis},ConverterParameter=Inverted}" />
+            </Grid>
+            <Grid x:Name="PART_SliderContainer"
+                  Background="Transparent"
+                  Width="{TemplateBinding Width}"
+                  Height="36"
+                  VerticalAlignment="Bottom"
+                  HorizontalAlignment="Stretch"
+                  Visibility="{TemplateBinding BorderControlSliderVisible,Converter={StaticResource BoolToVis}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="18" />
+                    <RowDefinition Height="18" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="PART_StartLength"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        Height="8"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.5}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom" />
+                <Border x:Name="PART_MiddleLength"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Background="Transparent"
+                        Height="Auto"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.1}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom">
+                    <Grid>
+                        <Rectangle Height="17"
+                                   Width="2"
+                                   Fill="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   Panel.ZIndex="1" />
+                        <Rectangle Width="{Binding ElementName=PART_MiddleLength, Path=Width}"
+                                   Height="8"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Bottom"
+                                   Fill="{TemplateBinding HighlightBackground}"
+                                   Panel.ZIndex="0" />
+                    </Grid>
+                </Border>
+                <Border x:Name="PART_EndLength"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Background="{TemplateBinding UnHighlightBackground}"
+                        Height="8"
+                        Width="{TemplateBinding Width, Converter={StaticResource PercententageConvert}, ConverterParameter=0.4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom" />
+                <Thumb x:Name="PART_StartThumb"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Style="{TemplateBinding StartThumbStyle}"
+                       ToolTip="{TemplateBinding StartThumbToolTip}" />
+                <Thumb x:Name="PART_EndThumb"
+                       Grid.Row="0"
+                       Grid.Column="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Style="{TemplateBinding EndThumbStyle}"
+                       ToolTip="{TemplateBinding EndThumbToolTip}" />
+
+                <Grid Grid.Row="1"
+                      Grid.ColumnSpan="4">
+                    <TextBlock x:Name="PART_StartThumbValue"
+                               Text=""
+                               Foreground="White"
+                               HorizontalAlignment="Left"></TextBlock>
+                    <TextBlock x:Name="PART_EndThumbValue"
+                               Text=""
+                               Foreground="White"
+                               HorizontalAlignment="Right"></TextBlock>
+                </Grid>
+
+                <Thumb x:Name="PART_StartThumbReverse"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Visibility="Collapsed"
+                       Background="{TemplateBinding UnHighlightBackground}"
+                       Style="{TemplateBinding EndThumbStyle}"
+                       ToolTip="{TemplateBinding StartThumbToolTip}">
+                </Thumb>
+                <Thumb x:Name="PART_EndThumbReverse"
+                       Grid.Row="0"
+                       Grid.Column="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Visibility="Collapsed"
+                       Background="{TemplateBinding UnHighlightBackground}"
+                       Style="{TemplateBinding StartThumbStyle}"
+                       ToolTip="{TemplateBinding EndThumbToolTip}">
+                </Thumb>
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+                <Setter TargetName="PART_MiddleLength"
+                        Property="Background"
+                        Value="{Binding ElementName=PART_StartLength, Path=Background}" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+            <Trigger Property="IsReverse"
+                     Value="True">
+                <Setter TargetName="PART_StartThumbReverse"
+                        Property="Visibility"
+                        Value="Visible" />
+                <Setter TargetName="PART_EndThumbReverse"
+                        Property="Visibility"
+                        Value="Visible" />
+                <Setter TargetName="PART_StartThumb"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_EndThumb"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_MiddleLength"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_StartThumb"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="PART_StartLength"
+                        Property="Background"
+                        Value="#a3a6b7" />
+                <Setter TargetName="PART_EndLength"
+                        Property="Background"
+                        Value="#a3a6b7" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Control:SliderControl}"
+                     x:Key="OneSliderRangeControlTemplate">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="PART_SliderMinValue"
+                      Grid.Column="0"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="0 0 5 0">
+                    <Rectangle Width="10"
+                               Height="2"
+                               Fill="Gray"
+                               Stretch="Fill" />
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Column="1"
+                      Background="Transparent"
+                      Margin="0,0,8,0">
+                    <Border Background="{TemplateBinding HighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width}"
+                            HorizontalAlignment="Stretch"
+                            CornerRadius="2"
+                            VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Grid.Column="0"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="2"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="4"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="6"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="8"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+                    <Thumb x:Name="PART_StartThumb"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+                <Grid x:Name="PART_SliderMaxValue"
+                      Grid.Column="2"
+                      Width="Auto"
+                      Height="Auto">
+                    <Rectangle Width="10"
+                               Height="2"
+                               Fill="Gray"
+                               Stretch="Fill" />
+                    <Rectangle Width="2"
+                               Height="10"
+                               Fill="Gray"
+                               Stretch="Fill" />
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="TwoSliderAndInputStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="EndThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource TwoSliderControlHasInputTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="2" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+    </Style>
+
+    <Style x:Key="TwoSliderStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="EndThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource TwoSliderControlTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="2" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+    </Style>
+
+    <Style x:Key="OneSliderStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderControlTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+    </Style>
+
+    <Style x:Key="OneSliderStyle2"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderControlStyle2Template}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+        <Setter Property="ThumbSize"
+                Value="16" />
+        <Setter Property="ThicknessThumb"
+                Value="2" />
+    </Style>
+
+    <Style x:Key="OneSliderRange"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderRangeControlTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="HighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+        <Setter Property="ThumbSize"
+                Value="16" />
+        <Setter Property="ThicknessThumb"
+                Value="2" />
+    </Style>
+
+    <Style x:Key="OneSliderOnlyThumbStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle2}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderControlOnlyThumbTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+        <Setter Property="ThumbSize"
+                Value="16" />
+        <Setter Property="ThicknessThumb"
+                Value="2" />
+    </Style>
+
+    <Style x:Key="OneSliderAndInputType2"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderAndInputControlTemplateType2}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="LightGray" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+    </Style>
+
+    <Style x:Key="OneSliderAndInputType1"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderAndInputControlTemplateType1}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="LightGray" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+    </Style>
+
+    <Style x:Key="OneSliderVerticalStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderControlVerticalTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+        <Setter Property="ShowInputValue"
+                Value="False" />
+    </Style>
+
+    <Style x:Key="HueSliderStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource ColorRangeThumbLeftStyle}" />
+        <Setter Property="EndThumbStyle"
+                Value="{StaticResource ColorRangeThumbRightStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource HueSliderTemplate}" />
+        <Setter Property="SliderProcessColor"
+                Value="#31b800" />
+        <Setter Property="NumberSlider"
+                Value="2" />
+        <Setter Property="HighlightBackground"
+                Value="Blue" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+        <Setter Property="ShowInputValue"
+                Value="False" />
+    </Style>
+
+    <Style x:Key="SaturationSliderStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource ColorRangeThumbLeftStyle}" />
+        <Setter Property="EndThumbStyle"
+                Value="{StaticResource ColorRangeThumbRightStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource SaturationSliderTemplate}" />
+    </Style>
+
+    <Style x:Key="SliderRepeatButton"
+           TargetType="RepeatButton">
+        <Setter Property="Focusable"
+                Value="false" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Height="3"
+                            Background="#a7b300"
+                            BorderThickness="0">
+
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SliderThumbStyle1"
+           TargetType="Thumb">
+        <Setter Property="SnapsToDevicePixels"
+                Value="true" />
+        <Setter Property="OverridesDefaultStyle"
+                Value="true" />
+        <Setter Property="Height"
+                Value="15" />
+        <Setter Property="Width"
+                Value="15" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Grid   Width="{TemplateBinding Height}"
+                            Height="{TemplateBinding Height}"
+                            Background="Transparent">
+
+                        <Ellipse Name="EllipseMain"
+                                 Width="{TemplateBinding Height}"
+                                 Height="{TemplateBinding Height}"
+                                 Fill="#ffffff"
+                                 StrokeThickness="1"
+                                 Stroke="#8c8e95" />
+                        <Ellipse Name="CheckMark"
+                                 Canvas.Left="3.3"
+                                 Canvas.Top="3.5"
+                                 Opacity="2"
+                                 Fill="#202738"
+                                 Height="9"
+                                 Width="9" />
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SliderRepeatButton1"
+           TargetType="RepeatButton">
+        <Setter Property="Focusable"
+                Value="false" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Height="3"
+                            BorderThickness="0">
+                        <!--<Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="#0b0c11" Offset="0"/>
+                                    <GradientStop Color="#ffffff" Offset="1"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.Background>-->
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GrayScaleThresholdSlider1"
+           TargetType="Slider">
+        <Setter Property="OverridesDefaultStyle"
+                Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Slider">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"
+                                           Name="row" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*"
+                                              Name="column" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Name="PART_Border"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center">
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0"
+                                                     EndPoint="1,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Color="#0b0c11"
+                                                      Offset="0" />
+                                        <GradientStop Color="#ffffff"
+                                                      Offset="1" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                        </Border>
+
+                        <Track Name="PART_Track"
+                               Panel.ZIndex="1"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               Width="{TemplateBinding Width}"
+                               Height="{TemplateBinding Height}">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Style="{StaticResource SliderRepeatButton1}"
+                                              Command="Slider.DecreaseLarge" />
+                            </Track.DecreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource SliderThumbStyle1}" />
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Style="{StaticResource SliderRepeatButton}"
+                                              Command="Slider.IncreaseLarge" />
+                            </Track.IncreaseRepeatButton>
+                        </Track>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation"
+                                 Value="Vertical">
+                            <Setter TargetName="PART_Border"
+                                    Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter TargetName="PART_Border"
+                                    Property="VerticalAlignment"
+                                    Value="Stretch" />
+                            <Setter TargetName="PART_Track"
+                                    Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter TargetName="PART_Track"
+                                    Property="VerticalAlignment"
+                                    Value="Stretch" />
+                            <Setter TargetName="row"
+                                    Property="Height"
+                                    Value="*" />
+                            <Setter TargetName="column"
+                                    Property="Width"
+                                    Value="auto" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListofHorizotalTextBoxStyle"
+           TargetType="{x:Type ControlEx:ListofHorizotalTextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ControlEx:ListofHorizotalTextBox}">
+                    <Grid x:Name="ListText">
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListofVerticalTextBoxStyle"
+           TargetType="{x:Type ControlEx:ListofVerticalTextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ControlEx:ListofVerticalTextBox}">
+                    <Grid x:Name="ListText"
+                          Height="{TemplateBinding ActualHeight}">
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="OneSliderHorizontalStyle"
+           TargetType="{x:Type Control:SliderControl}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="StartThumbStyle"
+                Value="{StaticResource SliderThumbStyle}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Template"
+                Value="{StaticResource OneSliderHorizontalRangeControlTemplate}" />
+        <Setter Property="NumberSlider"
+                Value="1" />
+        <Setter Property="HighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="UnHighlightBackground"
+                Value="#878a9a" />
+        <Setter Property="InputBackground"
+                Value="#282e3e" />
+        <Setter Property="InputBorderBrush"
+                Value="#576077" />
+        <Setter Property="ShowInputValue"
+                Value="False" />
+    </Style>
+
+    <ControlTemplate x:Key="OneSliderHorizontalRangeControlTemplate"
+                     TargetType="{x:Type Control:SliderControl}">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Width="{TemplateBinding ActualWidth}"
+                Height="{TemplateBinding ActualHeight}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="PART_SliderMinValue"
+                      Grid.Column="0"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="0 0 0 0"
+                      Visibility="Collapsed">
+                    <Rectangle Width="10"
+                               Height="2"
+                               Fill="Gray"
+                               Stretch="Fill" />
+                </Grid>
+                <Grid x:Name="PART_SliderContainer"
+                      Grid.Column="1"
+                      Background="Transparent"
+                      Margin="0,0,8,0">
+                    <Border Background="{TemplateBinding HighlightBackground}"
+                            Height="{TemplateBinding Thickness}"
+                            Width="{TemplateBinding Width}"
+                            HorizontalAlignment="Stretch"
+                            CornerRadius="2"
+                            VerticalAlignment="Center">
+                        <Grid Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Grid.Column="0"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="2"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="4"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="6"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                            <Ellipse Grid.Column="8"
+                                     Width="{TemplateBinding Thickness}"
+                                     Height="{TemplateBinding Thickness}"
+                                     Fill="LightGray"
+                                     Stretch="Fill"
+                                     HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+                    <Border x:Name="PART_EndArea"
+                            Height="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding UnHighlightBackground}" />
+                    <Border x:Name="PART_StartArea"
+                            Height="{TemplateBinding Thickness}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            Background="{TemplateBinding HighlightBackground}" />
+                    <Thumb x:Name="PART_StartThumb"
+                           HorizontalAlignment="Left"
+                           Style="{TemplateBinding StartThumbStyle}"
+                           ToolTip="{TemplateBinding StartThumbToolTip}" />
+                </Grid>
+                <Grid x:Name="PART_SliderMaxValue"
+                      Grid.Column="2"
+                      Width="Auto"
+                      Height="Auto"
+                      Visibility="Collapsed">
+                    <Rectangle Width="10"
+                               Height="2"
+                               Fill="Gray"
+                               Stretch="Fill" />
+                    <Rectangle Width="2"
+                               Height="10"
+                               Fill="Gray"
+                               Stretch="Fill" />
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Opacity"
+                        Value="0.5" />
+            </Trigger>
+            <Trigger Property="IsReadOnly"
+                     Value="True">
+                <Setter Property="Opacity"
+                        Value="0.65" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+
+</ResourceDictionary>
