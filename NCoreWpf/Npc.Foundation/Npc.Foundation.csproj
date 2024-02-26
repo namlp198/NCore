@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0A0ACAB9-6C9E-4EBC-BCC2-D53ABA6B7DCE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Npc.Foundation</RootNamespace>
+    <AssemblyName>Npc.Foundation</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\Binaries\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\Solution\NpcSolution\packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\..\Libraries\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Solution\NpcSolution\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\Libraries\packages\NLog.5.2.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Prism">
+      <HintPath>..\..\Libraries\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Unity.Wpf">
+      <HintPath>..\..\Libraries\packages\Prism.Unity.8.1.97\lib\net47\Prism.Unity.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf">
+      <HintPath>..\..\Libraries\packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog">
+      <HintPath>..\..\Libraries\packages\Serilog.2.12.0\lib\net47\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Console">
+      <HintPath>..\..\Libraries\packages\Serilog.Sinks.Console.4.1.0\lib\net45\Serilog.Sinks.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File">
+      <HintPath>..\..\Libraries\packages\Serilog.Sinks.File.5.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\Solution\NpcSolution\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions">
+      <HintPath>..\..\Libraries\packages\Unity.Abstractions.5.11.7\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container">
+      <HintPath>..\..\Libraries\packages\Unity.Container.5.11.11\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\ModelBase.cs" />
+    <Compile Include="Base\PopupWindowBase.cs" />
+    <Compile Include="Base\PopupWindowBindableBase.cs" />
+    <Compile Include="Base\PopupWindowTitlebar.cs" />
+    <Compile Include="Base\ViewBase.cs" />
+    <Compile Include="Base\ViewModelBase.cs" />
+    <Compile Include="Command\BindingProxy.cs" />
+    <Compile Include="Command\StringToCommand.cs" />
+    <Compile Include="Converter\BooleanToVisibilityExConverter.cs" />
+    <Compile Include="Converter\BoolRadioConverter.cs" />
+    <Compile Include="Converter\CombiningConverter.cs" />
+    <Compile Include="Converter\DoubleToStringTwowayConverter.cs" />
+    <Compile Include="Converter\DoubleValueToIntConverter.cs" />
+    <Compile Include="Converter\DoubleValueToStringConverter.cs" />
+    <Compile Include="Converter\EnumConverter.cs" />
+    <Compile Include="Converter\EnumDescriptionConverter.cs" />
+    <Compile Include="Converter\EnumToBooleanConverter.cs" />
+    <Compile Include="Converter\HasChildrenToBooleanConverter.cs" />
+    <Compile Include="Converter\InvalidDoubleValueToZeroConverter.cs" />
+    <Compile Include="Converter\InvertBooleanConverter.cs" />
+    <Compile Include="Converter\ItemsControlSeqInSourceConverter.cs" />
+    <Compile Include="Converter\MathConverter.cs" />
+    <Compile Include="Converter\MultiBindingConverter.cs" />
+    <Compile Include="Converter\NotNullTrueConverter.cs" />
+    <Compile Include="Converter\NullToStringConverter.cs" />
+    <Compile Include="Converter\NullToTrueConverter.cs" />
+    <Compile Include="Converter\NullToVisibilityConverter.cs" />
+    <Compile Include="Converter\NullValueConverter.cs" />
+    <Compile Include="Converter\NumberOverflowToIndicatorConverter.cs" />
+    <Compile Include="Converter\NumberToLeftMarginConverter.cs" />
+    <Compile Include="Converter\ReverseBooleanToVisiblityConverter.cs" />
+    <Compile Include="Converter\StringToSolidColorBrushConverter.cs" />
+    <Compile Include="Converter\TabItemWidthStretchConverter.cs" />
+    <Compile Include="Converter\ValueToBooleanConverter.cs" />
+    <Compile Include="Data\DoubleRangeValue.cs" />
+    <Compile Include="Define\FoundationDefine.cs" />
+    <Compile Include="Define\FoundationEnvironment.cs" />
+    <Compile Include="Events\FoundationEventManager.cs" />
+    <Compile Include="Events\LoginUserChangedEvent.cs" />
+    <Compile Include="Events\LogViewEvent.cs" />
+    <Compile Include="Helper\CursorHelper.cs" />
+    <Compile Include="Helper\EnumHelper.cs" />
+    <Compile Include="Helper\PrismHelper.cs" />
+    <Compile Include="Helper\UnitHelper.cs" />
+    <Compile Include="Helper\VisualTreeHelperEx.cs" />
+    <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Logger\LoggerWrapper.cs" />
+    <Compile Include="Logger\LogHelper.cs" />
+    <Compile Include="Logger\LogHub.cs" />
+    <Compile Include="Logger\NLogger.cs" />
+    <Compile Include="Math\BasicMath.cs" />
+    <Compile Include="Math\IEEE754Util.cs" />
+    <Compile Include="Math\VectorEx.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shell\IShell.cs" />
+    <Compile Include="Shell\ShellMessageBoxParameters.cs" />
+    <Compile Include="User\UserInfoModel.cs" />
+    <Compile Include="Util\Bitmap\BitmapImageEx.cs" />
+    <Compile Include="Util\Bitmap\BitmapImageLoader.cs" />
+    <Compile Include="Util\ColorToHexStringUtil.cs" />
+    <Compile Include="Util\DataTableExtension.cs" />
+    <Compile Include="Util\DateUtil.cs" />
+    <Compile Include="Util\EnumUtil.cs" />
+    <Compile Include="Util\ExcelUtil.cs" />
+    <Compile Include="Util\ExtensionHelper.cs" />
+    <Compile Include="Util\JsonUtil.cs" />
+    <Compile Include="Util\LinqExtensions.cs" />
+    <Compile Include="Util\TextBlockExtension.cs" />
+    <Compile Include="Util\TypeConvertUtil.cs" />
+    <Compile Include="Util\User32Util.cs" />
+    <Compile Include="Util\XElementExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NLog.config" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
