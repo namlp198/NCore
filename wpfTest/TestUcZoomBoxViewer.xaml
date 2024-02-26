@@ -1,0 +1,45 @@
+﻿<Window x:Class="wpfTest.TestUcZoomBoxViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:NCore.Wpf.UcZoomBoxViewer;assembly=NCore.Wpf.UcZoomBoxViewer"
+        xmlns:local="clr-namespace:wpfTest"
+        mc:Ignorable="d"
+        Title="TestUcZoomBoxViewer" Height="450" Width="800"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Background="LightGray">
+            <Border Grid.Row="0">
+                <uc:UcZoomBoxViewer Name="ucZBViewer"/>
+            </Border>
+        </Grid>
+        <Grid Grid.Column="1"
+              Background="Beige">
+            <StackPanel Orientation="Vertical">
+                <Button Height="30"
+                        Margin="10"
+                        Background="DarkGreen"
+                        Foreground="White"
+                        FontWeight="SemiBold"
+                        Content="Load Image"
+                        FontSize="14"
+                        Click="Button_Click"/>
+                <Button Height="30"
+                        Margin="10"
+                        Background="OrangeRed"
+                        Foreground="White"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Content="Live"
+                        Name="btnLive"
+                        Click="btnLive_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
