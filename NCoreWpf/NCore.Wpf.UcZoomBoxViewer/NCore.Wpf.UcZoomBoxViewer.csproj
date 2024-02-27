@@ -52,9 +52,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>..\..\Libraries\packages\JetBrains.Annotations.2022.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="NpcCore.Wpf">
       <HintPath>..\Binaries\Release\NpcCore.Wpf.dll</HintPath>
     </Reference>

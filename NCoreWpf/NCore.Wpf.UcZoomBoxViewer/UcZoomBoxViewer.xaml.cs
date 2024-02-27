@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -27,100 +26,39 @@ namespace NCore.Wpf.UcZoomBoxViewer
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UcZoomBoxViewer : UserControl, INotifyPropertyChanged
+    public partial class UcZoomBoxViewer : UserControl
     {
-        private BitmapSource m_bmpSource;
-        private IntPtr m_bufferView = IntPtr.Zero;
-        BitmapPalette m_myPalette;
-        const int m_nBufferSize = 1280 * 1024 * 15;
-        const int m_nFrameWidth = 1280;
-        const int m_nFrameHeight = 1024;
+        private BitmapSource _ucBmpSource;
+        private IntPtr _bufferView = IntPtr.Zero;
+
+        int _frameWidth = 1280;
+        int _frameHeight = 1024;
         public UcZoomBoxViewer()
         {
             InitializeComponent();
-
-            // Try creating a new image with a custom palette.
-            List<System.Windows.Media.Color> colors = new List<System.Windows.Media.Color>();
-            colors.Add(System.Windows.Media.Colors.Red);
-            colors.Add(System.Windows.Media.Colors.Blue);
-            colors.Add(System.Windows.Media.Colors.Green);
-            m_myPalette = new BitmapPalette(colors);
         }
-        protected override void OnRender(DrawingContext dc)
-        {
-            //base.OnRender(dc);
-
-            if (BufferView == IntPtr.Zero)
-                return;
-
-            //Bitmap Canvas = new Bitmap(m_nFrameWidth, m_nFrameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
-            //BitmapData CanvasData = Canvas.LockBits(new System.Drawing.Rectangle(0, 0, m_nFrameWidth, m_nFrameHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
-
-            //unsafe
-            //{
-             
-            //    IntPtr Ptr = (IntPtr)CanvasData.Scan0.ToPointer();
-
-            //    for (int i = 0; i < m_nFrameHeight; i++)
-            //    {
-                  
-            //        CopyMemory((byte*)(Ptr + (i * m_nFrameWidth)), (byte*)(BufferView + (i * m_nFrameWidth)), m_nFrameWidth);
-            //    }
-            //    //Marshal.Copy(pBuffer + (i * nFrameWidth), nX, Ptr+(i * nViewWidth), nViewWidth);
-
-            //    Canvas.UnlockBits(CanvasData);
-
-            //    SetGrayscalePalette(Canvas);
-            //}
-
-            //Bitmap pImageBMP = Canvas;
-
-            //Rect rectView = new Rect(0, 0, this.ActualWidth, this.ActualHeight);
-            //dc.DrawImage(BitmapToImageSource(pImageBMP), rectView);
-            //Thread.Sleep(2);
-        }
+        
         public BitmapSource UcBmpSource
         {
-            get { return m_bmpSource; }
-            set
-            {
-                m_bmpSource = value;
-            }
+            get { return _ucBmpSource; }
+            set { _ucBmpSource = value; }
         }
         public IntPtr BufferView
         {
-            get { return m_bufferView; }
-            set 
-            {
-                if(Set(ref m_bufferView, value))
-                {
-                    if (m_bufferView == IntPtr.Zero)
-                        return;
+            get { return _bufferView; }
+            set { _bufferView = value; }
+        }
 
-                    Bitmap Canvas = new Bitmap(m_nFrameWidth, m_nFrameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
-                    BitmapData CanvasData = Canvas.LockBits(new System.Drawing.Rectangle(0, 0, m_nFrameWidth, m_nFrameHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
+        public int FrameWidth
+        {
+            get { return _frameWidth; }
+            set { _frameWidth = value; }
+        }
 
-                    unsafe
-                    {
-
-                        IntPtr Ptr = (IntPtr)CanvasData.Scan0.ToPointer();
-
-                        for (int i = 0; i < m_nFrameHeight; i++)
-                        {
-
-                            CopyMemory((byte*)(Ptr + (i * m_nFrameWidth)), (byte*)(BufferView + (i * m_nFrameWidth)), m_nFrameWidth);
-                        }
-                        //Marshal.Copy(pBuffer + (i * nFrameWidth), nX, Ptr+(i * nViewWidth), nViewWidth);
-
-                        Canvas.UnlockBits(CanvasData);
-
-                        SetGrayscalePalette(Canvas);
-                    }
-
-                    Bitmap pImageBMP = Canvas;
-                    imageViewer.Source = BitmapToImageSource(pImageBMP);
-                }
-            }
+        public int FrameHeight
+        {
+            get { return _frameHeight; }
+            set { _frameHeight = value; }
         }
 
         // KERNEL FUNCTIONS
@@ -129,7 +67,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
         [DllImport("kernel32.dll")]
         public extern static unsafe void CopyMemory(void* Destination, void* Source, int Length);
 
-        public static void SetGrayscalePalette(Bitmap Image)
+        public void SetGrayscalePalette(Bitmap Image)
         {
             ColorPalette GrayscalePalette = Image.Palette;
 
@@ -185,28 +123,60 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 return null;
             }
         }
+
+        public BitmapSource ToBitmapSource(System.Drawing.Bitmap bitmap)
+        {
+            BitmapData bitmapData = bitmap.LockBits(
+                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            BitmapSource bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                PixelFormats.Gray8, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+            return bitmapSource;
+        }
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected bool Set<T>(ref T field, T newValue = default(T), [CallerMemberName] string propertyName = null)
+        #region Methods
+        public void UpdateImage()
         {
-            if (EqualityComparer<T>.Default.Equals(field, newValue))
-            {
-                return false;
-            }
+            //Task task = new Task(() => 
+            //{
+                if (_bufferView == IntPtr.Zero)
+                    return;
 
-            field = newValue;
+                Bitmap Canvas = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
+                BitmapData CanvasData = Canvas.LockBits(new System.Drawing.Rectangle(0, 0, _frameWidth, _frameHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
 
-            OnPropertyChanged(propertyName);
+                unsafe
+                {
 
-            return true;
+                    IntPtr Ptr = (IntPtr)CanvasData.Scan0.ToPointer();
+
+                    for (int i = 0; i < _frameHeight; i++)
+                    {
+
+                        CopyMemory((byte*)(Ptr + (i * _frameWidth)), (byte*)(_bufferView + (i * _frameWidth)), _frameWidth);
+                    }
+
+                    Canvas.UnlockBits(CanvasData);
+
+                    SetGrayscalePalette(Canvas);
+                }
+
+                Bitmap pImageBMP = Canvas;
+                BitmapSource bmpSrc = BitmapToImageSource(pImageBMP);
+                bmpSrc.Freeze();
+                imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
+            //});
+
+            //task.Start();
+            //await task;
         }
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        #endregion
     }
 }
