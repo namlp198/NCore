@@ -154,5 +154,10 @@ namespace wpfTest
             }
         }
         #endregion
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            InterfaceManager.Instance.m_imageProcessorManager.Release();
+        }
     }
 }
