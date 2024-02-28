@@ -91,10 +91,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageProcessorDll.cs" />
     <Compile Include="InterfaceManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ImageProcessorDll.cs" />
     <Compile Include="ImageProcessorManager.cs" />
     <Compile Include="SimulationThread.cs" />
     <Compile Include="wfTestNViewer.cs">

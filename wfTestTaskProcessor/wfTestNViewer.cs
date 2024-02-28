@@ -72,10 +72,9 @@ namespace wfTestTaskProcessor
             btnFindLine.Enabled = true;
             btnLoadImage.Enabled = true;
             btnTrigger.Enabled = true;
+            btnLiveBaslerCam.Enabled = true;
 
             btnInit.Enabled = false;
-
-            timer_Cam_Live.Enabled = true;
         }
 
         private void timer_Cam_Live_Tick(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace wfTestTaskProcessor
             //nBufferViewer.SetViewIdx(m_nCamIdx);
 
             //nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBaslerCamBufferImage(m_nCamIdx);
-            nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBaslerCamBufferImage_New(m_nCamIdx);
+            nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(m_nCamIdx);
             nBufferViewer.SetViewIdx(m_nCamIdx);
         }
 
@@ -95,7 +94,15 @@ namespace wfTestTaskProcessor
 
         private void btnLiveBaslerCam_Click(object sender, EventArgs e)
         {
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabUsbCam(m_nCamIdx);
+            timer_Cam_Live.Enabled = true;
+        }
 
+        private void btnSingleGrab_Click(object sender, EventArgs e)
+        {
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.SingleGrabUsbCam(m_nCamIdx);
+            nBufferViewer.NpBuffer = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(m_nCamIdx);
+            nBufferViewer.SetViewIdx(m_nCamIdx);
         }
     }
 }

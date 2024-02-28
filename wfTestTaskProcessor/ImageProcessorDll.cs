@@ -134,6 +134,29 @@ namespace wfTestTaskProcessor
         #endregion
 
 
+        #region Method's Usb Camera
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static IntPtr GetUsbCamBufferImage(IntPtr imageProcessor, int nCamIdx);
+        public IntPtr GetUsbCamBufferImage(int nCamIdx) { return GetUsbCamBufferImage(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool StartGrabUsbCam(IntPtr imageProcessor, int nCamIdx);
+        public bool StartGrabUsbCam(int nCamIdx) { return StartGrabUsbCam(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool StopGrabUsbCam(IntPtr imageProcessor, int nCamIdx);
+        public bool StopGrabUsbCam(int nCamIdx) { return StopGrabUsbCam(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool SingleGrabUsbCam(IntPtr imageProcessor, int nCamIdx);
+        public bool SingleGrabUsbCam(int nCamIdx) { return SingleGrabUsbCam(m_ImageProcessor, nCamIdx); }
+        #endregion
+
+
         #region exchange data between the processes in program
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static bool GetInspectData(IntPtr imageProcessor, IntPtr inspectData);
