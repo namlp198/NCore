@@ -77,15 +77,17 @@ void CFramGrabber_UsbCam::SingleGrab()
 
 	// call interface func
 	CSingleLock lockBuffer(&m_MemberLock, TRUE);
-	cv::imwrite("test1.jpg", lastFrame);
+	//cv::imwrite("test1.jpg", lastFrame);
 	m_pCameraImageBuffer->SetFrameImage(0, lastFrame.data);
-	LPBYTE pBuffer2 = m_pCameraImageBuffer->GetBufferImage(0);
+	/*LPBYTE pBuffer2 = m_pCameraImageBuffer->GetBufferImage(0);
 	cv::Mat matCopy(m_dwFrameHeight, m_dwFrameWidth, CV_8UC3, pBuffer2);
-	cv::imwrite("test2.jpg", matCopy);
+	cv::imshow("test", matCopy);
+	cv::imwrite("test2.jpg", matCopy);*/
 	lockBuffer.Unlock();
 
 	lastFrame.release();
 }
+
 
 void CFramGrabber_UsbCam::Initialize()
 {
