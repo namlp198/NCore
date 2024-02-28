@@ -24,7 +24,8 @@ namespace wpfTest
         {
             this._frameWidth = frameWidth;
             this._frameHeight = frameHeight;
-            this._ucZb = ucZb;
+            //this._ucZb.FrameWidth = frameWidth;
+            //this._ucZb.FrameHeight = frameHeight;
         }
 
         public async Task Start()
@@ -43,7 +44,7 @@ namespace wpfTest
                 {
                     _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBaslerCamBufferImage_New(m_nCamIdx);
 
-                    _ucZb.UpdateImage();
+                    await _ucZb.UpdateImage();
 
                     await Task.Delay(33);
                 }

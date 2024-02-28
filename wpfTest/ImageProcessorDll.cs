@@ -92,11 +92,14 @@ namespace wfTestTaskProcessor
         public bool FindLineWithHoughLine_Simul(int top, int left, int width, int height, int nBuff) { return FindLineWithHoughLine_Simul(m_ImageProcessor, top, left, width, height, nBuff); }
 
 
+        #region Method's Hik Camera
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static IntPtr GetHikCamBufferImage(IntPtr imageProcessor, int nCamIdx);
         public IntPtr GetHikCamBufferImage(int nCamIdx) { return GetHikCamBufferImage(m_ImageProcessor, nCamIdx); }
+        #endregion
 
 
+        #region Method's Basler Camera Old
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static IntPtr GetBaslerCamBufferImage(IntPtr imageProcessor, int nCamIdx);
         public IntPtr GetBaslerCamBufferImage(int nCamIdx) { return GetBaslerCamBufferImage(m_ImageProcessor, nCamIdx); }
@@ -105,13 +108,56 @@ namespace wfTestTaskProcessor
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static bool LiveBaslerCam(IntPtr imageProcessor, int nCamIdx);
         public bool LiveBaslerCam(int nCamIdx) { return LiveBaslerCam(m_ImageProcessor, nCamIdx); }
+        #endregion
 
+
+        #region Method's Basler Camera New
 
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static IntPtr GetBaslerCamBufferImage_New(IntPtr imageProcessor, int nCamIdx);
         public IntPtr GetBaslerCamBufferImage_New(int nCamIdx) { return GetBaslerCamBufferImage_New(m_ImageProcessor, nCamIdx); }
 
 
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool StartGrabBaslerCam_New(IntPtr imageProcessor, int nCamIdx);
+        public bool StartGrabBaslerCam_New(int nCamIdx) { return StartGrabBaslerCam_New(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool StopGrabBaslerCam_New(IntPtr imageProcessor, int nCamIdx);
+        public bool StopGrabBaslerCam_New(int nCamIdx) { return StopGrabBaslerCam_New(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool SingleGrabBaslerCam_New(IntPtr imageProcessor, int nCamIdx);
+        public bool SingleGrabBaslerCam_New(int nCamIdx) { return SingleGrabBaslerCam_New(m_ImageProcessor, nCamIdx); }
+        #endregion
+
+
+        #region Method's Usb Camera
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static IntPtr GetUsbCamBufferImage(IntPtr imageProcessor, int nCamIdx);
+        public IntPtr GetUsbCamBufferImage(int nCamIdx) { return GetUsbCamBufferImage(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool StartGrabUsbCam(IntPtr imageProcessor, int nCamIdx);
+        public bool StartGrabUsbCam(int nCamIdx) { return StartGrabUsbCam(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool StopGrabUsbCam(IntPtr imageProcessor, int nCamIdx);
+        public bool StopGrabUsbCam(int nCamIdx) { return StopGrabUsbCam(m_ImageProcessor, nCamIdx); }
+
+
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+        extern private static bool SingleGrabUsbCam(IntPtr imageProcessor, int nCamIdx);
+        public bool SingleGrabUsbCam(int nCamIdx) { return SingleGrabUsbCam(m_ImageProcessor, nCamIdx); }
+        #endregion
+
+
+        #region exchange data between the processes in program
         [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
         extern private static bool GetInspectData(IntPtr imageProcessor, IntPtr inspectData);
         public bool GetInspectData(ref InspectResult inspectResult)
@@ -124,7 +170,7 @@ namespace wfTestTaskProcessor
             inspectResult = (InspectResult)Marshal.PtrToStructure(pPointer, typeof(InspectResult));
             return bRetValue;
         }
-
+        #endregion
 
         // KERNEL FUNCTIONS
         [DllImport("kernel32.dll")]

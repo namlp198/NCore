@@ -24,18 +24,18 @@ namespace wpfTest
         public StreamingCamAsync()
         {
             InitializeComponent();
+
             _cameraStreaming = new CameraStreaming(1280, 1024, ucZb: ucViewer);
         }
 
         private async void btnStreaming_Click(object sender, RoutedEventArgs e)
         {
-            InterfaceManager.Instance.m_imageProcessorManager.Initialize();
             await _cameraStreaming.Start();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            InterfaceManager.Instance.m_imageProcessorManager.Initialize();
         }
 
         private void Window_Closed(object sender, EventArgs e)
