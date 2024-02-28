@@ -24,20 +24,27 @@ using System.Windows.Shapes;
 
 namespace NCore.Wpf.UcZoomBoxViewer
 {
+    public enum ModeView { Mono, Color }
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
     public partial class UcZoomBoxViewer : UserControl
     {
+
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
-        int _frameWidth = 640;
-        int _frameHeight = 480;
+        private int _frameWidth = 640;
+        private int _frameHeight = 480;
 
-        BitmapPalette myPalette;
-        int _bufferSize;
-        int _stride;
+        private BitmapPalette _palette;
+        private int _bufferSize;
+        private int _stride;
+        private const int _resolutionX = 96;
+        private const int _resolutionY = 96;
+
+        private ModeView _eModeView = ModeView.Mono;
+
         public UcZoomBoxViewer()
         {
             InitializeComponent();
@@ -47,7 +54,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
             colors.Add(System.Windows.Media.Colors.Red);
             colors.Add(System.Windows.Media.Colors.Blue);
             colors.Add(System.Windows.Media.Colors.Green);
-            myPalette = new BitmapPalette(colors);
+            _palette = new BitmapPalette(colors);
 
             _bufferSize = _frameWidth * _frameHeight * 3;
             _stride = _frameWidth * 3;
@@ -74,6 +81,12 @@ namespace NCore.Wpf.UcZoomBoxViewer
         {
             get { return _frameHeight; }
             set { _frameHeight = value; }
+        }
+
+        public ModeView ModeView
+        {
+            get { return _eModeView; }
+            set { _eModeView = value; }
         }
 
         // KERNEL FUNCTIONS
@@ -164,33 +177,42 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 if (_bufferView == IntPtr.Zero)
                     return;
 
-                Bitmap Canvas = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                BitmapData CanvasData = Canvas.LockBits(new System.Drawing.Rectangle(0, 0, _frameWidth, _frameHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-                unsafe
+                if (_eModeView == ModeView.Mono)
                 {
+                    // create "empty" all zeros 24bpp bitmap object
+                    Bitmap bmp = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-                    IntPtr Ptr = (IntPtr)CanvasData.Scan0.ToPointer();
+                    // create rectangle and lock bitmap into system memory
+                    System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, _frameWidth, _frameHeight);
 
-                    for (int i = 0; i < _frameHeight; i++)
+                    BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.WriteOnly, bmp.PixelFormat);
+
+                    unsafe
                     {
+                        IntPtr Ptr = (IntPtr)bmpData.Scan0.ToPointer();
 
-                        CopyMemory((byte*)(Ptr + (i * _frameWidth)), (byte*)(_bufferView + (i * _frameWidth)), _frameWidth * 3);
+                        for (int i = 0; i < _frameHeight; i++)
+                        {
+
+                            CopyMemory((byte*)(Ptr + (i * _frameWidth)), (byte*)(_bufferView + (i * _frameWidth)), _frameWidth);
+                        }
+
+                        bmp.UnlockBits(bmpData);
+
+                        SetGrayscalePalette(bmp);
                     }
 
-                    Canvas.UnlockBits(CanvasData);
-
-                    //SetGrayscalePalette(Canvas);
+                    Bitmap pImageBMP = bmp;
+                    BitmapSource bmpSrc = BitmapToImageSource(pImageBMP);
+                    bmpSrc.Freeze();
+                    imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
                 }
-
-                Bitmap pImageBMP = Canvas;
-                BitmapSource bmpSrc = BitmapToImageSource(pImageBMP);
-                bmpSrc.Freeze();
-                imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
-
-                //BitmapSource bmpSrc = BitmapSource.Create(_frameWidth, _frameHeight, 96, 96, PixelFormats.Gray8, myPalette, _bufferView, _bufferSize, stride: _stride);
-                //bmpSrc.Freeze();
-                //imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
+                else if (_eModeView == ModeView.Color)
+                {
+                    BitmapSource bmpSrc = BitmapSource.Create(_frameWidth, _frameHeight, _resolutionX, _resolutionY, PixelFormats.Bgr24, _palette, _bufferView, _bufferSize, stride: _stride);
+                    bmpSrc.Freeze();
+                    imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
+                }
             });
 
             task.Start();
