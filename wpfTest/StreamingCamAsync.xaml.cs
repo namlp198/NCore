@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using wfTestTaskProcessor;
+using NCore.Wpf.UcZoomBoxViewer;
 
 namespace wpfTest
 {
@@ -26,7 +27,7 @@ namespace wpfTest
         {
             InitializeComponent();
 
-            _cameraStreaming = new CameraStreaming(640, 480, ucZb: ucViewer, _camIdx);
+            _cameraStreaming = new CameraStreaming(640, 480, ucZb: ucViewer, _camIdx, modeView: ModeView.Color);
         }
 
         private async void btnStreaming_Click(object sender, RoutedEventArgs e)

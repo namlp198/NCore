@@ -21,7 +21,7 @@ namespace wpfTest
         private Task _previewTask;
         private UcZoomBoxViewer _ucZb;
 
-        public CameraStreaming(int frameWidth, int frameHeight, UcZoomBoxViewer ucZb, int nCamIdx)
+        public CameraStreaming(int frameWidth, int frameHeight, UcZoomBoxViewer ucZb, int nCamIdx, ModeView modeView)
         {
             this._frameWidth = frameWidth;
             this._frameHeight = frameHeight;
@@ -29,6 +29,7 @@ namespace wpfTest
             this._camIdx = nCamIdx;
             this._ucZb.FrameWidth = frameWidth;
             this._ucZb.FrameHeight = frameHeight;
+            this._ucZb.ModeView = modeView;
         }
         public void SingleGrab()
         {
