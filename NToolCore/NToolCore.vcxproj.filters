@@ -114,9 +114,6 @@
     <ClInclude Include="Header\Camera\UsbCam\FrameGrabber_UsbCam.h">
       <Filter>Header Files\Tools\Camera\UsbCam</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Camera\UsbCam\FrameGrabberUsb.h">
-      <Filter>Header Files\Tools\Camera\UsbCam</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NToolCore.cpp">
@@ -174,9 +171,6 @@
       <Filter>Source Files\Tools\Camera\UsbCam</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Camera\UsbCam\FrameGrabber_UsbCam.cpp">
-      <Filter>Source Files\Tools\Camera\UsbCam</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Camera\UsbCam\FrameGrabberUsb.cpp">
       <Filter>Source Files\Tools\Camera\UsbCam</Filter>
     </ClCompile>
   </ItemGroup>

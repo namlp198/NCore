@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FrameGrabber_UsbCam.h"
 
-CFramGrabber_UsbCam::CFramGrabber_UsbCam(int nCamId, IFrameGrabberUsb2Parent* pIFGU2P) : CFrameGrabberUsb(nCamId, pIFGU2P)
+CFramGrabber_UsbCam::CFramGrabber_UsbCam(int nCamId)
 {
 	m_pCamera = new cv::VideoCapture;
 }
@@ -11,156 +11,133 @@ CFramGrabber_UsbCam::~CFramGrabber_UsbCam()
 	Disconnect();
 }
 
-int CFramGrabber_UsbCam::Connect(const CFrameGrabberUsbParam& grabberParam)
+bool CFramGrabber_UsbCam::Connect(int nId)
 {
-	m_GrabberUsbStatus.Reset();
-	CFrameGrabberUsbParam* pGrabberParamUsb = dynamic_cast<CFrameGrabberUsbParam*>(&m_GrabberUsbStatus);
-	*pGrabberParamUsb = grabberParam;
+	if (m_pCamera != NULL)
+		m_pCamera->open(nId);
 
-	int deviceCount = EnumerateDevices();
-	if (deviceCount == 0)
-		return 0;
-
-	for (int i = 0; i < deviceCount; i++)
+	if (m_pCamera->isOpened())
 	{
-		if (pGrabberParamUsb->GetParam_DeviceId() == m_vIdDevice[i])
-		{
-			if (m_pCamera != NULL)
-				m_pCamera->open(m_vIdDevice[i]);
-
-			if (m_pCamera->isOpened())
-				m_GrabberUsbStatus.SetStatus_Connected(1);
-		}
+		m_bConnected = true;
+		return true;
 	}
 }
 
-int CFramGrabber_UsbCam::Disconnect()
+bool CFramGrabber_UsbCam::Disconnect()
 {
 	if (m_pCamera != NULL)
 		m_pCamera->release();
-
+	m_bConnected = false;
 	delete m_pCamera;
 	m_pCamera = NULL;
-	return 1;
+	return true;
 }
 
-void CFramGrabber_UsbCam::StartContinuousGrab()
+void CFramGrabber_UsbCam::StartGrab()
 {
-	if (m_GrabberUsbStatus.GetStatus_Connected() == 0)
-	{
-		m_GrabberUsbStatus.SetStatus_Connected(0);
+	if (!m_bConnected)
 		return;
-	}
 
 	CSingleLock lockLocal(&m_MemberLock, TRUE);
-	m_bStartGrab = 1;
+	m_bGrabbing = 1;
 	lockLocal.Unlock();
 
-	m_GrabberUsbStatus.SetStatus_Grabbing(1);
-
-	while (m_bStartGrab)
+	cv::Mat lastFrame;
+	while (m_bGrabbing)
 	{
 		// Read next frame and save into m_pLastFrame
-		m_pCamera->read(*m_pLastFrame);
+		m_pCamera->read(lastFrame);
 
 		// check m_pLastFram is null
-		if (!m_pLastFrame->empty())
+		if (!lastFrame.empty())
 		{
 			// call interface func
 			CSingleLock lockBuffer(&m_MemberLock, TRUE);
-			int size = m_GrabberUsbStatus.GetParam_FrameWidth() * m_GrabberUsbStatus.GetParam_FrameHeight() * m_GrabberUsbStatus.GetParam_FrameChannels() * m_GrabberUsbStatus.GetParam_FrameCount();;
-			BYTE* pData = new BYTE[size];
-			memcpy(pData, m_pLastFrame->data, size);
-			IFGU2P_FrameGrabbed(0, pData, size);
+			m_pCameraImageBuffer->SetFrameImage(0, lastFrame.data);
 			lockBuffer.Unlock();
-
-			delete[] pData;
-			pData = NULL;
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(33));
 	}
-
 }
 
-void CFramGrabber_UsbCam::StopContinuousGrab()
+void CFramGrabber_UsbCam::StopGrab()
 {
-	if (m_GrabberUsbStatus.GetStatus_Connected() == 0)
-	{
-		m_GrabberUsbStatus.SetStatus_Connected(0);
-		return;
-	}
 	CSingleLock lockLocal(&m_MemberLock, TRUE);
-	m_bStartGrab = 0;
-	m_GrabberUsbStatus.SetStatus_Grabbing(0);
+	m_bGrabbing = 0;
 	lockLocal.Unlock();
 }
 
 void CFramGrabber_UsbCam::SingleGrab()
 {
-	if (m_GrabberUsbStatus.GetStatus_Connected() == 0)
-	{
-		m_GrabberUsbStatus.SetStatus_Connected(0);
+	if (!m_bConnected)
 		return;
-	}
-	m_pCamera->read(*m_pLastFrame);
+	cv::Mat lastFrame;
+	m_pCamera->read(lastFrame);
 
 	// call interface func
 	CSingleLock lockBuffer(&m_MemberLock, TRUE);
-	int size = m_GrabberUsbStatus.GetParam_FrameWidth() * m_GrabberUsbStatus.GetParam_FrameHeight() * m_GrabberUsbStatus.GetParam_FrameChannels() * m_GrabberUsbStatus.GetParam_FrameCount();;
-	BYTE* pData = new BYTE[size];
-	memcpy(pData, m_pLastFrame->data, size);
-	IFGU2P_FrameGrabbed(0, pData, size);
+	cv::imwrite("test1.jpg", lastFrame);
+	m_pCameraImageBuffer->SetFrameImage(0, lastFrame.data);
+	LPBYTE pBuffer2 = m_pCameraImageBuffer->GetBufferImage(0);
+	cv::Mat matCopy(m_dwFrameHeight, m_dwFrameWidth, CV_8UC3, pBuffer2);
+	cv::imwrite("test2.jpg", matCopy);
 	lockBuffer.Unlock();
 
-	delete[] pData;
-	pData = NULL;
+	lastFrame.release();
 }
 
-int CFramGrabber_UsbCam::GetConnected()
+void CFramGrabber_UsbCam::Initialize()
 {
-	if (m_pCamera == nullptr)
-	{
-		m_GrabberUsbStatus.SetStatus_Connected(0);
-		return 0;
-	}
+	CreateBuffer();
+}
 
-	bool bValue = m_pCamera->isOpened();
-	if (bValue)
+void CFramGrabber_UsbCam::Destroy()
+{
+	Disconnect();
+	if (m_pCameraImageBuffer != NULL)
 	{
-		m_GrabberUsbStatus.SetStatus_Connected(1);
-		return 1;
-	}
-	else{
-		m_GrabberUsbStatus.SetStatus_Connected(0);
-		return 0;
+		m_pCameraImageBuffer->DeleteSharedMemory();
+		delete m_pCameraImageBuffer;
+		m_pCameraImageBuffer = NULL;
 	}
 }
 
-int CFramGrabber_UsbCam::GetGrabbing()
+BOOL CFramGrabber_UsbCam::CreateBuffer()
 {
-	if (m_pCamera == nullptr)
+	BOOL bRetValue = FALSE;
+
+	if (m_pCameraImageBuffer != NULL)
 	{
-		m_GrabberUsbStatus.SetStatus_Connected(0);
-		return 0;
+		m_pCameraImageBuffer->DeleteSharedMemory();
+		delete m_pCameraImageBuffer;
+		m_pCameraImageBuffer = NULL;
 	}
-	return m_GrabberUsbStatus.GetStatus_Grabbing();
+
+	m_pCameraImageBuffer = new CSharedMemoryBuffer;
+	m_pCameraImageBuffer->SetFrameWidth(m_dwFrameWidth);
+	m_pCameraImageBuffer->SetFrameHeight(m_dwFrameHeight);
+	m_pCameraImageBuffer->SetFrameCount(m_dwFrameCount);
+	m_pCameraImageBuffer->SetFrameSize(m_dwFrameSize);
+
+	DWORD64 dw64Size = (DWORD64)m_dwFrameCount * m_dwFrameSize;
+
+	CString strMemory;
+	strMemory.Format(_T("%s_%d"), "Buffer_UsbCam");
+
+	bRetValue = m_pCameraImageBuffer->CreateSharedMemory(strMemory, dw64Size);
+
+	CString strLogMessage;
+	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(m_dwFrameSize * m_dwFrameCount)) / 1000000.0));
+
+	return TRUE;
 }
 
-int CFramGrabber_UsbCam::EnumerateDevices()
+LPBYTE CFramGrabber_UsbCam::GetBufferImage()
 {
-	DeviceEnumerator de;
-	std::map<int, Device> devices;
+	if (m_pCameraImageBuffer == NULL)
+		return NULL;
 
-	devices = de.getVideoDevicesMap();
-	for (auto const& device : devices)
-	{
-		m_GrabberUsbStatus.SetParam_DeviceId(device.first);
-		m_GrabberUsbStatus.SetParam_DeviceName(device.second.deviceName);
-		m_GrabberUsbStatus.SetParam_DevicePath(device.second.devicePath);
-
-		m_vIdDevice.push_back(device.first);
-	}
-	return m_vIdDevice.size();
+	return m_pCameraImageBuffer->GetBufferImage(0);
 }
 

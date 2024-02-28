@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -154,7 +154,6 @@
     <ClInclude Include="Header\Camera\Hik\FrameGrabber_MVS_GigE.h" />
     <ClInclude Include="Header\Camera\Hik\MvCamera.h" />
     <ClInclude Include="Header\Camera\UsbCam\DeviceEnumerator.h" />
-    <ClInclude Include="Header\Camera\UsbCam\FrameGrabberUsb.h" />
     <ClInclude Include="Header\Camera\UsbCam\FrameGrabber_UsbCam.h" />
     <ClInclude Include="Header\ThreadPool\PriorityThread.h" />
     <ClInclude Include="Header\ThreadPool\ThreadData.h" />
@@ -183,7 +182,6 @@
     <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber.cpp" />
     <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber_MVS.cpp" />
     <ClCompile Include="Tools\Camera\UsbCam\DeviceEnumerator.cpp" />
-    <ClCompile Include="Tools\Camera\UsbCam\FrameGrabberUsb.cpp" />
     <ClCompile Include="Tools\Camera\UsbCam\FrameGrabber_UsbCam.cpp" />
     <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp" />
     <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp" />
