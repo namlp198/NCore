@@ -168,7 +168,7 @@ bool StartGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx)
 	if (pUsbCam == NULL)
 		return false;
 
-	int retVal = pUsbCam->StartContinuousGrab(nCamIdx);
+	int retVal = pUsbCam->StartGrab(nCamIdx);
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }
@@ -182,7 +182,7 @@ bool StopGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx)
 	if (pUsbCam == NULL)
 		return false;
 
-	int retVal = pUsbCam->StopContinuousGrab(nCamIdx);
+	int retVal = pUsbCam->StopGrab(nCamIdx);
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }
