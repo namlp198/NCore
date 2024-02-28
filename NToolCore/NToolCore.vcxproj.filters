@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Tools\Camera\Basler">
       <UniqueIdentifier>{8dba0d62-981c-4cad-8a76-ecbcbe70228f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools\Camera\UsbCam">
+      <UniqueIdentifier>{8be3d52a-4401-4228-948d-ccca779d2d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera\UsbCam">
+      <UniqueIdentifier>{f4b7bf98-1841-4cbc-86ec-10af8b73cfc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -102,6 +108,15 @@
     <ClInclude Include="Header\Camera\Basler\FrameGrabber_BaslerCam_New.h">
       <Filter>Header Files\Tools\Camera\Basler</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Camera\UsbCam\DeviceEnumerator.h">
+      <Filter>Header Files\Tools\Camera\UsbCam</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Camera\UsbCam\FrameGrabber_UsbCam.h">
+      <Filter>Header Files\Tools\Camera\UsbCam</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Camera\UsbCam\FrameGrabberUsb.h">
+      <Filter>Header Files\Tools\Camera\UsbCam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NToolCore.cpp">
@@ -154,6 +169,15 @@
     </ClCompile>
     <ClCompile Include="Tools\Camera\Basler\FrameGrabber_BaslerCam_New.cpp">
       <Filter>Source Files\Tools\Camera\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\UsbCam\DeviceEnumerator.cpp">
+      <Filter>Source Files\Tools\Camera\UsbCam</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\UsbCam\FrameGrabber_UsbCam.cpp">
+      <Filter>Source Files\Tools\Camera\UsbCam</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Camera\UsbCam\FrameGrabberUsb.cpp">
+      <Filter>Source Files\Tools\Camera\UsbCam</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

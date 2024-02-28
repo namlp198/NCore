@@ -134,7 +134,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;..\Libraries\Camera_Basler\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;..\Libraries\Camera_Basler\include;..\NToolCore\Header\Camera\UsbCam;..\NToolCore;..\Libraries\opencv480_CUDA\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,6 +153,9 @@
     <ClInclude Include="Header\Camera\Hik\FrameGrabberParam.h" />
     <ClInclude Include="Header\Camera\Hik\FrameGrabber_MVS_GigE.h" />
     <ClInclude Include="Header\Camera\Hik\MvCamera.h" />
+    <ClInclude Include="Header\Camera\UsbCam\DeviceEnumerator.h" />
+    <ClInclude Include="Header\Camera\UsbCam\FrameGrabberUsb.h" />
+    <ClInclude Include="Header\Camera\UsbCam\FrameGrabber_UsbCam.h" />
     <ClInclude Include="Header\ThreadPool\PriorityThread.h" />
     <ClInclude Include="Header\ThreadPool\ThreadData.h" />
     <ClInclude Include="Header\ThreadPool\ThreadPool.h" />
@@ -179,6 +182,9 @@
     <ClCompile Include="Tools\Camera\Hik\MvCamera.cpp" />
     <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber.cpp" />
     <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber_MVS.cpp" />
+    <ClCompile Include="Tools\Camera\UsbCam\DeviceEnumerator.cpp" />
+    <ClCompile Include="Tools\Camera\UsbCam\FrameGrabberUsb.cpp" />
+    <ClCompile Include="Tools\Camera\UsbCam\FrameGrabber_UsbCam.cpp" />
     <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp" />
     <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="Tools\ThreadPool\TimerThreadPool.cpp" />
