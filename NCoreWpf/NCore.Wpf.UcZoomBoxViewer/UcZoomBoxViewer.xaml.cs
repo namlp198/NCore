@@ -16,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -31,11 +32,25 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
-        int _frameWidth = 1280;
-        int _frameHeight = 1024;
+        int _frameWidth = 640;
+        int _frameHeight = 480;
+
+        BitmapPalette myPalette;
+        int _bufferSize;
+        int _stride;
         public UcZoomBoxViewer()
         {
             InitializeComponent();
+
+            // Try creating a new image with a custom palette.
+            List<System.Windows.Media.Color> colors = new List<System.Windows.Media.Color>();
+            colors.Add(System.Windows.Media.Colors.Red);
+            colors.Add(System.Windows.Media.Colors.Blue);
+            colors.Add(System.Windows.Media.Colors.Green);
+            myPalette = new BitmapPalette(colors);
+
+            _bufferSize = _frameWidth * _frameHeight * 3;
+            _stride = _frameWidth * 3;
         }
         
         public BitmapSource UcBmpSource
@@ -149,8 +164,8 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 if (_bufferView == IntPtr.Zero)
                     return;
 
-                Bitmap Canvas = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
-                BitmapData CanvasData = Canvas.LockBits(new System.Drawing.Rectangle(0, 0, _frameWidth, _frameHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
+                Bitmap Canvas = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                BitmapData CanvasData = Canvas.LockBits(new System.Drawing.Rectangle(0, 0, _frameWidth, _frameHeight), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
                 unsafe
                 {
@@ -160,18 +175,22 @@ namespace NCore.Wpf.UcZoomBoxViewer
                     for (int i = 0; i < _frameHeight; i++)
                     {
 
-                        CopyMemory((byte*)(Ptr + (i * _frameWidth)), (byte*)(_bufferView + (i * _frameWidth)), _frameWidth);
+                        CopyMemory((byte*)(Ptr + (i * _frameWidth)), (byte*)(_bufferView + (i * _frameWidth)), _frameWidth * 3);
                     }
 
                     Canvas.UnlockBits(CanvasData);
 
-                    SetGrayscalePalette(Canvas);
+                    //SetGrayscalePalette(Canvas);
                 }
 
                 Bitmap pImageBMP = Canvas;
                 BitmapSource bmpSrc = BitmapToImageSource(pImageBMP);
                 bmpSrc.Freeze();
                 imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
+
+                //BitmapSource bmpSrc = BitmapSource.Create(_frameWidth, _frameHeight, 96, 96, PixelFormats.Gray8, myPalette, _bufferView, _bufferSize, stride: _stride);
+                //bmpSrc.Freeze();
+                //imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
             });
 
             task.Start();
