@@ -142,10 +142,10 @@ namespace NCore.Wpf.UcZoomBoxViewer
         #endregion
 
         #region Methods
-        public void UpdateImage()
+        public async Task UpdateImage()
         {
-            //Task task = new Task(() => 
-            //{
+            Task task = new Task(() =>
+            {
                 if (_bufferView == IntPtr.Zero)
                     return;
 
@@ -172,10 +172,10 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 BitmapSource bmpSrc = BitmapToImageSource(pImageBMP);
                 bmpSrc.Freeze();
                 imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
-            //});
+            });
 
-            //task.Start();
-            //await task;
+            task.Start();
+            await task;
         }
         #endregion
     }
