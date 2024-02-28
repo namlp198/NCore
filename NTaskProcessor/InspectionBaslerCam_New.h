@@ -32,6 +32,11 @@ public:
 	virtual int		IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize);
 	virtual int		IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize);
 
+public:
+	int StartGrab(int nCamIdx);
+	int SingleGrab(int nCamIdx);
+	int StopGrab(int nCamIdx);
+
 private:
 	// Area Camera
 	BOOL							         m_bCamera_ConnectStatus[MAX_CAMERA_COUNT];

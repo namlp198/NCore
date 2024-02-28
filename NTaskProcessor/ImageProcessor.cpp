@@ -193,6 +193,15 @@ BOOL ImageProcessor::Initialize()
 	m_pInspBaslerCam_New = new CInspectionBaslerCam_New;
 	m_pInspBaslerCam_New->Initialize();
 
+	// Inspection Usb Camera
+	/*if (m_pInspUsbCam != NULL)
+	{
+		m_pInspUsbCam->Destroy();
+		delete m_pInspUsbCam, m_pInspUsbCam = NULL;
+	}
+	m_pInspUsbCam = new CInspectionUsbCam;
+	m_pInspUsbCam->Initialize();*/
+
 	return TRUE;
 }
 
@@ -227,6 +236,13 @@ BOOL ImageProcessor::Destroy()
 		m_pInspBaslerCam_New->Destroy();
 		delete m_pInspBaslerCam_New;
 		m_pInspBaslerCam_New = NULL;
+	}
+
+	if (m_pInspUsbCam != NULL)
+	{
+		m_pInspUsbCam->Destroy();
+		delete m_pInspUsbCam;
+		m_pInspUsbCam = NULL;
 	}
 
 	return TRUE;

@@ -117,6 +117,90 @@ bool LiveBaslerCam(ImageProcessor* pProcessor, int nCamIdx)
 	else                    return true;
 }
 
+bool StartGrabBaslerCam_New(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionBaslerCam_New* pBaslerCam_New = pProcessor->GetBaslerCamControl_New();
+	if (pBaslerCam_New == NULL)
+		return false;
+
+	int retVal = pBaslerCam_New->StartGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool StopGrabBaslerCam_New(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionBaslerCam_New* pBaslerCam_New = pProcessor->GetBaslerCamControl_New();
+	if (pBaslerCam_New == NULL)
+		return false;
+
+	int retVal = pBaslerCam_New->StopGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool SingleGrabBaslerCam_New(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionBaslerCam_New* pBaslerCam_New = pProcessor->GetBaslerCamControl_New();
+	if (pBaslerCam_New == NULL)
+		return false;
+
+	int retVal = pBaslerCam_New->SingleGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool StartGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionUsbCam* pUsbCam = pProcessor->GetUsbCamControl();
+	if (pUsbCam == NULL)
+		return false;
+
+	int retVal = pUsbCam->StartContinuousGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool StopGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionUsbCam* pUsbCam = pProcessor->GetUsbCamControl();
+	if (pUsbCam == NULL)
+		return false;
+
+	int retVal = pUsbCam->StopContinuousGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool SingleGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectionUsbCam* pUsbCam = pProcessor->GetUsbCamControl();
+	if (pUsbCam == NULL)
+		return false;
+
+	int retVal = pUsbCam->SingleGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
 BYTE* GetBaslerCamBufferImage_New(ImageProcessor* pProcessor, int nCamIdx)
 {
 	if (pProcessor == NULL)
@@ -126,6 +210,18 @@ BYTE* GetBaslerCamBufferImage_New(ImageProcessor* pProcessor, int nCamIdx)
 	if (pBaslerCam_New == NULL)
 		return NULL;
 	return pBaslerCam_New->GetBufferImage(nCamIdx);
+}
+
+BYTE* GetUsbCamBufferImage(ImageProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	CInspectionUsbCam* pUsbCam = pProcessor->GetUsbCamControl();
+	if (pUsbCam == NULL)
+		return NULL;
+
+	return pUsbCam->GetBufferImage(nCamIdx);
 }
 
 

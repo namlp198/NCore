@@ -66,8 +66,8 @@ BOOL InspectionHikCam::Initialize()
 			if (m_nCamera[i]->Connect(grabberParam[i]) != 1)
 				m_bCamera_ConnectStatus[i] = FALSE;
 
-			if (m_nCamera[i]->StartGrab() != 1)
-				m_bCamera_ConnectStatus[i] = FALSE;
+			/*if (m_nCamera[i]->StartGrab() != 1)
+				m_bCamera_ConnectStatus[i] = FALSE;*/
 			else
 				m_bCamera_ConnectStatus[i] = TRUE;
 

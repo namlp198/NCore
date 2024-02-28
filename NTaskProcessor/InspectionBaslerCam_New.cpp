@@ -66,8 +66,8 @@ BOOL CInspectionBaslerCam_New::Initialize()
 			if (m_nCamera[i]->Connect(grabberParam[i]) != 1)
 				m_bCamera_ConnectStatus[i] = FALSE;
 
-			if (m_nCamera[i]->StartGrab() != 1)
-				m_bCamera_ConnectStatus[i] = FALSE;
+			/*if (m_nCamera[i]->StartGrab() != 1)
+				m_bCamera_ConnectStatus[i] = FALSE;*/
 			else
 				m_bCamera_ConnectStatus[i] = TRUE;
 
@@ -200,4 +200,37 @@ int CInspectionBaslerCam_New::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIn
 int CInspectionBaslerCam_New::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)
 {
 	return -1;
+}
+
+int CInspectionBaslerCam_New::StartGrab(int nCamIdx)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_nCamera[nCamIdx] == NULL)
+		return 0;
+
+	return m_nCamera[nCamIdx]->StartGrab();
+}
+
+int CInspectionBaslerCam_New::SingleGrab(int nCamIdx)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_nCamera[nCamIdx] == NULL)
+		return 0;
+
+	return m_nCamera[nCamIdx]->SingleGrab();
+}
+
+int CInspectionBaslerCam_New::StopGrab(int nCamIdx)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_nCamera[nCamIdx] == NULL)
+		return 0;
+
+	return m_nCamera[nCamIdx]->StopGrab();
 }
