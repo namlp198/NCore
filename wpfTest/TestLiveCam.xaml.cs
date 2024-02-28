@@ -82,6 +82,7 @@ namespace wpfTest
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             InterfaceManager.Instance.m_imageProcessorManager.Initialize();
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabBaslerCam_New(m_nCamIdx);
             m_time.Start();
         }
 

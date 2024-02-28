@@ -21,15 +21,17 @@ namespace wpfTest
     public partial class StreamingCamAsync : Window
     {
         private CameraStreaming _cameraStreaming;
+        private int _camIdx = 0;
         public StreamingCamAsync()
         {
             InitializeComponent();
 
-            _cameraStreaming = new CameraStreaming(1280, 1024, ucZb: ucViewer);
+            _cameraStreaming = new CameraStreaming(640, 480, ucZb: ucViewer, _camIdx);
         }
 
         private async void btnStreaming_Click(object sender, RoutedEventArgs e)
         {
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabUsbCam(_camIdx);
             await _cameraStreaming.Start();
         }
 
@@ -45,7 +47,14 @@ namespace wpfTest
 
         private async void btnStopStreaming_Click(object sender, RoutedEventArgs e)
         {
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StopGrabUsbCam(_camIdx);
             await _cameraStreaming.Stop();
+        }
+
+        private void btnTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.SingleGrabUsbCam(_camIdx);
+            _cameraStreaming.SingleGrab();
         }
     }
 }

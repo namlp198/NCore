@@ -28,7 +28,8 @@
                     FontSize="16"
                     FontWeight="SemiBold"
                     Content="Trigger"
-                    Name="btnTrigger"/>
+                    Name="btnTrigger"
+                    Click="btnTrigger_Click"/>
             <Button Margin="3"
                     Grid.Column="1"
                     Background="Green"

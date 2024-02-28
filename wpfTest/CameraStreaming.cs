@@ -1,4 +1,5 @@
 ﻿using NCore.Wpf.UcZoomBoxViewer;
+using NpcCore.Wpf.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace wpfTest
 {
     public class CameraStreaming : IDisposable
     {
-        private int m_nCamIdx = 0;
+        private int _camIdx = 0;
 
         private readonly int _frameWidth;
         private readonly int _frameHeight;
@@ -20,14 +21,23 @@ namespace wpfTest
         private Task _previewTask;
         private UcZoomBoxViewer _ucZb;
 
-        public CameraStreaming(int frameWidth, int frameHeight, UcZoomBoxViewer ucZb)
+        public CameraStreaming(int frameWidth, int frameHeight, UcZoomBoxViewer ucZb, int nCamIdx)
         {
             this._frameWidth = frameWidth;
             this._frameHeight = frameHeight;
-            //this._ucZb.FrameWidth = frameWidth;
-            //this._ucZb.FrameHeight = frameHeight;
+            this._ucZb = ucZb;
+            this._camIdx = nCamIdx;
+            this._ucZb.FrameWidth = frameWidth;
+            this._ucZb.FrameHeight = frameHeight;
         }
-
+        public void SingleGrab()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(_camIdx);
+                await _ucZb.UpdateImage();
+            });
+        }
         public async Task Start()
         {
             // Never run two parallel tasks for the webcam streaming
@@ -42,7 +52,7 @@ namespace wpfTest
             {
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
-                    _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBaslerCamBufferImage_New(m_nCamIdx);
+                    _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(_camIdx);
 
                     await _ucZb.UpdateImage();
 
