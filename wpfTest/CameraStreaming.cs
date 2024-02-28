@@ -53,6 +53,7 @@ namespace wpfTest
             {
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
+                    InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.SingleGrabUsbCam(_camIdx);
                     _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(_camIdx);
 
                     await _ucZb.UpdateImage();

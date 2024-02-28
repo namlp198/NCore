@@ -32,7 +32,7 @@ namespace wpfTest
 
         private async void btnStreaming_Click(object sender, RoutedEventArgs e)
         {
-            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabUsbCam(_camIdx);
+            //InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabUsbCam(_camIdx);
             await _cameraStreaming.Start();
         }
 
