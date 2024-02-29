@@ -201,6 +201,16 @@ bool SingleGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx)
 	else if (retVal == 1) return true;
 }
 
+void ShowLogView(ImageProcessor* pProcessor, int bShow)
+{
+	if (pProcessor == NULL)
+		return;
+
+	BOOL bShowWnd = (bShow == 0) ? FALSE : TRUE;
+
+	pProcessor->ShowLogView(bShowWnd);
+}
+
 BYTE* GetBaslerCamBufferImage_New(ImageProcessor* pProcessor, int nCamIdx)
 {
 	if (pProcessor == NULL)

@@ -14,6 +14,20 @@
 //#include <afxstr.h>
 #include <afxmt.h>
 #include <cstringt.h>
+#include <afxwin.h>
+#include <afxext.h>
+#include <windef.h>
+// Warning
+#pragma warning (disable : 4819)
+#pragma warning (disable : 4005)
+#pragma warning (disable : 4996)
+
+// Resource
+#include "resource.h"
+
+#include <gdiplus.h>
+using namespace Gdiplus;
+#pragma comment(lib, "gdiplus")
 
 #ifdef _DEBUG
 #pragma comment(lib, "opencv_core480d.lib")

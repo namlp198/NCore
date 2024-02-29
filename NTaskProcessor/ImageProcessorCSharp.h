@@ -41,4 +41,7 @@ extern "C"
 	__declspec(dllexport) bool               StopGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx);
 
 	__declspec(dllexport) bool               SingleGrabUsbCam(ImageProcessor* pProcessor, int nCamIdx);
+
+	// Show log view
+	__declspec(dllexport) void				 ShowLogView(ImageProcessor* pProcessor, int bShow);
 };

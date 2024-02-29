@@ -16,6 +16,9 @@
     <Filter Include="ImageProcessor">
       <UniqueIdentifier>{41d5ce63-eec9-413c-ae99-188f639d5fab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{092c3e91-7b4e-46c0-8497-8dc02d84aee0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +51,9 @@
     <ClInclude Include="InspectionUsbCam.h">
       <Filter>ImageProcessor</Filter>
     </ClInclude>
+    <ClInclude Include="LogView.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -76,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="InspectionUsbCam.cpp">
       <Filter>ImageProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="LogView.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
