@@ -12,6 +12,9 @@
 #pragma comment(lib, "opencv_ccalib480d.lib")
 #pragma comment(lib, "opencv_calib3d480d.lib")
 #pragma comment(lib, "opencv_aruco480d.lib")
+
+#pragma comment(lib, "NCvToolCore_Debug64.lib")
+
 #else
 #pragma comment(lib, "opencv_core480.lib")
 #pragma comment(lib, "opencv_features2d480.lib")

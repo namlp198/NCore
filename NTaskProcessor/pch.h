@@ -28,6 +28,20 @@
 #pragma comment(lib, "opencv_ccalib480d.lib")
 #pragma comment(lib, "opencv_calib3d480d.lib")
 #pragma comment(lib, "opencv_aruco480d.lib")
+
+#pragma comment(lib, "NCvToolCore_Debug64.lib")
+#pragma comment(lib, "NToolCore_Debug64.lib")
+#pragma comment(lib, "MvCameraControl.lib")
+
+#pragma comment(lib, "GCBase_MD_VC141_v3_1_Basler_pylon.lib")
+#pragma comment(lib, "GenApi_MD_VC141_v3_1_Basler_pylon.lib")
+#pragma comment(lib, "PylonBase_v7_4.lib")
+#pragma comment(lib, "PylonC.lib")
+#pragma comment(lib, "PylonC_v7_4.lib")
+#pragma comment(lib, "PylonDataProcessing_v1_3.lib")
+#pragma comment(lib, "PylonGUI_v7_4.lib")
+#pragma comment(lib, "PylonUtility_v7_4.lib")
+
 #else
 #pragma comment(lib, "opencv_core480.lib")
 #pragma comment(lib, "opencv_features2d480.lib")
