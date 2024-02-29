@@ -1,17 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace NpcCore.Wpf.Controls
 {
-    public class ImageExt : Image
+    public class ImageExt : Image, INotifyPropertyChanged
     {
+        #region Implement Property Changed
+        //
+        // Summary:
+        //     Occurs when a property value changes.
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //
+        // Summary:
+        //     Checks if a property already matches a desired value. Sets the property and notifies
+        //     listeners only when necessary.
+        //
+        // Parameters:
+        //   storage:
+        //     Reference to a property with both getter and setter.
+        //
+        //   value:
+        //     Desired value for the property.
+        //
+        //   propertyName:
+        //     Name of the property used to notify listeners. This value is optional and can
+        //     be provided automatically when invoked from compilers that support CallerMemberName.
+        //
+        // Type parameters:
+        //   T:
+        //     Type of the property.
+        //
+        // Returns:
+        //     True if the value was changed, false if the existing value matched the desired
+        //     value.
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            RaisePropertyChanged(propertyName);
+            return true;
+        }
+        //
+        // Summary:
+        //     Checks if a property already matches a desired value. Sets the property and notifies
+        //     listeners only when necessary.
+        //
+        // Parameters:
+        //   storage:
+        //     Reference to a property with both getter and setter.
+        //
+        //   value:
+        //     Desired value for the property.
+        //
+        //   propertyName:
+        //     Name of the property used to notify listeners. This value is optional and can
+        //     be provided automatically when invoked from compilers that support CallerMemberName.
+        //
+        //   onChanged:
+        //     Action that is called after the property value has been changed.
+        //
+        // Type parameters:
+        //   T:
+        //     Type of the property.
+        //
+        // Returns:
+        //     True if the value was changed, false if the existing value matched the desired
+        //     value.
+        protected virtual bool SetProperty<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            onChanged?.Invoke();
+            RaisePropertyChanged(propertyName);
+            return true;
+        }
+        //
+        // Summary:
+        //     Raises this object's PropertyChanged event.
+        //
+        // Parameters:
+        //   propertyName:
+        //     Name of the property used to notify listeners. This value is optional and can
+        //     be provided automatically when invoked from compilers that support System.Runtime.CompilerServices.CallerMemberNameAttribute.
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+        //
+        // Summary:
+        //     Raises this object's PropertyChanged event.
+        //
+        // Parameters:
+        //   args:
+        //     The PropertyChangedEventArgs
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            this.PropertyChanged?.Invoke(this, args);
+        }
+        #endregion
+
         AnchorPoint _dragAnchor = AnchorPoint.None;
         HitType _mouseHitType = HitType.None;
 
@@ -23,9 +130,9 @@ namespace NpcCore.Wpf.Controls
         double _thicknessPen = 0.5;
         #endregion
 
-        #region Routed Event
-        public static readonly RoutedEvent GetROIEvent = EventManager.RegisterRoutedEvent(
-            "GetROI",
+        #region Event
+        public static readonly RoutedEvent SelectedROIEvent = EventManager.RegisterRoutedEvent(
+            "SelectedROI",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(ImageExt));
@@ -35,21 +142,16 @@ namespace NpcCore.Wpf.Controls
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(ImageExt));
-        public static readonly RoutedEvent FitEvent = EventManager.RegisterRoutedEvent(
-            "Fit",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(ImageExt));
-
-        public event RoutedEventHandler GetROI
+   
+        public event RoutedEventHandler SelectedROI
         {
             add
             {
-                base.AddHandler(GetROIEvent, value);
+                base.AddHandler(SelectedROIEvent, value);
             }
             remove
             {
-                base.RemoveHandler(GetROIEvent, value);
+                base.RemoveHandler(SelectedROIEvent, value);
             }
         }
         public event RoutedEventHandler SaveImage
@@ -63,28 +165,19 @@ namespace NpcCore.Wpf.Controls
                 base.RemoveHandler(SaveImageEvent, value);
             }
         }
-        public event RoutedEventHandler Fit
-        {
-            add
-            {
-                base.AddHandler(FitEvent, value);
-            }
-            remove
-            {
-                base.RemoveHandler(FitEvent, value);
-            }
-        }
+       
         #endregion
 
         #region Member Variables
         private bool _drag;
-        private bool _completedGetRoi;
-        private bool _enableGetRoiTool;
+        private bool _completedSelectRoi;
+        private bool _enableSelectRoiTool;
         private bool _isSelectingRoi;
         private bool _enableRotate;
         private bool _enableLocatorTool;
         private bool _enableSelectRect;
         private bool _enableSelectRectInside;
+        private bool _enableSelectPoly;
         private Size _dragSize;
         private Point _dragStart;
         private Point _dragStartOffset;
@@ -335,6 +428,9 @@ namespace NpcCore.Wpf.Controls
             this.RenderTransform = group;
             this.RenderTransformOrigin = new Point(0.0, 0.0);
 
+            InitContextMenuRoiMode();
+            InitContextMenuDefault();
+
             this.MouseDown += ImageEx_MouseDown;
             this.MouseMove += ImageEx_MouseMove;
             this.MouseUp += ImageEx_MouseUp;
@@ -345,11 +441,167 @@ namespace NpcCore.Wpf.Controls
         }
         #endregion
 
+        #region ContextMenu
+
+        // context menu default 
+        private ContextMenu _ctxMnuDefault;
+
+        // context menu in Select Roi tool mode and locator tool mode
+        private ContextMenu _ctxMnuRoiMode;
+
+        // Select Roi tool mode and Locator tool mode
+        private MenuItem _selectROIItem;
+        private MenuItem _selectRectItem;
+        private MenuItem _selectPolyItem;
+        private MenuItem _saveImageItem;
+
+        // default mode
+        private MenuItem _fitItem;
+        private MenuItem _zoomInItem;
+        private MenuItem _zoomOutItem;
+        private MenuItem _measureItem;
+
+        // method
+        private void InitContextMenuRoiMode()
+        {
+            _ctxMnuRoiMode = new ContextMenu();
+
+            _selectROIItem = new MenuItem();
+            _selectROIItem.Header = "Select ROI";
+            _selectROIItem.Name = "mnuSelectROI";
+            _selectROIItem.Click += mnuSelectROI_Click;
+            _selectROIItem.FontFamily = new FontFamily("Georgia");
+            _selectROIItem.FontWeight = FontWeights.Regular;
+            _selectROIItem.FontSize = 12;
+
+            _selectRectItem = new MenuItem();
+            _selectRectItem.Header = "Rectangle";
+            _selectRectItem.Name = "mnuSelectRect";
+            _selectRectItem.Click += mnuSelectRect_Click;
+            _selectRectItem.FontFamily = new FontFamily("Georgia");
+            _selectRectItem.FontWeight = FontWeights.Regular;
+            _selectRectItem.FontSize = 12;
+            _selectRectItem.IsCheckable = true;
+            _selectRectItem.IsChecked = true;
+
+            _selectPolyItem = new MenuItem();
+            _selectPolyItem.Header = "Polygon";
+            _selectPolyItem.Name = "mnuSelectPolygon";
+            _selectPolyItem.Click += mnuSelectPolygon_Click;
+            _selectPolyItem.FontFamily = new FontFamily("Georgia");
+            _selectPolyItem.FontWeight = FontWeights.Regular;
+            _selectPolyItem.FontSize = 12;
+            _selectPolyItem.IsCheckable = true;
+
+            _selectROIItem.Items.Add(_selectRectItem);
+            _selectROIItem.Items.Add(_selectPolyItem);
+
+            _saveImageItem = new MenuItem();
+            _saveImageItem.Header = "Save Image";
+            _saveImageItem.Name = "mnuSaveImage";
+            _saveImageItem.Click += mnuSaveImage_Click;
+            _saveImageItem.FontFamily = new FontFamily("Georgia");
+            _saveImageItem.FontWeight = FontWeights.Regular;
+            _saveImageItem.FontSize = 12;
+
+            _ctxMnuRoiMode.Items.Add(_selectROIItem);
+            _ctxMnuRoiMode.Items.Add(_saveImageItem);
+            _ctxMnuRoiMode.PlacementTarget = this;
+            _ctxMnuRoiMode.IsOpen = false;
+        }
+
+        private void InitContextMenuDefault()
+        {
+            _ctxMnuDefault = new ContextMenu();
+
+            _fitItem = new MenuItem();
+            _fitItem.Header = "Fit";
+            _fitItem.Name = "mnuFit";
+            _fitItem.Click += mnuFit_Click;
+            _fitItem.FontFamily = new FontFamily("Georgia");
+            _fitItem.FontWeight = FontWeights.Regular;
+            _fitItem.FontSize = 12;
+
+            _zoomInItem = new MenuItem();
+            _zoomInItem.Header = "Zoom in";
+            _zoomInItem.Name = "mnuZoomIn";
+            _zoomInItem.Click += mnuZoomIn_Click;
+            _zoomInItem.FontFamily = new FontFamily("Georgia");
+            _zoomInItem.FontWeight = FontWeights.Regular;
+            _zoomInItem.FontSize = 12;
+
+            _zoomOutItem = new MenuItem();
+            _zoomOutItem.Header = "Zoom out";
+            _zoomOutItem.Name = "mnuZoomOut";
+            _zoomOutItem.Click += mnuZoomOut_Click;
+            _zoomOutItem.FontFamily = new FontFamily("Georgia");
+            _zoomOutItem.FontWeight = FontWeights.Regular;
+            _zoomOutItem.FontSize = 12;
+
+            _measureItem = new MenuItem();
+            _measureItem.Header = "Measure";
+            _measureItem.Name = "mnuMeasure";
+            _measureItem.Click += mnuMeasure_Click;
+            _measureItem.FontFamily = new FontFamily("Georgia");
+            _measureItem.FontWeight = FontWeights.Regular;
+            _measureItem.FontSize = 12;
+
+            _ctxMnuDefault.Items.Add(_fitItem);
+            _ctxMnuDefault.Items.Add(_zoomInItem);
+            _ctxMnuDefault.Items.Add(_zoomOutItem);
+            _ctxMnuDefault.Items.Add(_measureItem);
+            _ctxMnuDefault.PlacementTarget = this;
+            _ctxMnuDefault.IsOpen = false;
+
+        }
+
+        private void mnuMeasure_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void mnuSelectPolygon_Click(object sender, RoutedEventArgs e)
+        {
+            _selectRectItem.IsChecked = false;
+        }
+
+        private void mnuSelectRect_Click(object sender, RoutedEventArgs e)
+        {
+            _selectPolyItem.IsChecked=false;
+        }
+
+        private void mnuFit_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+        private void mnuZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void mnuZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void mnuSelectROI_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuSaveImage_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(SaveImageEvent, this));
+        }
+        #endregion
+
         #region Handle Event
         private void ImageEx_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableGetRoiTool && !_enableLocatorTool)
+            if (!_enableSelectRoiTool && !_enableLocatorTool)
+            {
+                _ctxMnuDefault.IsOpen = true;
                 return;
+            }
 
             var mat = new Matrix();
             if (_enableRotate == true)
@@ -362,61 +614,8 @@ namespace NpcCore.Wpf.Controls
 
             if (_rect.Contains(point))
             {
-                //Create contextmenu get ROI
-                ContextMenu context = new ContextMenu();
-
-                MenuItem menuItem = new MenuItem();
-                menuItem.Header = "Get ROI";
-                menuItem.Name = "mnuGetROI";
-                menuItem.Click += mnuGetROI_Click;
-                menuItem.FontFamily = new FontFamily("Georgia");
-                menuItem.FontWeight = FontWeights.Regular;
-                menuItem.FontSize = 12;
-
-                context.Items.Add(menuItem);
-                context.PlacementTarget = this;
-                context.IsOpen = true;
-
+                _ctxMnuRoiMode.IsOpen = true;
             }
-            else
-            {
-                ContextMenu context = new ContextMenu();
-
-                MenuItem saveImageItem = new MenuItem();
-                saveImageItem.Header = "Save Image";
-                saveImageItem.Name = "mnuSaveImage";
-                saveImageItem.Click += mnuSaveImage_Click;
-                saveImageItem.FontFamily = new FontFamily("Georgia");
-                saveImageItem.FontWeight = FontWeights.Regular;
-                saveImageItem.FontSize = 12;
-                MenuItem fitItem = new MenuItem();
-                fitItem.Header = "Fit";
-                fitItem.Name = "mnuFit";
-                fitItem.Click += mnuFit_Click;
-                fitItem.FontFamily = new FontFamily("Georgia");
-                fitItem.FontWeight = FontWeights.Regular;
-                fitItem.FontSize = 12;
-
-                context.Items.Add(saveImageItem);
-                context.Items.Add(fitItem);
-                context.PlacementTarget = this;
-                context.IsOpen = true;
-            }
-        }
-
-        private void mnuFit_Click(object sender, RoutedEventArgs e)
-        {
-            RaiseEvent(new RoutedEventArgs(FitEvent, this));
-        }
-
-        private void mnuSaveImage_Click(object sender, RoutedEventArgs e)
-        {
-            RaiseEvent(new RoutedEventArgs(SaveImageEvent, this));
-        }
-
-        private void mnuGetROI_Click(object sender, RoutedEventArgs e)
-        {
-            RaiseEvent(new RoutedEventArgs(GetROIEvent, this));
         }
 
         private void ImageEx_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -444,7 +643,7 @@ namespace NpcCore.Wpf.Controls
 
         private void ImageEx_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableGetRoiTool && !_enableLocatorTool)
+            if (!_enableSelectRoiTool && !_enableLocatorTool)
                 return;
             _drag = false;
 
@@ -454,7 +653,7 @@ namespace NpcCore.Wpf.Controls
 
         private void ImageEx_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!_enableGetRoiTool && !_enableLocatorTool)
+            if (!_enableSelectRoiTool && !_enableLocatorTool)
                 return;
             SetHitType(e);
             if (!_drag)
@@ -857,7 +1056,7 @@ namespace NpcCore.Wpf.Controls
 
         private void ImageEx_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableGetRoiTool && !_enableLocatorTool)
+            if (!_enableSelectRoiTool && !_enableLocatorTool)
                 return;
 
             // Compute a Screen to Rectangle transform 
@@ -1137,10 +1336,16 @@ namespace NpcCore.Wpf.Controls
             get => _isSelectingRoi;
             set => _isSelectingRoi = value;
         }
-        public bool EnableGetRoiTool
+        public bool EnableSelectRoiTool
         {
-            get => _enableGetRoiTool;
-            set => _enableGetRoiTool = value;
+            get => _enableSelectRoiTool;
+            set => _enableSelectRoiTool = value;
+        }
+
+        public bool EnableSelectPoly
+        {
+            get => _enableSelectPoly;
+            set => _enableSelectPoly = value;
         }
 
         public Point CenterPoint
@@ -1159,10 +1364,10 @@ namespace NpcCore.Wpf.Controls
             get => _drag;
             set => _drag = value;
         }
-        public bool CompletedGetRoi
+        public bool CompletedSelectRoi
         {
-            get => _completedGetRoi;
-            set => _completedGetRoi = value;
+            get => _completedSelectRoi;
+            set => _completedSelectRoi = value;
         }
 
         public Size DragSize
@@ -1407,11 +1612,11 @@ namespace NpcCore.Wpf.Controls
         {
             base.OnRender(dc);
 
-            if (_enableGetRoiTool && !_completedGetRoi)
+            if (_enableSelectRoiTool && !_completedSelectRoi)
             {
                 RenderGetRoiTool(dc);
             }
-            else if (_enableLocatorTool && !_completedGetRoi)
+            else if (_enableLocatorTool && !_completedSelectRoi)
             {
                 RenderLocatorTool(dc);
             }
