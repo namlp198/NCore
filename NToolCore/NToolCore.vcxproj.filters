@@ -55,6 +55,18 @@
     <Filter Include="Source Files\Tools\Camera\UsbCam">
       <UniqueIdentifier>{f4b7bf98-1841-4cbc-86ec-10af8b73cfc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools\Log">
+      <UniqueIdentifier>{53d88a98-5597-4e16-838c-6e75c62d607b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Log">
+      <UniqueIdentifier>{53555854-f570-4085-9b03-e49414b980be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\UI">
+      <UniqueIdentifier>{c80d7634-c498-486f-8d3d-858beefb70d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\UI">
+      <UniqueIdentifier>{08cc4060-034b-4607-aab0-739ca6807138}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -114,6 +126,18 @@
     <ClInclude Include="Header\Camera\UsbCam\FrameGrabber_UsbCam.h">
       <Filter>Header Files\Tools\Camera\UsbCam</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Log\FolderScheduling.h">
+      <Filter>Header Files\Tools\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Log\ListBoxLog.h">
+      <Filter>Header Files\Tools\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\HWChecker.h">
+      <Filter>Header Files\Tools\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NToolCore.cpp">
@@ -172,6 +196,15 @@
     </ClCompile>
     <ClCompile Include="Tools\Camera\UsbCam\FrameGrabber_UsbCam.cpp">
       <Filter>Source Files\Tools\Camera\UsbCam</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Log\FolderScheduling.cpp">
+      <Filter>Source Files\Tools\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Log\ListBoxLog.cpp">
+      <Filter>Source Files\Tools\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\UI\HWChecker.cpp">
+      <Filter>Source Files\Tools\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

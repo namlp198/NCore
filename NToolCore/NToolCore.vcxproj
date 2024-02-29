@@ -144,7 +144,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;..\Libraries\Camera_Basler\include;..\NToolCore\Header\Camera\UsbCam;..\NToolCore;..\Libraries\opencv480_CUDA\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\NToolCore\Header\View;..\NToolCore\Header\ThreadPool;..\NToolCore\Header\Camera\Hik;..\NToolCore\Header\Camera\Basler;..\Libraries\Camera_MVS\include;..\Libraries\Camera_Basler\include;..\NToolCore\Header\Camera\UsbCam;..\NToolCore;..\Libraries\opencv480_CUDA\include;..\NToolCore\Header\UI;..\NToolCore\Header\Log;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -165,6 +165,8 @@
     <ClInclude Include="Header\Camera\Hik\MvCamera.h" />
     <ClInclude Include="Header\Camera\UsbCam\DeviceEnumerator.h" />
     <ClInclude Include="Header\Camera\UsbCam\FrameGrabber_UsbCam.h" />
+    <ClInclude Include="Header\Log\FolderScheduling.h" />
+    <ClInclude Include="Header\Log\ListBoxLog.h" />
     <ClInclude Include="Header\ThreadPool\PriorityThread.h" />
     <ClInclude Include="Header\ThreadPool\ThreadData.h" />
     <ClInclude Include="Header\ThreadPool\ThreadPool.h" />
@@ -172,8 +174,10 @@
     <ClInclude Include="Header\ThreadPool\WaitThreadPool.h" />
     <ClInclude Include="Header\ThreadPool\WorkThreadArray.h" />
     <ClInclude Include="Header\ThreadPool\WorkThreadPool.h" />
+    <ClInclude Include="Header\UI\HWChecker.h" />
     <ClInclude Include="Header\View\SharedMemoryBuffer.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NToolCore.cpp" />
@@ -193,12 +197,15 @@
     <ClCompile Include="Tools\Camera\Hik\M_FrameGrabber_MVS.cpp" />
     <ClCompile Include="Tools\Camera\UsbCam\DeviceEnumerator.cpp" />
     <ClCompile Include="Tools\Camera\UsbCam\FrameGrabber_UsbCam.cpp" />
+    <ClCompile Include="Tools\Log\FolderScheduling.cpp" />
+    <ClCompile Include="Tools\Log\ListBoxLog.cpp" />
     <ClCompile Include="Tools\ThreadPool\PriorityThread.cpp" />
     <ClCompile Include="Tools\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="Tools\ThreadPool\TimerThreadPool.cpp" />
     <ClCompile Include="Tools\ThreadPool\WaitThreadPool.cpp" />
     <ClCompile Include="Tools\ThreadPool\WorkThreadArray.cpp" />
     <ClCompile Include="Tools\ThreadPool\WorkThreadPool.cpp" />
+    <ClCompile Include="Tools\UI\HWChecker.cpp" />
     <ClCompile Include="Tools\View\SharedMemoryBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

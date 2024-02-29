@@ -13,6 +13,19 @@
 #include <afx.h>
 #include <afxmt.h>
 #include <cstringt.h>
+#include <afxwin.h>
+#include <windef.h>
+// Warning
+#pragma warning (disable : 4819)
+#pragma warning (disable : 4005)
+#pragma warning (disable : 4996)
+
+// Resource
+#include "resource.h"
+
+#include <gdiplus.h>
+using namespace Gdiplus;
+#pragma comment(lib, "gdiplus")
 
 // Include files to use the pylon API.
 #include <pylon/PylonIncludes.h>
