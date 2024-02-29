@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.34601.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NCore", "NCore.vcxproj", "{9BFAA14F-2472-4C61-A5E1-F6B555867E05}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Wpf.UcZoomBoxViewer", "NCoreWpf\NCore.Wpf.UcZoomBoxViewer\NCore.Wpf.UcZoomBoxViewer.csproj", "{7A75D20E-F0CF-43B0-9382-88C881D9C37A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wpfTest", "wpfTest\wpfTest.csproj", "{5B4DD384-E9C5-4F8D-9ACA-051B3E005518}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTestImageExt", "WpfTestImageExt\WpfTestImageExt.csproj", "{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,6 +213,18 @@ Global
 		{5B4DD384-E9C5-4F8D-9ACA-051B3E005518}.Release|x64.Build.0 = Release|x64
 		{5B4DD384-E9C5-4F8D-9ACA-051B3E005518}.Release|x86.ActiveCfg = Release|Any CPU
 		{5B4DD384-E9C5-4F8D-9ACA-051B3E005518}.Release|x86.Build.0 = Release|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Debug|x64.Build.0 = Debug|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Debug|x86.Build.0 = Debug|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Release|x64.ActiveCfg = Release|x64
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Release|x64.Build.0 = Release|x64
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F29FA92-1BE1-4896-B74E-DA4326E66E0D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

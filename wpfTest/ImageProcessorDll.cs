@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace wfTestTaskProcessor
+namespace wpfTest
 {
     // Inspect Resutl
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -248,7 +248,18 @@ namespace wfTestTaskProcessor
             inspectResult = (InspectResult)Marshal.PtrToStructure(pPointer, typeof(InspectResult));
             return bRetValue;
         }
-#endregion
+
+        #endregion
+
+        #region Show Log View
+#if DEBUG
+        [DllImport("NTaskProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTaskProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static void ShowLogView(IntPtr imageProcessor, int nShow);
+        public void ShowLogView(int nShow) { ShowLogView(m_ImageProcessor, nShow); }
+        #endregion
 
         // KERNEL FUNCTIONS
         [DllImport("kernel32.dll")]
