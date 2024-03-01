@@ -740,7 +740,12 @@
                                                   
     <BitmapImage x:Key="IMG_SideBarSelectTurnIcon"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_tuning_n@3x.png" />
-   
+
+    <BitmapImage x:Key="IMG_CameraGrab"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/camera_grab.png" />
+    <BitmapImage x:Key="IMG_CameraLive"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/live_camera.png" />
+
 
     <Style x:Key="ImageButtonInforStyle"
            TargetType="{x:Type Image}">
