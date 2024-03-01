@@ -859,5 +859,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\NoData.PNG" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\camera_grab.png" />
+    <Resource Include="Resources\Images\live_camera.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
