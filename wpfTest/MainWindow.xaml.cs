@@ -34,8 +34,6 @@ namespace wpfTest
             scrollViewerExt.ImageExt = imageExt;
             scrollViewerExt.Grid = gridMain;
 
-            imageExt.GetROI += ImageExt_GetROI;
-
             LogHub.Write("This is NpcInfo", LogTypes.NpcInfo);
             LogHub.Write("This is NpcFatal", LogTypes.NpcFatal);
             LogHub.Write("This is NpcGUI", LogTypes.NpcGUI);
@@ -60,7 +58,7 @@ namespace wpfTest
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            imageExt.EnableGetRoiTool = true;
+            imageExt.EnableSelectRoiTool = true;
             imageExt.IsSelectingRoi = true;
             imageExt.EnableSelectRect = true;
             imageExt.EnableRotate = true;
