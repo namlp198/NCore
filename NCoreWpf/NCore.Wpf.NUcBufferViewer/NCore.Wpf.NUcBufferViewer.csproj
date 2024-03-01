@@ -51,12 +51,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Npc.Foundation">
-      <HintPath>..\Binaries\Release\Npc.Foundation.dll</HintPath>
-    </Reference>
-    <Reference Include="NpcCore.Toolkit">
-      <HintPath>..\Binaries\Release\NpcCore.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="NpcCore.Wpf">
       <HintPath>..\Binaries\Release\NpcCore.Wpf.dll</HintPath>
     </Reference>
