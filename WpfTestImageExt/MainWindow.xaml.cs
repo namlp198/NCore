@@ -73,8 +73,8 @@ namespace WpfTestImageExt
             //imageExt.EnableRotate = true;
             //imageExt.Drag = true;
 
-            imageExt.EnableLocatorTool = true;
-            imageExt.InvalidateVisual();
+            //imageExt.EnableLocatorTool = true;
+            //imageExt.InvalidateVisual();
         }
 
         private void btnSingleGrab_Click(object sender, RoutedEventArgs e)
