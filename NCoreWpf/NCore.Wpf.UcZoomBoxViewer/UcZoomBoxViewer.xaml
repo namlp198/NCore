@@ -7,12 +7,26 @@
              xmlns:local="clr-namespace:NCore.Wpf.UcZoomBoxViewer"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800">
+             d:DesignWidth="800"
+             Background="{DynamicResource MainTabMenuBackground}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/DefaultTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type TextBlock}"
+                   x:Key="styleTextBlock">
+                <Setter Property="FontSize"
+                        Value="16" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="TextAlignment"
+                        Value="Center" />
+
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -22,80 +36,31 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid>
-            <Border Background="#232939"
-                    Margin="1"
+            <Border Margin="2"
                     CornerRadius="2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.8*" />
-                        <ColumnDefinition Width="1.4*" />
-                        <ColumnDefinition Width="1.2*" />
-                    </Grid.ColumnDefinitions>
-                    <DockPanel>
-                        <TextBlock Text="Brand"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"
-                                   Margin="5 0 3 0"
-                                   FontSize="14" />
-                        <ComboBox  Margin="5" />
-                    </DockPanel>
-                    <DockPanel Grid.Column="1">
-                        <TextBlock Text="Camera"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"
-                                   Margin="5 0 3 0"
-                                   FontSize="14" />
-                        <ComboBox  Margin="5" />
-                    </DockPanel>
-                    <Grid Grid.Column="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Button Background="WhiteSmoke"
-                                BorderThickness="1">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{DynamicResource IMG_FiducialArrow}"
-                                           Margin="5 5 0 5" />
-                                    <TextBlock Text="Live"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               FontWeight="SemiBold" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Background="WhiteSmoke"
-                                BorderThickness="1"
-                                Grid.Column="1">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{DynamicResource IMG_ZPositionClose}"
-                                           Margin="2 5 0 5" />
-                                    <TextBlock Text="Grab"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               FontWeight="SemiBold" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Background="WhiteSmoke"
-                                BorderThickness="1"
-                                Grid.Column="2">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{DynamicResource IMG_SideBarStopIcon}"
-                                           Margin="2 5 0 5" />
-                                    <TextBlock Text="Stop"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               FontWeight="SemiBold" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                    </Grid>
-                </Grid>
+                <ToolBar Margin="3"
+                         Background="{DynamicResource ToolbarToggleOverBackground}">
+                    <Button>
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_CrossToolBar}"
+                                       Margin="5 2 3 2" />
+                                <TextBlock Text="Create Recipe"
+                                           Margin="5 0 0 0"
+                                           Foreground="White"
+                                           FontSize="12"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator BorderThickness="1"
+                               BorderBrush="Gray"
+                               Margin="5 2 3 2" />
+                    <Button>
+
+                    </Button>
+                </ToolBar>
             </Border>
         </Grid>
         <Grid Grid.Row="1">
@@ -107,26 +72,100 @@
                 <Ctrls:ZoomBorder ClipToBounds="True"
                                   CornerRadius="3"
                                   BorderThickness="1"
+                                  Margin="3"
                                   x:Name="zoomBoder">
                     <Image x:Name="imageViewer"
-                           Source="{DynamicResource IMG_NODATA}"/>
+                           Source="{DynamicResource IMG_NODATA}" />
                 </Ctrls:ZoomBorder>
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="1"
+                      Margin="3">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1.8*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Border BorderThickness="1"
-                            CornerRadius="3"
-                            Background="LightGray">
+                            CornerRadius="2"
+                            Background="LightGray"
+                            Margin="0 0 0 5">
                         <TextBlock VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
-                                   FontSize="50"
-                                   FontWeight="SemiBold"
+                                   FontSize="52"
+                                   FontWeight="Bold"
                                    TextAlignment="Center"
                                    Text="NONE"
-                                   Foreground="White"/>
+                                   Foreground="White" />
                     </Border>
+                    <Grid Grid.Row="1"
+                          Background="{DynamicResource SidebarMouseOverBackground}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label>
+                            <Label.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="OK"
+                                               Margin="10 0 3 0"
+                                               Foreground="Green"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                    <TextBlock Text="..."
+                                               Margin="15 0 3 0"
+                                               Foreground="Gray"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                </StackPanel>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Row="1">
+                            <Label.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="NG"
+                                               Margin="10 0 3 0"
+                                               Foreground="Red"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                    <TextBlock Text="..."
+                                               Margin="15 0 3 0"
+                                               Foreground="Gray"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                </StackPanel>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Row="2">
+                            <Label.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Total"
+                                               Margin="10 0 3 0"
+                                               Foreground="White"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                    <TextBlock Text="..."
+                                               Margin="15 0 3 0"
+                                               Foreground="Gray"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                </StackPanel>
+                            </Label.Content>
+                        </Label>
+                        <Label Grid.Row="3">
+                            <Label.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Speed"
+                                               Margin="10 0 3 0"
+                                               Foreground="White"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                    <TextBlock Text="..."
+                                               Margin="15 0 3 0"
+                                               Foreground="Gray"
+                                               Style="{DynamicResource styleTextBlock}" />
+                                </StackPanel>
+                            </Label.Content>
+                        </Label>
+                    </Grid>
+                    <Grid Grid.Row="2"
+                          Margin="0 5 0 0"
+                          Background="{DynamicResource SidebarMouseOverBackground}">
+                        
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
@@ -134,7 +173,13 @@
             <Border Background="#232939"
                     BorderThickness="1"
                     CornerRadius="3">
-                <StatusBar />
+                <StatusBar Margin="3"
+                           Background="{DynamicResource SidebarSelectedBackground}">
+                    <TextBlock Style="{DynamicResource styleTextBlock}"
+                               Text="..."
+                               Foreground="Gray"
+                               Margin="5 0 5 0"/>
+                </StatusBar>
             </Border>
         </Grid>
     </Grid>
