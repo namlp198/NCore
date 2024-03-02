@@ -29,6 +29,53 @@
 
     <SolidColorBrush x:Key="SnackBarBackgroundColor" Color="#FF4a4a4a" />
     <SolidColorBrush x:Key="SnackbarForegroundColor" Color="#FFFFFFFF" />
+    
+    <!--Hot color-->
+    <SolidColorBrush x:Key="HotColor_1"
+                     Color="#CE3B3F" />
+    <SolidColorBrush x:Key="HotColor_2"
+                     Color="#E75225" />
+    <SolidColorBrush x:Key="HotColor_3"
+                     Color="#C0AC37" />
+    <SolidColorBrush x:Key="HotColor_4"
+                     Color="#C517B6" />
 
+    <!--Cold color-->
+    <SolidColorBrush x:Key="ColdColor_1"
+                     Color="#4D88FF" />
+    <SolidColorBrush x:Key="ColdColor_2"
+                     Color="#2ECE9D" />
+    <SolidColorBrush x:Key="ColdColor_3"
+                     Color="#5CB85C" />
+    <SolidColorBrush x:Key="ColdColor_4"
+                     Color="#93A9EC" />
+    <SolidColorBrush x:Key="ColdColor_5"
+                     Color="#35C5CE" />
+    <SolidColorBrush x:Key="ColdColor_6"
+                     Color="#3A5044" />
+    <SolidColorBrush x:Key="ColdColor_7"
+                     Color="#36BDE6" />
+    <SolidColorBrush x:Key="ColdColor_8"
+                     Color="#477F4B" />
+    <SolidColorBrush x:Key="ColdColor_9"
+                     Color="#314739" />
+
+    <!--Dark color-->
+    <SolidColorBrush x:Key="DarkColor_1"
+                     Color="#2E3D5A" />
+    <SolidColorBrush x:Key="DarkColor_2"
+                     Color="#212939" />
+    <SolidColorBrush x:Key="DarkColor_3"
+                     Color="#383B41" />
+    <SolidColorBrush x:Key="DarkColor_4"
+                     Color="#272A31" />
+    <SolidColorBrush x:Key="DarkColor_5"
+                     Color="#32363F" />
+    <SolidColorBrush x:Key="DarkColor_6"
+                     Color="#3D424D" />
+    <SolidColorBrush x:Key="DarkColor_7"
+                     Color="#1C1E23" />
+    <SolidColorBrush x:Key="DarkColor_8"
+                     Color="#2A2D34" />
 
 </ResourceDictionary>

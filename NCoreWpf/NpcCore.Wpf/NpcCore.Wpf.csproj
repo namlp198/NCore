@@ -79,6 +79,10 @@
     <Reference Include="Microsoft.Xaml.Behaviors">
       <HintPath>..\..\Libraries\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="Npc.Foundation, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Release\Npc.Foundation.dll</HintPath>
+    </Reference>
     <Reference Include="Prism">
       <HintPath>..\..\Libraries\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
     </Reference>
@@ -409,10 +413,6 @@
     <Resource Include="Resources\Images\time_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Npc.Foundation\Npc.Foundation.csproj">
-      <Project>{0a0acab9-6c9e-4ebc-bcc2-d53aba6b7dce}</Project>
-      <Name>Npc.Foundation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NpcCore.Toolkit\NpcCore.Toolkit.csproj">
       <Project>{35a8e986-852d-4f7e-9f9b-a95d92dd9ae0}</Project>
       <Name>NpcCore.Toolkit</Name>
@@ -862,6 +862,25 @@
   <ItemGroup>
     <Resource Include="Resources\Images\camera_grab.png" />
     <Resource Include="Resources\Images\live_camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_start_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_setting_2_50.png" />
+    <Resource Include="Resources\Images\btn_setting_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_start_all_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_stop_all_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_save_2_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_load_image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

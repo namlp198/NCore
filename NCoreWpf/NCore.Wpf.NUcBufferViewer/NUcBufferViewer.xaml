@@ -6,8 +6,9 @@
              xmlns:Ctrls="clr-namespace:NpcCore.Wpf.Controls;assembly=NpcCore.Wpf"
              xmlns:local="clr-namespace:NCore.Wpf.NUcBufferViewer"
              mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
+             d:DesignHeight="800"
+             d:DesignWidth="1280"
+             Background="{DynamicResource RGB_Night_28_30_35}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,9 +18,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="0.8*" />
+            <RowDefinition Height="14*" />
+            <RowDefinition Height="0.6*" />
         </Grid.RowDefinitions>
         <Grid>
             <Border Background="#232939"
@@ -34,23 +35,40 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid>
-                        <ToolBar Margin="3" />
+                        <ToolBar Margin="3"
+                                 Background="{DynamicResource RGB_Night_46_61_90}">
+                            <Button Margin="5 0 5 0"
+                                    x:Name="btnLocatorTool"
+                                    Click="btnLocatorTool_Click"
+                                    ToolTip="Locator Tool">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IMG_IC_BaseTeaching}" 
+                                               Stretch="Fill"
+                                               Margin="5"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Separator Margin="3"/>
+                        </ToolBar>
                     </Grid>
                     <DockPanel Grid.Column="2">
                         <TextBlock Text="Brand"
                                    VerticalAlignment="Center"
                                    Foreground="White"
+                                   FontWeight="Bold"
                                    Margin="5 0 3 0"
-                                   FontSize="10" />
-                        <ComboBox  Margin="3" />
+                                   FontSize="14" />
+                        <ComboBox  Margin="8" />
                     </DockPanel>
                     <DockPanel Grid.Column="3">
                         <TextBlock Text="Camera"
                                    VerticalAlignment="Center"
                                    Foreground="White"
                                    Margin="5 0 3 0"
-                                   FontSize="10" />
-                        <ComboBox  Margin="3" />
+                                   FontSize="14" 
+                                   FontWeight="Bold"/>
+                        <ComboBox  Margin="8" />
                     </DockPanel>
                     <Grid Grid.Column="4">
                         <Grid.ColumnDefinitions>
@@ -82,7 +100,7 @@
                                 Grid.Column="2">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{DynamicResource IMG_Board_Scan_Button_Stop_O}"
+                                    <Image Source="{DynamicResource IMG_Load_Img}"
                                            Margin="3" />
                                 </StackPanel>
                             </Button.Content>
@@ -132,11 +150,14 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="ROI"
                                Margin="2"
+                               FontSize="14"
+                               FontWeight="Bold"
                                Foreground="White"
                                TextAlignment="Center"
                                VerticalAlignment="Center" />
                 </StackPanel>
-                <Border Grid.Row="1">
+                <Border Grid.Row="1"
+                        Margin="5">
                     <Image x:Name="imgROI"
                            Margin="3"
                            Source="{DynamicResource IMG_NODATA}"/>
@@ -151,11 +172,14 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Image pre-processing"
                                Margin="2"
+                               FontSize="14"
+                               FontWeight="Bold"
                                Foreground="White"
                                TextAlignment="Center"
                                VerticalAlignment="Center" />
                 </StackPanel>
-                <Border Grid.Row="1">
+                <Border Grid.Row="1"
+                        Margin="5">
                     <Image x:Name="imgPreProcessing" 
                            Margin="3"
                            Source="{DynamicResource IMG_NODATA}"/>
@@ -167,7 +191,9 @@
                     BorderThickness="1"
                     CornerRadius="2"
                     Margin="3">
-                <StatusBar />
+                <StatusBar Background="{DynamicResource RGB_Night_42_45_52}">
+                    
+                </StatusBar>
             </Border>
         </Grid>
     </Grid>

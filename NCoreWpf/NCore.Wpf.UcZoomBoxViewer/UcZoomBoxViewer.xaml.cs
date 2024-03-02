@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpcCore.Wpf.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -30,7 +31,6 @@ namespace NCore.Wpf.UcZoomBoxViewer
     /// </summary>
     public partial class UcZoomBoxViewer : UserControl
     {
-
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -219,5 +219,29 @@ namespace NCore.Wpf.UcZoomBoxViewer
             await task;
         }
         #endregion
+
+        #region Event
+        public static readonly RoutedEvent CreateRecipeEvent = EventManager.RegisterRoutedEvent(
+            "CreateRecipe",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+        public event RoutedEventHandler CreateRecipe
+        {
+            add
+            {
+                base.AddHandler(CreateRecipeEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(CreateRecipeEvent, value);
+            }
+        }
+        #endregion
+
+        private void btnCreateRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(CreateRecipeEvent, this));
+        }
     }
 }

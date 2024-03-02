@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="{DynamicResource MainTabMenuBackground}">
+             Background="{DynamicResource RGB_Night_39_42_49}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,9 +18,9 @@
             <Style TargetType="{x:Type TextBlock}"
                    x:Key="styleTextBlock">
                 <Setter Property="FontSize"
-                        Value="16" />
+                        Value="12" />
                 <Setter Property="FontWeight"
-                        Value="Bold" />
+                        Value="SemiBold" />
                 <Setter Property="VerticalAlignment"
                         Value="Center" />
                 <Setter Property="TextAlignment"
@@ -31,16 +31,31 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="1.2*" />
             <RowDefinition Height="8*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="0.8*" />
         </Grid.RowDefinitions>
         <Grid>
             <Border Margin="2"
                     CornerRadius="2">
                 <ToolBar Margin="3"
-                         Background="{DynamicResource ToolbarToggleOverBackground}">
-                    <Button>
+                         Background="{DynamicResource RGB_Night_46_61_90}">
+                    <StackPanel Margin="5"
+                                Orientation="Horizontal">
+                        <TextBlock Text="Mode Display"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontWeight="SemiBold"
+                                   FontSize="12"/>
+                        <ComboBox Margin="5 0 5 0"
+                                  x:Name="cbbModeDisplay"
+                                  Width="80"/>
+                    </StackPanel>
+                    <Separator Margin="3"
+                               BorderBrush="LightGray"
+                               BorderThickness="1"/>
+                    <Button x:Name="btnCreateRecipe"
+                            Click="btnCreateRecipe_Click">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{DynamicResource IMG_CrossToolBar}"
@@ -55,10 +70,21 @@
                         </Button.Content>
                     </Button>
                     <Separator BorderThickness="1"
-                               BorderBrush="Gray"
-                               Margin="5 2 3 2" />
-                    <Button>
-
+                               BorderBrush="LightGray"
+                               Margin="3" />
+                    <Button x:Name="btnRun">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_StartRecipe_1}"
+                                       Margin="5 2 0 2" />
+                                <TextBlock Text="Run"
+                                           Margin="5 0 0 0"
+                                           Foreground="White"
+                                           FontSize="12"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button.Content>
                     </Button>
                 </ToolBar>
             </Border>
@@ -77,96 +103,115 @@
                     <Image x:Name="imageViewer"
                            Source="{DynamicResource IMG_NODATA}" />
                 </Ctrls:ZoomBorder>
-                <Grid Grid.Column="1"
-                      Margin="3">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1.8*" />
-                        <RowDefinition Height="2*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Border BorderThickness="1"
-                            CornerRadius="2"
-                            Background="LightGray"
-                            Margin="0 0 0 5">
-                        <TextBlock VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   FontSize="52"
-                                   FontWeight="Bold"
-                                   TextAlignment="Center"
-                                   Text="NONE"
-                                   Foreground="White" />
-                    </Border>
-                    <Grid Grid.Row="1"
-                          Background="{DynamicResource SidebarMouseOverBackground}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Label>
-                            <Label.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="OK"
-                                               Margin="10 0 3 0"
-                                               Foreground="Green"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                    <TextBlock Text="..."
-                                               Margin="15 0 3 0"
-                                               Foreground="Gray"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                </StackPanel>
-                            </Label.Content>
-                        </Label>
-                        <Label Grid.Row="1">
-                            <Label.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="NG"
-                                               Margin="10 0 3 0"
-                                               Foreground="Red"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                    <TextBlock Text="..."
-                                               Margin="15 0 3 0"
-                                               Foreground="Gray"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                </StackPanel>
-                            </Label.Content>
-                        </Label>
-                        <Label Grid.Row="2">
-                            <Label.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Total"
-                                               Margin="10 0 3 0"
-                                               Foreground="White"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                    <TextBlock Text="..."
-                                               Margin="15 0 3 0"
-                                               Foreground="Gray"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                </StackPanel>
-                            </Label.Content>
-                        </Label>
-                        <Label Grid.Row="3">
-                            <Label.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Speed"
-                                               Margin="10 0 3 0"
-                                               Foreground="White"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                    <TextBlock Text="..."
-                                               Margin="15 0 3 0"
-                                               Foreground="Gray"
-                                               Style="{DynamicResource styleTextBlock}" />
-                                </StackPanel>
-                            </Label.Content>
-                        </Label>
-                    </Grid>
-                    <Grid Grid.Row="2"
-                          Margin="0 5 0 0"
-                          Background="{DynamicResource SidebarMouseOverBackground}">
-                        
-                    </Grid>
-                </Grid>
+                <TabControl Grid.Column="1"
+                            Background="{DynamicResource RGB_Night_33_41_57}">
+                    <TabItem Header="Result"
+                             FontSize="14"
+                             FontWeight="Bold">
+                        <Grid Grid.Column="1"
+                              Margin="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1.6*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="1.2*" />
+                            </Grid.RowDefinitions>
+                            <Border BorderThickness="1"
+                                    CornerRadius="2"
+                                    Background="LightGray"
+                                    Margin="0 0 0 5">
+                                <TextBlock VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           FontSize="36"
+                                           FontWeight="Bold"
+                                           TextAlignment="Center"
+                                           Text="NONE"
+                                           Foreground="White" />
+                            </Border>
+                            <Grid Grid.Row="1"
+                                  Background="{DynamicResource SidebarMouseOverBackground}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Label>
+                                    <Label.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="OK"
+                                                       Margin="10 0 3 0"
+                                                       Foreground="Green"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                            <TextBlock Text="..."
+                                                       Margin="15 0 3 0"
+                                                       Foreground="Gray"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                        </StackPanel>
+                                    </Label.Content>
+                                </Label>
+                                <Label Grid.Row="1">
+                                    <Label.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="NG"
+                                                       Margin="10 0 3 0"
+                                                       Foreground="Red"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                            <TextBlock Text="..."
+                                                       Margin="15 0 3 0"
+                                                       Foreground="Gray"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                        </StackPanel>
+                                    </Label.Content>
+                                </Label>
+                                <Label Grid.Row="2">
+                                    <Label.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Total"
+                                                       Margin="10 0 3 0"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                            <TextBlock Text="..."
+                                                       Margin="15 0 3 0"
+                                                       Foreground="Gray"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                        </StackPanel>
+                                    </Label.Content>
+                                </Label>
+                                <Label Grid.Row="3">
+                                    <Label.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Speed"
+                                                       Margin="10 0 3 0"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                            <TextBlock Text="..."
+                                                       Margin="15 0 3 0"
+                                                       Foreground="Gray"
+                                                       Style="{DynamicResource styleTextBlock}" />
+                                        </StackPanel>
+                                    </Label.Content>
+                                </Label>
+                            </Grid>
+                            <Grid Grid.Row="2"
+                                  Margin="0 5 0 0"
+                                  Background="{DynamicResource SidebarMouseOverBackground}">
+
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Log"
+                             FontSize="14"
+                             FontWeight="Bold">
+                        <TabItem.Content>
+                            <TextBox x:Name="txtLogCam"
+                                     VerticalContentAlignment="Top"
+                                     TextWrapping="Wrap"
+                                     Padding="8"
+                                     IsReadOnly="True"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
             </Grid>
         </Grid>
         <Grid Grid.Row="2">
@@ -174,11 +219,11 @@
                     BorderThickness="1"
                     CornerRadius="3">
                 <StatusBar Margin="3"
-                           Background="{DynamicResource SidebarSelectedBackground}">
+                           Background="{DynamicResource RGB_Night_50_54_63}">
                     <TextBlock Style="{DynamicResource styleTextBlock}"
                                Text="..."
                                Foreground="Gray"
-                               Margin="5 0 5 0"/>
+                               Margin="5 0 5 0" />
                 </StatusBar>
             </Border>
         </Grid>

@@ -27,5 +27,13 @@ namespace NCore.Wpf.NUcBufferViewer
             scrollViewerExt.ImageExt = imageExt;
             scrollViewerExt.Grid = gridMain;
         }
+
+        private void btnLocatorTool_Click(object sender, RoutedEventArgs e)
+        {
+            if (imageExt.Source == null)
+                return;
+
+            imageExt.EnableLocatorTool = true;
+        }
     }
 }
