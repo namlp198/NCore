@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="DinoWpf.Views.Uc.UcCreateRecipe"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Uc="clr-namespace:NCore.Wpf.NUcBufferViewer;assembly=NCore.Wpf.NUcBufferViewer"
+             xmlns:local="clr-namespace:DinoWpf.Views.Uc"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Uc:NUcBufferViewer Grid.Column="0"/>
+        <ContentControl Grid.Column="1"
+                        x:Name="contentSetting"/>
+    </Grid>
+</UserControl>
