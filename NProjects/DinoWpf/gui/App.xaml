@@ -7,6 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/DefaultTheme.xaml"/>
+                <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
