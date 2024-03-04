@@ -129,6 +129,7 @@
     <Compile Include="Converter\EnumConverter.cs" />
     <Compile Include="Converter\EnumDescriptionConverter.cs" />
     <Compile Include="Converter\EnumToBooleanConverter.cs" />
+    <Compile Include="Converter\HasCameraToVisibilityConverter.cs" />
     <Compile Include="Converter\HasChildrenToBooleanConverter.cs" />
     <Compile Include="Converter\InvalidDoubleValueToZeroConverter.cs" />
     <Compile Include="Converter\InvertBooleanConverter.cs" />

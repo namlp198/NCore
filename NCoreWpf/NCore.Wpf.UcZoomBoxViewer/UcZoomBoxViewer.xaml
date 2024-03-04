@@ -13,6 +13,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/DefaultTheme.xaml" />
+                <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="{x:Type TextBlock}"
@@ -31,9 +32,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.2*" />
+            <RowDefinition Height="1.1*" />
             <RowDefinition Height="8*" />
-            <RowDefinition Height="0.8*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid>
             <Border Margin="2"
@@ -61,7 +62,7 @@
                                 <Image Source="{DynamicResource IMG_CrossToolBar}"
                                        Margin="5 2 3 2" />
                                 <TextBlock Text="Create Recipe"
-                                           Margin="5 0 0 0"
+                                           Margin="5 0 5 0"
                                            Foreground="White"
                                            FontSize="12"
                                            VerticalAlignment="Center"
@@ -95,13 +96,23 @@
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center"
+                           Text="NO CAMERA"
+                           Foreground="White"
+                           FontSize="60"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Opacity="0.12"
+                           Visibility="{Binding CameraIndex, Converter={StaticResource HasCameraToVisibilityConverter}, ConverterParameter=textViewer}">
+                </TextBlock>
                 <Ctrls:ZoomBorder ClipToBounds="True"
                                   CornerRadius="3"
                                   BorderThickness="1"
                                   Margin="3"
-                                  x:Name="zoomBoder">
-                    <Image x:Name="imageViewer"
-                           Source="{DynamicResource IMG_NODATA}" />
+                                  x:Name="zoomBoder"
+                                  Visibility="{Binding CameraIndex, Converter={StaticResource HasCameraToVisibilityConverter}, ConverterParameter=imageViewer}">
+                    <Image x:Name="imageViewer"/>
                 </Ctrls:ZoomBorder>
                 <TabControl Grid.Column="1"
                             Background="{DynamicResource RGB_Night_33_41_57}">

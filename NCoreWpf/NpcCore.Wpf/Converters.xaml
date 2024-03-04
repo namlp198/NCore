@@ -47,5 +47,6 @@
     <a:ValueToArrayConverterShape x:Key="ValueToArrayConverterShape" />
     <a:ValueToImageViewOptionConverter x:Key="ValueToImageViewOptionConverter" />
     <a:ValueToArrayConverterForThumbnail x:Key="ValueToArrayConverterForThumbnail" />
+    <a:HasCameraToVisibilityConverter x:Key="HasCameraToVisibilityConverter" />
 
 </ResourceDictionary>

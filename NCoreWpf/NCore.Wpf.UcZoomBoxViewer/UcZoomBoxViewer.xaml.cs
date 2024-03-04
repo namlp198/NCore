@@ -29,8 +29,9 @@ namespace NCore.Wpf.UcZoomBoxViewer
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UcZoomBoxViewer : UserControl
+    public partial class UcZoomBoxViewer : UserControl, INotifyPropertyChanged
     {
+        private int _camIdx = -1;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -59,24 +60,35 @@ namespace NCore.Wpf.UcZoomBoxViewer
             _bufferSize = _frameWidth * _frameHeight * 3;
             _stride = _frameWidth * 3;
         }
-        
+
+        #region Properties
         public BitmapSource UcBmpSource
         {
             get { return _ucBmpSource; }
-            set { _ucBmpSource = value; }
+            set
+            {
+                if(SetProperty(ref _ucBmpSource, value))
+                {
+
+                }
+            }
         }
         public IntPtr BufferView
         {
             get { return _bufferView; }
-            set { _bufferView = value; }
-        }
+            set
+            {
+                if(SetProperty(ref _bufferView, value))
+                {
 
+                }
+            }
+        }
         public int FrameWidth
         {
             get { return _frameWidth; }
             set { _frameWidth = value; }
         }
-
         public int FrameHeight
         {
             get { return _frameHeight; }
@@ -86,23 +98,33 @@ namespace NCore.Wpf.UcZoomBoxViewer
         public ModeView ModeView
         {
             get { return _eModeView; }
-            set { _eModeView = value; }
+            set
+            {
+                if(SetProperty(ref _eModeView, value))
+                {
+
+                }
+            }
         }
+
+        public int CameraIndex
+        {
+            get => _camIdx;
+            set
+            {
+                if(SetProperty(ref _camIdx, value))
+                {
+
+                }
+            }
+        }
+        #endregion
 
         // KERNEL FUNCTIONS
         [DllImport("kernel32.dll")]
         public extern static unsafe void ZeroMemory(void* Destination, int Length);
         [DllImport("kernel32.dll")]
         public extern static unsafe void CopyMemory(void* Destination, void* Source, int Length);
-
-        public void SetGrayscalePalette(Bitmap Image)
-        {
-            ColorPalette GrayscalePalette = Image.Palette;
-
-            for (int i = 0; i < 256; i++)
-                GrayscalePalette.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
-            Image.Palette = GrayscalePalette;
-        }
 
         #region Convert Bitmap to ImageSource
         /// <summary>
@@ -218,6 +240,15 @@ namespace NCore.Wpf.UcZoomBoxViewer
             task.Start();
             await task;
         }
+
+        public void SetGrayscalePalette(Bitmap Image)
+        {
+            ColorPalette GrayscalePalette = Image.Palette;
+
+            for (int i = 0; i < 256; i++)
+                GrayscalePalette.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
+            Image.Palette = GrayscalePalette;
+        }
         #endregion
 
         #region Event
@@ -236,6 +267,109 @@ namespace NCore.Wpf.UcZoomBoxViewer
             {
                 base.RemoveHandler(CreateRecipeEvent, value);
             }
+        }
+        #endregion
+
+        #region Implement INotifyPropertyChanged
+        //
+        // Summary:
+        //     Occurs when a property value changes.
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //
+        // Summary:
+        //     Checks if a property already matches a desired value. Sets the property and notifies
+        //     listeners only when necessary.
+        //
+        // Parameters:
+        //   storage:
+        //     Reference to a property with both getter and setter.
+        //
+        //   value:
+        //     Desired value for the property.
+        //
+        //   propertyName:
+        //     Name of the property used to notify listeners. This value is optional and can
+        //     be provided automatically when invoked from compilers that support CallerMemberName.
+        //
+        // Type parameters:
+        //   T:
+        //     Type of the property.
+        //
+        // Returns:
+        //     True if the value was changed, false if the existing value matched the desired
+        //     value.
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            RaisePropertyChanged(propertyName);
+            return true;
+        }
+        //
+        // Summary:
+        //     Checks if a property already matches a desired value. Sets the property and notifies
+        //     listeners only when necessary.
+        //
+        // Parameters:
+        //   storage:
+        //     Reference to a property with both getter and setter.
+        //
+        //   value:
+        //     Desired value for the property.
+        //
+        //   propertyName:
+        //     Name of the property used to notify listeners. This value is optional and can
+        //     be provided automatically when invoked from compilers that support CallerMemberName.
+        //
+        //   onChanged:
+        //     Action that is called after the property value has been changed.
+        //
+        // Type parameters:
+        //   T:
+        //     Type of the property.
+        //
+        // Returns:
+        //     True if the value was changed, false if the existing value matched the desired
+        //     value.
+        protected virtual bool SetProperty<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            onChanged?.Invoke();
+            RaisePropertyChanged(propertyName);
+            return true;
+        }
+        //
+        // Summary:
+        //     Raises this object's PropertyChanged event.
+        //
+        // Parameters:
+        //   propertyName:
+        //     Name of the property used to notify listeners. This value is optional and can
+        //     be provided automatically when invoked from compilers that support System.Runtime.CompilerServices.CallerMemberNameAttribute.
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+        //
+        // Summary:
+        //     Raises this object's PropertyChanged event.
+        //
+        // Parameters:
+        //   args:
+        //     The PropertyChangedEventArgs
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            this.PropertyChanged?.Invoke(this, args);
         }
         #endregion
 

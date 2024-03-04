@@ -8,11 +8,13 @@
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="1280"
+             Loaded="UserControl_Loaded"
              Background="{DynamicResource RGB_Night_28_30_35}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/DefaultTheme.xaml" />
+                <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -28,9 +30,8 @@
                     CornerRadius="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.8*" />
+                        <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="1" />
-                        <ColumnDefinition Width="0.8*" />
                         <ColumnDefinition Width="1.2*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -43,32 +44,27 @@
                                     ToolTip="Locator Tool">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="{DynamicResource IMG_IC_BaseTeaching}" 
+                                        <Image Source="{DynamicResource IMG_IC_BaseTeaching}"
                                                Stretch="Fill"
-                                               Margin="5"/>
+                                               Margin="5" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                            <Separator Margin="3"/>
+                            <Separator Margin="3" />
                         </ToolBar>
                     </Grid>
                     <DockPanel Grid.Column="2">
-                        <TextBlock Text="Brand"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"
-                                   FontWeight="Bold"
-                                   Margin="5 0 3 0"
-                                   FontSize="14" />
-                        <ComboBox  Margin="8" />
-                    </DockPanel>
-                    <DockPanel Grid.Column="3">
                         <TextBlock Text="Camera"
                                    VerticalAlignment="Center"
                                    Foreground="White"
-                                   Margin="5 0 3 0"
-                                   FontSize="14" 
-                                   FontWeight="Bold"/>
-                        <ComboBox  Margin="8" />
+                                   Margin="10 0 5 0"
+                                   FontSize="14"
+                                   FontWeight="Bold" />
+                        <ComboBox  Margin="10 10 30 10"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   ItemsSource="{Binding CameraList}"
+                                   SelectedItem="{Binding CameraName, Mode=TwoWay}"/>
                     </DockPanel>
                     <Grid Grid.Column="4">
                         <Grid.ColumnDefinitions>
@@ -77,7 +73,8 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button Background="WhiteSmoke"
-                                Margin="3">
+                                Margin="3"
+                                IsEnabled="{Binding IsFakeCamera, Converter={StaticResource InvertBooleanConverter}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{DynamicResource IMG_CameraLive}"
@@ -87,7 +84,8 @@
                         </Button>
                         <Button Background="WhiteSmoke"
                                 Grid.Column="1"
-                                Margin="3">
+                                Margin="3"
+                                IsEnabled="{Binding IsFakeCamera, Converter={StaticResource InvertBooleanConverter}}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{DynamicResource IMG_CameraGrab}"
@@ -97,7 +95,10 @@
                         </Button>
                         <Button Background="WhiteSmoke"
                                 Margin="3"
-                                Grid.Column="2">
+                                Grid.Column="2"
+                                x:Name="btnLoadImage"
+                                IsEnabled="{Binding IsFakeCamera}"
+                                Click="btnLoadImage_Click">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{DynamicResource IMG_Load_Img}"
@@ -111,7 +112,7 @@
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2.6*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -119,8 +120,19 @@
                 <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0"
-                  Grid.RowSpan="2">
-                <Border>
+                  Grid.RowSpan="2"
+                  Margin="3">
+                <TextBlock VerticalAlignment="Center"
+                           Text="NO CAMERA"
+                           Foreground="White"
+                           FontSize="80"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Opacity="0.12"
+                           Visibility="{Binding CameraIndex, Converter={StaticResource HasCameraToVisibilityConverter}, ConverterParameter=textViewer}">
+                </TextBlock>
+                <Border Visibility="{Binding CameraIndex, Converter={StaticResource HasCameraToVisibilityConverter}, ConverterParameter=imageViewer}">
                     <Ctrls:ScrollViewerExt HorizontalScrollBarVisibility="Auto"
                                            VerticalScrollBarVisibility="Auto"
                                            CanContentScroll="True"
@@ -133,25 +145,27 @@
                                     <TranslateTransform x:Name="translateTransform" />
                                 </TransformGroup>
                             </Grid.LayoutTransform>
+
                             <Ctrls:ImageExt x:Name="imageExt"
-                                            Stretch="None"
-                                            Source="{DynamicResource IMG_NODATA}">
+                                            Stretch="None">
                             </Ctrls:ImageExt>
+
                         </Grid>
                     </Ctrls:ScrollViewerExt>
                 </Border>
             </Grid>
             <Grid Grid.Row="0"
-                  Grid.Column="1">
+                  Grid.Column="1"
+                  Margin="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="5*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="ROI"
-                               Margin="2"
-                               FontSize="14"
-                               FontWeight="Bold"
+                               Margin="10 0 0 0"
+                               FontSize="18"
+                               FontWeight="SemiBold"
                                Foreground="White"
                                TextAlignment="Center"
                                VerticalAlignment="Center" />
@@ -160,29 +174,30 @@
                         Margin="5">
                     <Image x:Name="imgROI"
                            Margin="3"
-                           Source="{DynamicResource IMG_NODATA}"/>
+                           Source="{DynamicResource IMG_NODATA}" />
                 </Border>
             </Grid>
             <Grid Grid.Row="1"
-                  Grid.Column="1">
+                  Grid.Column="1"
+                  Margin="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="5*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Image pre-processing"
-                               Margin="2"
-                               FontSize="14"
-                               FontWeight="Bold"
+                    <TextBlock Text="Pre-processing"
+                               Margin="10 0 0 0"
+                               FontSize="18"
+                               FontWeight="SemiBold"
                                Foreground="White"
                                TextAlignment="Center"
                                VerticalAlignment="Center" />
                 </StackPanel>
                 <Border Grid.Row="1"
                         Margin="5">
-                    <Image x:Name="imgPreProcessing" 
+                    <Image x:Name="imgPreProcessing"
                            Margin="3"
-                           Source="{DynamicResource IMG_NODATA}"/>
+                           Source="{DynamicResource IMG_NODATA}" />
                 </Border>
             </Grid>
         </Grid>
@@ -192,7 +207,7 @@
                     CornerRadius="2"
                     Margin="3">
                 <StatusBar Background="{DynamicResource RGB_Night_42_45_52}">
-                    
+
                 </StatusBar>
             </Border>
         </Grid>

@@ -882,5 +882,8 @@
   <ItemGroup>
     <Resource Include="Resources\Images\btn_load_image.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_train_data.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
