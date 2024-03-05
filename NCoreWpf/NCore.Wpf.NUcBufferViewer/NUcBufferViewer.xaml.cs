@@ -151,7 +151,11 @@ namespace NCore.Wpf.NUcBufferViewer
             {
                 if(SetProperty(ref _isFakeCamera, value))
                 {
-
+                    if(_isFakeCamera == true)
+                    {
+                        ModeTestSelected = ModeTest.None;
+                        ModeTestSelectedIndex = 2;
+                    }
                 }
             }
         }
