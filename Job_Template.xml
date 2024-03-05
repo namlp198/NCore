@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Job id="0" name="job0">
+	<Camera id="0" name="cam0" serialNumber="xxx">
+		<Recipe id="0" name="rcp0">
+			<LocatorTool id="0" name="locator" priority="1">
+				<RectangleInSide x="0" y="0" width="0" height="0">
+				</RectangleInSide>
+				<RectangleOutSide x="0" y="0" width="0" height="0">
+				</RectangleOutSide>
+			</LocatorTool>
+			<SelectROITool id="0" name="count_pixel" algorithm="CountPixel" rotation="1" priority="0">
+				<Rectangle x="0" y="0" width="0" height="0"></Rectangle>
+				<Parameters>
+					<ThresholdGray min="0" max="0"></ThresholdGray>
+					<NumberOfPixel min="0" max="0"></NumberOfPixel>
+				</Parameters>
+			</SelectROITool>
+			<SelectROITool id="1" name="calculate_area" algorithm="CalculateArea" rotation="1" priority="0">
+				<Rectangle x="0" y="0" width="0" height="0"></Rectangle>
+				<Parameters>
+					<Threshold value="0"></Threshold>
+					<Area min="0" max="0"></Area>
+				</Parameters>
+			</SelectROITool>
+		</Recipe>
+	</Camera>
+	<Camera id="1" name="cam1" serialNumber="yyy">
+		<Recipe id="0" name="rcp1">
+			<LocatorTool id="0" name="locator" priority="1">
+				<RectangleInSide x="0" y="0" width="0" height="0">
+				</RectangleInSide>
+				<RectangleOutSide x="0" y="0" width="0" height="0">
+				</RectangleOutSide>
+			</LocatorTool>
+			<SelectROITool id="0" name="count_pixel" algorithm="CountPixel" rotation="1" priority="0">
+				<Rectangle x="0" y="0" width="0" height="0"></Rectangle>
+				<Parameters>
+					<ThresholdGray min="0" max="0"></ThresholdGray>
+					<NumberOfPixel min="0" max="0"></NumberOfPixel>
+				</Parameters>
+			</SelectROITool>
+		</Recipe>
+	</Camera>
+</Job>
