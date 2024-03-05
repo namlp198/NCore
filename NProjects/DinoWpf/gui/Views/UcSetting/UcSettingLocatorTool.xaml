@@ -1,0 +1,280 @@
+﻿<UserControl x:Class="DinoWpf.Views.UcSetting.UcSettingLocatorTool"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DinoWpf.Views.UcSetting"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="450">
+    <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="12*" />
+            <RowDefinition Height="0.6*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              Margin="3">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="2.2*" />
+                <RowDefinition Height="5.5*" />
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0"
+                       Margin="2">
+                <TextBlock Text="Rectangle Outside"
+                           Margin="5 0 0 0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           DockPanel.Dock="Top"
+                           TextAlignment="Left" />
+                <Grid Margin="20 5 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Margin="0 0 0 0">
+                        <TextBlock Text="Top"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                    <DockPanel Margin="0 0 0 0"
+                               Grid.Column="1">
+                        <TextBlock Text="Left"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                    <DockPanel Margin="0 0 0 0"
+                               Grid.Column="2">
+                        <TextBlock Text="Width"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                    <DockPanel Margin="0 0 0 0"
+                               Grid.Column="3">
+                        <TextBlock Text="Height"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                </Grid>
+            </DockPanel>
+            <DockPanel Grid.Row="1"
+                       Margin="2">
+                <TextBlock Text="Rectangle Inside"
+                           Margin="5 0 0 0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           DockPanel.Dock="Top"
+                           TextAlignment="Left" />
+                <Grid Margin="20 5 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Margin="0 0 0 0">
+                        <TextBlock Text="Top"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                    <DockPanel Margin="0 0 0 0"
+                               Grid.Column="1">
+                        <TextBlock Text="Left"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                    <DockPanel Margin="0 0 0 0"
+                               Grid.Column="2">
+                        <TextBlock Text="Width"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                    <DockPanel Margin="0 0 0 0"
+                               Grid.Column="3">
+                        <TextBlock Text="Height"
+                                   Margin="0 0 5 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="White" />
+                        <TextBox   Margin="0 0 5 0"
+                                   Width="auto"
+                                   Text="..."
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="12" />
+                    </DockPanel>
+                </Grid>
+            </DockPanel>
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           Margin="15 0 0 0"
+                           FontSize="14"
+                           Foreground="White"
+                           FontWeight="Normal"
+                           Text="Choose to be the locator for recipe"/>
+                <CheckBox VerticalAlignment="Center"
+                          Margin="10 2 0 0"
+                          IsChecked="True"/>
+            </StackPanel>
+            <Button Grid.Row="3"
+                    VerticalContentAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Width="100"
+                    Margin="0 0 5 0"
+                    Height="30"
+                    Background="{DynamicResource RGB_Hot_206_59_63}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{DynamicResource IMG_Train_Data}"
+                               Margin="5" />
+                        <TextBlock Margin="5 0 0 0"
+                                   Text="Train"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <GroupBox Grid.Row="4"
+                      Margin="10 5 10 5"
+                      Header="Output"
+                      FontSize="16"
+                      FontWeight="Bold"
+                      Foreground="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"
+                           Margin="3">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="X:"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10 0 10 0" />
+                            <TextBlock Foreground="White"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Margin="10 0 0 0"
+                                       Text="[...]" />
+                        </StackPanel>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Margin="3">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Y:"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10 0 10 0" />
+                            <TextBlock Foreground="White"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Margin="10 0 0 0"
+                                       Text="[...]" />
+                        </StackPanel>
+                    </Label>
+                    <Label Grid.Row="2"
+                           Margin="3">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Angle:"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10 0 10 0" />
+                            <TextBlock Foreground="White"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Margin="10 0 0 0"
+                                       Text="[...]" />
+                        </StackPanel>
+                    </Label>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Border Grid.Row="1"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                CornerRadius="2">
+            <Button Background="{DynamicResource RGB_Cold_77_136_255}"
+                    Margin="1">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{DynamicResource IMG_SaveIcon}"
+                               Margin="2" />
+                        <TextBlock Text="SAVE"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   Margin="2 0 0 0" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Border>
+    </Grid>
+</UserControl>

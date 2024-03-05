@@ -12,9 +12,62 @@
         Background="{DynamicResource RGB_Night_33_41_57}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush"
+                         Color="#2e3d5a"/>
+        <!-- TabItem Style-->
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid>
+                            <Border x:Name="Border1"
+                                    BorderBrush="LightGray"
+                                    CornerRadius="2 2 0 0"
+                                    BorderThickness="0.6">
+                                <ContentPresenter ContentSource="Header"
+                                                  Margin="10 2 10 2" 
+                                                  TextBlock.Foreground="White"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected"
+                                     Value="False">
+                                <Setter TargetName="Border1"
+                                        Property="Margin"
+                                        Value="0 2 0 0" />
+                                <Setter TargetName="Border1"
+                                        Property="BorderThickness"
+                                        Value="1" />
+                                <Setter TargetName="Border1"
+                                        Property="Background"
+                                        Value="LightGray" />
+                                <Setter Property="Panel.ZIndex"
+                                        Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="True">
+                                <Setter TargetName="Border1"
+                                        Property="Margin"
+                                        Value="-5,0,-5,0" />
+                                <Setter TargetName="Border1"
+                                        Property="BorderThickness"
+                                        Value="1,1,1,0" />
+                                <Setter TargetName="Border1"
+                                        Property="Background"
+                                        Value="{StaticResource BackgroundBrush}" />
+                                <Setter Property="Panel.ZIndex"
+                                        Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.2*" />
+            <RowDefinition Height="1.1*" />
             <RowDefinition Height="14*" />
             <RowDefinition Height="0.8*" />
         </Grid.RowDefinitions>
@@ -23,8 +76,8 @@
             <Button Margin="5">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{DynamicResource IMG_Setting_1}"
-                               Margin="5"/>
+                        <Image Source="{DynamicResource IMG_Setting_3}"
+                               Margin="8"/>
                         <TextBlock Text="Settings"
                                    VerticalAlignment="Center"
                                    TextAlignment="Center"
@@ -38,16 +91,16 @@
             <Separator Margin="5"/>
             <StackPanel Margin="5"
                         Orientation="Horizontal">
-                <TextBlock Text="Choose Job"
+                <TextBlock Text="Job"
                            Foreground="White"
                            VerticalAlignment="Center"
                            TextAlignment="Center"
                            Margin="5 0 0 0"
                            FontSize="14"
                            FontWeight="SemiBold"/>
-                <ComboBox Margin="8"
+                <ComboBox Margin="10"
                           x:Name="cbbJob"
-                          Width="180"/>
+                          Width="280"/>
             </StackPanel>
             <Separator Margin="5"/>
             <Button Margin="5">
@@ -80,7 +133,8 @@
                     <TabItem Header="Results"
                              FontSize="16"
                              FontFamily="Segoe UI"
-                             FontWeight="Bold">
+                             FontWeight="Bold"
+                             Foreground="Black">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -91,10 +145,11 @@
                             
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Log System"
+                    <TabItem Header="System Log"
                              FontSize="16"
                              FontFamily="Segoe UI"
-                             FontWeight="Bold">
+                             FontWeight="Bold"
+                             Foreground="Black">
 
                     </TabItem>
                 </TabControl>

@@ -1,10 +1,9 @@
 ﻿using DinoWpf.Commons;
-using DinoWpf.Views.UcSetting;
-using Npc.Foundation.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,45 +17,95 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DinoWpf.Views.Uc
+namespace DinoWpf.Views.UcSetting
 {
     /// <summary>
-    /// Interaction logic for UcCreateRecipe.xaml
+    /// Interaction logic for UcSettingROITool.xaml
     /// </summary>
-    public partial class UcCreateRecipe : UserControl, INotifyPropertyChanged
+    public partial class UcSettingROITool : UserControl, INotifyPropertyChanged
     {
-        private ToolSelected _toolSelected = ToolSelected.None;
-        public UcCreateRecipe()
+        private List<Algorithms> _algorithms = new List<Algorithms>();
+        private List<string> _algorithmsDes = new List<string>();
+        private int _algorithmSelectedIdx = -1;
+        private Algorithms _algorithmSelected = Algorithms.None;
+        public UcSettingROITool()
         {
             InitializeComponent();
 
+            _algorithms = Enum.GetValues(typeof(Algorithms))
+                          .Cast<Algorithms>()
+                          .ToList();
+
+            foreach (var item in _algorithms)
+            {
+                string s =GetEnumDescription(item);
+                if (s.Equals("Null"))
+                    continue;
+                _algorithmsDes.Add(s);
+            }
+
             this.DataContext = this;
-            ucCreateRecipe.SettingLocator += UcCreateRecipe_SettingLocator;
-            ucCreateRecipe.SettingROI += UcCreateRecipe_SettingROI;
         }
 
-        private void UcCreateRecipe_SettingLocator(object sender, RoutedEventArgs e)
+        #region Properties
+        public List<string> AlgorithmsDes
         {
-            contentSetting.Content = new UcSettingLocatorTool();
-            ToolSelected = ToolSelected.LocatorTool;
-        }
-        private void UcCreateRecipe_SettingROI(object sender, RoutedEventArgs e)
-        {
-            contentSetting.Content = new UcSettingROITool();
-            ToolSelected = ToolSelected.SelectROITool;
-        }
-
-        public ToolSelected ToolSelected
-        {
-            get { return _toolSelected; }
+            get => _algorithmsDes;
             set
             {
-                if(SetProperty(ref _toolSelected, value))
+                if(SetProperty(ref _algorithmsDes, value))
                 {
 
                 }
             }
         }
+
+        public int AlgorithmSelectedIndex
+        {
+            get => _algorithmSelectedIdx;
+            set
+            {
+                if(SetProperty(ref _algorithmSelectedIdx, value))
+                {
+                    switch(_algorithmSelectedIdx)
+                    {
+                        case 0:
+                            AlgorithmSelected = Algorithms.CountPixel; break;
+                        case 1:
+                            AlgorithmSelected = Algorithms.CalculateArea; break;
+                        case 2:
+                            AlgorithmSelected = Algorithms.CalculateCoordinate; break;
+                        case 3:
+                            AlgorithmSelected = Algorithms.CountBlob; break;
+                        case 4:
+                            AlgorithmSelected = Algorithms.FindLine; break;
+                        case 5:
+                            AlgorithmSelected = Algorithms.FindCircle; break;
+                        case 6:
+                            AlgorithmSelected = Algorithms.OCR; break;
+                    }
+                }
+            }
+        }
+
+        public Algorithms AlgorithmSelected
+        {
+            get => _algorithmSelected;
+            set
+            {
+                if(SetProperty(ref _algorithmSelected, value))
+                {
+                    switch (_algorithmSelected)
+                    {
+                        case Algorithms.CountPixel:
+                            UcSettingCountPixel ucSettingCountPixel = new UcSettingCountPixel();
+                            contentSetting.Content = ucSettingCountPixel;
+                            break;
+                    }
+                }
+            }
+        }
+        #endregion
 
         #region Implement INotifyPropertyChanged
         //
@@ -161,9 +210,34 @@ namespace DinoWpf.Views.Uc
         }
         #endregion
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        #region Methods
+        private string GetEnumDescription(Enum enumObj)
         {
+            FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
 
+            // [NCS-2695]
+            //  - CID 171132 Unchecked dynamic_cast
+            //  - CID 171151 Dereference null return value
+            //object[] attribArray = fieldInfo.GetCustomAttributes(false);
+            //if (attribArray.Length == 0)
+            //{
+            //    return enumObj.ToString();
+            //}
+            //else
+            //{
+            //    DescriptionAttribute attrib = attribArray[0] as DescriptionAttribute;
+            //    return attrib.Description;
+            //}
+            if (fieldInfo != null)
+            {
+                object[] attribArray = fieldInfo.GetCustomAttributes(false);
+                if (attribArray != null && attribArray.Length > 0 && attribArray[0] is DescriptionAttribute attrib)
+                {
+                    return attrib.Description;
+                }
+            }
+            return enumObj.ToString();
         }
+        #endregion
     }
 }
