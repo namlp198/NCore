@@ -101,6 +101,10 @@ namespace DinoWpf.Views.UcSetting
                             UcSettingCountPixel ucSettingCountPixel = new UcSettingCountPixel();
                             contentSetting.Content = ucSettingCountPixel;
                             break;
+                        case Algorithms.CalculateArea:
+                            UcSettingCalculateArea ucSettingCalculateArea = new UcSettingCalculateArea();
+                            contentSetting.Content = ucSettingCalculateArea;
+                            break;
                     }
                 }
             }

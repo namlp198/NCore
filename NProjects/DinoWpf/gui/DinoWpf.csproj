@@ -114,6 +114,9 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UcSetting\UcSettingCalculateArea.xaml.cs">
+      <DependentUpon>UcSettingCalculateArea.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UcSetting\UcSettingCountPixel.xaml.cs">
       <DependentUpon>UcSettingCountPixel.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcSetting\UcSettingCalculateArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
