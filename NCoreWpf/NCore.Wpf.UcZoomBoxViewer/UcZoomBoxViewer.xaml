@@ -16,6 +16,58 @@
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <SolidColorBrush x:Key="BackgroundBrush"
+                             Color="#2e3d5a" />
+            <!-- TabItem Style-->
+            <Style TargetType="{x:Type TabItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid>
+                                <Border x:Name="Border1"
+                                        BorderBrush="LightGray"
+                                        CornerRadius="2 2 0 0"
+                                        BorderThickness="0.6">
+                                    <ContentPresenter ContentSource="Header"
+                                                      Margin="10 2 10 2"
+                                                      TextBlock.Foreground="White" />
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected"
+                                         Value="False">
+                                    <Setter TargetName="Border1"
+                                            Property="Margin"
+                                            Value="0 2 0 0" />
+                                    <Setter TargetName="Border1"
+                                            Property="BorderThickness"
+                                            Value="1" />
+                                    <Setter TargetName="Border1"
+                                            Property="Background"
+                                            Value="LightGray" />
+                                    <Setter Property="Panel.ZIndex"
+                                            Value="1" />
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter TargetName="Border1"
+                                            Property="Margin"
+                                            Value="-5,0,-5,0" />
+                                    <Setter TargetName="Border1"
+                                            Property="BorderThickness"
+                                            Value="1,1,1,0" />
+                                    <Setter TargetName="Border1"
+                                            Property="Background"
+                                            Value="{StaticResource BackgroundBrush}" />
+                                    <Setter Property="Panel.ZIndex"
+                                            Value="2" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style TargetType="{x:Type TextBlock}"
                    x:Key="styleTextBlock">
                 <Setter Property="FontSize"
@@ -41,7 +93,7 @@
                     CornerRadius="2">
                 <ToolBar Margin="3"
                          Background="{DynamicResource RGB_Night_46_61_90}">
-                    <StackPanel Margin="5"
+                    <!--<StackPanel Margin="5"
                                 Orientation="Horizontal">
                         <TextBlock Text="Mode Display"
                                    Foreground="White"
@@ -54,7 +106,7 @@
                     </StackPanel>
                     <Separator Margin="3"
                                BorderBrush="LightGray"
-                               BorderThickness="1"/>
+                               BorderThickness="1"/>-->
                     <Button x:Name="btnCreateRecipe"
                             Click="btnCreateRecipe_Click">
                         <Button.Content>
