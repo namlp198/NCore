@@ -30,12 +30,13 @@
                     CornerRadius="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="1.8*" />
                         <ColumnDefinition Width="1" />
                         <ColumnDefinition Width="1.2*" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Grid>
+                    <Grid Grid.Column="0">
                         <ToolBar Margin="3"
                                  Background="{DynamicResource RGB_Night_46_61_90}">
                             <Button Margin="5 0 5 0"
@@ -51,6 +52,18 @@
                                 </Button.Content>
                             </Button>
                             <Separator Margin="3" />
+                            <Button Margin="5 0 5 0"
+                                    x:Name="btnSelectROITool"
+                                    Click="btnSelectROITool_Click"
+                                    ToolTip="Select ROI Tool">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IMG_Select_ROI}"
+                                               Stretch="Fill"
+                                               Margin="3" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
                         </ToolBar>
                     </Grid>
                     <DockPanel Grid.Column="2">
@@ -60,11 +73,25 @@
                                    Margin="10 0 5 0"
                                    FontSize="14"
                                    FontWeight="Bold" />
-                        <ComboBox  Margin="10 10 30 10"
-                                   FontSize="20"
+                        <ComboBox  Margin="10 10 20 10"
+                                   FontSize="18"
                                    FontWeight="Bold"
                                    ItemsSource="{Binding CameraList}"
                                    SelectedItem="{Binding CameraName, Mode=TwoWay}"/>
+                    </DockPanel>
+                    <DockPanel Grid.Column="3">
+                        <TextBlock Text="Mode Test"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Margin="0 0 5 0"
+                                   FontSize="14"
+                                   FontWeight="Bold" />
+                        <ComboBox  Margin="5 10 35 10"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   IsEnabled="{Binding IsFakeCamera, Converter={StaticResource InvertBooleanConverter}}"
+                                   ItemsSource="{Binding ModeTestsString}"
+                                   SelectedIndex="{Binding ModeTestSelectedIndex, Mode=TwoWay}"/>
                     </DockPanel>
                     <Grid Grid.Column="4">
                         <Grid.ColumnDefinitions>
@@ -170,12 +197,13 @@
                                TextAlignment="Center"
                                VerticalAlignment="Center" />
                 </StackPanel>
-                <Border Grid.Row="1"
-                        Margin="5">
+                <Grid Grid.Row="1"
+                      Margin="5">
                     <Image x:Name="imgROI"
                            Margin="3"
-                           Source="{DynamicResource IMG_NODATA}" />
-                </Border>
+                           Source="{DynamicResource IMG_NODATA}"
+                           Opacity="0.5" />
+                </Grid>
             </Grid>
             <Grid Grid.Row="1"
                   Grid.Column="1"
@@ -193,12 +221,13 @@
                                TextAlignment="Center"
                                VerticalAlignment="Center" />
                 </StackPanel>
-                <Border Grid.Row="1"
-                        Margin="5">
+                <Grid Grid.Row="1"
+                      Margin="5">
                     <Image x:Name="imgPreProcessing"
                            Margin="3"
+                           Opacity="0.5"
                            Source="{DynamicResource IMG_NODATA}" />
-                </Border>
+                </Grid>
             </Grid>
         </Grid>
         <Grid Grid.Row="2">

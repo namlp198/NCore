@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +21,15 @@ using System.Windows.Shapes;
 
 namespace NCore.Wpf.NUcBufferViewer
 {
+    public enum ModeTest
+    {
+        [Description("Null")]
+        None = -1,
+        [Description("Single Test")]
+        SingleTest = 0,
+        [Description("Continuous Test")]
+        ContinuousTest = 1
+    }
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
@@ -29,17 +40,56 @@ namespace NCore.Wpf.NUcBufferViewer
         private bool _isFakeCamera;
         private List<string> _cameraLst = new List<string>();
 
+        private List<string> _modeTestsStr = new List<string>();
+        private ModeTest _modeTestSelected = ModeTest.None;
+        private int _modeTestSelectedIdx = -1;
         public NUcBufferViewer()
         {
             InitializeComponent();
 
             CameraList.Add("Fake Camera");
 
+            ModeTestsString = GetEnumDescriptionToListString();
+
             this.DataContext = this;
             scrollViewerExt.ImageExt = imageExt;
             scrollViewerExt.Grid = gridMain;
         }
 
+        #region Methods
+        private string GetEnumDescription(Enum enumObj)
+        {
+            FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
+            if (fieldInfo != null)
+            {
+                object[] attribArray = fieldInfo.GetCustomAttributes(false);
+                if (attribArray != null && attribArray.Length > 0 && attribArray[0] is DescriptionAttribute attrib)
+                {
+                    return attrib.Description;
+                }
+            }
+            return enumObj.ToString();
+        }
+        private List<string> GetEnumDescriptionToListString()
+        {
+            List<string> modeTestString = new List<string>();
+            List<ModeTest> modeTests = Enum.GetValues(typeof(ModeTest))
+                                           .Cast<ModeTest>()
+                                           .ToList();
+
+            foreach (var item in modeTests)
+            {
+                string s = GetEnumDescription(item);
+                //if (s.Equals("Null"))
+                //    continue;
+                modeTestString.Add(s);
+            }
+
+            return modeTestString;
+        }
+        #endregion
+
+        #region event form
         private void btnLocatorTool_Click(object sender, RoutedEventArgs e)
         {
             if (imageExt.Source == null)
@@ -48,6 +98,40 @@ namespace NCore.Wpf.NUcBufferViewer
             imageExt.EnableLocatorTool = true;
             RaiseEvent(new RoutedEventArgs(SettingLocatorEvent, this));
         }
+        private void btnSelectROITool_Click(object sender, RoutedEventArgs e)
+        {
+            if (imageExt.Source == null)
+                return;
+
+            imageExt.EnableSelectRoiTool = true;
+            RaiseEvent(new RoutedEventArgs(SettingROIEvent, this));
+        }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //if(CameraIndex == -1)
+            //{
+            //    TextBlock textBlock = new TextBlock();
+            //    textBlock.Text = "No Camera";
+            //    textBlock.Foreground = new SolidColorBrush(Colors.Orange);
+            //    textBlock.FontSize = 14;
+            //    textBlock.FontWeight = FontWeights.SemiBold;
+            //    textBlock.TextAlignment = TextAlignment.Center;
+            //    textBlock.VerticalAlignment = VerticalAlignment.Center;
+            //    Canvas.SetLeft(textBlock, 15);
+            //    Canvas.SetTop(textBlock, 10);
+            //    canvasImage.Children.Add(textBlock);
+            //}
+        }
+        private void btnLoadImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                imageExt.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+            }
+        }
+        #endregion
+
         #region Properties
         public int CameraIndex
         {
@@ -68,6 +152,51 @@ namespace NCore.Wpf.NUcBufferViewer
                 if(SetProperty(ref _isFakeCamera, value))
                 {
 
+                }
+            }
+        }
+
+        public List<string> ModeTestsString
+        {
+            get => _modeTestsStr;
+            set
+            {
+                if(SetProperty(ref _modeTestsStr, value))
+                {
+
+                }
+            }
+        }
+        public ModeTest ModeTestSelected
+        {
+            get => _modeTestSelected;
+            set
+            {
+                if (SetProperty(ref _modeTestSelected, value))
+                {
+
+                }
+            }
+        }
+        public int ModeTestSelectedIndex
+        {
+            get => _modeTestSelectedIdx;
+            set
+            {
+                if(SetProperty(ref _modeTestSelectedIdx, value))
+                {
+                    switch(_modeTestSelectedIdx)
+                    {
+                        case 0:
+                            ModeTestSelected = ModeTest.SingleTest;
+                            break;
+                        case 1:
+                            ModeTestSelected = ModeTest.ContinuousTest;
+                            break;
+                        default:
+                            ModeTestSelected = ModeTest.None;
+                            break;
+                    }
                 }
             }
         }
@@ -100,6 +229,7 @@ namespace NCore.Wpf.NUcBufferViewer
             }
         }
         #endregion
+
         #region Event
         public static readonly RoutedEvent SettingLocatorEvent = EventManager.RegisterRoutedEvent(
             "SettingLocator",
@@ -115,6 +245,23 @@ namespace NCore.Wpf.NUcBufferViewer
             remove
             {
                 base.RemoveHandler(SettingLocatorEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent SettingROIEvent = EventManager.RegisterRoutedEvent(
+           "SettingROI",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(ImageExt));
+        public event RoutedEventHandler SettingROI
+        {
+            add
+            {
+                base.AddHandler(SettingROIEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(SettingROIEvent, value);
             }
         }
         #endregion
@@ -221,31 +368,6 @@ namespace NCore.Wpf.NUcBufferViewer
             this.PropertyChanged?.Invoke(this, args);
         }
         #endregion
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            //if(CameraIndex == -1)
-            //{
-            //    TextBlock textBlock = new TextBlock();
-            //    textBlock.Text = "No Camera";
-            //    textBlock.Foreground = new SolidColorBrush(Colors.Orange);
-            //    textBlock.FontSize = 14;
-            //    textBlock.FontWeight = FontWeights.SemiBold;
-            //    textBlock.TextAlignment = TextAlignment.Center;
-            //    textBlock.VerticalAlignment = VerticalAlignment.Center;
-            //    Canvas.SetLeft(textBlock, 15);
-            //    Canvas.SetTop(textBlock, 10);
-            //    canvasImage.Children.Add(textBlock);
-            //}
-        }
-
-        private void btnLoadImage_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if(openFileDialog.ShowDialog() == true)
-            {
-                imageExt.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-            }
-        }
+       
     }
 }
