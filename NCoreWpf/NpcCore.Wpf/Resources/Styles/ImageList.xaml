@@ -751,14 +751,20 @@
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_setting_50.png" />
     <BitmapImage x:Key="IMG_Setting_2"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_setting_2_50.png" />
+    <BitmapImage x:Key="IMG_Setting_3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_setting_3_50.png" />
     <BitmapImage x:Key="IMG_Start_All"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_start_all_50.png" />
     <BitmapImage x:Key="IMG_Stop_All"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_stop_all_50.png" />
     <BitmapImage x:Key="IMG_Load_Img"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_load_image.png" />
+    <BitmapImage x:Key="IMG_Load_Img_2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_load_image_2.png" />
     <BitmapImage x:Key="IMG_Train_Data"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_train_data.png" />
+    <BitmapImage x:Key="IMG_Select_ROI"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_select_ROI.png" />
 
 
     <Style x:Key="ImageButtonInforStyle"
