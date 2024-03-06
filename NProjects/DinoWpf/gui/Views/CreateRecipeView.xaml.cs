@@ -19,6 +19,7 @@ namespace DinoWpf.Views
     /// </summary>
     public partial class CreateRecipeView : Window
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public CreateRecipeView()
         {
             InitializeComponent();

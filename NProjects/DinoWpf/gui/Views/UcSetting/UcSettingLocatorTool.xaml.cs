@@ -20,6 +20,7 @@ namespace DinoWpf.Views.UcSetting
     /// </summary>
     public partial class UcSettingLocatorTool : UserControl
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public UcSettingLocatorTool()
         {
             InitializeComponent();

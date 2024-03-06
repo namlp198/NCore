@@ -19,9 +19,16 @@ namespace DinoWpf.Views
     /// </summary>
     public partial class MainView : Window
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void btnNewJob_Click(object sender, RoutedEventArgs e)
+        {
+            NewJobView newJobView = new NewJobView();
+            newJobView.ShowDialog();
         }
     }
 }

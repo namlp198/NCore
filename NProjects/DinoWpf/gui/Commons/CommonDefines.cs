@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,5 +40,6 @@ namespace DinoWpf.Commons
     }
     public class CommonDefines
     {
+        public static string JobXmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Job\\");
     }
 }

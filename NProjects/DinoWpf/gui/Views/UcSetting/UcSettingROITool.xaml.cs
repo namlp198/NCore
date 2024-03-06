@@ -24,6 +24,8 @@ namespace DinoWpf.Views.UcSetting
     /// </summary>
     public partial class UcSettingROITool : UserControl, INotifyPropertyChanged
     {
+        public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private List<Algorithms> _algorithms = new List<Algorithms>();
         private List<string> _algorithmsDes = new List<string>();
         private int _algorithmSelectedIdx = -1;

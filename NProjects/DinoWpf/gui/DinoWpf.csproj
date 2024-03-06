@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
@@ -56,6 +56,15 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KisToolkit">
+      <HintPath>..\..\..\Libraries\packages\KisToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\Libraries\packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\..\..\Libraries\packages\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="NCore.Wpf.NUcBufferViewer">
       <HintPath>..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.NUcBufferViewer.dll</HintPath>
     </Reference>
@@ -82,6 +91,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\packages\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -103,16 +116,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\CreateJobCmd.cs" />
     <Compile Include="Command\CommandBase.cs" />
+    <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Commons\CommonDefines.cs" />
     <Compile Include="Converters\SelectToolToVisibilityConverter.cs" />
+    <Compile Include="Models\CameraModel.cs" />
+    <Compile Include="Models\ToolModel\LocatorToolModel.cs" />
     <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Models\ParameterModel\ParameterCalculateAreaModel.cs" />
+    <Compile Include="Models\ParameterModel\ParameterCountPixelModel.cs" />
+    <Compile Include="Models\RecipeModel.cs" />
+    <Compile Include="Models\ToolModel\SelectROIToolModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\CreateRecipeView.xaml.cs">
       <DependentUpon>CreateRecipeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewJobView.xaml.cs">
+      <DependentUpon>NewJobView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcSetting\UcSettingCalculateArea.xaml.cs">
       <DependentUpon>UcSettingCalculateArea.xaml</DependentUpon>
@@ -141,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewJobView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -187,6 +215,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="log4net.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
