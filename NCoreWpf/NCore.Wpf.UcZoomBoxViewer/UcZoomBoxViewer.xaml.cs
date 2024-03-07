@@ -32,6 +32,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
     public partial class UcZoomBoxViewer : UserControl, INotifyPropertyChanged
     {
         private int _camIdx = -1;
+        private bool _hasRecipe;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -115,6 +116,26 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 if(SetProperty(ref _camIdx, value))
                 {
 
+                }
+            }
+        }
+        public bool HasRecipe
+        {
+            get => _hasRecipe;
+            set
+            {
+                if(SetProperty(ref _hasRecipe, value))
+                {
+                    if(_hasRecipe)
+                    {
+                        btnCreateRecipe.Opacity = 0.3;
+                        btnUpdateRecipe.Opacity = 1.0;
+                    }
+                    else
+                    {
+                        btnCreateRecipe.Opacity = 1.0;
+                        btnUpdateRecipe.Opacity = 0.3;
+                    }
                 }
             }
         }
@@ -268,6 +289,23 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 base.RemoveHandler(CreateRecipeEvent, value);
             }
         }
+
+        public static readonly RoutedEvent UpdateRecipeEvent = EventManager.RegisterRoutedEvent(
+            "UpdateRecipe",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+        public event RoutedEventHandler UpdateRecipe
+        {
+            add
+            {
+                base.AddHandler(UpdateRecipeEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UpdateRecipeEvent, value);
+            }
+        }
         #endregion
 
         #region Implement INotifyPropertyChanged
@@ -376,6 +414,11 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private void btnCreateRecipe_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(CreateRecipeEvent, this));
+        }
+
+        private void btnUpdateRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(UpdateRecipeEvent, this));
         }
     }
 }
