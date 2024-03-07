@@ -122,6 +122,7 @@
     <Compile Include="Commons\CommonDefines.cs" />
     <Compile Include="Converters\SelectToolToVisibilityConverter.cs" />
     <Compile Include="Models\CameraModel.cs" />
+    <Compile Include="Models\JobModel.cs" />
     <Compile Include="Models\ToolModel\LocatorToolModel.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\ParameterModel\ParameterCalculateAreaModel.cs" />
@@ -131,6 +132,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\CreateRecipeView.xaml.cs">
       <DependentUpon>CreateRecipeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EnterRecipeNameView.xaml.cs">
+      <DependentUpon>EnterRecipeNameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -150,6 +154,15 @@
     <Compile Include="Views\UcSetting\UcSettingROITool.xaml.cs">
       <DependentUpon>UcSettingROITool.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Uc\Uc1Viewer.xaml.cs">
+      <DependentUpon>Uc1Viewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Uc\Uc2Viewer.xaml.cs">
+      <DependentUpon>Uc2Viewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Uc\Uc3Viewer.xaml.cs">
+      <DependentUpon>Uc3Viewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Uc\Uc4Viewer.xaml.cs">
       <DependentUpon>Uc4Viewer.xaml</DependentUpon>
     </Compile>
@@ -161,6 +174,10 @@
       <DependentUpon>UcCreateRecipe.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CreateRecipeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EnterRecipeNameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,6 +202,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UcSetting\UcSettingROITool.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Uc\Uc1Viewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Uc\Uc2Viewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Uc\Uc3Viewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
