@@ -10,7 +10,7 @@ namespace DinoWpf.Models.ToolModel
 {
     public class SelectROIToolModel : ModelBase, ITool
     {
-        private int _id;
+        private string _id;
         private string _name;
         private string _type;
         private Algorithms _algorithm;
@@ -19,7 +19,7 @@ namespace DinoWpf.Models.ToolModel
         private int _priority;
         private IParameter _parameter;
 
-        public int Id { get => _id; set { SetProperty(ref _id, value); } }
+        public string Id { get => _id; set { SetProperty(ref _id, value); } }
         public string Name { get => _name; set { SetProperty(ref _name, value); } }
         public string Type { get => _type; set { SetProperty(ref _type, value); } }
         public Algorithms Algorithm { get => _algorithm; set { SetProperty(ref _algorithm, value); } }

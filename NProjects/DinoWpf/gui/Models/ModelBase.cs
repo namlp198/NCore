@@ -12,7 +12,7 @@ namespace DinoWpf.Models
 {
     public interface ITool : IDisposable
     {
-        int Id { get; }
+        string Id { get; }
         string Name { get; }
         new void Dispose();
     }
