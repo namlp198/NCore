@@ -1,5 +1,8 @@
 ﻿using DinoWpf.Commons;
+using DinoWpf.ViewModels;
 using DinoWpf.Views.UcSetting;
+using Kis.Toolkit;
+using NCore.Wpf.NUcBufferViewer;
 using Npc.Foundation.Base;
 using System;
 using System.Collections.Generic;
@@ -17,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace DinoWpf.Views.Uc
 {
@@ -26,6 +30,10 @@ namespace DinoWpf.Views.Uc
     public partial class UcCreateRecipe : UserControl, INotifyPropertyChanged
     {
         private ToolSelected _toolSelected = ToolSelected.None;
+        private XmlManagement _xmlManagement = new XmlManagement();
+        private string _xmlPath = string.Empty;
+        private int _locatorIdx = 0;
+        private int _roiIdx = 0;
         public UcCreateRecipe()
         {
             InitializeComponent();
@@ -33,17 +41,69 @@ namespace DinoWpf.Views.Uc
             this.DataContext = this;
             ucCreateRecipe.SettingLocator += UcCreateRecipe_SettingLocator;
             ucCreateRecipe.SettingROI += UcCreateRecipe_SettingROI;
+
+            _xmlPath = CommonDefines.JobXmlPath + MainViewModel.Instance.JobSelected.Name + ".xml";
+            _xmlManagement.Load(_xmlPath);
         }
 
         private void UcCreateRecipe_SettingLocator(object sender, RoutedEventArgs e)
         {
+            NUcBufferViewer bufferView = sender as NUcBufferViewer;
+            
             contentSetting.Content = new UcSettingLocatorTool();
             ToolSelected = ToolSelected.LocatorTool;
+
+            XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
+            if(nodeRecipe != null)
+            {
+                XmlNode nodeLocator = _xmlManagement.AddChildNode(nodeRecipe, "LocatorTool");
+                if(nodeLocator != null)
+                {
+                    _xmlManagement.AddAttributeToNode(nodeLocator, "id", "Loc" + _locatorIdx);
+                    _xmlManagement.AddAttributeToNode(nodeLocator, "name", "locator" + _locatorIdx);
+                    _xmlManagement.AddAttributeToNode(nodeLocator, "priority", "1");
+                    _xmlManagement.AddAttributeToNode(nodeLocator, "hasChildren", "True");
+                    _xmlManagement.AddAttributeToNode(nodeLocator, "children", "");
+
+                    XmlNode nodeRectInside = _xmlManagement.AddChildNode(nodeLocator, "RectangleInSide");
+                    _xmlManagement.AddAttributeToNode(nodeRectInside, "x", "0");
+                    _xmlManagement.AddAttributeToNode(nodeRectInside, "y", "0");
+                    _xmlManagement.AddAttributeToNode(nodeRectInside, "width", "0");
+                    _xmlManagement.AddAttributeToNode(nodeRectInside, "height", "0");
+                    XmlNode nodeRectOutside = _xmlManagement.AddChildNode(nodeLocator, "RectangleOutSide");
+                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "x", "0");
+                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "y", "0");
+                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "width", "0");
+                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "height", "0");
+
+                    if (_xmlManagement.Save(_xmlPath))
+                        _locatorIdx++;
+                }
+            }
         }
         private void UcCreateRecipe_SettingROI(object sender, RoutedEventArgs e)
         {
             contentSetting.Content = new UcSettingROITool();
             ToolSelected = ToolSelected.SelectROITool;
+
+            XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
+            if (nodeRecipe != null)
+            {
+                XmlNode nodeSelectROI = _xmlManagement.AddChildNode(nodeRecipe, "SelectROITool");
+                if (nodeSelectROI != null)
+                {
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "id", "ROI"+_roiIdx);
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "name", "");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "type", "");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "algorithm", "");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "rotations", "");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "angleRotate", "0.0");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "priority", "");
+
+                    if (_xmlManagement.Save(_xmlPath))
+                        _roiIdx++;
+                }
+            }
         }
 
         public ToolSelected ToolSelected
