@@ -892,5 +892,8 @@
   <ItemGroup>
     <Resource Include="Resources\Images\btn_setting_3_50.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_update_recipe.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -765,6 +765,8 @@
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_train_data.png" />
     <BitmapImage x:Key="IMG_Select_ROI"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/btn_select_ROI.png" />
+    <BitmapImage x:Key="IMG_Update_Recipe"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_update_recipe.png" />
 
 
     <Style x:Key="ImageButtonInforStyle"
