@@ -25,5 +25,10 @@ namespace DinoWpf.Views.UcSetting
         {
             InitializeComponent();
         }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            // Save into job file at here
+        }
     }
 }

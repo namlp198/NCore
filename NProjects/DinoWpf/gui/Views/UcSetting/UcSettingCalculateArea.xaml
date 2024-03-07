@@ -61,10 +61,6 @@
         </ControlTemplate>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="18*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
@@ -126,16 +122,20 @@
                 <TextBox Grid.Row="0"
                          Grid.Column="1"
                          Margin="0"
-                         Template="{StaticResource tbTemplate}" />
+                         Template="{StaticResource tbTemplate}"
+                         Text="{Binding Threshold, Mode=TwoWay}" />
                 <TextBox Grid.Row="1"
                          Grid.Column="1"
-                         Template="{StaticResource tbTemplate}" />
+                         Template="{StaticResource tbTemplate}"
+                         Text="{Binding MinArea, Mode=TwoWay}" />
                 <TextBox Grid.Row="2"
                          Grid.Column="1"
                          Margin="0"
-                         Template="{StaticResource tbTemplate}" />
+                         Template="{StaticResource tbTemplate}"
+                         Text="{Binding MaxArea, Mode=TwoWay}" />
                 <Button Grid.Column="1"
                         Grid.Row="3"
+                        x:Name="btnApply"
                         Margin="3"
                         Width="100"
                         HorizontalAlignment="Right"
@@ -151,25 +151,5 @@
                 </Button>
             </Grid>
         </Grid>
-        <Border Grid.Row="1"
-                BorderBrush="LightGray"
-                BorderThickness="1"
-                CornerRadius="3">
-            <Button Background="{DynamicResource RGB_Cold_77_136_255}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{DynamicResource IMG_SaveIcon}"
-                               Margin="2" />
-                        <TextBlock Text="SAVE"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   TextAlignment="Center"
-                                   Margin="2 0 0 0" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-        </Border>
     </Grid>
 </UserControl>

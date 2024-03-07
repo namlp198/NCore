@@ -30,6 +30,11 @@ namespace DinoWpf.Views.UcSetting
         private List<string> _algorithmsDes = new List<string>();
         private int _algorithmSelectedIdx = -1;
         private Algorithms _algorithmSelected = Algorithms.None;
+
+        // Declare Settings View (current just testing with 2 views)
+        UcSettingCountPixel _ucSettingCountPixel; 
+        UcSettingCalculateArea _ucSettingCalculateArea;
+
         public UcSettingROITool()
         {
             InitializeComponent();
@@ -100,12 +105,12 @@ namespace DinoWpf.Views.UcSetting
                     switch (_algorithmSelected)
                     {
                         case Algorithms.CountPixel:
-                            UcSettingCountPixel ucSettingCountPixel = new UcSettingCountPixel();
-                            contentSetting.Content = ucSettingCountPixel;
+                            _ucSettingCountPixel = new UcSettingCountPixel();
+                            contentSetting.Content = _ucSettingCountPixel;
                             break;
                         case Algorithms.CalculateArea:
-                            UcSettingCalculateArea ucSettingCalculateArea = new UcSettingCalculateArea();
-                            contentSetting.Content = ucSettingCalculateArea;
+                            _ucSettingCalculateArea = new UcSettingCalculateArea();
+                            contentSetting.Content = _ucSettingCalculateArea;
                             break;
                     }
                 }
@@ -245,5 +250,10 @@ namespace DinoWpf.Views.UcSetting
             return enumObj.ToString();
         }
         #endregion
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            // Save into job file at here
+        }
     }
 }

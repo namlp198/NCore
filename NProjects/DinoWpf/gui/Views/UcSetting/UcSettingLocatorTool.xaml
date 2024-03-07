@@ -260,6 +260,7 @@
                 BorderThickness="1"
                 CornerRadius="2">
             <Button Background="{DynamicResource RGB_Cold_77_136_255}"
+                    x:Name="btnSave"
                     Margin="1">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
