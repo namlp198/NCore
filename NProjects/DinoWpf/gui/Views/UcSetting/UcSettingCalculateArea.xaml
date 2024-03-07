@@ -155,7 +155,7 @@
                 BorderBrush="LightGray"
                 BorderThickness="1"
                 CornerRadius="3">
-            <Button Background="{DynamicResource RGB_Cold_92_184_92}">
+            <Button Background="{DynamicResource RGB_Cold_77_136_255}">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource IMG_SaveIcon}"

@@ -105,7 +105,7 @@
                           VerticalContentAlignment="Center"
                           Width="220"
                           ItemsSource="{Binding JobList}"
-                          SelectedItem="{Binding JobSelected, Mode=TwoWay}"/>
+                          SelectedItem="{Binding JobSelectedItem, Mode=TwoWay}"/>
             </StackPanel>
             <Button Margin="5 12 12 12"
                     Background="{DynamicResource RGB_Night_46_61_90}"
@@ -144,11 +144,11 @@
         </ToolBar>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3.8*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border Margin="3">
-                <Uc:Uc4Viewer />
+                <ContentControl x:Name="contentViewer"/>
             </Border>
             <Border Margin="3"
                     Grid.Column="1">
