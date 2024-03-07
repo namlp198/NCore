@@ -53,6 +53,7 @@ namespace DinoWpf.ViewModels
         private string _sJobSelected = string.Empty;
         private JobModel _jobSelected = new JobModel();
         private XmlManagement _xmlManagement = new XmlManagement();
+        private int _cameraIdSelected = -1;
         #endregion
 
         public MainView MainView { get { return _mainView; } private set { } }
@@ -123,6 +124,17 @@ namespace DinoWpf.ViewModels
         }
         public XmlManagement XmlManagementVM
         { get => _xmlManagement; private set { } }
+        public int CameraIdSelected
+        {
+            get => _cameraIdSelected;
+            set
+            {
+                if(SetProperty(ref _cameraIdSelected, value))
+                {
+
+                }
+            }
+        }
         #endregion
 
         #region Methods
