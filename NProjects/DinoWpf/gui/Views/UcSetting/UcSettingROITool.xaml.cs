@@ -32,8 +32,8 @@ namespace DinoWpf.Views.UcSetting
         private Algorithms _algorithmSelected = Algorithms.None;
 
         // Declare Settings View (current just testing with 2 views)
-        UcSettingCountPixel _ucSettingCountPixel; 
-        UcSettingCalculateArea _ucSettingCalculateArea;
+        public UcSettingCountPixel ucSettingCountPixel; 
+        public UcSettingCalculateArea ucSettingCalculateArea;
 
         public UcSettingROITool()
         {
@@ -105,12 +105,12 @@ namespace DinoWpf.Views.UcSetting
                     switch (_algorithmSelected)
                     {
                         case Algorithms.CountPixel:
-                            _ucSettingCountPixel = new UcSettingCountPixel();
-                            contentSetting.Content = _ucSettingCountPixel;
+                            ucSettingCountPixel = new UcSettingCountPixel();
+                            contentSetting.Content = ucSettingCountPixel;
                             break;
                         case Algorithms.CalculateArea:
-                            _ucSettingCalculateArea = new UcSettingCalculateArea();
-                            contentSetting.Content = _ucSettingCalculateArea;
+                            ucSettingCalculateArea = new UcSettingCalculateArea();
+                            contentSetting.Content = ucSettingCalculateArea;
                             break;
                     }
                 }
@@ -251,9 +251,28 @@ namespace DinoWpf.Views.UcSetting
         }
         #endregion
 
+        public string ROIId { get; set; }
+
+        public static readonly RoutedEvent SaveParamROIToolEvent = EventManager.RegisterRoutedEvent(
+            "SaveParamROITool",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(UcSettingLocatorTool));
+        public event RoutedEventHandler SaveParamROITool
+        {
+            add
+            {
+                base.AddHandler(SaveParamROIToolEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(SaveParamROIToolEvent, value);
+            }
+        }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             // Save into job file at here
+            RaiseEvent(new RoutedEventArgs(SaveParamROIToolEvent, this));
         }
     }
 }

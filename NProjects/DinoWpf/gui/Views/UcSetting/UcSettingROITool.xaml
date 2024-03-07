@@ -44,7 +44,8 @@
                 BorderThickness="1"
                 CornerRadius="3">
             <Button Background="{DynamicResource RGB_Cold_77_136_255}"
-                    x:Name="btnSave">
+                    x:Name="btnSave"
+                    Click="btnSave_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource IMG_SaveIcon}"

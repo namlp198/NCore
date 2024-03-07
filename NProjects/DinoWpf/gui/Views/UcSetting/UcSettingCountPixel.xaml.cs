@@ -24,10 +24,10 @@ namespace DinoWpf.Views.UcSetting
     public partial class UcSettingCountPixel : UserControl, INotifyPropertyChanged
     {
         public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private int _thresholdGrayMin;
-        private int _thresholdGrayMax;
-        private int _minPixel;
-        private int _maxPixel;
+        private string _thresholdGrayMin;
+        private string _thresholdGrayMax;
+        private string _minPixel;
+        private string _maxPixel;
         public UcSettingCountPixel()
         {
             InitializeComponent();
@@ -36,22 +36,22 @@ namespace DinoWpf.Views.UcSetting
         }
 
         #region Properties
-        public int ThresholdGrayMin
+        public string ThresholdGrayMin
         {
             get => _thresholdGrayMin;
             set { if (SetProperty(ref _thresholdGrayMin, value)) { } }
         }
-        public int ThresholdGrayMax
+        public string ThresholdGrayMax
         {
             get => _thresholdGrayMax;
             set { if (SetProperty(ref _thresholdGrayMax, value)) { } }
         }
-        public int MinPixel
+        public string MinPixel
         {
             get => _minPixel;
             set { if (SetProperty(ref _minPixel, value)) { } }
         }
-        public int MaxPixel
+        public string MaxPixel
         {
             get => _maxPixel;
             set { if (SetProperty(ref _maxPixel, value)) { } }

@@ -29,6 +29,26 @@ namespace DinoWpf.Views.UcSetting
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             // Save into job file at here
+            RaiseEvent(new RoutedEventArgs(SaveParamLocatorToolEvent, this));
+        }
+
+        public string LocatorId {  get; set; }
+
+        public static readonly RoutedEvent SaveParamLocatorToolEvent = EventManager.RegisterRoutedEvent(
+            "SaveParamLocatorTool",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(UcSettingLocatorTool));
+        public event RoutedEventHandler SaveParamLocatorTool
+        {
+            add
+            {
+                base.AddHandler(SaveParamLocatorToolEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(SaveParamLocatorToolEvent, value);
+            }
         }
     }
 }

@@ -23,9 +23,9 @@ namespace DinoWpf.Views.UcSetting
     public partial class UcSettingCalculateArea : UserControl, INotifyPropertyChanged
     {
         public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private int _threshold;
-        private int _minArea;
-        private int _maxArea;
+        private string _threshold;
+        private string _minArea;
+        private string _maxArea;
         public UcSettingCalculateArea()
         {
             InitializeComponent();
@@ -34,17 +34,17 @@ namespace DinoWpf.Views.UcSetting
         }
 
         #region Properties
-        public int Threshold
+        public string Threshold
         {
             get => _threshold;
             set { if(SetProperty(ref _threshold, value)) { } }
         }
-        public int MinArea
+        public string MinArea
         {
             get => _minArea;
             set { if (SetProperty(ref _minArea, value)) { } }
         }
-        public int MaxArea
+        public string MaxArea
         {
             get => _maxArea;
             set { if (SetProperty(ref _maxArea, value)) { } }

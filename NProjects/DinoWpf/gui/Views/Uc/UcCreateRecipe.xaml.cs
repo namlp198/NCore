@@ -34,6 +34,10 @@ namespace DinoWpf.Views.Uc
         private string _xmlPath = string.Empty;
         private int _locatorIdx = 0;
         private int _roiIdx = 0;
+
+        //Declare views
+        private UcSettingLocatorTool _ucSettingLocator;
+        private UcSettingROITool _ucSettingROITool;
         public UcCreateRecipe()
         {
             InitializeComponent();
@@ -41,16 +45,33 @@ namespace DinoWpf.Views.Uc
             this.DataContext = this;
             ucCreateRecipe.SettingLocator += UcCreateRecipe_SettingLocator;
             ucCreateRecipe.SettingROI += UcCreateRecipe_SettingROI;
+            ucCreateRecipe.UcTrainLocator += UcCreateRecipe_UcTrainLocator;
+            ucCreateRecipe.UcSelectedROI += UcCreateRecipe_UcSelectedROI;
+            ucCreateRecipe.UcSaveImage += UcCreateRecipe_UcSaveImage;
 
             _xmlPath = CommonDefines.JobXmlPath + MainViewModel.Instance.JobSelected.Name + ".xml";
             _xmlManagement.Load(_xmlPath);
         }
 
+        private void UcCreateRecipe_UcSaveImage(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void UcCreateRecipe_UcSelectedROI(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void UcCreateRecipe_UcTrainLocator(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void UcCreateRecipe_SettingLocator(object sender, RoutedEventArgs e)
         {
-            NUcBufferViewer bufferView = sender as NUcBufferViewer;
-            
-            contentSetting.Content = new UcSettingLocatorTool();
+            _ucSettingLocator = new UcSettingLocatorTool();
+            contentSetting.Content = _ucSettingLocator;
+            _ucSettingLocator.LocatorId = "Loc"+_locatorIdx;
+            _ucSettingLocator.SaveParamLocatorTool += UcSettingLocator_SaveParam;
+
             ToolSelected = ToolSelected.LocatorTool;
 
             XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
@@ -81,9 +102,35 @@ namespace DinoWpf.Views.Uc
                 }
             }
         }
+
+        private void UcSettingLocator_SaveParam(object sender, RoutedEventArgs e)
+        {
+            XmlNode nodeRectInside = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/LocatorTool[@id='" + _ucSettingLocator.LocatorId + "']/RectangleInSide");
+            if (nodeRectInside != null)
+            {
+                _xmlManagement.AddAttributeToNode(nodeRectInside, "x", (int)ucCreateRecipe.RectInSide.X + "");
+                _xmlManagement.AddAttributeToNode(nodeRectInside, "y", (int)ucCreateRecipe.RectInSide.Y + "");
+                _xmlManagement.AddAttributeToNode(nodeRectInside, "width", (int)ucCreateRecipe.RectInSide.Width + "");
+                _xmlManagement.AddAttributeToNode(nodeRectInside, "height", (int)ucCreateRecipe.RectInSide.Height + "");
+            }
+            XmlNode nodeRectOutside = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/LocatorTool[@id='" + _ucSettingLocator.LocatorId + "']/RectangleOutSide");
+            if (nodeRectOutside != null)
+            {
+                _xmlManagement.AddAttributeToNode(nodeRectOutside, "x", (int)ucCreateRecipe.RectOutSide.X + "");
+                _xmlManagement.AddAttributeToNode(nodeRectOutside, "y", (int)ucCreateRecipe.RectOutSide.Y + "");
+                _xmlManagement.AddAttributeToNode(nodeRectOutside, "width", (int)ucCreateRecipe.RectOutSide.Width + "");
+                _xmlManagement.AddAttributeToNode(nodeRectOutside, "height", (int)ucCreateRecipe.RectOutSide.Height + "");
+            }
+
+            _xmlManagement.Save(_xmlPath);
+        }
+
         private void UcCreateRecipe_SettingROI(object sender, RoutedEventArgs e)
         {
-            contentSetting.Content = new UcSettingROITool();
+            _ucSettingROITool = new UcSettingROITool();
+            contentSetting.Content = _ucSettingROITool;
+            _ucSettingROITool.ROIId = "ROI" + _roiIdx;
+            _ucSettingROITool.SaveParamROITool += _ucSettingROITool_SaveParam;
             ToolSelected = ToolSelected.SelectROITool;
 
             XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
@@ -103,6 +150,78 @@ namespace DinoWpf.Views.Uc
                     if (_xmlManagement.Save(_xmlPath))
                         _roiIdx++;
                 }
+            }
+        }
+
+        private void _ucSettingROITool_SaveParam(object sender, RoutedEventArgs e)
+        {
+            switch(_ucSettingROITool.AlgorithmSelected)
+            {
+                case Algorithms.CountPixel:
+                    XmlNode nodeSelectROI_CountPixel = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/SelectROITool[@id='" + _ucSettingROITool.ROIId + "']");
+                    if (nodeSelectROI_CountPixel == null) return;
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "name", "count_pixel");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "type", "rectangle");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "algorithm", "CountPixel");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "rotations", "True");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "angleRotate", ucCreateRecipe.AngleRotate + "");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "priority", "2");
+
+                    XmlNode nodeParams =null;
+                    XmlNode nodeROI_CountPxl =null;
+                    XmlNode nodeThresholdGray = null;
+                    XmlNode nodeNumberOfPixel = null;
+                    if (nodeSelectROI_CountPixel.SelectSingleNode("//Parameters") == null)
+                    {
+                        nodeParams = _xmlManagement.AddChildNode(nodeSelectROI_CountPixel, "Parameters");
+                        nodeROI_CountPxl = _xmlManagement.AddChildNode(nodeParams, "ROI");
+                        nodeThresholdGray = _xmlManagement.AddChildNode(nodeParams, "ThresholdGray");
+                        nodeNumberOfPixel = _xmlManagement.AddChildNode(nodeParams, "NumberOfPixel");
+                    }
+
+                    _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "x", (int)ucCreateRecipe.ROISelected.X + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "y", (int)ucCreateRecipe.ROISelected.Y + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "width", (int)ucCreateRecipe.ROISelected.Width + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "height", (int)ucCreateRecipe.ROISelected.Height + "");
+
+                    _xmlManagement.AddAttributeToNode(nodeThresholdGray, "min", _ucSettingROITool.ucSettingCountPixel.ThresholdGrayMin);
+                    _xmlManagement.AddAttributeToNode(nodeThresholdGray, "max", _ucSettingROITool.ucSettingCountPixel.ThresholdGrayMax);
+                    
+                    _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "min", _ucSettingROITool.ucSettingCountPixel.MinPixel);
+                    _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "max", _ucSettingROITool.ucSettingCountPixel.MaxPixel);
+
+                    _xmlManagement.Save(_xmlPath);
+
+                    break;
+                case Algorithms.CalculateArea:
+                    XmlNode nodeSelectROI_CalArea = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/SelectROITool[@id='" + _ucSettingROITool.ROIId + "']");
+                    if (nodeSelectROI_CalArea == null) return;
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "name", "cal_area");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "type", "rectangle");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "algorithm", "CalculateArea");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "rotations", "True");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "angleRotate", ucCreateRecipe.AngleRotate + "");
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "priority", "2");
+
+                    XmlNode nodeROI_CalArea = nodeSelectROI_CalArea.SelectSingleNode("//Parameters/ROI");
+                    if (nodeROI_CalArea == null) return;
+                    _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "x", (int)ucCreateRecipe.ROISelected.X + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "y", (int)ucCreateRecipe.ROISelected.Y + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "width", (int)ucCreateRecipe.ROISelected.Width + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "height", (int)ucCreateRecipe.ROISelected.Height + "");
+
+                    XmlNode nodeThreshold = nodeSelectROI_CalArea.SelectSingleNode("//Parameters/Threshold");
+                    if (nodeThreshold == null) return;
+                    _xmlManagement.AddAttributeToNode(nodeThreshold, "value", _ucSettingROITool.ucSettingCalculateArea.Threshold + "");
+
+                    XmlNode nodeArea = nodeSelectROI_CalArea.SelectSingleNode("//Parameters/Area");
+                    if (nodeArea == null) return;
+                    _xmlManagement.AddAttributeToNode(nodeArea, "min", _ucSettingROITool.ucSettingCalculateArea.MinArea + "");
+                    _xmlManagement.AddAttributeToNode(nodeArea, "max", _ucSettingROITool.ucSettingCalculateArea.MaxArea + "");
+
+                    _xmlManagement.Save(_xmlPath);
+
+                    break;
             }
         }
 
