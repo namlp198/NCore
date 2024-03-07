@@ -45,6 +45,13 @@ namespace NCore.Wpf.NUcBufferViewer
         private int _modeTestSelectedIdx = -1;
         private const double _opacityClear = 1.0;
         private const double _opacityBlur = 0.3;
+
+        // ROI and angle rotate
+        private Rect _rectOutSide = new Rect();
+        private Rect _rectInSide = new Rect();
+        private Rect _roi = new Rect();
+        private double _angleRotate = 0.0;
+
         public NUcBufferViewer()
         {
             InitializeComponent();
@@ -56,6 +63,37 @@ namespace NCore.Wpf.NUcBufferViewer
             this.DataContext = this;
             scrollViewerExt.ImageExt = imageExt;
             scrollViewerExt.Grid = gridMain;
+
+            imageExt.SelectedROI += ImageExt_SelectedROI;
+            imageExt.TrainLocator += ImageExt_TrainLocator;
+            imageExt.SaveImage += ImageExt_SaveImage;
+        }
+
+        private void ImageExt_SaveImage(object sender, RoutedEventArgs e)
+        {
+            ImageExt imageExt = (ImageExt)sender;
+            ROISelected = imageExt.Rect;
+            AngleRotate = imageExt.RectRotation;
+
+            RaiseEvent(new RoutedEventArgs(UcSaveImageEvent, this));
+        }
+
+        private void ImageExt_TrainLocator(object sender, RoutedEventArgs e)
+        {
+            ImageExt imageExt = (ImageExt)sender;
+            RectOutSide = imageExt.Rect;
+            RectInSide = imageExt.RectInside;
+
+            RaiseEvent(new RoutedEventArgs(UcTrainLocatorEvent, this));
+        }
+
+        private void ImageExt_SelectedROI(object sender, RoutedEventArgs e)
+        {
+            ImageExt imageExt = (ImageExt)sender;
+            ROISelected = imageExt.Rect;
+            AngleRotate = imageExt.RectRotation;
+
+            RaiseEvent(new RoutedEventArgs(UcSelectedROIEvent, this));
         }
 
         #region Methods
@@ -247,6 +285,27 @@ namespace NCore.Wpf.NUcBufferViewer
                 }
             }
         }
+
+        public Rect RectInSide
+        {
+            get => _rectInSide;
+            set { if (SetProperty(ref _rectInSide, value)) { } }
+        }
+        public Rect RectOutSide
+        {
+            get => _rectOutSide;
+            set { if (SetProperty(ref _rectOutSide, value)) { } }
+        }
+        public Rect ROISelected
+        {
+            get => _roi;
+            set { if (SetProperty(ref _roi, value)) { } }
+        }
+        public double AngleRotate
+        {
+            get => _angleRotate;
+            set { if(SetProperty(ref _angleRotate, value)) { } }
+        }
         #endregion
 
         #region Event
@@ -281,6 +340,58 @@ namespace NCore.Wpf.NUcBufferViewer
             remove
             {
                 base.RemoveHandler(SettingROIEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent UcSelectedROIEvent = EventManager.RegisterRoutedEvent(
+            "UcSelectedROI",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+
+        public static readonly RoutedEvent UcSaveImageEvent = EventManager.RegisterRoutedEvent(
+            "UcSaveImage",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+
+        public static readonly RoutedEvent UcTrainLocatorEvent = EventManager.RegisterRoutedEvent(
+            "UcTrainLocator",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+
+        public event RoutedEventHandler UcSelectedROI
+        {
+            add
+            {
+                base.AddHandler(UcSelectedROIEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UcSelectedROIEvent, value);
+            }
+        }
+        public event RoutedEventHandler UcSaveImage
+        {
+            add
+            {
+                base.AddHandler(UcSaveImageEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UcSaveImageEvent, value);
+            }
+        }
+        public event RoutedEventHandler UcTrainLocator
+        {
+            add
+            {
+                base.AddHandler(UcTrainLocatorEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UcTrainLocatorEvent, value);
             }
         }
         #endregion
