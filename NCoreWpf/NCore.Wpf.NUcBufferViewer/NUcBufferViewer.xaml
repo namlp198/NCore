@@ -88,6 +88,7 @@
                                    FontSize="14"
                                    FontWeight="Bold" />
                         <ComboBox  Margin="5 10 35 10"
+                                   Name="cbbModeTest"
                                    FontSize="18"
                                    FontWeight="Bold"
                                    IsEnabled="{Binding IsFakeCamera, Converter={StaticResource InvertBooleanConverter}}"
@@ -101,6 +102,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button Background="WhiteSmoke"
+                                Name="btnStreamming"
                                 Margin="3"
                                 IsEnabled="{Binding IsFakeCamera, Converter={StaticResource InvertBooleanConverter}}">
                             <Button.Content>
@@ -111,6 +113,7 @@
                             </Button.Content>
                         </Button>
                         <Button Background="WhiteSmoke"
+                                Name="btnGrab"
                                 Grid.Column="1"
                                 Margin="3"
                                 IsEnabled="{Binding IsFakeCamera, Converter={StaticResource InvertBooleanConverter}}">

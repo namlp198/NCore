@@ -43,6 +43,8 @@ namespace NCore.Wpf.NUcBufferViewer
         private List<string> _modeTestsStr = new List<string>();
         private ModeTest _modeTestSelected = ModeTest.None;
         private int _modeTestSelectedIdx = -1;
+        private const double _opacityClear = 1.0;
+        private const double _opacityBlur = 0.3;
         public NUcBufferViewer()
         {
             InitializeComponent();
@@ -155,11 +157,24 @@ namespace NCore.Wpf.NUcBufferViewer
                     {
                         ModeTestSelected = ModeTest.None;
                         ModeTestSelectedIndex = 2;
+
+                        cbbModeTest.Opacity = _opacityBlur;
+                        btnGrab.Opacity = _opacityBlur;
+                        btnStreamming.Opacity = _opacityBlur;
+
+                        btnLoadImage.Opacity = _opacityClear;
+                    }
+                    else
+                    {
+                        cbbModeTest.Opacity = _opacityClear;
+                        btnGrab.Opacity = _opacityClear;
+                        btnStreamming.Opacity = _opacityClear;
+
+                        btnLoadImage.Opacity = _opacityBlur;
                     }
                 }
             }
         }
-
         public List<string> ModeTestsString
         {
             get => _modeTestsStr;
