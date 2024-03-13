@@ -54,8 +54,8 @@ namespace NCore.Wpf.UcZoomBoxViewer
             // Try creating a new image with a custom palette.
             List<System.Windows.Media.Color> colors = new List<System.Windows.Media.Color>();
             colors.Add(System.Windows.Media.Colors.Red);
-            colors.Add(System.Windows.Media.Colors.Blue);
             colors.Add(System.Windows.Media.Colors.Green);
+            colors.Add(System.Windows.Media.Colors.Blue);
             _palette = new BitmapPalette(colors);
 
             _bufferSize = _frameWidth * _frameHeight * 3;
@@ -94,6 +94,16 @@ namespace NCore.Wpf.UcZoomBoxViewer
         {
             get { return _frameHeight; }
             set { _frameHeight = value; }
+        }
+        public int Stride
+        {
+            get { return _stride; }
+            set { _stride = value; }
+        }
+        public int BufferSize
+        {
+            get { return _bufferSize; }
+            set { _bufferSize = value; }
         }
 
         public ModeView ModeView
@@ -213,6 +223,14 @@ namespace NCore.Wpf.UcZoomBoxViewer
         #endregion
 
         #region Methods
+        public void SetParamsModeColor(int fwidth, int fheight)
+        {
+            FrameWidth = fwidth;
+            FrameHeight = fheight;
+            Stride = FrameWidth * 3;
+            BufferSize = FrameWidth * FrameHeight * 3;
+        }
+
         public async Task UpdateImage()
         {
             Task task = new Task(() =>
@@ -223,7 +241,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 if (_eModeView == ModeView.Mono)
                 {
                     // create "empty" all zeros 24bpp bitmap object
-                    Bitmap bmp = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                    Bitmap bmp = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
 
                     // create rectangle and lock bitmap into system memory
                     System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, _frameWidth, _frameHeight);
@@ -252,7 +270,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 }
                 else if (_eModeView == ModeView.Color)
                 {
-                    BitmapSource bmpSrc = BitmapSource.Create(_frameWidth, _frameHeight, _resolutionX, _resolutionY, PixelFormats.Bgr24, _palette, _bufferView, _bufferSize, stride: _stride);
+                    BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, _resolutionX, _resolutionY, PixelFormats.Bgr24, _palette, _bufferView, BufferSize, stride: Stride);
                     bmpSrc.Freeze();
                     imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
                 }
