@@ -5,9 +5,13 @@
 #include "SharedMemoryBuffer.h"
 #include "opencv2/core.hpp"
 
-#define MAX_BUFFER_FRAME 15
+#define MAX_FRAME_COUNT 3
 #define MAX_CAMERA_COUNT 1
 #define MAX_POSITION_COUNT 1
+#define FRAME_WIDTH 2448
+#define FRAME_HEIGHT 2048
+#define CHANNEL_COUNT 3
+#define FRAME_DEPTH 24
 
 class AFX_EXT_CLASS InspectionHikCam : public IFrameGrabber2Parent
 {

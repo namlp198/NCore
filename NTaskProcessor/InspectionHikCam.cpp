@@ -20,13 +20,13 @@ InspectionHikCam::~InspectionHikCam()
 BOOL InspectionHikCam::Initialize()
 {
 	CFrameGrabberParam grabberParam[MAX_CAMERA_COUNT];
-	grabberParam[0].SetParam_GrabberPort((CString)_T("02746463021"));
-	grabberParam[0].SetParam_FrameWidth(1280);
-	grabberParam[0].SetParam_FrameHeight(1024);
-	grabberParam[0].SetParam_FrameWidthStep(1280);
-	grabberParam[0].SetParam_FrameDepth(8);
-	grabberParam[0].SetParam_FrameChannels(1);
-	grabberParam[0].SetParam_FrameCount(MAX_BUFFER_FRAME);
+	grabberParam[0].SetParam_GrabberPort((CString)_T("DA0069518"));
+	grabberParam[0].SetParam_FrameWidth(FRAME_WIDTH);
+	grabberParam[0].SetParam_FrameHeight(FRAME_HEIGHT);
+	grabberParam[0].SetParam_FrameWidthStep(FRAME_WIDTH);
+	grabberParam[0].SetParam_FrameDepth(FRAME_DEPTH);
+	grabberParam[0].SetParam_FrameChannels(CHANNEL_COUNT);
+	grabberParam[0].SetParam_FrameCount(MAX_FRAME_COUNT);
 
 	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
 	{
@@ -38,10 +38,10 @@ BOOL InspectionHikCam::Initialize()
 			m_pCameraImageBuffer[i] = NULL;
 		}
 
-		DWORD dwFrameWidth = (DWORD)1280;
-		DWORD dwFrameHeight = (DWORD)1024;
-		DWORD dwFrameCount = MAX_BUFFER_FRAME;
-		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight;
+		DWORD dwFrameWidth = (DWORD)FRAME_WIDTH;
+		DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT;
+		DWORD dwFrameCount = MAX_FRAME_COUNT;
+		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * CHANNEL_COUNT;
 
 		m_pCameraImageBuffer[i] = new CSharedMemoryBuffer;
 		m_pCameraImageBuffer[i]->SetFrameWidth(dwFrameWidth);
@@ -66,8 +66,8 @@ BOOL InspectionHikCam::Initialize()
 			if (m_nCamera[i]->Connect(grabberParam[i]) != 1)
 				m_bCamera_ConnectStatus[i] = FALSE;
 
-			/*if (m_nCamera[i]->StartGrab() != 1)
-				m_bCamera_ConnectStatus[i] = FALSE;*/
+			if (m_nCamera[i]->StartGrab() != 1)
+				m_bCamera_ConnectStatus[i] = FALSE;
 			else
 				m_bCamera_ConnectStatus[i] = TRUE;
 
@@ -250,7 +250,7 @@ int InspectionHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, con
 
 	int nNextFrameIdx = nCurrentFrameIdx + 1;
 
-	nNextFrameIdx = nNextFrameIdx % MAX_BUFFER_FRAME;
+	nNextFrameIdx = nNextFrameIdx % MAX_FRAME_COUNT;
 
 	m_pCameraImageBuffer[nGrabberIndex]->SetFrameImage(nNextFrameIdx, (LPBYTE)pBuffer);
 
