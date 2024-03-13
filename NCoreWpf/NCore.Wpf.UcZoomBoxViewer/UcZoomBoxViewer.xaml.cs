@@ -26,6 +26,7 @@ using System.Windows.Shapes;
 namespace NCore.Wpf.UcZoomBoxViewer
 {
     public enum ModeView { Mono, Color }
+    public enum ECamState { Stoped, Started}
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
@@ -46,6 +47,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private const int _resolutionY = 96;
 
         private ModeView _eModeView = ModeView.Mono;
+        private ECamState _camState = ECamState.Stoped;
 
         public UcZoomBoxViewer()
         {
@@ -112,6 +114,18 @@ namespace NCore.Wpf.UcZoomBoxViewer
             set
             {
                 if(SetProperty(ref _eModeView, value))
+                {
+
+                }
+            }
+        }
+
+        public ECamState CamState
+        {
+            get { return _camState; }
+            set
+            {
+                if (SetProperty(ref _camState, value))
                 {
 
                 }
@@ -324,6 +338,41 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 base.RemoveHandler(UpdateRecipeEvent, value);
             }
         }
+
+        public static readonly RoutedEvent StartCamEvent = EventManager.RegisterRoutedEvent(
+            "StartCam",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+        public event RoutedEventHandler StartCam
+        {
+            add
+            {
+                base.AddHandler(StartCamEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(StartCamEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent StopCamEvent = EventManager.RegisterRoutedEvent(
+            "StopCam",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt));
+        public event RoutedEventHandler StopCam
+        {
+            add
+            {
+                base.AddHandler(StopCamEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(StopCamEvent, value);
+            }
+        }
+
         #endregion
 
         #region Implement INotifyPropertyChanged
@@ -437,6 +486,18 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private void btnUpdateRecipe_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(UpdateRecipeEvent, this));
+        }
+
+        private void btnRun_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(StartCamEvent, this));
+            CamState = ECamState.Started;
+        }
+
+        private void btnStop_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(StopCamEvent, this));
+            CamState = ECamState.Stoped;
         }
     }
 }
