@@ -26,7 +26,7 @@ namespace WpfTestImageExt
             this._frameHeight = frameHeight;
             this._ucZb = ucZb;
             this._camIdx = nCamIdx;
-            this._ucZb.SetParams(frameWidth, frameHeight);
+            this._ucZb.SetParamsModeColor(frameWidth, frameHeight);
             this._ucZb.ModeView = modeView;
         }
         public void SingleGrab()
