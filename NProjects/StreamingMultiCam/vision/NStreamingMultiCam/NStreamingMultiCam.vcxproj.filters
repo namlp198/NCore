@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Tool">
+      <UniqueIdentifier>{88d78335-4adb-4397-9aec-951a3e1b9077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tool">
+      <UniqueIdentifier>{d639175d-eb1a-4490-b200-89b57f3532dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{e7149ec9-c986-4303-a441-e1175631c025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{934bbaef-ce71-412d-9ce6-ae407f3edbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras\Basler">
+      <UniqueIdentifier>{caee28bc-837e-4875-9ecf-3948fba15b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras\Hik">
+      <UniqueIdentifier>{1c4710b0-e65a-40b3-8b79-3e0da684b732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras\iRayple">
+      <UniqueIdentifier>{e6dde64b-b175-4ade-9a5e-4f0d413eb143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras\Basler">
+      <UniqueIdentifier>{7f481fe6-9fa4-4c1c-9312-206299bc4e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras\Hik">
+      <UniqueIdentifier>{ecdcb9b2-0dbf-4cc2-bdec-0b8daa19b5ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras\iRayple">
+      <UniqueIdentifier>{d90eb2cb-7352-48e3-afbd-2ff0e3f36f8a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Basler\FrameGrabber_BaslerCam.h">
+      <Filter>Header Files\Cameras\Basler</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Basler\FrameGrabber_BaslerCam_New.h">
+      <Filter>Header Files\Cameras\Basler</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Basler\PylonStringHelpers.h">
+      <Filter>Header Files\Cameras\Basler</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Hik\FrameGrabber.h">
+      <Filter>Header Files\Cameras\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Hik\FrameGrabber_MVS_GigE.h">
+      <Filter>Header Files\Cameras\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Hik\FrameGrabberParam.h">
+      <Filter>Header Files\Cameras\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\Hik\MvCamera.h">
+      <Filter>Header Files\Cameras\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\InspectionHikCam.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\SharedMemoryBuffer.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\StreamingMultiCamProcessor.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\Tools\StreamingMultiCamProcessorCSharp.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Basler\FrameGrabber_BaslerCam.cpp">
+      <Filter>Source Files\Cameras\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Basler\FrameGrabber_BaslerCam_New.cpp">
+      <Filter>Source Files\Cameras\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Basler\PylonStringHelpers.cpp">
+      <Filter>Source Files\Cameras\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Hik\FrameGrabber.cpp">
+      <Filter>Source Files\Cameras\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Hik\FrameGrabber_MVS_GigE.cpp">
+      <Filter>Source Files\Cameras\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Hik\M_FrameGrabber.cpp">
+      <Filter>Source Files\Cameras\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Hik\M_FrameGrabber_MVS.cpp">
+      <Filter>Source Files\Cameras\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\Hik\MvCamera.cpp">
+      <Filter>Source Files\Cameras\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\InspectionHikCam.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\SharedMemoryBuffer.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\StreamingMultiCamProcessor.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\StreamingMultiCamProcessorCSharp.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
