@@ -29,6 +29,7 @@ namespace wpfTest
             this._ucZb.FrameWidth = frameWidth;
             this._ucZb.FrameHeight = frameHeight;
             this._ucZb.ModeView = modeView;
+            this._ucZb.SetParamsModeColor(frameWidth, frameHeight);
         }
         public void SingleGrab()
         {
@@ -52,8 +53,12 @@ namespace wpfTest
             {
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
-                    InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.SingleGrabUsbCam(_camIdx);
-                    _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(_camIdx);
+                    // usb camera
+                    //InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.SingleGrabUsbCam(_camIdx);
+                    //_ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetUsbCamBufferImage(_camIdx);
+
+                    // hik camera
+                    _ucZb.BufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetHikCamBufferImage(_camIdx);
 
                     await _ucZb.UpdateImage();
 

@@ -45,7 +45,7 @@ namespace wpfTest
 
         private void M_time_Elapsed(object sender, ElapsedEventArgs e)
         {
-            m_bufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetBaslerCamBufferImage_New(m_nCamIdx);
+            m_bufferView = InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.GetHikCamBufferImage(m_nCamIdx);
 
             if (m_bufferView == IntPtr.Zero)
                 return;
@@ -81,7 +81,7 @@ namespace wpfTest
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             InterfaceManager.Instance.m_imageProcessorManager.Initialize();
-            InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabBaslerCam_New(m_nCamIdx);
+            //InterfaceManager.Instance.m_imageProcessorManager.m_imageProcessor.StartGrabBaslerCam_New(m_nCamIdx);
             m_time.Start();
         }
 

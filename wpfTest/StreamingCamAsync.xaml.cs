@@ -26,7 +26,7 @@ namespace wpfTest
         {
             InitializeComponent();
 
-            _cameraStreaming = new CameraStreaming(640, 480, ucZb: ucViewer, _camIdx, modeView: ModeView.Color);
+            _cameraStreaming = new CameraStreaming(2448, 2048, ucZb: ucViewer, _camIdx, modeView: ModeView.Color);
         }
 
         private async void btnStreaming_Click(object sender, RoutedEventArgs e)
