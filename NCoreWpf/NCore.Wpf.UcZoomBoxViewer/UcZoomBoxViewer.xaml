@@ -186,7 +186,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="220" />
+                    <ColumnDefinition Width="0" />
                 </Grid.ColumnDefinitions>
                 <TextBlock VerticalAlignment="Center"
                            Text="NO CAMERA"
@@ -208,6 +208,7 @@
                 </Ctrls:ZoomBorder>
                 <TabControl Grid.Column="1"
                             Width="220"
+                            Visibility="Collapsed"
                             Background="{DynamicResource RGB_Night_33_41_57}">
                     <TabItem Header="Result"
                              FontSize="14"
