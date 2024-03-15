@@ -1,0 +1,91 @@
+﻿<Window x:Class="StreamingMultiCam.Streaming12Camera"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Ctrls="clr-namespace:NCore.Wpf.UcZoomBoxViewer;assembly=NCore.Wpf.UcZoomBoxViewer"
+        xmlns:local="clr-namespace:StreamingMultiCam"
+        mc:Ignorable="d"
+        Title="Streaming12Camera" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button HorizontalAlignment="Left"
+                Margin="3"
+                Width="80"
+                Name="btnInitialize"
+                Content="Initialize"
+                Click="btnInitialize_Click"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!--Row 0-->
+            <Border Grid.Row="0"
+                    Grid.Column="0">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer1" />
+            </Border>
+            <Border Grid.Row="0"
+                    Grid.Column="1">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer2" />
+            </Border>
+            <Border Grid.Row="0"
+                    Grid.Column="2">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer3" />
+            </Border>
+            <Border Grid.Row="0"
+                    Grid.Column="3">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer4" />
+            </Border>
+
+            <!--Row 1-->
+            <Border Grid.Row="1"
+                    Grid.Column="0">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer5" />
+            </Border>
+            <Border Grid.Row="1"
+                    Grid.Column="1">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer6" />
+            </Border>
+            <Border Grid.Row="1"
+                    Grid.Column="2">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer7" />
+            </Border>
+            <Border Grid.Row="1"
+                    Grid.Column="3">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer8" />
+            </Border>
+
+            <!--Row 2-->
+            <Border Grid.Row="2"
+                    Grid.Column="0">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer9" />
+            </Border>
+            <Border Grid.Row="2"
+                    Grid.Column="1">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer10" />
+            </Border>
+            <Border Grid.Row="2"
+                    Grid.Column="2">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer11" />
+            </Border>
+            <Border Grid.Row="2"
+                    Grid.Column="3">
+                <Ctrls:UcZoomBoxViewer Name="ucZoomViewer12" />
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

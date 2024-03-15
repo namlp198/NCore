@@ -64,3 +64,43 @@ BYTE* GetHikCamBufferImage(CStreamingMultiCamProcessor* pProcessor, int nCamIdx)
 
 	return pHikCam->GetBufferImage(nCamIdx);
 }
+
+bool StartGrabiRaypleCam(CStreamingMultiCamProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectioniRaypleCam* piRaypleCam = pProcessor->GetiRaypleCamControl();
+	if (piRaypleCam == NULL)
+		return false;
+
+	int retVal = piRaypleCam->StartGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool StopGrabiRaypleCam(CStreamingMultiCamProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CInspectioniRaypleCam* piRaypleCam = pProcessor->GetiRaypleCamControl();
+	if (piRaypleCam == NULL)
+		return false;
+
+	int retVal = piRaypleCam->StopGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+BYTE* GetiRaypleCamBufferImage(CStreamingMultiCamProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	CInspectioniRaypleCam* piRaypleCam = pProcessor->GetiRaypleCamControl();
+	if (piRaypleCam == NULL)
+		return NULL;
+
+	return piRaypleCam->GetBufferImage(nCamIdx);
+}

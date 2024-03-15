@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "InspectionHikCam.h"
+#include "InspectioniRaypleCam.h"
 
-CInspectionHikCam::CInspectionHikCam()
+CInspectioniRaypleCam::CInspectioniRaypleCam()
 {
 	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
 	{
@@ -12,18 +12,16 @@ CInspectionHikCam::CInspectionHikCam()
 	}
 }
 
-CInspectionHikCam::~CInspectionHikCam()
+CInspectioniRaypleCam::~CInspectioniRaypleCam()
 {
 	Destroy();
 }
 
-BOOL CInspectionHikCam::Initialize()
+BOOL CInspectioniRaypleCam::Initialize()
 {
-	
 	CFrameGrabberParam grabberParam[MAX_CAMERA_COUNT];
 
-	// Cam 1
-	grabberParam[0].SetParam_GrabberPort((CString)_T("DA0069518"));
+	grabberParam[0].SetParam_GrabberPort((CString)_T("CG17917AAK00015"));
 	grabberParam[0].SetParam_FrameWidth(FRAME_WIDTH);
 	grabberParam[0].SetParam_FrameHeight(FRAME_HEIGHT);
 	grabberParam[0].SetParam_FrameWidthStep(FRAME_WIDTH);
@@ -31,8 +29,7 @@ BOOL CInspectionHikCam::Initialize()
 	grabberParam[0].SetParam_FrameChannels(CHANNEL_COUNT);
 	grabberParam[0].SetParam_FrameCount(MAX_FRAME_COUNT);
 
-	// Cam 2
-	grabberParam[1].SetParam_GrabberPort((CString)_T("DA0069525"));
+	grabberParam[1].SetParam_GrabberPort((CString)_T("CG17917AAK00001"));
 	grabberParam[1].SetParam_FrameWidth(FRAME_WIDTH);
 	grabberParam[1].SetParam_FrameHeight(FRAME_HEIGHT);
 	grabberParam[1].SetParam_FrameWidthStep(FRAME_WIDTH);
@@ -40,8 +37,7 @@ BOOL CInspectionHikCam::Initialize()
 	grabberParam[1].SetParam_FrameChannels(CHANNEL_COUNT);
 	grabberParam[1].SetParam_FrameCount(MAX_FRAME_COUNT);
 
-	// Cam 3
-	grabberParam[2].SetParam_GrabberPort((CString)_T("DA0069522"));
+	grabberParam[2].SetParam_GrabberPort((CString)_T("CG17917AAK00003"));
 	grabberParam[2].SetParam_FrameWidth(FRAME_WIDTH);
 	grabberParam[2].SetParam_FrameHeight(FRAME_HEIGHT);
 	grabberParam[2].SetParam_FrameWidthStep(FRAME_WIDTH);
@@ -49,14 +45,45 @@ BOOL CInspectionHikCam::Initialize()
 	grabberParam[2].SetParam_FrameChannels(CHANNEL_COUNT);
 	grabberParam[2].SetParam_FrameCount(MAX_FRAME_COUNT);
 
-	// Cam 4
-	grabberParam[3].SetParam_GrabberPort((CString)_T("DA0069524"));
+	grabberParam[3].SetParam_GrabberPort((CString)_T("CG17917AAK00006"));
 	grabberParam[3].SetParam_FrameWidth(FRAME_WIDTH);
 	grabberParam[3].SetParam_FrameHeight(FRAME_HEIGHT);
 	grabberParam[3].SetParam_FrameWidthStep(FRAME_WIDTH);
 	grabberParam[3].SetParam_FrameDepth(FRAME_DEPTH);
 	grabberParam[3].SetParam_FrameChannels(CHANNEL_COUNT);
 	grabberParam[3].SetParam_FrameCount(MAX_FRAME_COUNT);
+
+	grabberParam[4].SetParam_GrabberPort((CString)_T("CG17917AAK00018"));
+	grabberParam[4].SetParam_FrameWidth(FRAME_WIDTH);
+	grabberParam[4].SetParam_FrameHeight(FRAME_HEIGHT);
+	grabberParam[4].SetParam_FrameWidthStep(FRAME_WIDTH);
+	grabberParam[4].SetParam_FrameDepth(FRAME_DEPTH);
+	grabberParam[4].SetParam_FrameChannels(CHANNEL_COUNT);
+	grabberParam[4].SetParam_FrameCount(MAX_FRAME_COUNT);
+
+	grabberParam[5].SetParam_GrabberPort((CString)_T("CG17917AAK00020"));
+	grabberParam[5].SetParam_FrameWidth(FRAME_WIDTH);
+	grabberParam[5].SetParam_FrameHeight(FRAME_HEIGHT);
+	grabberParam[5].SetParam_FrameWidthStep(FRAME_WIDTH);
+	grabberParam[5].SetParam_FrameDepth(FRAME_DEPTH);
+	grabberParam[5].SetParam_FrameChannels(CHANNEL_COUNT);
+	grabberParam[5].SetParam_FrameCount(MAX_FRAME_COUNT);
+
+	grabberParam[6].SetParam_GrabberPort((CString)_T("CG17917AAK00016"));
+	grabberParam[6].SetParam_FrameWidth(FRAME_WIDTH);
+	grabberParam[6].SetParam_FrameHeight(FRAME_HEIGHT);
+	grabberParam[6].SetParam_FrameWidthStep(FRAME_WIDTH);
+	grabberParam[6].SetParam_FrameDepth(FRAME_DEPTH);
+	grabberParam[6].SetParam_FrameChannels(CHANNEL_COUNT);
+	grabberParam[6].SetParam_FrameCount(MAX_FRAME_COUNT);
+
+	grabberParam[7].SetParam_GrabberPort((CString)_T("CE26550AAK00003"));
+	grabberParam[7].SetParam_FrameWidth(FRAME_WIDTH);
+	grabberParam[7].SetParam_FrameHeight(FRAME_HEIGHT);
+	grabberParam[7].SetParam_FrameWidthStep(FRAME_WIDTH);
+	grabberParam[7].SetParam_FrameDepth(FRAME_DEPTH);
+	grabberParam[7].SetParam_FrameChannels(CHANNEL_COUNT);
+	grabberParam[7].SetParam_FrameCount(MAX_FRAME_COUNT);
 
 	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
 	{
@@ -82,11 +109,11 @@ BOOL CInspectionHikCam::Initialize()
 		DWORD64 dw64Size = (DWORD64)dwFrameCount * dwFrameSize;
 
 		CString strMemory;
-		strMemory.Format(_T("%s_%d"), "BufferHik", i);
+		strMemory.Format(_T("%s_%d"), "iRaypleBuffer", i);
 		m_pCameraImageBuffer[i]->CreateSharedMemory(strMemory, dw64Size);
 
 		// Camera
-		m_nCamera[i] = new CFrameGrabber_MVS_GigE(i, this);
+		m_nCamera[i] = new CFrameGrabber_iRayple(i, this);
 
 		int nRetryCount = 1;
 		BOOL bCamConnection = FALSE;
@@ -115,16 +142,17 @@ BOOL CInspectionHikCam::Initialize()
 	}
 
 	return TRUE;
+
 }
 
-BOOL CInspectionHikCam::Destroy()
+BOOL CInspectioniRaypleCam::Destroy()
 {
 	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
 	{
 		if (m_nCamera[i] != NULL)
 		{
 			m_nCamera[i]->StopGrab();
-			Sleep(1000);
+			Sleep(500);
 			m_nCamera[i]->Disconnect();
 			delete m_nCamera[i], m_nCamera[i] = NULL;
 		}
@@ -139,18 +167,7 @@ BOOL CInspectionHikCam::Destroy()
 	return TRUE;
 }
 
-BOOL CInspectionHikCam::GetCamStatus()
-{
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
-	{
-		if (m_bCamera_ConnectStatus[i] == FALSE)
-			return FALSE;
-	}
-
-	return TRUE;
-}
-
-LPBYTE CInspectionHikCam::GetBufferImage(int nCamIdx)
+LPBYTE CInspectioniRaypleCam::GetBufferImage(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
 		return NULL;
@@ -168,101 +185,7 @@ LPBYTE CInspectionHikCam::GetBufferImage(int nCamIdx)
 	return m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx);
 }
 
-BOOL CInspectionHikCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
-{
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
-		return FALSE;
-
-	if (pBuffer == NULL)
-		return FALSE;
-
-	if (m_pCameraImageBuffer[nCamIdx] == NULL)
-		return FALSE;
-
-	CSingleLock localLock(&m_csCameraFrameIdx[nCamIdx]);
-	localLock.Lock();
-
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
-
-	int nWidth = m_pCameraImageBuffer[nCamIdx]->GetFrameWidth();
-	int nHeight = m_pCameraImageBuffer[nCamIdx]->GetFrameHeight();
-
-	memcpy(pBuffer, m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx), nWidth * nHeight);
-
-	localLock.Unlock();
-
-	return TRUE;
-}
-
-BOOL CInspectionHikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
-{
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
-		return FALSE;
-
-	if (pBuffer == NULL)
-		return FALSE;
-
-	if (m_pCameraImageBuffer[nCamIdx] == NULL)
-		return FALSE;
-
-	int nBeforeFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
-
-	DWORD tickCount = GetTickCount();
-
-	BOOL bGrabTimeOver = FALSE;
-
-	while (1)
-	{
-		if (10000 < GetTickCount() - tickCount)
-		{
-			bGrabTimeOver = TRUE;
-			break;
-		}
-
-		if (nBeforeFrameIdx != m_pCameraCurrentFrameIdx[nCamIdx])
-			break;
-
-		Sleep(1);
-	}
-
-	if (bGrabTimeOver == TRUE)
-		return FALSE;
-
-	CSingleLock localLock(&m_csCameraFrameIdx[nCamIdx]);
-	localLock.Lock();
-
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
-
-	int nWidth = m_pCameraImageBuffer[nCamIdx]->GetFrameWidth();
-	int nHeight = m_pCameraImageBuffer[nCamIdx]->GetFrameHeight();
-
-	memcpy(pBuffer, m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx), nWidth * nHeight);
-
-	localLock.Unlock();
-
-	return TRUE;
-}
-
-CSharedMemoryBuffer* CInspectionHikCam::GetSharedMemoryBuffer(int nCamIdx)
-{
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
-		return NULL;
-
-	return m_pCameraImageBuffer[nCamIdx];
-}
-
-LPBYTE CInspectionHikCam::GetResultBufferImage(int nPosIdx)
-{
-	if (nPosIdx < 0 || MAX_POSITION_COUNT <= nPosIdx)
-		return NULL;
-
-	if (m_ResultImageBuffer[nPosIdx].empty())
-		return NULL;
-
-	return (LPBYTE)m_ResultImageBuffer[nPosIdx].data;
-}
-
-int CInspectionHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
+int CInspectioniRaypleCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
 {
 	if (nGrabberIndex < 0 || MAX_CAMERA_COUNT <= nGrabberIndex)
 		return -1;
@@ -291,12 +214,12 @@ int CInspectionHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, co
 	return 1;
 }
 
-int CInspectionHikCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)
+int CInspectioniRaypleCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)
 {
-	return -1;
+	return 0;
 }
 
-int CInspectionHikCam::StartGrab(int nCamIdx)
+int CInspectioniRaypleCam::StartGrab(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
 		return 0;
@@ -307,7 +230,7 @@ int CInspectionHikCam::StartGrab(int nCamIdx)
 	return m_nCamera[nCamIdx]->StartGrab();
 }
 
-int CInspectionHikCam::StopGrab(int nCamIdx)
+int CInspectioniRaypleCam::StopGrab(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
 		return 0;

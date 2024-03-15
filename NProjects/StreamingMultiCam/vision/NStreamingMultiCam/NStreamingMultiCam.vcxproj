@@ -136,7 +136,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)NProjects\StreamingMultiCam\Libraries\Camera_Basler\include;$(SolutionDir)NProjects\StreamingMultiCam\Libraries\Camera_MVS\include;$(SolutionDir)NProjects\StreamingMultiCam\Libraries\opencv480_CUDA\include;..\NStreamingMultiCam\header\Cameras\Basler;..\NStreamingMultiCam\header\Cameras\Hik;..\NStreamingMultiCam\header\Cameras\iRayple;..\NStreamingMultiCam\header\Tools;..\NStreamingMultiCam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Camera_Basler\include;$(SolutionDir)Libraries\Camera_MVS\include;$(SolutionDir)Libraries\Camera_iRayple\include\IMV;$(SolutionDir)Libraries\opencv480_CUDA\include;..\NStreamingMultiCam\header\Cameras\Basler;..\NStreamingMultiCam\header\Cameras\Hik;..\NStreamingMultiCam\header\Cameras\iRayple;..\NStreamingMultiCam\header\Tools;..\NStreamingMultiCam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,7 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)NProjects\StreamingMultiCam\Libraries\Camera_MVS\lib;$(SolutionDir)NProjects\StreamingMultiCam\Libraries\Camera_Basler\lib\x64;$(SolutionDir)NProjects\StreamingMultiCam\Libraries\opencv480_CUDA\x64\vc17\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\Camera_Basler\lib\x64;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)Libraries\Camera_iRayple\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -157,7 +157,10 @@
     <ClInclude Include="header\Cameras\Hik\FrameGrabberParam.h" />
     <ClInclude Include="header\Cameras\Hik\FrameGrabber_MVS_GigE.h" />
     <ClInclude Include="header\Cameras\Hik\MvCamera.h" />
+    <ClInclude Include="header\Cameras\iRayple\FrameGrabber_iRayple.h" />
+    <ClInclude Include="header\Cameras\iRayple\IMvCamera.h" />
     <ClInclude Include="header\Tools\InspectionHikCam.h" />
+    <ClInclude Include="header\Tools\InspectioniRaypleCam.h" />
     <ClInclude Include="header\Tools\SharedMemoryBuffer.h" />
     <ClInclude Include="header\Tools\StreamingMultiCamProcessor.h" />
     <ClInclude Include="pch.h" />
@@ -171,7 +174,10 @@
     <ClCompile Include="cpp\Cameras\Hik\MvCamera.cpp" />
     <ClCompile Include="cpp\Cameras\Hik\M_FrameGrabber.cpp" />
     <ClCompile Include="cpp\Cameras\Hik\M_FrameGrabber_MVS.cpp" />
+    <ClCompile Include="cpp\Cameras\iRayple\FrameGrabber_iRayple.cpp" />
+    <ClCompile Include="cpp\Cameras\iRayple\IMvCamera.cpp" />
     <ClCompile Include="cpp\Tools\InspectionHikCam.cpp" />
+    <ClCompile Include="cpp\Tools\InspectioniRaypleCam.cpp" />
     <ClCompile Include="cpp\Tools\SharedMemoryBuffer.cpp" />
     <ClCompile Include="cpp\Tools\StreamingMultiCamProcessor.cpp" />
     <ClCompile Include="cpp\Tools\StreamingMultiCamProcessorCSharp.cpp" />

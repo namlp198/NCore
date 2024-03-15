@@ -84,6 +84,15 @@
     <ClInclude Include="cpp\Tools\StreamingMultiCamProcessorCSharp.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="header\Cameras\iRayple\FrameGrabber_iRayple.h">
+      <Filter>Header Files\Cameras\iRayple</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Cameras\iRayple\IMvCamera.h">
+      <Filter>Header Files\Cameras\iRayple</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\InspectioniRaypleCam.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -123,6 +132,15 @@
       <Filter>Source Files\Tool</Filter>
     </ClCompile>
     <ClCompile Include="cpp\Tools\StreamingMultiCamProcessorCSharp.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\iRayple\FrameGrabber_iRayple.cpp">
+      <Filter>Source Files\Cameras\iRayple</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Cameras\iRayple\IMvCamera.cpp">
+      <Filter>Source Files\Cameras\iRayple</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\InspectioniRaypleCam.cpp">
       <Filter>Source Files\Tool</Filter>
     </ClCompile>
   </ItemGroup>

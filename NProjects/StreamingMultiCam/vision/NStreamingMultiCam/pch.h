@@ -69,6 +69,7 @@
 #pragma comment(lib, "opencv_aruco480.lib")
 
 #pragma comment(lib, "MvCameraControl.lib")
+#pragma comment(lib, "MVSDKmd.lib")
 
 #pragma comment(lib, "GCBase_MD_VC141_v3_1_Basler_pylon.lib")
 #pragma comment(lib, "GenApi_MD_VC141_v3_1_Basler_pylon.lib")
