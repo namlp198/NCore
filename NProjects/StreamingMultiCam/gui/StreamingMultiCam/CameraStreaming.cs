@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace StreamingMultiCam
 {
+    public enum CameraType { Hik, iRayple, Basler}
     public class CameraStreaming : IDisposable
     {
         private int _camIdx = 0;
@@ -39,57 +40,121 @@ namespace StreamingMultiCam
                 //await _ucZb.UpdateImage();
             });
         }
-        public async Task Start()
+        public async Task Start(CameraType cameraType)
         {
             // Never run two parallel tasks for the webcam streaming
             if (_previewTask != null && !_previewTask.IsCompleted)
                 return;
 
-            if (!InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.StartGrabHikCam(_camIdx)) return;
-
-            var initializationSemaphore = new SemaphoreSlim(0, 1);
-
-            _cancellationTokenSource = new CancellationTokenSource();
-
-            _previewTask = Task.Run(async () =>
+            switch (cameraType)
             {
-                while (!_cancellationTokenSource.IsCancellationRequested)
-                {
-                    // read hik camera
-                    _ucZb.BufferView = InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.GetHikCamBufferImage(_camIdx);
+                case CameraType.Hik:
+                    if (!InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.StartGrabHikCam(_camIdx)) return;
 
-                    await _ucZb.UpdateImage();
+                    var initializationSemaphore0 = new SemaphoreSlim(0, 1);
 
-                    await Task.Delay(33);
-                }
-            }, _cancellationTokenSource.Token);
+                    _cancellationTokenSource = new CancellationTokenSource();
 
-            // Async initialization to have the possibility to show an animated loader without freezing the GUI
-            // The alternative was the long polling. (while !variable) await Task.Delay
-            await initializationSemaphore.WaitAsync();
-            initializationSemaphore.Dispose();
-            initializationSemaphore = null;
+                    _previewTask = Task.Run(async () =>
+                    {
+                        while (!_cancellationTokenSource.IsCancellationRequested)
+                        {
+                            // read hik camera
+                            _ucZb.BufferView = InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.GetHikCamBufferImage(_camIdx);
 
-            if (_previewTask.IsFaulted)
-            {
-                // To let the exceptions exit
-                await _previewTask;
+                            await _ucZb.UpdateImage();
+
+                            await Task.Delay(33);
+                        }
+                    }, _cancellationTokenSource.Token);
+
+                    // Async initialization to have the possibility to show an animated loader without freezing the GUI
+                    // The alternative was the long polling. (while !variable) await Task.Delay
+                    await initializationSemaphore0.WaitAsync();
+                    initializationSemaphore0.Dispose();
+                    initializationSemaphore0 = null;
+
+                    if (_previewTask.IsFaulted)
+                    {
+                        // To let the exceptions exit
+                        await _previewTask;
+                    }
+                    break;
+                case CameraType.iRayple:
+                    if (!InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.StartGrabiRaypleCam(_camIdx)) return;
+
+                    var initializationSemaphore1 = new SemaphoreSlim(0, 1);
+
+                    _cancellationTokenSource = new CancellationTokenSource();
+
+                    _previewTask = Task.Run(async () =>
+                    {
+                        while (!_cancellationTokenSource.IsCancellationRequested)
+                        {
+                            // read hik camera
+                            _ucZb.BufferView = InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.GetiRaypleCamBufferImage(_camIdx);
+
+                            await _ucZb.UpdateImage();
+
+                            await Task.Delay(33);
+                        }
+                    }, _cancellationTokenSource.Token);
+
+                    // Async initialization to have the possibility to show an animated loader without freezing the GUI
+                    // The alternative was the long polling. (while !variable) await Task.Delay
+                    await initializationSemaphore1.WaitAsync();
+                    initializationSemaphore1.Dispose();
+                    initializationSemaphore1 = null;
+
+                    if (_previewTask.IsFaulted)
+                    {
+                        // To let the exceptions exit
+                        await _previewTask;
+                    }
+                    break;
+                case CameraType.Basler:
+                    break;
+                default:
+                    break;
             }
         }
 
-        public async Task Stop()
+        public async Task Stop(CameraType cameraType)
         {
-            // If "Dispose" gets called before Stop
-            if (_cancellationTokenSource.IsCancellationRequested)
-                return;
-
-            if (!_previewTask.IsCompleted)
+            switch (cameraType)
             {
-                InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.StopGrabHikCam(_camIdx);
-                _cancellationTokenSource.Cancel();
+                case CameraType.Hik:
+                    // If "Dispose" gets called before Stop
+                    if (_cancellationTokenSource.IsCancellationRequested)
+                        return;
 
-                // Wait for it, to avoid conflicts with read/write of _lastFrame
-                await _previewTask;
+                    if (!_previewTask.IsCompleted)
+                    {
+                        InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.StopGrabHikCam(_camIdx);
+                        _cancellationTokenSource.Cancel();
+
+                        // Wait for it, to avoid conflicts with read/write of _lastFrame
+                        await _previewTask;
+                    }
+                    break;
+                case CameraType.iRayple:
+                    // If "Dispose" gets called before Stop
+                    if (_cancellationTokenSource.IsCancellationRequested)
+                        return;
+
+                    if (!_previewTask.IsCompleted)
+                    {
+                        InterfaceManager.Instance.m_streamingMultiCamProcessorManager.m_streamingMultiCamProcessor.StopGrabiRaypleCam(_camIdx);
+                        _cancellationTokenSource.Cancel();
+
+                        // Wait for it, to avoid conflicts with read/write of _lastFrame
+                        await _previewTask;
+                    }
+                    break;
+                case CameraType.Basler:
+                    break;
+                default:
+                    break;
             }
         }
         public void Dispose()

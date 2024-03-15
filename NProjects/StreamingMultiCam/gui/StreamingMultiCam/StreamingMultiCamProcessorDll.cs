@@ -91,6 +91,36 @@ namespace StreamingMultiCam
         #endregion
 
 
+        #region Method's iRayple Camera
+
+#if DEBUG
+        [DllImport("NStreamingMultiVision_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NStreamingMultiVision_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool StartGrabiRaypleCam(IntPtr streamingProcessor, int nCamIdx);
+        public bool StartGrabiRaypleCam(int nCamIdx) { return StartGrabiRaypleCam(m_StreamingMultiCamProcessor, nCamIdx); }
+
+
+#if DEBUG
+        [DllImport("NStreamingMultiVision_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NStreamingMultiVision_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool StopGrabiRaypleCam(IntPtr streamingProcessor, int nCamIdx);
+        public bool StopGrabiRaypleCam(int nCamIdx) { return StopGrabiRaypleCam(m_StreamingMultiCamProcessor, nCamIdx); }
+
+
+#if DEBUG
+        [DllImport("NStreamingMultiVision_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NStreamingMultiVision_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetiRaypleCamBufferImage(IntPtr streamingProcessor, int nCamIdx);
+        public IntPtr GetiRaypleCamBufferImage(int nCamIdx) { return GetiRaypleCamBufferImage(m_StreamingMultiCamProcessor, nCamIdx); }
+        #endregion
+
+
         // KERNEL FUNCTIONS
         [DllImport("kernel32.dll")]
         public extern static unsafe void ZeroMemory(void* Destination, int Length);

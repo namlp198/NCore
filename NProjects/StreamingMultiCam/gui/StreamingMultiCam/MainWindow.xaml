@@ -11,24 +11,24 @@
         WindowState="Maximized"
         Closed="Window_Closed"
         Loaded="Window_Loaded">
-    <TabControl>
-        <TabItem Header="4 Cam"
-                 FontSize="18"
-                 FontWeight="SemiBold">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Button Margin="2"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    Content="Initialize"
+                    Name="btnInit"
+                    Click="btnInit_Click" />
+        </Grid>
+        <TabControl Grid.Row="1">
+            <TabItem Header="4 Cam"
+                     FontSize="18"
+                     FontWeight="SemiBold">
                 <Grid>
-                    <Button Margin="2"
-                            Width="100"
-                            HorizontalAlignment="Left"
-                            Content="Initialize"
-                            Name="btnInit"
-                            Click="btnInit_Click"/>
-                </Grid>
-                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -58,12 +58,63 @@
                         <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox4" />
                     </Border>
                 </Grid>
-            </Grid>
-        </TabItem>
-        <TabItem Header="8 Cam"
-                 FontSize="18" 
-                 FontWeight="SemiBold">
-            
-        </TabItem>
-    </TabControl>
+            </TabItem>
+            <TabItem Header="8 Cam"
+                     FontSize="18"
+                     FontWeight="SemiBold">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border Margin="2"
+                            Grid.Column="0"
+                            Grid.Row="0">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox5" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="1"
+                            Grid.Row="0">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox6" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="2"
+                            Grid.Row="0">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox7" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="3"
+                            Grid.Row="0">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox8" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="0"
+                            Grid.Row="1">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox9" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="1"
+                            Grid.Row="1">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox10" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="2"
+                            Grid.Row="1">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox11" />
+                    </Border>
+                    <Border Margin="2"
+                            Grid.Column="3"
+                            Grid.Row="1">
+                        <Ctrls:UcZoomBoxViewer x:Name="ucZoomBox12" />
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>

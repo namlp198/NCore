@@ -92,6 +92,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CameraStreaming.cs" />
+    <Compile Include="Streaming12Camera.xaml.cs">
+      <DependentUpon>Streaming12Camera.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StreamingMultiCamProcessorDll.cs" />
     <Compile Include="StreamingMultiCamProcessorManager.cs" />
     <Compile Include="InterfaceManager.cs" />
@@ -99,6 +102,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Streaming12Camera.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
