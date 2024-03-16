@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{1b821af5-a997-45a9-86c3-df63841231dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera">
+      <UniqueIdentifier>{243dc337-0334-4eb7-a93e-da9e41d5c38b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera\Hik">
+      <UniqueIdentifier>{4f39e69f-ed5a-4c67-9f25-8211382dffd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\ThreadPool">
+      <UniqueIdentifier>{66459a17-d1df-44ac-ae3b-2a60070f2984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\View">
+      <UniqueIdentifier>{40b8169c-58f7-4a2e-961f-474550db2db6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{0ea8a583-56a2-444f-88c2-2e771b4b9159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera">
+      <UniqueIdentifier>{ab18c134-c1de-467d-91f8-6aaaac2f220d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera\Hik">
+      <UniqueIdentifier>{13ad1371-d674-4603-ab63-4f0cac6329c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\View">
+      <UniqueIdentifier>{4e31cc08-b472-425f-a25e-faa684c63999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\ThreadPool">
+      <UniqueIdentifier>{d826ef3e-b9fa-4aeb-a856-2d14b3ad6153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\VisionTools">
+      <UniqueIdentifier>{7c67d6ce-9609-4046-9442-33daa7c4220a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\VisionTools">
+      <UniqueIdentifier>{277233f9-f803-4d4c-af54-209ea74f08ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TempInspectHikCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TempInspectProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TempInspectProcessorCSharp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TempInspectCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TempInspectDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\VisionTools\LocatorTool.h">
+      <Filter>Header Files\VisionTools</Filter>
+    </ClInclude>
+    <ClInclude Include="header\VisionTools\SelectROITool.h">
+      <Filter>Header Files\VisionTools</Filter>
+    </ClInclude>
+    <ClInclude Include="header\VisionTools\VisionAlgorithms.h">
+      <Filter>Header Files\VisionTools</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TempInspectRecipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber_MVS_GigE.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabberParam.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\MvCamera.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\PriorityThread.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\ThreadData.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\ThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\TimerThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WaitThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\View\SharedMemoryBuffer.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TempInspectHikCam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TempInspectProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TempInspectProcessorCSharp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TempInspectCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\VisionTools\LocatorTool.cpp">
+      <Filter>Source Files\VisionTools</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\VisionTools\SelectROITool.cpp">
+      <Filter>Source Files\VisionTools</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\VisionTools\VisionAlgorithms.cpp">
+      <Filter>Source Files\VisionTools</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TempInspectRecipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber_MVS.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\MvCamera.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\PriorityThread.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\ThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\TimerThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WaitThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadArray.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\View\SharedMemoryBuffer.cpp">
+      <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

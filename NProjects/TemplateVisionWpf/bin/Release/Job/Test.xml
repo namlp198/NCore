@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Job id="0" name="Test" numberOfCamera="1">
+  <Camera id="0" name="cam0" interfaceType="gige" sensorType="color" manufacturer="iRayple" frameWidth="2448" frameHeight="2048" serialNumber="xxx">
+    <Recipe id="0" name="test_hole" />
+  </Camera>
+</Job>
