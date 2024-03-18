@@ -4,6 +4,8 @@
 #include "FrameGrabberParam.h"
 #include "SharedMemoryBuffer.h"
 #include "TempInspectDefine.h"
+#include "TempInspectCore.h"
+
 #include "opencv2/core.hpp"
 
 #define MAX_FRAME_COUNT 15
@@ -56,5 +58,6 @@ private:
 	// Result Buffer
 	cv::Mat							m_ResultImageBuffer[MAX_POSITION_COUNT];
 
+	CTempInspectCore*               m_InspCore;
 
 };

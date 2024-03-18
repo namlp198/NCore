@@ -11,6 +11,4 @@ public:
 private:
 
 	CTempInspectHikCam* m_HikCamera;
-
-	CTempInspectCore* m_InspCore;
 };

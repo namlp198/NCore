@@ -59,6 +59,7 @@
 #pragma comment(lib, "opencv_aruco480.lib")
 
 #pragma comment(lib, "MvCameraControl.lib")
-#endif
+#pragma comment(lib, "RapidXML_Release.lib")
 
+#endif
 #endif //PCH_H

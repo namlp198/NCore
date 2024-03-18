@@ -143,7 +143,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)Libraries\RapidXML;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -166,9 +166,13 @@
     <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h" />
     <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h" />
     <ClInclude Include="header\Tools\View\SharedMemoryBuffer.h" />
+    <ClInclude Include="header\VisionTools\interface_vision.h" />
     <ClInclude Include="header\VisionTools\LocatorTool.h" />
     <ClInclude Include="header\VisionTools\SelectROITool.h" />
     <ClInclude Include="header\VisionTools\VisionAlgorithms.h" />
+    <ClInclude Include="header\VisionTools\VisionDefine.h" />
+    <ClInclude Include="header\VisionTools\VisionParameter.h" />
+    <ClInclude Include="header\VisionTools\VisionResult.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +196,8 @@
     <ClCompile Include="cpp\VisionTools\LocatorTool.cpp" />
     <ClCompile Include="cpp\VisionTools\SelectROITool.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionAlgorithms.cpp" />
+    <ClCompile Include="cpp\VisionTools\VisionParameter.cpp" />
+    <ClCompile Include="cpp\VisionTools\VisionResult.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
