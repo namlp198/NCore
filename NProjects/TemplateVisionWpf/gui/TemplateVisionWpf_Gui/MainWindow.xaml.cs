@@ -24,5 +24,15 @@ namespace TemplateVisionWpf_Gui
         {
             InitializeComponent();
         }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.TempInspProcessorManager.Initialize();
+        }
+
+        private void btnTestRun_Click(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.TestRun();
+        }
     }
 }

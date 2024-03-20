@@ -7,6 +7,26 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Width="200"
+                    Height="50"
+                    Margin="5"
+                    Content="Load Recipe"
+                    FontSize="16"
+                    Name="btnLoad"
+                    Click="btnLoad_Click" />
+
+            <Button Width="200"
+                    Height="50" 
+                    Margin="5"
+                    Content="Test Run"
+                    FontSize="16"
+                    Name="btnTestRun"
+                    Click="btnTestRun_Click" />
+        </StackPanel>
     </Grid>
 </Window>
