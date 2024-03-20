@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SystemSettings>
 	<JobSettings>
-		<JobPath>D:\NCore\NProjects\TemplateVisionWpf\bin\Release\Job</JobPath>
+		<JobPath>D:\entry\NCore\NProjects\TemplateVisionWpf\bin\Release\Job</JobPath>
 		<JobName>Job_Template</JobName>
 	</JobSettings>
-	<SaveImageFolder>D:\NCore\NProjects\TemplateVisionWpf\bin\Release\Image_Saved</SaveImageFolder>
-	<TemplateImage>D:\NCore\NProjects\TemplateVisionWpf\bin\Release\TemplateImage</TemplateImage>
+	<SaveImageFolder>D:\entry\NCore\NProjects\TemplateVisionWpf\bin\Release\Image_Saved</SaveImageFolder>
+	<TemplateImage>D:\entry\NCore\NProjects\TemplateVisionWpf\bin\Release\TemplateImage</TemplateImage>
 </SystemSettings>
