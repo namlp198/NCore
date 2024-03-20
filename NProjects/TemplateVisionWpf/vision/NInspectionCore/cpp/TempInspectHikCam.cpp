@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "TempInspectHikCam.h"
 
-CTempInspectHikCam::CTempInspectHikCam()
+CTempInspectHikCam::CTempInspectHikCam(ITempInspectHikCamToParent* pInterface)
 {
+	m_pInterface = pInterface;
+
 	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		m_nCamera[i] = NULL;
@@ -23,8 +25,8 @@ BOOL CTempInspectHikCam::Initialize()
 
 	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
-		CameraInfo* pCamInfo = m_pTempInspCore->m_pTempInspRecipe[i]->GetCameraInfos();
-		
+		CameraInfo* pCamInfo = m_pInterface->GetRecipe(i)->GetCameraInfos();
+
 		USES_CONVERSION;
 		char cSensorType[10] = {};
 		sprintf_s(cSensorType, "%s", W2A(pCamInfo->m_csSensorType));

@@ -3,19 +3,10 @@
 
 CTempInspectCore::CTempInspectCore()
 {
-	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
-	{
-		m_pTempInspRecipe[i] = NULL;
-	}
 }
 
 CTempInspectCore::~CTempInspectCore()
 {
-	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
-	{
-		if (m_pTempInspRecipe[i] != NULL)
-			delete m_pTempInspRecipe[i], m_pTempInspRecipe[i] = NULL;
-	}
 }
 
 void CTempInspectCore::CreateInspectThread(int nThreadCount)
@@ -71,36 +62,9 @@ void CTempInspectCore::WorkThreadProcessArray(PVOID pParameter)
 	}
 }
 
-void CTempInspectCore::LoadRecipe()
-{
-	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
-	{
-		m_pTempInspRecipe[i] = new CTempInspectRecipe;
-		m_pTempInspRecipe[i]->LoadRecipe(i);
-	}
-}
-
 void CTempInspectCore::RunningThread(int nThreadIndex)
 {
-	if (m_pTempInspRecipe[nThreadIndex] == NULL)
-		return;
-
-	QueueLocTools* queueLocTools = m_pTempInspRecipe[nThreadIndex]->GetQueueLocTools();
-	QueueSelROITools* queueSelROITools = m_pTempInspRecipe[nThreadIndex]->GetQueueSelROITools();
-
-	while (!queueLocTools->empty())
-	{
-		CLocatorTool locTool = queueLocTools->front();
-		locTool.Run();
-		queueLocTools->pop();
-	}
-
-	while (!queueSelROITools->empty())
-	{
-		CSelectROITool selTool = queueSelROITools->front();
-		selTool.Run();
-		queueSelROITools->pop();
-	}
+	
 }
 
 void CTempInspectCore::StopThread()

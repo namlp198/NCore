@@ -1,8 +1,9 @@
 #pragma once
 #include "TempInspectHikCam.h"
 #include "TempInspectCore.h"
+#include "TempInspectSystemConfig.h"
 
-class AFX_EXT_CLASS CTempInspectProcessor
+class AFX_EXT_CLASS CTempInspectProcessor : public ITempInspectHikCamToParent
 {
 public:
 	CTempInspectProcessor();
@@ -11,6 +12,12 @@ public:
 public:
 	BOOL Initialize();
 	BOOL Destroy();
+	void LoadSystemConfig();
+	void LoadRecipe();
+
+public:
+	CTempInspectRecipe* GetRecipe(int nIdx) { return m_pTempInspRecipe[nIdx]; }
+	CTempInspectSystemConfig* GetSystemConfig() { return m_pTempInspSysConfig; }
 
 public:
 	BOOL TestRun();
@@ -25,4 +32,10 @@ private:
 
 	// Inspect Core
 	CTempInspectCore* m_pTempInspCore;
+
+	// config
+	CTempInspectSystemConfig* m_pTempInspSysConfig;
+
+	// recipe
+	CTempInspectRecipe* m_pTempInspRecipe[MAX_CAMERA_INSP_COUNT];
 };

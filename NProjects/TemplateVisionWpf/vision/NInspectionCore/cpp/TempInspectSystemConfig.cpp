@@ -1,19 +1,17 @@
 #include "pch.h"
-#include "TempInspectConfig.h"
+#include "TempInspectSystemConfig.h"
 
-CTempInspectConfig::CTempInspectConfig(CString configPath) : m_csConfigPath(configPath)
+CTempInspectSystemConfig::CTempInspectSystemConfig(CString configPath) : m_csConfigPath(configPath)
 {
 	m_csConfigName = "SystemSettings_Template.xml";
 	m_csConfigPath = m_csConfigPath + "\\" + m_csConfigName;
 }
 
-CTempInspectConfig::~CTempInspectConfig()
+CTempInspectSystemConfig::~CTempInspectSystemConfig()
 {
-	::DisposeXMLFile(m_pXmlFile);
-	::DisposeXMLObject(m_pXmlDoc);
 }
 
-BOOL CTempInspectConfig::Initialize()
+BOOL CTempInspectSystemConfig::Initialize()
 {
 	if (m_csConfigPath.IsEmpty())
 	{
@@ -34,6 +32,8 @@ BOOL CTempInspectConfig::Initialize()
 	char cConfigPath[1024] = {};
 	sprintf_s(cConfigPath, "%s", W2A(m_csConfigPath));
 
+	XMLFile* m_pXmlFile;
+	XMLDocument_2* m_pXmlDoc;
 	std::string error;
 
 	m_pXmlFile = ::OpenXMLFile(cConfigPath, error);

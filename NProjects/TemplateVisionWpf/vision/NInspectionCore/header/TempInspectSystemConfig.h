@@ -1,14 +1,14 @@
-#pragma onc
+#pragma once
 
 #include "rapidxml.hpp"
 #include "RapidXMLSTD.hpp"
 #include "rapidxml_utils.hpp"
 
-class AFX_EXT_CLASS CTempInspectConfig
+class AFX_EXT_CLASS CTempInspectSystemConfig
 {
 public:
-	CTempInspectConfig(CString configPath);
-	virtual ~CTempInspectConfig();
+	CTempInspectSystemConfig(CString configPath);
+	virtual ~CTempInspectSystemConfig();
 
 public:
 	BOOL Initialize();
@@ -35,9 +35,4 @@ private:
 			                            
 	CString                             m_csSaveImageFolder;
 	CString                             m_csTemplateImage;
-
-private:
-	// xml
-	XMLFile*                             m_pXmlFile;
-	XMLDocument_2*                       m_pXmlDoc;
 };

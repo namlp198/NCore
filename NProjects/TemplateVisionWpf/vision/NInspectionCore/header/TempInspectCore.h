@@ -37,16 +37,8 @@ public:
 	virtual void WorkThreadProcessArray(PVOID pParameter);
 
 public:
-	void LoadRecipe();
-
-public:
 	void RunningThread(int nThreadIndex);
 	void StopThread();
-
-	CTempInspectRecipe*                GetInspRecipe() { return m_pTempInspRecipe[MAX_CAMERA_INSP_COUNT]; }
-public:
-
-	CTempInspectRecipe*                 m_pTempInspRecipe[MAX_CAMERA_INSP_COUNT];
 
 private:
 	UINT								m_nThreadCount;

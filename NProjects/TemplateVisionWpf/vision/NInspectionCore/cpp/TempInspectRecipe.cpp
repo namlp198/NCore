@@ -3,16 +3,6 @@
 
 CTempInspectRecipe::CTempInspectRecipe()
 {
-	m_csConfigPath = _T("D:\\NCore\\NProjects\\TemplateVisionWpf\\bin\\Release\\Config");
-
-	m_pTempInspConfig = new CTempInspectConfig(m_csConfigPath);
-	m_pTempInspConfig->Initialize();
-
-	m_csJobPath = m_pTempInspConfig->GetJobPath();
-	m_csJobName = m_pTempInspConfig->GetJobName();
-	m_csJobPath = m_csJobPath + "\\" + m_csJobName + ".xml";
-
-	//m_pQueueTools = new QueueTools;
 	m_queueLoc = new QueueLocTools;
 	m_queueSelROI = new QueueSelROITools;
 	m_pCameraInfos = new CameraInfo;
@@ -20,17 +10,6 @@ CTempInspectRecipe::CTempInspectRecipe()
 
 CTempInspectRecipe::~CTempInspectRecipe()
 {
-	/*if (m_pQueueTools != NULL)
-		delete m_pQueueTools, m_pQueueTools = NULL;*/
-
-	/*if (m_pCameraInfos != NULL)
-		delete m_pCameraInfos, m_pCameraInfos = NULL;
-
-	if (m_pTempInspConfig != NULL)
-		delete m_pTempInspConfig, m_pTempInspConfig = NULL;*/
-
-	::DisposeXMLFile(m_pXmlFile);
-	::DisposeXMLObject(m_pXmlDoc);
 }
 
 BOOL CTempInspectRecipe::LoadRecipe(int nCamIdx)
@@ -54,6 +33,9 @@ BOOL CTempInspectRecipe::LoadRecipe(int nCamIdx)
 	char cJobPath[1024] = {};
 	sprintf_s(cJobPath, "%s", W2A(m_csJobPath));
 
+	// xml
+	XMLFile* m_pXmlFile;
+	XMLDocument_2* m_pXmlDoc;
 	std::string error;
 
 	m_pXmlFile = ::OpenXMLFile(cJobPath, error);

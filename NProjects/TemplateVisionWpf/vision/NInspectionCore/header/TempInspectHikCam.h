@@ -11,10 +11,16 @@
 
 #define MAX_FRAME_COUNT 15
 
+interface ITempInspectHikCamToParent
+{
+	virtual CTempInspectRecipe* GetRecipe(int nIdx) = 0;
+	virtual CTempInspectSystemConfig* GetSystemConfig() = 0;
+};
+
 class AFX_EXT_CLASS CTempInspectHikCam : public IFrameGrabber2Parent
 {
 public:
-	CTempInspectHikCam();
+	CTempInspectHikCam(ITempInspectHikCamToParent* pInterface);
 	~CTempInspectHikCam();
 
 	BOOL                            Initialize();
@@ -27,9 +33,6 @@ public:
 	CSharedMemoryBuffer*            GetSharedMemoryBuffer(int nCamIdx);
 
 	LPBYTE                          GetResultBufferImage(int nPosIdx);
-	CTempInspectCore*               GetTempInspCore() { return m_pTempInspCore; }
-
-	void                            SetTempInspCore(CTempInspectCore* pInspCore) { m_pTempInspCore = pInspCore; }
 
 public:
 	virtual void	DisplayMessage(TCHAR* str, ...) {};
@@ -42,7 +45,7 @@ public:
 	int StopGrab(int nCamIdx);
 
 private:
-	//CString                         m_strRootPath;
+	ITempInspectHikCamToParent*     m_pInterface;
 
 	// Area Camera
 	BOOL							m_bCamera_ConnectStatus[MAX_CAMERA_INSP_COUNT];
@@ -55,7 +58,4 @@ private:
 
 	// Result Buffer
 	cv::Mat							m_ResultImageBuffer[MAX_CAMERA_INSP_COUNT];
-
-	CTempInspectCore*               m_pTempInspCore;
-
 };
