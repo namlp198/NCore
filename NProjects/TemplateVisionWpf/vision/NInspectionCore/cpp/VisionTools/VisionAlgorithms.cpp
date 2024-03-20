@@ -1,20 +1,12 @@
 #include "pch.h"
 #include "VisionAlgorithms.h"
 
-CVisionAlgorithms::CVisionAlgorithms(emAlgorithms algorithm, IParameters* pParam, IResults* pResult)
+CVisionAlgorithms::CVisionAlgorithms()
 {
-	m_emAlgorithm = algorithm;
-	m_pParam = pParam;
-	m_pResult = pResult;
 }
 
 CVisionAlgorithms::~CVisionAlgorithms()
 {
-	if (m_pParam != NULL)
-		delete m_pParam, m_pParam = NULL;
-
-	if (m_pResult != NULL)
-		delete m_pResult, m_pResult = NULL;
 }
 
 void CVisionAlgorithms::Run()
@@ -41,7 +33,14 @@ void CVisionAlgorithms::Run()
 	}
 }
 
+
 void CVisionAlgorithms::NVision_CountPixelAlgorithm()
 {
-	CParameterCountPixel* param = (CParameterCountPixel*)m_pParam;
+	CParameterCountPixel param = m_vsParamManeger.GetParamCntPxl();
+
+	char cText[1024] = {};
+	sprintf_s(cText, "%s: %s", "angle rotation: ", std::to_string(std::get<4>(param.m_tupROI)));
+
+	// code here
+	AfxMessageBox((CString)cText);
 }

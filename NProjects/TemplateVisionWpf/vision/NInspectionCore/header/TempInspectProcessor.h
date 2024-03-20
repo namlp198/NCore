@@ -8,7 +8,21 @@ public:
 	CTempInspectProcessor();
 	~CTempInspectProcessor();
 
+public:
+	BOOL Initialize();
+	BOOL Destroy();
+
+public:
+	BOOL TestRun();
+
+public:
+	CTempInspectHikCam* GetHikCamControl() { return m_pHikCamera; }
+
 private:
 
-	CTempInspectHikCam* m_HikCamera;
+	// Hik cam
+	CTempInspectHikCam* m_pHikCamera;
+
+	// Inspect Core
+	CTempInspectCore* m_pTempInspCore;
 };

@@ -3,7 +3,7 @@
 
 CTempInspectHikCam::CTempInspectHikCam()
 {
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		m_nCamera[i] = NULL;
 
@@ -19,47 +19,28 @@ CTempInspectHikCam::~CTempInspectHikCam()
 
 BOOL CTempInspectHikCam::Initialize()
 {
-	
-	CFrameGrabberParam grabberParam[MAX_CAMERA_COUNT];
+	CFrameGrabberParam grabberParam[MAX_CAMERA_INSP_COUNT];
 
-	// Cam 1
-	grabberParam[0].SetParam_GrabberPort((CString)_T("DA0069518"));
-	grabberParam[0].SetParam_FrameWidth(FRAME_WIDTH);
-	grabberParam[0].SetParam_FrameHeight(FRAME_HEIGHT);
-	grabberParam[0].SetParam_FrameWidthStep(FRAME_WIDTH);
-	grabberParam[0].SetParam_FrameDepth(FRAME_DEPTH);
-	grabberParam[0].SetParam_FrameChannels(CHANNEL_COUNT);
-	grabberParam[0].SetParam_FrameCount(MAX_FRAME_COUNT);
-
-	// Cam 2
-	/*grabberParam[1].SetParam_GrabberPort((CString)_T("DA0069525"));
-	grabberParam[1].SetParam_FrameWidth(FRAME_WIDTH);
-	grabberParam[1].SetParam_FrameHeight(FRAME_HEIGHT);
-	grabberParam[1].SetParam_FrameWidthStep(FRAME_WIDTH);
-	grabberParam[1].SetParam_FrameDepth(FRAME_DEPTH);
-	grabberParam[1].SetParam_FrameChannels(CHANNEL_COUNT);
-	grabberParam[1].SetParam_FrameCount(MAX_FRAME_COUNT);*/
-
-	// Cam 3
-	grabberParam[1].SetParam_GrabberPort((CString)_T("DA0069522"));
-	grabberParam[1].SetParam_FrameWidth(FRAME_WIDTH);
-	grabberParam[1].SetParam_FrameHeight(FRAME_HEIGHT);
-	grabberParam[1].SetParam_FrameWidthStep(FRAME_WIDTH);
-	grabberParam[1].SetParam_FrameDepth(FRAME_DEPTH);
-	grabberParam[1].SetParam_FrameChannels(CHANNEL_COUNT);
-	grabberParam[1].SetParam_FrameCount(MAX_FRAME_COUNT);
-
-	// Cam 4
-	/*grabberParam[3].SetParam_GrabberPort((CString)_T("DA0069524"));
-	grabberParam[3].SetParam_FrameWidth(FRAME_WIDTH);
-	grabberParam[3].SetParam_FrameHeight(FRAME_HEIGHT);
-	grabberParam[3].SetParam_FrameWidthStep(FRAME_WIDTH);
-	grabberParam[3].SetParam_FrameDepth(FRAME_DEPTH);
-	grabberParam[3].SetParam_FrameChannels(CHANNEL_COUNT);
-	grabberParam[3].SetParam_FrameCount(MAX_FRAME_COUNT);*/
-
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
+		CameraInfo* pCamInfo = m_pTempInspCore->m_pTempInspRecipe[i]->GetCameraInfos();
+		
+		USES_CONVERSION;
+		char cSensorType[10] = {};
+		sprintf_s(cSensorType, "%s", W2A(pCamInfo->m_csSensorType));
+
+
+		int nFrameDepth = strcmp(cSensorType, "color") == 0 ? 24 : 8;
+		int nFrameChannels = strcmp(cSensorType, "color") == 0 ? 3 : 1;
+
+		grabberParam[i].SetParam_GrabberPort(pCamInfo->m_csSerialNumber);
+		grabberParam[i].SetParam_FrameWidth(pCamInfo->m_nFrameWidth);
+		grabberParam[i].SetParam_FrameHeight(pCamInfo->m_nFrameHeight);
+		grabberParam[i].SetParam_FrameWidthStep(pCamInfo->m_nFrameWidth);
+		grabberParam[i].SetParam_FrameDepth(nFrameDepth);
+		grabberParam[i].SetParam_FrameChannels(nFrameChannels);
+		grabberParam[i].SetParam_FrameCount(MAX_FRAME_COUNT);
+
 		// Buffer
 		if (m_pCameraImageBuffer[i] != NULL)
 		{
@@ -68,10 +49,10 @@ BOOL CTempInspectHikCam::Initialize()
 			m_pCameraImageBuffer[i] = NULL;
 		}
 
-		DWORD dwFrameWidth = (DWORD)FRAME_WIDTH;
-		DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT;
+		DWORD dwFrameWidth = (DWORD)pCamInfo->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)pCamInfo->m_nFrameHeight;
 		DWORD dwFrameCount = MAX_FRAME_COUNT;
-		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * CHANNEL_COUNT;
+		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * nFrameChannels;
 
 		m_pCameraImageBuffer[i] = new CSharedMemoryBuffer;
 		m_pCameraImageBuffer[i]->SetFrameWidth(dwFrameWidth);
@@ -119,7 +100,7 @@ BOOL CTempInspectHikCam::Initialize()
 
 BOOL CTempInspectHikCam::Destroy()
 {
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		if (m_nCamera[i] != NULL)
 		{
@@ -141,7 +122,7 @@ BOOL CTempInspectHikCam::Destroy()
 
 BOOL CTempInspectHikCam::GetCamStatus()
 {
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		if (m_bCamera_ConnectStatus[i] == FALSE)
 			return FALSE;
@@ -152,7 +133,7 @@ BOOL CTempInspectHikCam::GetCamStatus()
 
 LPBYTE CTempInspectHikCam::GetBufferImage(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return NULL;
 
 	if (m_pCameraImageBuffer[nCamIdx] == NULL)
@@ -170,7 +151,7 @@ LPBYTE CTempInspectHikCam::GetBufferImage(int nCamIdx)
 
 BOOL CTempInspectHikCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return FALSE;
 
 	if (pBuffer == NULL)
@@ -196,7 +177,7 @@ BOOL CTempInspectHikCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
 
 BOOL CTempInspectHikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return FALSE;
 
 	if (pBuffer == NULL)
@@ -245,7 +226,7 @@ BOOL CTempInspectHikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
 
 CSharedMemoryBuffer* CTempInspectHikCam::GetSharedMemoryBuffer(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return NULL;
 
 	return m_pCameraImageBuffer[nCamIdx];
@@ -253,7 +234,7 @@ CSharedMemoryBuffer* CTempInspectHikCam::GetSharedMemoryBuffer(int nCamIdx)
 
 LPBYTE CTempInspectHikCam::GetResultBufferImage(int nPosIdx)
 {
-	if (nPosIdx < 0 || MAX_POSITION_COUNT <= nPosIdx)
+	if (nPosIdx < 0 || MAX_CAMERA_INSP_COUNT <= nPosIdx)
 		return NULL;
 
 	if (m_ResultImageBuffer[nPosIdx].empty())
@@ -264,7 +245,7 @@ LPBYTE CTempInspectHikCam::GetResultBufferImage(int nPosIdx)
 
 int CTempInspectHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
 {
-	if (nGrabberIndex < 0 || MAX_CAMERA_COUNT <= nGrabberIndex)
+	if (nGrabberIndex < 0 || MAX_CAMERA_INSP_COUNT <= nGrabberIndex)
 		return -1;
 
 	if (pBuffer == NULL)
@@ -298,7 +279,7 @@ int CTempInspectHikCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex,
 
 int CTempInspectHikCam::StartGrab(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_nCamera[nCamIdx] == NULL)
@@ -309,7 +290,7 @@ int CTempInspectHikCam::StartGrab(int nCamIdx)
 
 int CTempInspectHikCam::StopGrab(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_nCamera[nCamIdx] == NULL)

@@ -1,26 +1,31 @@
 #pragma once
 
 #include "VisionAlgorithms.h"
+#include "VisionManager.h"
 #include "interface_vision.h"
 #include <string>
 
-class AFX_EXT_CLASS CSelectROITool : public ITools
+class AFX_EXT_CLASS CSelectROITool
 {
 public:
 	CSelectROITool();
 	~CSelectROITool();
 
 public:
-	CVisionAlgorithms*                       GetVsAlgorithms() { return m_pVsAlgorithms; }
-	CParameterSelectROI*                     GetParamSelectROI() { return m_pParamSelROI; }
+	// Getter
+	CVisionAlgorithms                GetVsAlgorithms() { return m_pVsAlgorithms; }
+	CParameterSelectROI              GetParamSelROI() { return m_paramSelROI; }
+
+	// Setter
+	void                  SetVsAlgorithms(CVisionAlgorithms pVsAlgorithm) { m_pVsAlgorithms = pVsAlgorithm; }
+	void                  SetParamSelROI(CParameterSelectROI paramSelROI) { m_paramSelROI = paramSelROI; }
 
 public:
-	void Initialize(CParameterSelectROI* pParamSelROI, IParameters* pParam, IResults* pResult);
+	void Run();
 
 private:
-	CParameterSelectROI*                     m_pParamSelROI;
-	IParameters*                             m_pParam;
-	IResults*                                m_pResult;
 
-	CVisionAlgorithms*                       m_pVsAlgorithms;
+	CParameterSelectROI                      m_paramSelROI;
+
+	CVisionAlgorithms                       m_pVsAlgorithms;
 };

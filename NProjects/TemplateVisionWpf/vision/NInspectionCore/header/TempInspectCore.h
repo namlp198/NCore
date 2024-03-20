@@ -2,19 +2,59 @@
 
 #include "TempInspectRecipe.h"
 #include "TempInspectDefine.h"
+#include "WorkThreadArray.h"
 
-class AFX_EXT_CLASS CTempInspectCore
+class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
+{
+public:
+	CTempInspectCoreThreadData(PVOID pPtr) : CWorkThreadData(pPtr) { Reset(); }
+	CTempInspectCoreThreadData(PVOID pPtr, emTempInspectWorkType emProcessType, UINT nThreadIdx) : CWorkThreadData(pPtr)
+	{
+		m_nProcessType = emProcessType;
+		m_nThreadIdx = nThreadIdx;
+	}
+	virtual ~CTempInspectCoreThreadData() { Reset(); }
+	void Reset()
+	{
+		m_nProcessType = emInspectWorkType_Count;
+		m_nThreadIdx = -1;
+	}
+
+public:
+	emTempInspectWorkType			m_nProcessType;		// process type
+	UINT							m_nThreadIdx;
+};
+
+class AFX_EXT_CLASS CTempInspectCore : public IWorkThreadArray2Parent
 {
 public:
 	CTempInspectCore();
 	~CTempInspectCore();
 
 public:
-	void LoadRecipe(int nCamIdx);
+	void CreateInspectThread(int nThreadCount);
+	void DeleteInspectThread();
+	virtual void WorkThreadProcessArray(PVOID pParameter);
 
 public:
-	void Running(int nCamIdx);
+	void LoadRecipe();
+
+public:
+	void RunningThread(int nThreadIndex);
+	void StopThread();
+
+	CTempInspectRecipe*                GetInspRecipe() { return m_pTempInspRecipe[MAX_CAMERA_INSP_COUNT]; }
+public:
+
+	CTempInspectRecipe*                 m_pTempInspRecipe[MAX_CAMERA_INSP_COUNT];
 
 private:
-	CTempInspectRecipe*                   m_TempInspRecipe[MAX_CAMERA_INSP_COUNT];
+	UINT								m_nThreadCount;
+
+	BOOL								m_bRunningThread[MAX_THREAD_COUNT];
+
+	CCriticalSection					m_csWorkThreadArray[MAX_THREAD_COUNT];
+	CWorkThreadArray*                   m_pWorkThreadArray[MAX_THREAD_COUNT];
+
+	CCriticalSection					m_csPostProcessing;
 };

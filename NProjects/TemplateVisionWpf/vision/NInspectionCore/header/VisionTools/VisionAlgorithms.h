@@ -1,12 +1,11 @@
 #pragma once
 
-#include "VisionParameter.h"
-#include "VisionResult.h"
+#include "VisionManager.h"
 
 class AFX_EXT_CLASS CVisionAlgorithms
 {
 public:
-	CVisionAlgorithms(emAlgorithms algorithm, IParameters* pParam, IResults* pResult);
+	CVisionAlgorithms();
 	~CVisionAlgorithms();
 
 public:
@@ -14,23 +13,30 @@ public:
 
 public:
 	// Getter
-	IResults*                        GetResult() { return m_pResult; }
-	IParameters*                     GetParam() { return m_pParam; }
-	CLocatorToolResult*              GetLocaResult() { return m_pLocaResult; }
+	CLocatorToolResult               GetLocaResult() { return m_locaResult; }
+	CVisionParameterManager          GetVsParamManager() { return m_vsParamManeger; }
+	CVisionResultManager             GetVsResultManager() { return m_vsResultManager; }
+	emAlgorithms                     GetAlgorithm() { return m_emAlgorithm; }
 
 	// Setter
-	void                             SetLocaResult(CLocatorToolResult* locaRes) { m_pLocaResult = locaRes; }
-	void                             SetParam(IParameters* pParam) { m_pParam = pParam; }
+	void              SetLocaResult(CLocatorToolResult locaRes) { m_locaResult = locaRes; }
+	void              SetVsParamManager(CVisionParameterManager pVsParam) { m_vsParamManeger = pVsParam; }
+	void              SetVsResultManager(CVisionResultManager pVsResult) { m_vsResultManager = pVsResult; }
+	void              SetAlgorithm(emAlgorithms algorithm) { m_emAlgorithm = algorithm; }
 
 private:
-	// Src all algorithms
+	// all algorithms will declare at here
 	void                             NVision_CountPixelAlgorithm();
 
 private:
 
-	emAlgorithms                        m_emAlgorithm;
-	IParameters*                        m_pParam;
-	IResults*                           m_pResult;
+	// define algorithm gonna run when inspection start.
+	emAlgorithms                         m_emAlgorithm;
 
-	CLocatorToolResult*                 m_pLocaResult;
+	// manager parameter and result of vision
+	CVisionParameterManager             m_vsParamManeger;
+	CVisionResultManager                m_vsResultManager;
+
+	// result of locator tool when run done.
+	CLocatorToolResult                   m_locaResult;
 };

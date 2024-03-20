@@ -4,7 +4,7 @@
 #include "VisionResult.h"
 #include "interface_vision.h"
 
-class AFX_EXT_CLASS CLocatorTool : public ITools
+class AFX_EXT_CLASS CLocatorTool
 {
 public:
 	CLocatorTool();
@@ -12,17 +12,19 @@ public:
 
 public:
 	// getter
-	CLocatorToolResult*     GetLocaToolRes() { return m_pLocaResult; }
-	CParameterLocator*      GetParamLoca() { return m_pParamLoca; }
+	CLocatorToolResult     GetLocaToolRes() { return m_LocaResult; }
+	CParameterLocator      GetParamLoca() { return m_ParamLoca; }
 
 	// setter
-	void                    SetLocaToolRes(CLocatorToolResult* locaToolRes) { m_pLocaResult = locaToolRes; }
-	void                    SetParamLoca(CParameterLocator* paramLoca) { m_pParamLoca = paramLoca; }
+	void                    SetLocaToolRes(CLocatorToolResult locaToolRes) { m_LocaResult = locaToolRes; }
+	void                    SetParamLoca(CParameterLocator paramLoca) { m_ParamLoca = paramLoca; }
+public:
+	void                    Run();
 
 protected:
 	void                    NVision_FindLocator();
 
 private:
-	CParameterLocator*               m_pParamLoca;
-	CLocatorToolResult*              m_pLocaResult;
+	CParameterLocator               m_ParamLoca;
+	CLocatorToolResult              m_LocaResult;
 };

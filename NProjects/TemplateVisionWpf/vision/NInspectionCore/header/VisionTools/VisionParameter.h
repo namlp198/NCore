@@ -1,16 +1,12 @@
 #pragma once
 
-#include "interface_vision.h"
 #include "VisionDefine.h"
 #include <tuple>
+#include <string>
+#include <iostream>
 
-class AFX_EXT_CLASS CParameterLocator : public IParameters
+struct CParameterLocator
 {
-public:
-	CParameterLocator();
-	~CParameterLocator();
-public:
-
 	CString                    m_csId;
 	CString                    m_csName;
 	int                        m_nPriority;
@@ -21,13 +17,8 @@ public:
 	int                        m_DataTrain[2];
 };
 
-class AFX_EXT_CLASS CParameterSelectROI : IParameters
+struct CParameterSelectROI
 {
-public:
-	CParameterSelectROI();
-	~CParameterSelectROI();
-public:
-
 	CString                    m_csId;
 	CString                    m_csName;
 	CString                    m_csType;
@@ -36,24 +27,15 @@ public:
 	int                        m_nPriority;
 };
 
-class AFX_EXT_CLASS CParameterCountPixel : IParameters
+struct CParameterCountPixel
 {
-public:
-	CParameterCountPixel();
-	~CParameterCountPixel();
-public:
 	std::tuple<int, int, int, int, double>       m_tupROI;
 	int                                          m_arrThresholdGray[2];
 	int                                          m_arrNumberOfPixel[2];
 };
 
-class AFX_EXT_CLASS CParameterCalculateArea : IParameters
+struct CParameterCalculateArea
 {
-public:
-	CParameterCalculateArea();
-	~CParameterCalculateArea();
-
-public:
 	std::tuple<int, int, int, int, double>       m_tupROI;
 	int                                          m_nThreshold;
 	int                                          m_arrArea[2];

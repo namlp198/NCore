@@ -132,6 +132,12 @@
     <ClInclude Include="header\VisionTools\VisionDefine.h">
       <Filter>Header Files\VisionTools</Filter>
     </ClInclude>
+    <ClInclude Include="header\TempInspectConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\VisionTools\VisionManager.h">
+      <Filter>Header Files\VisionTools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -201,6 +207,12 @@
       <Filter>Source Files\VisionTools</Filter>
     </ClCompile>
     <ClCompile Include="cpp\VisionTools\VisionResult.cpp">
+      <Filter>Source Files\VisionTools</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\TempInspectConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\VisionTools\VisionManager.cpp">
       <Filter>Source Files\VisionTools</Filter>
     </ClCompile>
   </ItemGroup>

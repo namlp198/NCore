@@ -5,16 +5,11 @@
 #include "SharedMemoryBuffer.h"
 #include "TempInspectDefine.h"
 #include "TempInspectCore.h"
+#include "TempInspectRecipe.h"
 
 #include "opencv2/core.hpp"
 
 #define MAX_FRAME_COUNT 15
-#define MAX_CAMERA_COUNT 2
-#define MAX_POSITION_COUNT 1
-#define FRAME_WIDTH 2448
-#define FRAME_HEIGHT 2048
-#define CHANNEL_COUNT 3
-#define FRAME_DEPTH 24
 
 class AFX_EXT_CLASS CTempInspectHikCam : public IFrameGrabber2Parent
 {
@@ -32,6 +27,9 @@ public:
 	CSharedMemoryBuffer*            GetSharedMemoryBuffer(int nCamIdx);
 
 	LPBYTE                          GetResultBufferImage(int nPosIdx);
+	CTempInspectCore*               GetTempInspCore() { return m_pTempInspCore; }
+
+	void                            SetTempInspCore(CTempInspectCore* pInspCore) { m_pTempInspCore = pInspCore; }
 
 public:
 	virtual void	DisplayMessage(TCHAR* str, ...) {};
@@ -56,8 +54,8 @@ private:
 	CSharedMemoryBuffer*            m_pCameraImageBuffer[MAX_CAMERA_INSP_COUNT];
 
 	// Result Buffer
-	cv::Mat							m_ResultImageBuffer[MAX_POSITION_COUNT];
+	cv::Mat							m_ResultImageBuffer[MAX_CAMERA_INSP_COUNT];
 
-	CTempInspectCore*               m_InspCore;
+	CTempInspectCore*               m_pTempInspCore;
 
 };

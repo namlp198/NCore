@@ -2,6 +2,7 @@
 
 #include "interface_vision.h"
 #include "TempInspectDefine.h"
+#include "TempInspectConfig.h"
 #include "LocatorTool.h"
 #include "SelectROITool.h"
 #include <queue>
@@ -21,7 +22,9 @@ struct CameraInfo
 	CString           m_csSerialNumber;
 };
 
-typedef std::queue<ITools*>* QueueToolsPtr;
+typedef std::queue<ITools> QueueTools;
+typedef std::queue<CLocatorTool> QueueLocTools;
+typedef std::queue<CSelectROITool> QueueSelROITools;
 
 class AFX_EXT_CLASS CTempInspectRecipe
 {
@@ -30,13 +33,23 @@ public:
 	~CTempInspectRecipe();
 
 public:
-	BOOL LoadRecipe(CString csRecipePath, int nCamIdx);
+	BOOL LoadRecipe(int nCamIdx);
 
 public:
 	// Getter
-	QueueToolsPtr                      GetQueueTools() { return m_pQueueTools; }
-	CameraInfo*                        GetCameraInfos() { return m_pCameraInfos; }
-	CString                            GetCameraIdParent() { return m_csCameraIdParent; }
+
+	QueueLocTools*                      GetQueueLocTools() { return m_queueLoc; }
+	QueueSelROITools*                   GetQueueSelROITools() { return m_queueSelROI; }
+	CameraInfo*                         GetCameraInfos() { return m_pCameraInfos; }
+	CString                             GetCameraIdParent() { return m_csCameraIdParent; }
+
+	// Setter
+
+protected:
+	void ReadCameraInfo(XMLElement* xmlCam, int nId);
+	void ReadRecipeInfo(XMLElement* xmlRecipe);
+	void ReadLocTool(XMLElement* xmlLoc);
+	void ReadSelROITool(XMLElement* xmlSelROI, char* algorithm);
 
 private:
 
@@ -45,11 +58,14 @@ private:
 	CString                          m_csName;
 	CString                          m_csCameraIdParent;
 									 
-	// recipe path					 
-	CString                          m_csRecipePath;
+	// config path					 
+	CString                          m_csConfigPath;
+	CString                          m_csJobPath;
+	CString                          m_csJobName;
 									 
 	// queue the tools				 
-	QueueToolsPtr                    m_pQueueTools;
+	QueueLocTools*                      m_queueLoc;
+	QueueSelROITools*                   m_queueSelROI;
 
 	// xml
 	XMLFile*                         m_pXmlFile;
@@ -57,4 +73,7 @@ private:
 
 	// camera info
 	CameraInfo*                      m_pCameraInfos;
+
+	// CTempInspectConfig
+	CTempInspectConfig*              m_pTempInspConfig;
 };

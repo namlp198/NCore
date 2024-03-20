@@ -2,9 +2,10 @@
  
 #include <combaseapi.h>
 
-interface ITools
+class ITools
 {
-	
+public:
+	virtual void Run() {}
 };
 
 interface IParameters

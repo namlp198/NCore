@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="header\TempInspectConfig.h" />
     <ClInclude Include="header\TempInspectCore.h" />
     <ClInclude Include="header\TempInspectDefine.h" />
     <ClInclude Include="header\TempInspectHikCam.h" />
@@ -171,11 +172,13 @@
     <ClInclude Include="header\VisionTools\SelectROITool.h" />
     <ClInclude Include="header\VisionTools\VisionAlgorithms.h" />
     <ClInclude Include="header\VisionTools\VisionDefine.h" />
+    <ClInclude Include="header\VisionTools\VisionManager.h" />
     <ClInclude Include="header\VisionTools\VisionParameter.h" />
     <ClInclude Include="header\VisionTools\VisionResult.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\TempInspectConfig.cpp" />
     <ClCompile Include="cpp\TempInspectCore.cpp" />
     <ClCompile Include="cpp\TempInspectHikCam.cpp" />
     <ClCompile Include="cpp\TempInspectProcessor.cpp" />
@@ -196,6 +199,7 @@
     <ClCompile Include="cpp\VisionTools\LocatorTool.cpp" />
     <ClCompile Include="cpp\VisionTools\SelectROITool.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionAlgorithms.cpp" />
+    <ClCompile Include="cpp\VisionTools\VisionManager.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionParameter.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionResult.cpp" />
     <ClCompile Include="pch.cpp">
