@@ -15,7 +15,6 @@ namespace DinoWpf.Models.ToolModel
         private string _type;
         private Algorithms _algorithm;
         private bool _rotations;
-        private double _angleRotate;
         private int _priority;
         private IParameter _parameter;
 
@@ -24,7 +23,6 @@ namespace DinoWpf.Models.ToolModel
         public string Type { get => _type; set { SetProperty(ref _type, value); } }
         public Algorithms Algorithm { get => _algorithm; set { SetProperty(ref _algorithm, value); } }
         public bool Rotations { get => _rotations; set { SetProperty(ref _rotations, value); } }
-        public double AngleRotate { get => _angleRotate; set { SetProperty(ref _angleRotate, value); } }
         public int Priority { get => _priority; set { SetProperty(ref _priority, value); } }
         public IParameter Parameter { get => _parameter; set { SetProperty(ref _parameter, value); } }
 

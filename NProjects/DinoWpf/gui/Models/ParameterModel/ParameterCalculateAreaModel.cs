@@ -8,11 +8,11 @@ namespace DinoWpf.Models.ParameterModel
 {
     public class ParameterCalculateAreaModel : ModelBase, IParameter
     {
-        private int[] _roi = new int[4];
+        private Tuple<int, int, int, int, double> _roi = new Tuple<int, int, int, int, double>(0, 0, 0, 0, 0.0d);
         private int _threshold;
         private int[] _area = new int[2];
 
-        public int[] ROI { get =>  _roi; set { SetProperty(ref _roi, value); } }
+        public Tuple<int, int, int, int, double> ROI { get =>  _roi; set { SetProperty(ref _roi, value); } }
         public int Threshold { get => _threshold; set { SetProperty(ref _threshold, value); } }
         public int[] Area { get => _area; set { SetProperty(ref _area, value); } }
     }

@@ -18,7 +18,7 @@ namespace DinoWpf.Models
     }
     public interface IParameter
     {
-        int[] ROI { get; }
+        Tuple<int, int, int, int, double> ROI { get; }
     }
     public class ModelBase : INotifyPropertyChanged
     {

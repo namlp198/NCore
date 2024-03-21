@@ -188,6 +188,7 @@ namespace DinoWpf.ViewModels
 
                             recipe.Id = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeRecipe, "id"));
                             recipe.Name = _xmlManagement.GetAttributeValueFromNode(nodeRecipe, "name");
+                            recipe.CameraIdParent = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeRecipe, "cameraIdParent"));
 
                             XmlNodeList nodeListTool = nodeRecipe.ChildNodes;
                             foreach (XmlNode nodeTool in nodeListTool)
@@ -219,6 +220,12 @@ namespace DinoWpf.ViewModels
                                                 locator.RectangleOutSide[2] = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeRect, "width"));
                                                 locator.RectangleOutSide[3] = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeRect, "height"));
                                             }
+                                            else if (string.Compare(nodeRect.Name, "DataTrain") == 0)
+                                            {
+                                                locator.DataTrain[0] = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeRect, "x"));
+                                                locator.DataTrain[1] = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeRect, "y"));
+                                                
+                                            }
                                         }
                                         tools.Add(locator);
                                         break;
@@ -234,7 +241,6 @@ namespace DinoWpf.ViewModels
                                         selectROITool.Algorithm = algoEnum;
 
                                         selectROITool.Rotations = bool.Parse(_xmlManagement.GetAttributeValueFromNode(nodeTool, "rotations"));
-                                        selectROITool.AngleRotate = double.Parse(_xmlManagement.GetAttributeValueFromNode(nodeTool, "angleRotate"));
                                         selectROITool.Priority = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeTool, "priority"));
 
                                         XmlNode nodeParam = nodeTool.SelectSingleNode("//Parameters");
@@ -251,10 +257,12 @@ namespace DinoWpf.ViewModels
                                                     {
                                                         if (string.Compare(param.Name, "ROI") == 0)
                                                         {
-                                                            paramCountPixel.ROI[0] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "x"));
-                                                            paramCountPixel.ROI[1] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "y"));
-                                                            paramCountPixel.ROI[2] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "width"));
-                                                            paramCountPixel.ROI[3] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "height"));
+                                                            int x = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "x"));
+                                                            int y = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "y"));
+                                                            int width = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "width"));
+                                                            int height = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "height"));
+                                                            double angle = double.Parse(_xmlManagement.GetAttributeValueFromNode(param, "angleRotate"));
+                                                            paramCountPixel.ROI = new Tuple<int, int, int, int, double> ( x, y, width, height, angle );
                                                         }
                                                         else if (string.Compare(param.Name, "ThresholdGray") == 0)
                                                         {
@@ -275,10 +283,12 @@ namespace DinoWpf.ViewModels
                                                     {
                                                         if (string.Compare(param.Name, "ROI") == 0)
                                                         {
-                                                            paramCalculateArea.ROI[0] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "x"));
-                                                            paramCalculateArea.ROI[1] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "y"));
-                                                            paramCalculateArea.ROI[2] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "width"));
-                                                            paramCalculateArea.ROI[3] = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "height"));
+                                                            int x = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "x"));
+                                                            int y = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "y"));
+                                                            int width = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "width"));
+                                                            int height = int.Parse(_xmlManagement.GetAttributeValueFromNode(param, "height"));
+                                                            double angle = double.Parse(_xmlManagement.GetAttributeValueFromNode(param, "angleRotate"));
+                                                            paramCalculateArea.ROI = new Tuple<int, int, int, int, double>(x, y, width, height, angle);
                                                         }
                                                         else if (string.Compare(param.Name, "Threshold") == 0)
                                                         {

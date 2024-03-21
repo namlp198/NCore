@@ -16,6 +16,7 @@ namespace DinoWpf.Models.ToolModel
         private string _children;
         private int[] _rectangleInSide = new int[4];
         private int[] _rectangleOutSide = new int[4];
+        private int[] _dataTrain = new int[2];
 
 
         public string Id { get => _id; set { SetProperty(ref _id, value); } }
@@ -25,6 +26,7 @@ namespace DinoWpf.Models.ToolModel
         public string Children { get => _children; set { SetProperty(ref _children, value); } }
         public int[] RectangleInSide { get => _rectangleInSide; set { SetProperty(ref _rectangleInSide, value); } }
         public int[] RectangleOutSide { get => _rectangleOutSide; set { SetProperty(ref _rectangleOutSide, value); } }
+        public int[] DataTrain { get => _dataTrain; set { SetProperty(ref _dataTrain, value); } }
         public void Dispose() { }
     }
 }
