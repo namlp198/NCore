@@ -41,8 +41,16 @@ namespace TemplateVisionWpf_Gui
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool TestRun(IntPtr tempInspProcessor);
-        public bool TestRun() { return TestRun(_tempInspectProcessor); }
+        extern private static bool InspectStart(IntPtr tempInspProcessor, int nThreadCount, int nCamIdx);
+        public bool InspectStart(int nThreadCount, int nCamIdx) { return InspectStart(_tempInspectProcessor, nThreadCount, nCamIdx); }
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool InspectStop(IntPtr tempInspProcessor, int nCamIdx);
+        public bool InspectStop(int nCamIdx) { return InspectStop(_tempInspectProcessor, nCamIdx); }
 
 
 #if DEBUG

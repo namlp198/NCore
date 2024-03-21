@@ -23,10 +23,18 @@
             <Button Width="200"
                     Height="50" 
                     Margin="5"
-                    Content="Test Run"
+                    Content="Test Insp 01"
                     FontSize="16"
-                    Name="btnTestRun"
-                    Click="btnTestRun_Click" />
+                    Name="btnInsp1"
+                    Click="btnInsp1_Click" />
+
+            <Button Width="200"
+                    Height="50" 
+                    Margin="5"
+                    Content="Test Insp 02"
+                    FontSize="16"
+                    Name="btnInsp2"
+                    Click="btnInsp2_Click" />
         </StackPanel>
     </Grid>
 </Window>

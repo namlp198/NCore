@@ -30,9 +30,14 @@ namespace TemplateVisionWpf_Gui
             InterfaceManager.Instance.TempInspProcessorManager.Initialize();
         }
 
-        private void btnTestRun_Click(object sender, RoutedEventArgs e)
+        private void btnInsp1_Click(object sender, RoutedEventArgs e)
         {
-            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.TestRun();
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.InspectStart(1, 0);
+        }
+
+        private void btnInsp2_Click(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.InspectStart(1, 1);
         }
     }
 }
