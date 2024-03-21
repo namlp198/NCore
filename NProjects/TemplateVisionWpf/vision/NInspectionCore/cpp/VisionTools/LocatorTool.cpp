@@ -16,9 +16,8 @@ void CLocatorTool::Run()
 
 void CLocatorTool::NVision_FindLocator()
 {
+	//AfxMessageBox(_T("This is tool: " + m_ParamLoca.m_csName));
 
-	//char cText[1024] = {};
-	//sprintf_s(cText, "%s: %s", "tool name: ", m_ParamLoca.m_csName);
+	// implement algorithm at here
 
-	AfxMessageBox(_T("tool name: " + m_ParamLoca.m_csName));
 }

@@ -25,12 +25,22 @@ bool Initialize(CTempInspectProcessor* pProcessor)
 	else               return true;
 }
 
-bool TestRun(CTempInspectProcessor* pProcessor)
+bool InspectStart(CTempInspectProcessor* pProcessor, int nThreadCount, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->TestRun();
+	BOOL bRet = pProcessor->InspectStart(nThreadCount, nCamIdx);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool InspectStop(CTempInspectProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->InspectStop(nCamIdx);
 	if (bRet == FALSE) return false;
 	else               return true;
 }

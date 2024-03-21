@@ -2,7 +2,20 @@
 
 #include "TempInspectRecipe.h"
 #include "TempInspectDefine.h"
+#include "TempInspectStatus.h"
 #include "WorkThreadArray.h"
+
+interface ITempInspectCoreToParent
+{
+	virtual void							InspectComplete(int nCamIdx) = 0;
+	virtual LPBYTE							GetFrameImage(int nCamIdx, UINT nFrameIndex) = 0;
+	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY) = 0;
+	virtual CTempInspectRecipe*             GetRecipe(int nIdx) = 0;
+	virtual CTempInspectSystemConfig*       GetSystemConfig() = 0;
+	virtual CTempInspectStatus*             GetEdgeInspectStatus(int nCamIdx) = 0;
+	virtual int								PopInspectWaitFrame(int nCamIdx) = 0;
+};
+
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
 {
@@ -28,7 +41,7 @@ public:
 class AFX_EXT_CLASS CTempInspectCore : public IWorkThreadArray2Parent
 {
 public:
-	CTempInspectCore();
+	CTempInspectCore(ITempInspectCoreToParent* pInterface);
 	~CTempInspectCore();
 
 public:
@@ -39,9 +52,15 @@ public:
 public:
 	void RunningThread(int nThreadIndex);
 	void StopThread();
+	void ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex);
+
+public:
+	UINT GetCamIndex() { return m_nCamIndex; }
+	void SetCamIndex(UINT nCamIdx) { m_nCamIndex = nCamIdx; }
 
 private:
 	UINT								m_nThreadCount;
+	UINT                                m_nCamIndex;
 
 	BOOL								m_bRunningThread[MAX_THREAD_COUNT];
 
@@ -49,4 +68,14 @@ private:
 	CWorkThreadArray*                   m_pWorkThreadArray[MAX_THREAD_COUNT];
 
 	CCriticalSection					m_csPostProcessing;
+
+	// interface
+	ITempInspectCoreToParent*           m_pInterface;
+
+	std::vector<BOOL>					m_vecProcessedFrame;
+
+	CTempInspectRecipe*                 m_pRecipe[MAX_CAMERA_INSP_COUNT];
+
+	// Result Buffer
+	cv::Mat							    m_ResultImageBuffer[MAX_CAMERA_INSP_COUNT];
 };

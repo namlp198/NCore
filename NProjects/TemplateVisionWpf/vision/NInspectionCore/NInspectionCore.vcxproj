@@ -148,6 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="header\TempInspectResult.h" />
+    <ClInclude Include="header\TempInspectStatus.h" />
     <ClInclude Include="header\TempInspectSystemConfig.h" />
     <ClInclude Include="header\TempInspectCore.h" />
     <ClInclude Include="header\TempInspectDefine.h" />
@@ -178,6 +180,8 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\TempInspectResult.cpp" />
+    <ClCompile Include="cpp\TempInspectStatus.cpp" />
     <ClCompile Include="cpp\TempInspectSystemConfig.cpp" />
     <ClCompile Include="cpp\TempInspectCore.cpp" />
     <ClCompile Include="cpp\TempInspectHikCam.cpp" />

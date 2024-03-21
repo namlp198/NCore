@@ -95,6 +95,8 @@ BOOL CTempInspectHikCam::Initialize()
 				Sleep(3000);
 			}
 		}
+
+		
 	}
 
 	return TRUE;
@@ -236,13 +238,14 @@ CSharedMemoryBuffer* CTempInspectHikCam::GetSharedMemoryBuffer(int nCamIdx)
 
 LPBYTE CTempInspectHikCam::GetResultBufferImage(int nPosIdx)
 {
-	if (nPosIdx < 0 || MAX_CAMERA_INSP_COUNT <= nPosIdx)
+	/*if (nPosIdx < 0 || MAX_CAMERA_INSP_COUNT <= nPosIdx)
 		return NULL;
 
 	if (m_ResultImageBuffer[nPosIdx].empty())
 		return NULL;
 
-	return (LPBYTE)m_ResultImageBuffer[nPosIdx].data;
+	return (LPBYTE)m_ResultImageBuffer[nPosIdx].data;*/
+	return nullptr;
 }
 
 int CTempInspectHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
@@ -266,6 +269,8 @@ int CTempInspectHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, c
 	nNextFrameIdx = nNextFrameIdx % MAX_FRAME_COUNT;
 
 	m_pCameraImageBuffer[nGrabberIndex]->SetFrameImage(nNextFrameIdx, (LPBYTE)pBuffer);
+
+	m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nNextFrameIdx, m_pParam);
 
 	m_pCameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
@@ -299,4 +304,10 @@ int CTempInspectHikCam::StopGrab(int nCamIdx)
 		return 0;
 
 	return m_nCamera[nCamIdx]->StopGrab();
+}
+
+void CTempInspectHikCam::RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam)
+{
+	m_pParam = pParam;
+	m_pReceivedImgCallback = callback;
 }

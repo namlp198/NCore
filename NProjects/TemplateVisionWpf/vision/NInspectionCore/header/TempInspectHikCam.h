@@ -7,9 +7,7 @@
 #include "TempInspectCore.h"
 #include "TempInspectRecipe.h"
 
-#include "opencv2/core.hpp"
-
-#define MAX_FRAME_COUNT 15
+typedef void __stdcall ReceivedImageCallback(LPVOID pBuffer, int nGrabberIndex, int nNextFrameIdx, LPVOID pParam);
 
 interface ITempInspectHikCamToParent
 {
@@ -44,8 +42,14 @@ public:
 	int StartGrab(int nCamIdx);
 	int StopGrab(int nCamIdx);
 
+	// Register image callback
+	void RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID param);
+
 private:
 	ITempInspectHikCamToParent*     m_pInterface;
+	// callback
+	ReceivedImageCallback*          m_pReceivedImgCallback;
+	LPVOID                          m_pParam;
 
 	// Area Camera
 	BOOL							m_bCamera_ConnectStatus[MAX_CAMERA_INSP_COUNT];
@@ -55,7 +59,4 @@ private:
 	CCriticalSection				m_csCameraFrameIdx[MAX_CAMERA_INSP_COUNT];
 	int								m_pCameraCurrentFrameIdx[MAX_CAMERA_INSP_COUNT];
 	CSharedMemoryBuffer*            m_pCameraImageBuffer[MAX_CAMERA_INSP_COUNT];
-
-	// Result Buffer
-	cv::Mat							m_ResultImageBuffer[MAX_CAMERA_INSP_COUNT];
 };

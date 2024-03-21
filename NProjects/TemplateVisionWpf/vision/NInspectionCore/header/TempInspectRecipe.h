@@ -38,8 +38,8 @@ public:
 public:
 	// Getter
 
-	QueueLocTools*                      GetQueueLocTools() { return m_queueLoc; }
-	QueueSelROITools*                   GetQueueSelROITools() { return m_queueSelROI; }
+	QueueLocTools                      GetQueueLocTools() { return m_queueLoc; }
+	QueueSelROITools                   GetQueueSelROITools() { return m_queueSelROI; }
 	CameraInfo*                         GetCameraInfos() { return m_pCameraInfos; }
 	CString                             GetCameraIdParent() { return m_csCameraIdParent; }
 	CString                             GetJobPath() { return m_csJobPath; }
@@ -66,8 +66,8 @@ private:
 	CString                             m_csJobName;
 									 
 	// queue the tools				 
-	QueueLocTools*                      m_queueLoc;
-	QueueSelROITools*                   m_queueSelROI;
+	QueueLocTools                      m_queueLoc;
+	QueueSelROITools                   m_queueSelROI;
 
 	// camera info
 	CameraInfo*                         m_pCameraInfos;

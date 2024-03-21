@@ -10,5 +10,7 @@ extern "C"
 												         
 	__declspec(dllexport) bool                           Initialize(CTempInspectProcessor* pProcessor);
 
-	__declspec(dllexport) bool                           TestRun(CTempInspectProcessor* pProcessor);
+	__declspec(dllexport) bool                           InspectStart(CTempInspectProcessor* pProcessor, int nThreadCount, int nCamIdx);
+
+	__declspec(dllexport) bool                           InspectStop(CTempInspectProcessor* pProcessor, int nCamIdx);
 };

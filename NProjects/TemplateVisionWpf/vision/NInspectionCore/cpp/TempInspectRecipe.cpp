@@ -3,8 +3,8 @@
 
 CTempInspectRecipe::CTempInspectRecipe()
 {
-	m_queueLoc = new QueueLocTools;
-	m_queueSelROI = new QueueSelROITools;
+	/*m_queueLoc = new QueueLocTools;
+	m_queueSelROI = new QueueSelROITools;*/
 	m_pCameraInfos = new CameraInfo;
 }
 
@@ -202,7 +202,7 @@ void CTempInspectRecipe::ReadLocTool(XMLElement* xmlLoc)
 	locTool.SetParamLoca(paramLocTool);
 
 	// add tool to queue tools
-	m_queueLoc->push(locTool);
+	m_queueLoc.push(locTool);
 }
 
 void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
@@ -212,9 +212,9 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 	CSelectROITool pSelROITool;
 	CParameterSelectROI paramSelROI;
 
-	CVisionParameterManager vsParamManager;
-	CVisionResultManager vsResultManager;
-	CVisionAlgorithms vsAlgorithm;
+	CVisionParameterManager* vsParamManager = new CVisionParameterManager;
+	CVisionResultManager* vsResultManager = new CVisionResultManager;
+	CVisionAlgorithms* vsAlgorithm = new CVisionAlgorithms;
 
 	if (strcmp(cAlgorithm, "CountPixel") == 0)
 	{
@@ -249,17 +249,17 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 		paramCountPxl.m_arrNumberOfPixel[1] = std::atoi(xmlNumberOfPxl->first_attribute("max")->value());
 
 		// add param and result into param manager
-		vsParamManager.SetParamCntPxl(paramCountPxl);
+		vsParamManager->SetParamCntPxl(paramCountPxl);
 
 		// add para manager into CVisionAlgorithms
-		vsAlgorithm.SetVsParamManager(vsParamManager);
-		vsAlgorithm.SetAlgorithm(algorithm);
+		vsAlgorithm->SetVsParamManager(vsParamManager);
+		vsAlgorithm->SetAlgorithm(algorithm);
 
 		// add param manager and result manager into Select ROI tool
 		pSelROITool.SetVsAlgorithms(vsAlgorithm);
 
 		// add tool into queue tools
-		m_queueSelROI->push(pSelROITool);
+		m_queueSelROI.push(pSelROITool);
 
 		// release resource
 		//delete vsAlgorithm, vsAlgorithm = NULL;
@@ -298,17 +298,17 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 		paramCalArea.m_arrArea[1] = std::atoi(xmlArea->first_attribute("max")->value());
 
 		// add param and result into param manager
-		vsParamManager.SetParamCalArea(paramCalArea);
+		vsParamManager->SetParamCalArea(paramCalArea);
 
 		// add param manager into CVisionAlgorithms
-		vsAlgorithm.SetVsParamManager(vsParamManager);
-		vsAlgorithm.SetAlgorithm(algorithm);
+		vsAlgorithm->SetVsParamManager(vsParamManager);
+		vsAlgorithm->SetAlgorithm(algorithm);
 
 		// add to Select ROI tool
 		pSelROITool.SetVsAlgorithms(vsAlgorithm);
 
 		// add too to queue tools
-		m_queueSelROI->push(pSelROITool);
+		m_queueSelROI.push(pSelROITool);
 
 		// release resource
 		//delete vsAlgorithm, vsAlgorithm = NULL;
