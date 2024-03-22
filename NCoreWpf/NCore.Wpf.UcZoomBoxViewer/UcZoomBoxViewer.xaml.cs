@@ -494,10 +494,10 @@ namespace NCore.Wpf.UcZoomBoxViewer
             CamState = ECamState.Started;
         }
 
-        private void btnStop_Click(object sender, RoutedEventArgs e)
-        {
-            RaiseEvent(new RoutedEventArgs(StopCamEvent, this));
-            CamState = ECamState.Stoped;
-        }
+        //private void btnStop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    RaiseEvent(new RoutedEventArgs(StopCamEvent, this));
+        //    CamState = ECamState.Stoped;
+        //}
     }
 }

@@ -161,10 +161,10 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Separator BorderThickness="1"
+                    <!--<Separator BorderThickness="1"
                                BorderBrush="LightGray"
-                               Margin="3" />
-                    <Button x:Name="btnStop"
+                               Margin="3" />-->
+                    <!--<Button x:Name="btnStop"
                             Click="btnStop_Click">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -178,7 +178,7 @@
                                            FontWeight="SemiBold" />
                             </StackPanel>
                         </Button.Content>
-                    </Button>
+                    </Button>-->
                 </ToolBar>
             </Border>
         </Grid>
