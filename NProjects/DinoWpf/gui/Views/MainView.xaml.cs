@@ -30,5 +30,15 @@ namespace DinoWpf.Views
             NewJobView newJobView = new NewJobView();
             newJobView.ShowDialog();
         }
+
+        private void btnInit_Click(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.TempInspProcessorManager.Initialize();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            InterfaceManager.Instance.TempInspProcessorManager.Destroy();
+        }
     }
 }

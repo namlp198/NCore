@@ -34,6 +34,7 @@ namespace DinoWpf.Views.Uc
         private string _xmlPath = string.Empty;
         private int _locatorIdx = 0;
         private int _roiIdx = 0;
+        private CameraStreamingController _cameraStreamingController;
 
         //Declare views
         private UcSettingLocatorTool _ucSettingLocator;
@@ -49,8 +50,69 @@ namespace DinoWpf.Views.Uc
             ucCreateRecipe.UcSelectedROI += UcCreateRecipe_UcSelectedROI;
             ucCreateRecipe.UcSaveImage += UcCreateRecipe_UcSaveImage;
 
-            _xmlPath = CommonDefines.JobXmlPath + MainViewModel.Instance.JobSelected.Name + ".xml";
+            ucCreateRecipe.UcContinuousGrab += UcCreateRecipe_UcContinuousGrab;
+            ucCreateRecipe.UcSingleGrab += UcCreateRecipe_UcSingleGrab;
+
+            _xmlPath = CommonDefines.JobXmlPath + MainViewModel.Instance.JobSelectedItem + ".xml";
             _xmlManagement.Load(_xmlPath);
+
+            // add camera index into Camera List:
+            ucCreateRecipe.CameraIndex = MainViewModel.Instance.CameraIdSelected;
+            if (ucCreateRecipe.CameraIndex == -1)
+                return;
+            ucCreateRecipe.CameraList.Add("Cam " + MainViewModel.Instance.CameraIdSelected);
+            ucCreateRecipe.CameraName = ucCreateRecipe.CameraList[1];
+
+            // read info from job selected
+            int frameWidth = MainViewModel.Instance.JobSelected.Cameras[ucCreateRecipe.CameraIndex].FrameWidth;
+            int frameHeight = MainViewModel.Instance.JobSelected.Cameras[ucCreateRecipe.CameraIndex].FrameHeight;
+            ModeView modeView = MainViewModel.Instance.JobSelected.Cameras[ucCreateRecipe.CameraIndex].SensorType == "color" ? ModeView.Color : ModeView.Mono;
+
+            // initialize CameraStreamingController object
+            _cameraStreamingController = new CameraStreamingController(frameWidth, frameHeight, ucCreateRecipe, ucCreateRecipe.CameraIndex, modeView);
+        }
+
+        private async void UcCreateRecipe_UcSingleGrab(object sender, RoutedEventArgs e)
+        {
+            // set trigger mode and trigger source
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerModeHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerMode);
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerSourceHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerSoure);
+
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.ContinuousGrabHikCam(ucCreateRecipe.CameraIndex);
+            // send single grab cmd to back end
+            if (InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SingleGrabHikCam(ucCreateRecipe.CameraIndex))
+                // start aync method for get buffer 
+                await _cameraStreamingController.SingleGrab();
+        }
+
+        private async void UcCreateRecipe_UcContinuousGrab(object sender, RoutedEventArgs e)
+        {
+            // set trigger mode and trigger source
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerModeHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerMode);
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerSourceHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerSoure);
+
+            // send continuous grab cmd to back end
+            if (ucCreateRecipe.CamState != ECamState.Started)
+            {
+                if (InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.ContinuousGrabHikCam(ucCreateRecipe.CameraIndex))
+                {
+                    ucCreateRecipe.CamState = ECamState.Started;
+                    // start asyn method for get buffer
+                    await _cameraStreamingController.ContinuousGrab(CameraType.Hik);
+                }
+                else
+                    ucCreateRecipe.CamState = ECamState.Stoped;
+            }
+            else
+            {
+                if (InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.StopGrabHikCam(ucCreateRecipe.CameraIndex))
+                {
+                    ucCreateRecipe.CamState = ECamState.Stoped;
+                    await _cameraStreamingController.StopGrab(CameraType.Hik);
+                }
+                else
+                    ucCreateRecipe.CamState = ECamState.Started;
+            }
         }
 
         private void UcCreateRecipe_UcSaveImage(object sender, RoutedEventArgs e)
@@ -69,16 +131,16 @@ namespace DinoWpf.Views.Uc
         {
             _ucSettingLocator = new UcSettingLocatorTool();
             contentSetting.Content = _ucSettingLocator;
-            _ucSettingLocator.LocatorId = "Loc"+_locatorIdx;
+            _ucSettingLocator.LocatorId = "Loc" + _locatorIdx;
             _ucSettingLocator.SaveParamLocatorTool += UcSettingLocator_SaveParam;
 
             ToolSelected = ToolSelected.LocatorTool;
 
             XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
-            if(nodeRecipe != null)
+            if (nodeRecipe != null)
             {
                 XmlNode nodeLocator = _xmlManagement.AddChildNode(nodeRecipe, "LocatorTool");
-                if(nodeLocator != null)
+                if (nodeLocator != null)
                 {
                     _xmlManagement.AddAttributeToNode(nodeLocator, "id", "Loc" + _locatorIdx);
                     _xmlManagement.AddAttributeToNode(nodeLocator, "name", "locator" + _locatorIdx);
@@ -96,6 +158,9 @@ namespace DinoWpf.Views.Uc
                     _xmlManagement.AddAttributeToNode(nodeRectOutside, "y", "0");
                     _xmlManagement.AddAttributeToNode(nodeRectOutside, "width", "0");
                     _xmlManagement.AddAttributeToNode(nodeRectOutside, "height", "0");
+                    XmlNode nodeDataTrain = _xmlManagement.AddChildNode(nodeLocator, "DataTrain");
+                    _xmlManagement.AddAttributeToNode(nodeDataTrain, "x", "0");
+                    _xmlManagement.AddAttributeToNode(nodeDataTrain, "y", "0");
 
                     if (_xmlManagement.Save(_xmlPath))
                         _locatorIdx++;
@@ -121,6 +186,12 @@ namespace DinoWpf.Views.Uc
                 _xmlManagement.AddAttributeToNode(nodeRectOutside, "width", (int)ucCreateRecipe.RectOutSide.Width + "");
                 _xmlManagement.AddAttributeToNode(nodeRectOutside, "height", (int)ucCreateRecipe.RectOutSide.Height + "");
             }
+            XmlNode nodeDataTrain = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/LocatorTool[@id='" + _ucSettingLocator.LocatorId + "']/DataTrain");
+            if (nodeDataTrain != null)
+            {
+                _xmlManagement.AddAttributeToNode(nodeDataTrain, "x", (int)ucCreateRecipe.DataTrain[0] + "");
+                _xmlManagement.AddAttributeToNode(nodeDataTrain, "y", (int)ucCreateRecipe.DataTrain[1] + "");
+            }
 
             _xmlManagement.Save(_xmlPath);
         }
@@ -139,12 +210,11 @@ namespace DinoWpf.Views.Uc
                 XmlNode nodeSelectROI = _xmlManagement.AddChildNode(nodeRecipe, "SelectROITool");
                 if (nodeSelectROI != null)
                 {
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "id", "ROI"+_roiIdx);
+                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "id", "ROI" + _roiIdx);
                     _xmlManagement.AddAttributeToNode(nodeSelectROI, "name", "");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI, "type", "");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI, "algorithm", "");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI, "rotations", "");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "angleRotate", "0.0");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI, "priority", "");
 
                     if (_xmlManagement.Save(_xmlPath))
@@ -155,7 +225,7 @@ namespace DinoWpf.Views.Uc
 
         private void _ucSettingROITool_SaveParam(object sender, RoutedEventArgs e)
         {
-            switch(_ucSettingROITool.AlgorithmSelected)
+            switch (_ucSettingROITool.AlgorithmSelected)
             {
                 case Algorithms.CountPixel:
                     XmlNode nodeSelectROI_CountPixel = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/SelectROITool[@id='" + _ucSettingROITool.ROIId + "']");
@@ -164,11 +234,10 @@ namespace DinoWpf.Views.Uc
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "type", "rectangle");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "algorithm", "CountPixel");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "rotations", "True");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "angleRotate", ucCreateRecipe.AngleRotate + "");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "priority", "2");
 
-                    XmlNode nodeParams =null;
-                    XmlNode nodeROI_CountPxl =null;
+                    XmlNode nodeParams = null;
+                    XmlNode nodeROI_CountPxl = null;
                     XmlNode nodeThresholdGray = null;
                     XmlNode nodeNumberOfPixel = null;
                     if (nodeSelectROI_CountPixel.SelectSingleNode("//Parameters") == null)
@@ -183,10 +252,11 @@ namespace DinoWpf.Views.Uc
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "y", (int)ucCreateRecipe.ROISelected.Y + "");
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "width", (int)ucCreateRecipe.ROISelected.Width + "");
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "height", (int)ucCreateRecipe.ROISelected.Height + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "angleRotate", ucCreateRecipe.AngleRotate + "");
 
                     _xmlManagement.AddAttributeToNode(nodeThresholdGray, "min", _ucSettingROITool.ucSettingCountPixel.ThresholdGrayMin);
                     _xmlManagement.AddAttributeToNode(nodeThresholdGray, "max", _ucSettingROITool.ucSettingCountPixel.ThresholdGrayMax);
-                    
+
                     _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "min", _ucSettingROITool.ucSettingCountPixel.MinPixel);
                     _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "max", _ucSettingROITool.ucSettingCountPixel.MaxPixel);
 
@@ -200,7 +270,6 @@ namespace DinoWpf.Views.Uc
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "type", "rectangle");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "algorithm", "CalculateArea");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "rotations", "True");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "angleRotate", ucCreateRecipe.AngleRotate + "");
                     _xmlManagement.AddAttributeToNode(nodeSelectROI_CalArea, "priority", "2");
 
                     XmlNode nodeROI_CalArea = nodeSelectROI_CalArea.SelectSingleNode("//Parameters/ROI");
@@ -209,6 +278,7 @@ namespace DinoWpf.Views.Uc
                     _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "y", (int)ucCreateRecipe.ROISelected.Y + "");
                     _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "width", (int)ucCreateRecipe.ROISelected.Width + "");
                     _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "height", (int)ucCreateRecipe.ROISelected.Height + "");
+                    _xmlManagement.AddAttributeToNode(nodeROI_CalArea, "angleRotate", ucCreateRecipe.AngleRotate + "");
 
                     XmlNode nodeThreshold = nodeSelectROI_CalArea.SelectSingleNode("//Parameters/Threshold");
                     if (nodeThreshold == null) return;
@@ -230,7 +300,7 @@ namespace DinoWpf.Views.Uc
             get { return _toolSelected; }
             set
             {
-                if(SetProperty(ref _toolSelected, value))
+                if (SetProperty(ref _toolSelected, value))
                 {
 
                 }

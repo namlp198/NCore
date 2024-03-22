@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DinoWpf.ViewModels;
+using DinoWpf.Views.Uc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,16 @@ namespace DinoWpf.Views
         public CreateRecipeView()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            wdCreateRecipe.ucCreateRecipe.CameraList.Clear();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

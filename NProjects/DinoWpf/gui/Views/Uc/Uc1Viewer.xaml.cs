@@ -32,15 +32,15 @@ namespace DinoWpf.Views.Uc
 
         private void UcView1_UpdateRecipe(object sender, RoutedEventArgs e)
         {
-            CreateRecipeView createRecipeView = new CreateRecipeView();
             MainViewModel.Instance.CameraIdSelected = ucView1.CameraIndex;
+            CreateRecipeView createRecipeView = new CreateRecipeView();
             createRecipeView.ShowDialog();
         }
 
         private void UcView1_CreateRecipe(object sender, RoutedEventArgs e)
         {
-            EnterRecipeNameView recipeName = new EnterRecipeNameView();
             MainViewModel.Instance.CameraIdSelected = ucView1.CameraIndex;
+            EnterRecipeNameView recipeName = new EnterRecipeNameView();
             recipeName.CamId = ucView1.CameraIndex;
             recipeName.ShowDialog();
         }

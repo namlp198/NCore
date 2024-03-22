@@ -50,6 +50,7 @@ namespace DinoWpf.Views
                     // add attributes of Recipe into node Recipe
                     _xmlManagement.AddAttributeToNode(nodeRecipe, "id", "0");
                     _xmlManagement.AddAttributeToNode(nodeRecipe, "name", txtRecipeName.Text.Trim());
+                    _xmlManagement.AddAttributeToNode(nodeRecipe, "cameraIdParent", _camId+"");
                     if(_xmlManagement.Save(xmlPath))
                     {
                         // when save success then re-load job

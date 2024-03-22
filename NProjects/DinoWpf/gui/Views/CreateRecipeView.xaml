@@ -9,8 +9,11 @@
         Title="CreateRecipeView" Height="800" Width="1280"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        Closed="Window_Closed"
+        Loaded="Window_Loaded"
         Background="{DynamicResource RGB_Night_33_41_57}">
     <Grid>
-        <Uc:UcCreateRecipe Margin="3"/>
+        <Uc:UcCreateRecipe Margin="3"
+                           x:Name="wdCreateRecipe"/>
     </Grid>
 </Window>

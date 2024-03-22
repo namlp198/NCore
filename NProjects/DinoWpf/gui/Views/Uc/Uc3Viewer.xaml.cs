@@ -39,42 +39,47 @@ namespace DinoWpf.Views.Uc
 
         private void UcView3_UpdateRecipe(object sender, RoutedEventArgs e)
         {
-            CreateRecipeView createRecipeView = new CreateRecipeView();
             MainViewModel.Instance.CameraIdSelected = ucView3.CameraIndex;
+            CreateRecipeView createRecipeView = new CreateRecipeView();
+            
             createRecipeView.ShowDialog();
         }
 
         private void UcView3_CreateRecipe(object sender, RoutedEventArgs e)
         {
-            EnterRecipeNameView recipeName = new EnterRecipeNameView();
             MainViewModel.Instance.CameraIdSelected = ucView3.CameraIndex;
+            EnterRecipeNameView recipeName = new EnterRecipeNameView();
+            
             recipeName.ShowDialog();
         }
 
         private void UcView2_UpdateRecipe(object sender, RoutedEventArgs e)
         {
-            CreateRecipeView createRecipeView = new CreateRecipeView();
             MainViewModel.Instance.CameraIdSelected = ucView2.CameraIndex;
+            CreateRecipeView createRecipeView = new CreateRecipeView();
+            
             createRecipeView.ShowDialog();
         }
 
         private void UcView2_CreateRecipe(object sender, RoutedEventArgs e)
         {
-            EnterRecipeNameView recipeName = new EnterRecipeNameView();
             MainViewModel.Instance.CameraIdSelected = ucView2.CameraIndex;
+            EnterRecipeNameView recipeName = new EnterRecipeNameView();
+            
             recipeName.ShowDialog();
         }
         private void UcView1_UpdateRecipe(object sender, RoutedEventArgs e)
         {
-            CreateRecipeView createRecipeView = new CreateRecipeView();
             MainViewModel.Instance.CameraIdSelected = ucView1.CameraIndex;
+            CreateRecipeView createRecipeView = new CreateRecipeView();
+            
             createRecipeView.ShowDialog();
         }
 
         private void UcView1_CreateRecipe(object sender, RoutedEventArgs e)
         {
-            EnterRecipeNameView recipeName = new EnterRecipeNameView();
             MainViewModel.Instance.CameraIdSelected = ucView1.CameraIndex;
+            EnterRecipeNameView recipeName = new EnterRecipeNameView();
             recipeName.ShowDialog();
         }
     }
