@@ -7,6 +7,26 @@ using System.Threading.Tasks;
 
 namespace DinoWpf
 {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct DataTrained
+    {
+        public int m_nCntX;
+        public int m_nCntY;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct RectForTrainLocTool
+    {
+        public int m_nRectIn_X;
+        public int m_nRectIn_Y;
+        public int m_nRectIn_Width;
+        public int m_nRectIn_Height;
+        public int m_nRectOut_X;
+        public int m_nRectOut_Y;
+        public int m_nRectOut_Width;
+        public int m_nRectOut_Height;
+    }
+
     public class TempInspectProcessorDll
     {
         IntPtr m_pTempInspectProcessor;

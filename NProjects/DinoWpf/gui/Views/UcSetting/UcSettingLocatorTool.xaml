@@ -14,154 +14,11 @@
         <Grid Grid.Row="0"
               Margin="3">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition Height="2.2*" />
+                <RowDefinition Height="45" />
+                <RowDefinition Height="70"/>
                 <RowDefinition Height="5.5*" />
             </Grid.RowDefinitions>
-            <DockPanel Grid.Row="0"
-                       Margin="2">
-                <TextBlock Text="Rectangle Outside"
-                           Margin="5 0 0 0"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           FontWeight="SemiBold"
-                           FontSize="16"
-                           DockPanel.Dock="Top"
-                           TextAlignment="Left" />
-                <Grid Margin="20 5 0 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <DockPanel Margin="0 0 0 0">
-                        <TextBlock Text="Top"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                    <DockPanel Margin="0 0 0 0"
-                               Grid.Column="1">
-                        <TextBlock Text="Left"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                    <DockPanel Margin="0 0 0 0"
-                               Grid.Column="2">
-                        <TextBlock Text="Width"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                    <DockPanel Margin="0 0 0 0"
-                               Grid.Column="3">
-                        <TextBlock Text="Height"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                </Grid>
-            </DockPanel>
-            <DockPanel Grid.Row="1"
-                       Margin="2">
-                <TextBlock Text="Rectangle Inside"
-                           Margin="5 0 0 0"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           FontWeight="SemiBold"
-                           FontSize="16"
-                           DockPanel.Dock="Top"
-                           TextAlignment="Left" />
-                <Grid Margin="20 5 0 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <DockPanel Margin="0 0 0 0">
-                        <TextBlock Text="Top"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                    <DockPanel Margin="0 0 0 0"
-                               Grid.Column="1">
-                        <TextBlock Text="Left"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                    <DockPanel Margin="0 0 0 0"
-                               Grid.Column="2">
-                        <TextBlock Text="Width"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                    <DockPanel Margin="0 0 0 0"
-                               Grid.Column="3">
-                        <TextBlock Text="Height"
-                                   Margin="0 0 5 0"
-                                   VerticalAlignment="Center"
-                                   Foreground="White" />
-                        <TextBox   Margin="0 0 5 0"
-                                   Width="auto"
-                                   Text="..."
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="12" />
-                    </DockPanel>
-                </Grid>
-            </DockPanel>
-            <StackPanel Grid.Row="2"
+            <StackPanel Grid.Row="0"
                         Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center"
                            Margin="15 0 0 0"
@@ -173,87 +30,142 @@
                           Margin="10 2 0 0"
                           IsChecked="True"/>
             </StackPanel>
-            <Button Grid.Row="3"
-                    VerticalContentAlignment="Center"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    Width="100"
-                    Margin="0 0 5 0"
-                    Height="30"
-                    Background="{DynamicResource RGB_Hot_206_59_63}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{DynamicResource IMG_Train_Data}"
-                               Margin="5" />
-                        <TextBlock Margin="5 0 0 0"
-                                   Text="Train"
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontSize="14"
-                                   FontWeight="Bold"
-                                   TextAlignment="Center" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <GroupBox Grid.Row="4"
-                      Margin="10 5 10 5"
-                      Header="Output"
-                      FontSize="16"
-                      FontWeight="Bold"
-                      Foreground="White">
+            <Border Grid.Row="1"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    Margin="2">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="1.2*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="1.5*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Margin="3">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="X:"
-                                       FontSize="14"
-                                       FontWeight="Bold"
-                                       Foreground="White"
-                                       Margin="10 0 10 0" />
-                            <TextBlock Foreground="White"
-                                       FontSize="14"
-                                       FontWeight="Bold"
-                                       Margin="10 0 0 0"
-                                       Text="[...]" />
-                        </StackPanel>
-                    </Label>
-                    <Label Grid.Row="1"
-                           Margin="3">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Y:"
-                                       FontSize="14"
-                                       FontWeight="Bold"
-                                       Foreground="White"
-                                       Margin="10 0 10 0" />
-                            <TextBlock Foreground="White"
-                                       FontSize="14"
-                                       FontWeight="Bold"
-                                       Margin="10 0 0 0"
-                                       Text="[...]" />
-                        </StackPanel>
-                    </Label>
-                    <Label Grid.Row="2"
-                           Margin="3">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Angle:"
-                                       FontSize="14"
-                                       FontWeight="Bold"
-                                       Foreground="White"
-                                       Margin="10 0 10 0" />
-                            <TextBlock Foreground="White"
-                                       FontSize="14"
-                                       FontWeight="Bold"
-                                       Margin="10 0 0 0"
-                                       Text="[...]" />
-                        </StackPanel>
-                    </Label>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="ID"
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Text="Name"
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="2"
+                               Text="Priority"
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="3"
+                               Text="Has Children"
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="5"
+                               Text="Children"
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="3"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             TextAlignment="Center"/>
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Margin="3"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             TextAlignment="Center" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="2"
+                             Margin="3"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             TextAlignment="Center" />
+                    <ComboBox Grid.Row="1"
+                             Grid.Column="3"
+                             Margin="3"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"/>
+                    <TextBox Grid.Row="1"
+                             Grid.Column="4"
+                             Margin="3"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             TextAlignment="Center" />
                 </Grid>
-            </GroupBox>
+            </Border>
+            <StackPanel Grid.Row="2"
+                        Orientation="Vertical">
+                <DataGrid Name="dgDataTrained"
+                          Margin="3"
+                          Background="{DynamicResource RGB_Night_50_54_63}"
+                          FontSize="14"
+                          Foreground="Black"
+                          GridLinesVisibility="All"
+                          AutoGenerateColumns="False"
+                          RenderOptions.ClearTypeHint="Enabled"
+                          SelectionUnit="FullRow"
+                          TextOptions.TextFormattingMode="Display"
+                          CanUserAddRows="False"
+                          CanUserReorderColumns="False"
+                          CanUserResizeColumns="False"
+                          CanUserResizeRows="False"
+                          EnableColumnVirtualization="True"
+                          EnableRowVirtualization="True"
+                          Height="200">
+                    <!--<DataGrid.Columns>
+                        <DataGridTextColumn Header="X"
+                                            FontSize="14"/>
+                        <DataGridTextColumn Header="Y"
+                                            FontSize="14" />
+                        <DataGridTextColumn Header="Width"
+                                            FontSize="14" />
+                        <DataGridTextColumn Header="Height"
+                                            FontSize="14" />
+                    </DataGrid.Columns>-->
+                </DataGrid>
+                <Button VerticalContentAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Name="btnTrain"
+                        Click="btnTrain_Click"
+                        Width="100"
+                        Margin="0 10 5 0"
+                        Height="30"
+                        Background="{DynamicResource RGB_Hot_206_59_63}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{DynamicResource IMG_Train_Data}"
+                                   Margin="5" />
+                            <TextBlock Margin="5 0 0 0"
+                                       Text="Train"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       TextAlignment="Center" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
         </Grid>
         <Border Grid.Row="1"
                 BorderBrush="LightGray"
