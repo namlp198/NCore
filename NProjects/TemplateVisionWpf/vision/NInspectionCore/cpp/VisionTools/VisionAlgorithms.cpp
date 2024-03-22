@@ -36,6 +36,14 @@ void CVisionAlgorithms::Run()
 	}
 }
 
+LPBYTE CVisionAlgorithms::GetResultImageBuffer()
+{
+	if (m_ResultImageBuffer.empty())
+		return NULL;
+
+	return (LPBYTE)m_ResultImageBuffer.data;
+}
+
 
 void CVisionAlgorithms::NVision_CountPixelAlgorithm()
 {

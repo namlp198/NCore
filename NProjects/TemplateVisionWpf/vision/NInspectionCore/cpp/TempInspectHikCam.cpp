@@ -96,7 +96,7 @@ BOOL CTempInspectHikCam::Initialize()
 			}
 		}
 
-		
+
 	}
 
 	return TRUE;
@@ -270,7 +270,8 @@ int CTempInspectHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, c
 
 	m_pCameraImageBuffer[nGrabberIndex]->SetFrameImage(nNextFrameIdx, (LPBYTE)pBuffer);
 
-	m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nNextFrameIdx, m_pParam);
+	if (m_pInterface->GetTempInspectStatus(nGrabberIndex)->GetInspectRunning())
+		m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nNextFrameIdx, m_pParam);
 
 	m_pCameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
@@ -304,6 +305,45 @@ int CTempInspectHikCam::StopGrab(int nCamIdx)
 		return 0;
 
 	return m_nCamera[nCamIdx]->StopGrab();
+}
+
+int CTempInspectHikCam::SingleGrab(int nCamIdx)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_nCamera[nCamIdx] == NULL)
+		return 0;
+
+	int nMode, nSource;
+	m_nCamera[nCamIdx]->GetTriggerMode(nMode);
+	m_nCamera[nCamIdx]->GetTriggerSource(nSource);
+	if (nMode == 0 && nSource == 1)
+		return 0;
+
+	return m_nCamera[nCamIdx]->SendTrigger();
+}
+
+int CTempInspectHikCam::SetTriggerMode(int nCamIdx, int nMode)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_nCamera[nCamIdx] == NULL)
+		return 0;
+
+	m_nCamera[nCamIdx]->SetTriggerMode(nMode);
+}
+
+int CTempInspectHikCam::SetTriggerSource(int nCamIdx, int nSource)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_nCamera[nCamIdx] == NULL)
+		return 0;
+
+	m_nCamera[nCamIdx]->SetTriggerSource(nSource);
 }
 
 void CTempInspectHikCam::RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam)

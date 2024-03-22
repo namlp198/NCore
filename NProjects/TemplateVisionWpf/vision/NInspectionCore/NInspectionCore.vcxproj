@@ -145,6 +145,12 @@
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)Libraries\RapidXML;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProcessor_Release64.dll  $(SolutionDir)NProjects\DinoWpf\bin\Release
+copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProcessor_Release64.exp  $(SolutionDir)NProjects\DinoWpf\bin\Release
+copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProcessor_Release64.lib  $(SolutionDir)NProjects\DinoWpf\bin\Release
+copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProcessor_Release64.pdb  $(SolutionDir)NProjects\DinoWpf\bin\Release</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />

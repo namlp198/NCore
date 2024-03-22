@@ -19,6 +19,8 @@ public:
 	emAlgorithms                     GetAlgorithm() { return m_emAlgorithm; }
 	LPBYTE                           GetImageBuffer() { return m_pImageBuffer; }
 
+	LPBYTE                           GetResultImageBuffer();
+
 	// Setter
 	void              SetLocaResult(CLocatorToolResult locaRes) { m_locaResult = locaRes; }
 	void              SetVsParamManager(CVisionParameterManager* pVsParam) { m_vsParamManeger = pVsParam; }
@@ -44,4 +46,5 @@ private:
 	CLocatorToolResult                   m_locaResult;
 
 	LPBYTE                               m_pImageBuffer;
+	cv::Mat                              m_ResultImageBuffer;
 };

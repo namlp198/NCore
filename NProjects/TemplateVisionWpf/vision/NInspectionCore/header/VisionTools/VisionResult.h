@@ -4,6 +4,8 @@
 
 struct CLocatorToolResult
 {
+	int          m_nX;
+	int          m_nY;
 	int          m_nDelta_x;
 	int          m_nDelta_y;
 	double       m_dDif_Angle;

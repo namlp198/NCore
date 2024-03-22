@@ -32,7 +32,7 @@ public:
 	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY);
 	virtual CTempInspectRecipe*             GetRecipe(int nIdx) { return m_pTempInspRecipe[nIdx]; }
 	virtual CTempInspectSystemConfig*       GetSystemConfig() { return m_pTempInspSysConfig; }
-	virtual CTempInspectStatus*             GetEdgeInspectStatus(int nCamIdx) { return m_pTempInspStatus[nCamIdx]; }
+	virtual CTempInspectStatus*             GetTempInspectStatus(int nCamIdx) { return m_pTempInspStatus[nCamIdx]; }
 	virtual int                             PopInspectWaitFrame(int nCamIdx);
 
 public:

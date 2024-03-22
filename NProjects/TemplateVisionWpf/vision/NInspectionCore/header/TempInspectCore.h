@@ -12,7 +12,7 @@ interface ITempInspectCoreToParent
 	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY) = 0;
 	virtual CTempInspectRecipe*             GetRecipe(int nIdx) = 0;
 	virtual CTempInspectSystemConfig*       GetSystemConfig() = 0;
-	virtual CTempInspectStatus*             GetEdgeInspectStatus(int nCamIdx) = 0;
+	virtual CTempInspectStatus*             GetTempInspectStatus(int nCamIdx) = 0;
 	virtual int								PopInspectWaitFrame(int nCamIdx) = 0;
 };
 

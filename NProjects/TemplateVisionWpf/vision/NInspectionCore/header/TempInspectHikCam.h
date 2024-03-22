@@ -13,6 +13,7 @@ interface ITempInspectHikCamToParent
 {
 	virtual CTempInspectRecipe* GetRecipe(int nIdx) = 0;
 	virtual CTempInspectSystemConfig* GetSystemConfig() = 0;
+	virtual CTempInspectStatus* GetTempInspectStatus(int nCamIdx) = 0;
 };
 
 class AFX_EXT_CLASS CTempInspectHikCam : public IFrameGrabber2Parent
@@ -39,8 +40,11 @@ public:
 	virtual int		IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize);
 
 public:
-	int StartGrab(int nCamIdx);
-	int StopGrab(int nCamIdx);
+	int     StartGrab(int nCamIdx);
+	int     StopGrab(int nCamIdx);
+	int     SingleGrab(int nCamIdx);
+	int		SetTriggerMode(int nCamIdx, int nMode);
+	int		SetTriggerSource(int nCamIdx, int nSource);
 
 	// Register image callback
 	void RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID param);

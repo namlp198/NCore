@@ -32,4 +32,5 @@ private:
 	CLocatorToolResult              m_LocaResult;
 
 	LPBYTE                          m_pImageBuffer;
+	cv::Mat*                        m_ResultImageBuffer;
 };
