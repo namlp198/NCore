@@ -51,6 +51,8 @@ namespace DinoWpf.ViewModels
         private MainView _mainView;
         private List<string> _jobs = new List<string>();
         private string _sJobSelected = string.Empty;
+        private bool _isJobSelected = false;
+        private double m_dOpacity = 0.2d;
         private JobModel _jobSelected = new JobModel();
         private XmlManagement _xmlManagement = new XmlManagement();
         private int _cameraIdSelected = -1;
@@ -77,7 +79,32 @@ namespace DinoWpf.ViewModels
             {
                 if (SetProperty(ref _sJobSelected, value))
                 {
+                    IsJobSelected = true;
                     LoadJob();
+                }
+            }
+        }
+        public bool IsJobSelected
+        {
+            get => _isJobSelected;
+            set
+            {
+                if (SetProperty(ref _isJobSelected, value))
+                {
+                    if(IsJobSelected == true)
+                    {
+                        DOpacity = 1.0;
+                    }
+                }
+            }
+        }
+        public double DOpacity
+        {
+            get => m_dOpacity;
+            set
+            {
+                if (SetProperty(ref m_dOpacity, value))
+                {
                 }
             }
         }
