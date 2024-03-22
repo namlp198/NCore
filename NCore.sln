@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingMultiCam", "NProje
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TemplateVisionWpf", "TemplateVisionWpf", "{56368846-719E-4667-9866-55D1FF09B1AE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NInspectionCore", "NProjects\TemplateVisionWpf\vision\NInspectionCore\NInspectionCore.vcxproj", "{60A91278-1752-42DC-BC47-5BE27F6C77BF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NTempInspectProcessor", "NProjects\TemplateVisionWpf\vision\NInspectionCore\NInspectionCore.vcxproj", "{60A91278-1752-42DC-BC47-5BE27F6C77BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateVisionWpf_Gui", "NProjects\TemplateVisionWpf\gui\TemplateVisionWpf_Gui\TemplateVisionWpf_Gui.csproj", "{68BB0C48-CDB4-4340-8DC0-515D863C820E}"
 EndProject
