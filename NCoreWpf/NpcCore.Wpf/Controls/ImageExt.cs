@@ -212,6 +212,7 @@ namespace NpcCore.Wpf.Controls
         private Single _rectRotation;
 
         private ModeTool _modeTool = ModeTool.Default;
+        private ModeGrab _modeGrab = ModeGrab.ModeGrab_SingleGrab;
 
         private double _comWidth = 6;
         private double _comOffset = 3;
@@ -1581,6 +1582,23 @@ namespace NpcCore.Wpf.Controls
                 }
             }
         }
+
+        public ModeGrab ModeGrab
+        {
+            get => _modeGrab;
+            set
+            {
+                if (SetProperty(ref _modeGrab, value))
+                {
+                    // change mode grab
+                    if(_modeGrab == ModeGrab.ModeGrab_ContinuousGrab)
+                    {
+                        EnableSelectRoiTool = false;
+                        EnableLocatorTool = false;
+                    }
+                }
+            }
+        }
         #endregion
 
         private void RenderSelectRectTool(DrawingContext dc)
@@ -1822,5 +1840,10 @@ namespace NpcCore.Wpf.Controls
         Default,
         SelectRoiTool,
         LocatorTool
+    }
+    public enum ModeGrab
+    {
+        ModeGrab_SingleGrab,
+        ModeGrab_ContinuousGrab,
     }
 }
