@@ -65,10 +65,12 @@
     <Reference Include="Microsoft.Xaml.Behaviors">
       <HintPath>..\..\..\Libraries\packages\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
-    <Reference Include="NCore.Wpf.NUcBufferViewer">
+    <Reference Include="NCore.Wpf.NUcBufferViewer, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.NUcBufferViewer.dll</HintPath>
     </Reference>
-    <Reference Include="NCore.Wpf.UcZoomBoxViewer">
+    <Reference Include="NCore.Wpf.UcZoomBoxViewer, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.UcZoomBoxViewer.dll</HintPath>
     </Reference>
     <Reference Include="Npc.Foundation">
@@ -116,11 +118,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CameraStreamingController.cs" />
     <Compile Include="Command\Cmd\CreateJobCmd.cs" />
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Commons\CommonDefines.cs" />
     <Compile Include="Converters\SelectToolToVisibilityConverter.cs" />
+    <Compile Include="InterfaceManager.cs" />
     <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\JobModel.cs" />
     <Compile Include="Models\ToolModel\LocatorToolModel.cs" />
@@ -129,6 +133,8 @@
     <Compile Include="Models\ParameterModel\ParameterCountPixelModel.cs" />
     <Compile Include="Models\RecipeModel.cs" />
     <Compile Include="Models\ToolModel\SelectROIToolModel.cs" />
+    <Compile Include="TempInspectProcessorDll.cs" />
+    <Compile Include="TempInspectProcessorManager.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\CreateRecipeView.xaml.cs">
       <DependentUpon>CreateRecipeView.xaml</DependentUpon>
