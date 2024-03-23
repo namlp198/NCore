@@ -7,13 +7,33 @@ using System.Threading.Tasks;
 
 namespace DinoWpf
 {
+    #region Tool Results
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct DataTrained
+    public struct CLocatorToolResult
     {
-        public int m_nCntX;
-        public int m_nCntY;
+        public int m_nX;
+        public int m_nY;
+        public int m_nDelta_x;
+        public int m_nDelta_y;
+        public double m_dDif_Angle;
+        public bool m_bResult;
+    }
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CAlgorithmsCountPixelResult
+    {
+        public int m_nNumberOfPixel;
+        public bool m_bResult;
     }
 
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CAlgorithmsCalculateAreaResult
+    {
+        public int m_dArea;
+        public bool m_bResult;
+    }
+    #endregion
+
+    #region Data for Train Tool
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct RectForTrainLocTool
     {
@@ -26,6 +46,32 @@ namespace DinoWpf
         public int m_nRectOut_Width;
         public int m_nRectOut_Height;
     }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CParamCntPxlAlgorithm
+    {
+        public int m_nROIX;
+        public int m_nROIY;
+        public int m_nROIWidth;
+        public int m_nROIHeight;
+        public double m_dROIAngleRotate;
+        public int m_nThresholdGrayMin;
+        public int m_nThresholdGrayMax;
+        public int m_nNumberOfPxlMin;
+        public int m_nNumberOfPxlMax;
+    }
+    public struct CParamCalAreaAlgorithm
+    {
+        public int m_nROIX;
+        public int m_nROIY;
+        public int m_nROIWidth;
+        public int m_nROIHeight;
+        public double m_dROIAngleRotate;
+        public int m_nThreshold;
+        public int m_nAreaMin;
+        public int m_nAreaMax;
+    }
+    #endregion
 
     public class TempInspectProcessorDll
     {
