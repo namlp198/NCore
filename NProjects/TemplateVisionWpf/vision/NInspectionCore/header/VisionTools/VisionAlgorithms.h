@@ -1,6 +1,8 @@
 #pragma once
 
-#include "VisionManager.h"
+#include "TempInspectRecipe.h"
+#include "TempInspectSystemConfig.h"
+#include "SharedMemoryBuffer.h"
 
 class AFX_EXT_CLASS CVisionAlgorithms
 {
@@ -9,42 +11,60 @@ public:
 	~CVisionAlgorithms();
 
 public:
-	void Run();
+	BOOL Run(emAlgorithms algorithm);
 
 public:
 	// Getter
-	CLocatorToolResult               GetLocaResult() { return m_locaResult; }
-	CVisionParameterManager*         GetVsParamManager() { return m_vsParamManeger; }
-	CVisionResultManager*            GetVsResultManager() { return m_vsResultManager; }
+	CParamCntPxlAlgorithm            GetParamCntPxlAlgorithm() { return m_paramCntPxl; }
+	CParamCalAreaAlgorithm           GetParamCalAreaAlgorithm() { return m_paramCalArea; }
+	CAlgorithmsCountPixelResult      GetCntPxlRes() { return m_cntPxlRes; }
+	CAlgorithmsCalculateAreaResult   GetCalAreaRes() { return m_calAreaRes; }
 	emAlgorithms                     GetAlgorithm() { return m_emAlgorithm; }
-	LPBYTE                           GetImageBuffer() { return m_pImageBuffer; }
-
+	LPBYTE                           GetImageBuffer();
 	LPBYTE                           GetResultImageBuffer();
 
-	// Setter
-	void              SetLocaResult(CLocatorToolResult locaRes) { m_locaResult = locaRes; }
-	void              SetVsParamManager(CVisionParameterManager* pVsParam) { m_vsParamManeger = pVsParam; }
-	void              SetVsResultManager(CVisionResultManager* pVsResult) { m_vsResultManager = pVsResult; }
-	void              SetAlgorithm(emAlgorithms algorithm) { m_emAlgorithm = algorithm; }
-	void              SetImageBuffer(LPBYTE pImgBuff) { m_pImageBuffer = pImgBuff; }
+	// Get data after that trained
+	LPBYTE                           GetResultROIBuffer_Train();
+	BOOL                             GetResultCntPxl_Train(CAlgorithmsCountPixelResult* pCntPxlTrainRes);
+	BOOL                             GetResultCalArea_Train(CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
 
-private:
-	// all algorithms will declare at here
-	void             NVision_CountPixelAlgorithm();
-	void             NVision_CalculateAreaAlgorithm();
+	// Setter
+	void              SetParamCntPxlAlgorithm(CParamCntPxlAlgorithm paramCntPxl) { m_paramCntPxl = paramCntPxl; }
+	void              SetParamCalAreaAlgorithm(CParamCalAreaAlgorithm paramCalArea) { m_paramCalArea = paramCalArea; }
+	void              SetLocResult(CLocatorToolResult locaRes) { m_locResult = locaRes; }
+	void              SetAlgorithm(emAlgorithms algorithm) { m_emAlgorithm = algorithm; }
+	BOOL              SetImageBuffer(LPBYTE pImgBuff);
+	void              SetCntPxlRes(CAlgorithmsCountPixelResult cntPxlRes) { m_cntPxlRes = cntPxlRes; }
+	void              SetCalAreaRes(CAlgorithmsCalculateAreaResult calAreaRes) { m_calAreaRes = calAreaRes; }
+
+public:
+	// all func will use to when runtime
+	BOOL             NVision_CountPixelAlgorithm();
+	BOOL             NVision_CalculateAreaAlgorithm();
+
+	// all func for train data in the step create recipe to camera
+	BOOL             NVision_CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamTrainCntPxl);
+	BOOL             NVision_CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea);
 
 private:
 
 	// define algorithm gonna run when inspection start.
 	emAlgorithms                         m_emAlgorithm;
 
-	// manager parameter and result of vision
-	CVisionParameterManager*             m_vsParamManeger;
-	CVisionResultManager*                m_vsResultManager;
+	
+	// parameter
+	CParamCntPxlAlgorithm                m_paramCntPxl;
+	CParamCalAreaAlgorithm               m_paramCalArea;
+	
+	// Result
+	CAlgorithmsCountPixelResult          m_cntPxlRes;
+	CAlgorithmsCalculateAreaResult       m_calAreaRes;
 
 	// result of locator tool when run done.
-	CLocatorToolResult                   m_locaResult;
+	CLocatorToolResult                   m_locResult; // this variable only can set, not get
 
-	LPBYTE                               m_pImageBuffer;
-	cv::Mat                              m_ResultImageBuffer;
+	CSharedMemoryBuffer*                 m_pImageBuffer;
+	cv::Mat                              m_resultImageBuffer;
+
+	cv::Mat                              m_resultROIBuffer; // ROI
 };

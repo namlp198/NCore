@@ -199,7 +199,9 @@ void CTempInspectRecipe::ReadLocTool(XMLElement* xmlLoc)
 	paramLocTool.m_DataTrain[1] = std::atoi(xmlDataTrain->first_attribute("y")->value());
 
 	// add parameter to locator tool
-	locTool.SetParamLoca(paramLocTool);
+	locTool.SetParamLoc(paramLocTool);
+	// initialize: create image buffer for this locator tool 
+	//locTool.Initialize(m_pCameraInfos);
 
 	// add tool to queue tools
 	m_queueLoc.push(locTool);
@@ -212,9 +214,7 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 	CSelectROITool pSelROITool;
 	CParameterSelectROI paramSelROI;
 
-	CVisionParameterManager* vsParamManager = new CVisionParameterManager;
-	CVisionResultManager* vsResultManager = new CVisionResultManager;
-	CVisionAlgorithms* vsAlgorithm = new CVisionAlgorithms;
+	CVisionAlgorithms vsAlgorithm;
 
 	if (strcmp(cAlgorithm, "CountPixel") == 0)
 	{
@@ -229,7 +229,7 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 		pSelROITool.SetParamSelROI(paramSelROI);
 
 		// create parameter and result of Count Pixel algorithm
-		CParameterCountPixel paramCountPxl;
+		CParamCntPxlAlgorithm paramCntPxl;
 
 		// 1. ROI
 		XMLElement* xmlROI = xmlSelROI->first_node("Parameters")->first_node("ROI");
@@ -238,22 +238,23 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 		int width = std::atoi(xmlROI->first_attribute("width")->value());
 		int height = std::atoi(xmlROI->first_attribute("height")->value());
 		float angle = std::atof(xmlROI->first_attribute("angleRotate")->value());
-		paramCountPxl.m_tupROI = std::make_tuple(x, y, width, height, angle);
+		paramCntPxl.m_nROIX = x;
+		paramCntPxl.m_nROIY = y;
+		paramCntPxl.m_nROIWidth = width;
+		paramCntPxl.m_nROIHeight = height;
+		paramCntPxl.m_dROIAngleRotate = angle;
 		// 2. Threshold Gray
 		XMLElement* xmlThresholdGray = xmlSelROI->first_node("Parameters")->first_node("ThresholdGray");
-		paramCountPxl.m_arrThresholdGray[0] = std::atoi(xmlThresholdGray->first_attribute("min")->value());
-		paramCountPxl.m_arrThresholdGray[1] = std::atoi(xmlThresholdGray->first_attribute("max")->value());
+		paramCntPxl.m_nThresholdGrayMin = std::atoi(xmlThresholdGray->first_attribute("min")->value());
+		paramCntPxl.m_nThresholdGrayMax = std::atoi(xmlThresholdGray->first_attribute("max")->value());
 		// 3. NumberOfPixel
 		XMLElement* xmlNumberOfPxl = xmlSelROI->first_node("Parameters")->first_node("NumberOfPixel");
-		paramCountPxl.m_arrNumberOfPixel[0] = std::atoi(xmlNumberOfPxl->first_attribute("min")->value());
-		paramCountPxl.m_arrNumberOfPixel[1] = std::atoi(xmlNumberOfPxl->first_attribute("max")->value());
-
-		// add param and result into param manager
-		vsParamManager->SetParamCntPxl(paramCountPxl);
+		paramCntPxl.m_nNumberOfPxlMin = std::atoi(xmlNumberOfPxl->first_attribute("min")->value());
+		paramCntPxl.m_nNumberOfPxlMax = std::atoi(xmlNumberOfPxl->first_attribute("max")->value());
 
 		// add para manager into CVisionAlgorithms
-		vsAlgorithm->SetVsParamManager(vsParamManager);
-		vsAlgorithm->SetAlgorithm(algorithm);
+		vsAlgorithm.SetParamCntPxlAlgorithm(paramCntPxl);
+		vsAlgorithm.SetAlgorithm(algorithm);
 
 		// add param manager and result manager into Select ROI tool
 		pSelROITool.SetVsAlgorithms(vsAlgorithm);
@@ -279,7 +280,7 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 		pSelROITool.SetParamSelROI(paramSelROI);
 
 		// create parameter and result of Count Pixel algorithm
-		CParameterCalculateArea paramCalArea;
+		CParamCalAreaAlgorithm paramCalArea;
 
 		// 1. ROI
 		XMLElement* xmlROI = xmlSelROI->first_node("Parameters")->first_node("ROI");
@@ -288,21 +289,22 @@ void CTempInspectRecipe::ReadSelROITool(XMLElement* xmlSelROI, char* cAlgorithm)
 		int width = std::atoi(xmlROI->first_attribute("width")->value());
 		int height = std::atoi(xmlROI->first_attribute("height")->value());
 		float angle = std::atof(xmlROI->first_attribute("angleRotate")->value());
-		paramCalArea.m_tupROI = std::make_tuple(x, y, width, height, angle);
+		paramCalArea.m_nROIX = x;
+		paramCalArea.m_nROIY = y;
+		paramCalArea.m_nROIWidth = width;
+		paramCalArea.m_nROIHeight = height;
+		paramCalArea.m_dROIAngleRotate = angle;
 		// 2. Threshold
 		XMLElement* xmlThreshold = xmlSelROI->first_node("Parameters")->first_node("Threshold");
 		paramCalArea.m_nThreshold = std::atoi(xmlThreshold->first_attribute("value")->value());
 		// 3. Area
 		XMLElement* xmlArea = xmlSelROI->first_node("Parameters")->first_node("Area");
-		paramCalArea.m_arrArea[0] = std::atoi(xmlArea->first_attribute("min")->value());
-		paramCalArea.m_arrArea[1] = std::atoi(xmlArea->first_attribute("max")->value());
-
-		// add param and result into param manager
-		vsParamManager->SetParamCalArea(paramCalArea);
+		paramCalArea.m_nAreaMin = std::atoi(xmlArea->first_attribute("min")->value());
+		paramCalArea.m_nAreaMax = std::atoi(xmlArea->first_attribute("max")->value());
 
 		// add param manager into CVisionAlgorithms
-		vsAlgorithm->SetVsParamManager(vsParamManager);
-		vsAlgorithm->SetAlgorithm(algorithm);
+		vsAlgorithm.SetParamCalAreaAlgorithm(paramCalArea);
+		vsAlgorithm.SetAlgorithm(algorithm);
 
 		// add to Select ROI tool
 		pSelROITool.SetVsAlgorithms(vsAlgorithm);

@@ -180,7 +180,6 @@ copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProces
     <ClInclude Include="header\VisionTools\SelectROITool.h" />
     <ClInclude Include="header\VisionTools\VisionAlgorithms.h" />
     <ClInclude Include="header\VisionTools\VisionDefine.h" />
-    <ClInclude Include="header\VisionTools\VisionManager.h" />
     <ClInclude Include="header\VisionTools\VisionParameter.h" />
     <ClInclude Include="header\VisionTools\VisionResult.h" />
     <ClInclude Include="pch.h" />

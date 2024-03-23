@@ -19,6 +19,12 @@
 #include <afxext.h>
 #include <windef.h>
 
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/features2d.hpp>
+
 #ifdef _DEBUG
 #pragma comment(lib, "opencv_core480d.lib")
 #pragma comment(lib, "opencv_features2d480d.lib")

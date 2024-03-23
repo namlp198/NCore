@@ -2,26 +2,11 @@
 
 #include "VisionParameter.h"
 #include "VisionResult.h"
-#include "VisionManager.h"
+#include "TempInspectRecipe.h"
+#include "TempInspectSystemConfig.h"
+#include "TempInspectResult.h"
 #include "interface_vision.h"
-
-struct DataTrained
-{
-	int m_nCntX;
-	int m_nCntY;
-};
-
-struct RectForTrainLocTool
-{
-	int m_nRectIn_X;
-	int m_nRectIn_Y;
-	int m_nRectIn_Width;
-	int m_nRectIn_Height;
-	int m_nRectOut_X;
-	int m_nRectOut_Y;
-	int m_nRectOut_Width;
-	int m_nRectOut_Height;
-};
+#include "SharedMemoryBuffer.h"
 
 class AFX_EXT_CLASS CLocatorTool
 {
@@ -31,34 +16,37 @@ public:
 
 public:
 	// getter
-	CLocatorToolResult     GetLocaToolRes() { return m_LocaResult; }
-	CParameterLocator      GetParamLoca() { return m_ParamLoca; }
-	LPBYTE                 GetImageBuffer() { return m_pImageBuffer; }
-	LPBYTE                 GetTemplateImageBuffer();
-	BOOL                   GetDataTrained(DataTrained* pDataTrained);
+	CLocatorToolResult     GetLocRes() { return m_locResult; }
+	CParameterLocator      GetParamLoc() { return m_paramLoc; }
+	LPBYTE                 GetImageBuffer();
+	LPBYTE                 GetResultImageBuffer();
+	LPBYTE                 GetTemplateImageBuffer(); // get image template for show UI
+	BOOL                   GetDataTrained_TemplateMatching(CLocatorToolResult* pDataTrained); // pass in a structure to get to the data trained
 
 	// setter
-	void                   SetLocaToolRes(CLocatorToolResult locaToolRes) { m_LocaResult = locaToolRes; }
-	void                   SetParamLoca(CParameterLocator paramLoca) { m_ParamLoca = paramLoca; }
-	void                   SetImageBuffer(LPBYTE pImgBuff) { m_pImageBuffer = pImgBuff; }
+	void                   SetLocRes(CLocatorToolResult locaToolRes) { m_locResult = locaToolRes; }
+	void                   SetParamLoc(CParameterLocator paramLoc) { m_paramLoc = paramLoc; }
+	BOOL                   SetImageBuffer(LPBYTE pBuff);
 public:
 	BOOL                   Run();
-	BOOL                   SaveImageTemplate(CString saveImagePath);
+	BOOL                   Initialize(CameraInfo pCamInfo);
+	BOOL                   SaveImageTemplate(cv::Mat* pSaveImage, CString strFileTitle);
 
-protected:
-	BOOL                    NVision_FindLocator();
-	BOOL                    NVision_TrainLocator(RectForTrainLocTool* paramTrainLoc);
+public:
+	BOOL                    NVision_FindLocator_TemplateMatching(); // this func is in order to when the vision camera runtime
+	BOOL                    NVision_FindLocator_TemplateMatching_Train(int nCamIdx, CRectForTrainLocTool* paramTrainLoc); // this func is in order to train to get data
 
 private:
+
 	CString                         m_templateImagePath;
 
-	CParameterLocator               m_ParamLoca;
-	CLocatorToolResult              m_LocaResult;
+	CParameterLocator               m_paramLoc;
+	CLocatorToolResult              m_locResult;
 
-	RectForTrainLocTool             m_paramTrainLoc;
-	DataTrained                     m_dataTrained;
+	CRectForTrainLocTool            m_paramTrainLoc;
 
-	LPBYTE                          m_pImageBuffer;
-	cv::Mat*                        m_pResultImageBuffer;
-	cv::Mat*                        m_pImageTemplate;
+	CSharedMemoryBuffer*            m_pImageBuffer;
+
+	cv::Mat                         m_resultImageBuffer;
+	cv::Mat                         m_imageTemplate;
 };

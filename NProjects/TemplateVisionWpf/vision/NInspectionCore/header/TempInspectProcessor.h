@@ -4,9 +4,11 @@
 #include "TempInspectSystemConfig.h"
 #include "TempInspectStatus.h"
 #include "TempInspectResult.h"
+#include "TempInspectRecipe.h"
 
 class AFX_EXT_CLASS CTempInspectProcessor : public ITempInspectHikCamToParent,
-	                                        public ITempInspectCoreToParent
+	                                        public ITempInspectCoreToParent,
+	                                        public ITempInspectResultToParent
 {
 public:
 	CTempInspectProcessor();
@@ -32,11 +34,27 @@ public:
 	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY);
 	virtual CTempInspectRecipe*             GetRecipe(int nIdx) { return m_pTempInspRecipe[nIdx]; }
 	virtual CTempInspectSystemConfig*       GetSystemConfig() { return m_pTempInspSysConfig; }
+	virtual CTempInspectResult*             GetInspectResult(int nIdx) { return m_pTempInspResult[nIdx]; }
 	virtual CTempInspectStatus*             GetTempInspectStatus(int nCamIdx) { return m_pTempInspStatus[nCamIdx]; }
 	virtual int                             PopInspectWaitFrame(int nCamIdx);
 
 public:
-	CTempInspectHikCam* GetHikCamControl() { return m_pHikCamera; }
+	CTempInspectHikCam*    GetHikCamControl() { return m_pHikCamera; }
+	CLocatorTool*          GetLocToolControl() { return m_pLocToolTrain; }
+	CVisionAlgorithms*     GetVsAlgorithmControl() { return m_pVsAlgorithm; }
+
+public:
+	// LocatorTool: train loc tool and after that get: data trained, template image
+	BOOL                   TrainLocator_TemplateMatching(int nCamIdx, CRectForTrainLocTool* rectForTrainLoc); // step 1
+	BYTE*                  GetImageTemplate();                                             // step 2
+	BOOL                   GetDataTrained_TemplateMatching(CLocatorToolResult* dataTrained); // step 3
+
+	// SelectROITool
+	BOOL                   CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamCntPxlTrain);
+	BOOL                   CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea);
+	BYTE*                  GetResultROIBuffer_Train();
+	BOOL                   GetResultCntPxl_Train(CAlgorithmsCountPixelResult* pCntPxlTrainRes);
+	BOOL                   GetResultCalArea_Train(CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
 
 private:
 
@@ -63,5 +81,10 @@ private:
 	std::queue<int>						m_queueInspectWaitList[MAX_CAMERA_INSP_COUNT];
 
 	// Image Buffer..
-	CSharedMemoryBuffer*                 m_pImageBuffer[MAX_CAMERA_INSP_COUNT];
+	CSharedMemoryBuffer*                m_pImageBuffer[MAX_CAMERA_INSP_COUNT];
+
+	// Locator tool - this is object for train locator tool
+	CLocatorTool*                       m_pLocToolTrain;
+	// Vision Algorithm
+	CVisionAlgorithms*                  m_pVsAlgorithm;
 };

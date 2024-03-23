@@ -1,7 +1,6 @@
 #pragma once
 
 #include "VisionAlgorithms.h"
-#include "VisionManager.h"
 #include "interface_vision.h"
 #include <string>
 
@@ -13,19 +12,19 @@ public:
 
 public:
 	// Getter
-	CVisionAlgorithms*                GetVsAlgorithms() { return m_pVsAlgorithms; }
+	CVisionAlgorithms                GetVsAlgorithms() { return m_pVsAlgorithms; }
 	CParameterSelectROI              GetParamSelROI() { return m_paramSelROI; }
 
 	// Setter
-	void                  SetVsAlgorithms(CVisionAlgorithms* pVsAlgorithm) { m_pVsAlgorithms = pVsAlgorithm; }
+	void                  SetVsAlgorithms(CVisionAlgorithms pVsAlgorithm) { m_pVsAlgorithms = pVsAlgorithm; }
 	void                  SetParamSelROI(CParameterSelectROI paramSelROI) { m_paramSelROI = paramSelROI; }
 
 public:
-	void Run();
+	BOOL Run(emAlgorithms algorithm);
 
 private:
 
 	CParameterSelectROI                     m_paramSelROI;
 
-	CVisionAlgorithms*                       m_pVsAlgorithms;
+	CVisionAlgorithms                       m_pVsAlgorithms;
 };

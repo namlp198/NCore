@@ -3,17 +3,14 @@
 
 CSelectROITool::CSelectROITool()
 {
-	m_pVsAlgorithms = new CVisionAlgorithms;
+	
 }
 
 CSelectROITool::~CSelectROITool()
 {
 }
 
-void CSelectROITool::Run()
+BOOL CSelectROITool::Run(emAlgorithms algorithm)
 {
-	if (m_pVsAlgorithms == NULL)
-		return;
-
-	m_pVsAlgorithms->Run();
+	return m_pVsAlgorithms.Run(algorithm);
 }

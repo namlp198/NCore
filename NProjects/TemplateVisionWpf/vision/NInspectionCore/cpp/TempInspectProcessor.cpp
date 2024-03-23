@@ -70,6 +70,22 @@ BOOL CTempInspectProcessor::Initialize()
 		m_pTempInspStatus[i] = new CTempInspectStatus;
 	}
 
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pTempInspResult[i] != NULL)
+			delete m_pTempInspResult[i], m_pTempInspResult[i] = NULL;
+
+		m_pTempInspResult[i] = new CTempInspectResult(this);
+	}
+
+	if (m_pLocToolTrain != NULL)
+		delete m_pLocToolTrain, m_pLocToolTrain = NULL;
+	m_pLocToolTrain = new CLocatorTool();
+
+	if (m_pVsAlgorithm != NULL)
+		delete m_pVsAlgorithm, m_pVsAlgorithm = NULL;
+	m_pVsAlgorithm = new CVisionAlgorithms;
+
 	return TRUE;
 }
 
@@ -279,3 +295,80 @@ int CTempInspectProcessor::PopInspectWaitFrame(int nCamIdx)
 
 	return nProcessFrame;
 }
+
+BOOL CTempInspectProcessor::TrainLocator_TemplateMatching(int nCamIdx, CRectForTrainLocTool* rectForTrainLoc)
+{
+	if (m_pLocToolTrain == NULL)
+		return FALSE;
+
+	if (rectForTrainLoc == NULL)
+		return FALSE;
+
+	return m_pLocToolTrain->NVision_FindLocator_TemplateMatching_Train(nCamIdx, rectForTrainLoc);
+}
+
+BOOL CTempInspectProcessor::GetDataTrained_TemplateMatching(CLocatorToolResult* dataTrained)
+{
+	if (m_pLocToolTrain == NULL)
+		return FALSE;
+	return m_pLocToolTrain->GetDataTrained_TemplateMatching(dataTrained);
+}
+
+BOOL CTempInspectProcessor::CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamCntPxlTrain)
+{
+	if (m_pVsAlgorithm == NULL)
+		return FALSE;
+	if (pParamCntPxlTrain == NULL)
+		return FALSE;
+
+	return m_pVsAlgorithm->NVision_CountPixelAlgorithm_Train(pParamCntPxlTrain);
+}
+
+BOOL CTempInspectProcessor::CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea)
+{
+	if (m_pVsAlgorithm == NULL)
+		return FALSE;
+	if (pParamTrainCalArea == NULL)
+		return FALSE;
+
+	return m_pVsAlgorithm->NVision_CalculateAreaAlgorithm_Train(pParamTrainCalArea);
+}
+
+BYTE* CTempInspectProcessor::GetResultROIBuffer_Train()
+{
+	if (m_pVsAlgorithm == NULL)
+		return FALSE;
+
+	return m_pVsAlgorithm->GetResultROIBuffer_Train();
+}
+
+BOOL CTempInspectProcessor::GetResultCntPxl_Train(CAlgorithmsCountPixelResult* pCntPxlTrainRes)
+{
+	if (m_pVsAlgorithm == NULL)
+		return FALSE;
+
+	if (pCntPxlTrainRes == NULL)
+		return FALSE;
+
+	return m_pVsAlgorithm->GetResultCntPxl_Train(pCntPxlTrainRes);
+}
+
+BOOL CTempInspectProcessor::GetResultCalArea_Train(CAlgorithmsCalculateAreaResult* pCalAreaTrainRes)
+{
+	if (m_pVsAlgorithm == NULL)
+		return FALSE;
+
+	if (pCalAreaTrainRes == NULL)
+		return FALSE;
+
+	return m_pVsAlgorithm->GetResultCalArea_Train(pCalAreaTrainRes);
+}
+
+BYTE* CTempInspectProcessor::GetImageTemplate()
+{
+	if (m_pLocToolTrain == NULL)
+		return nullptr;
+
+	m_pLocToolTrain->GetTemplateImageBuffer();
+}
+	

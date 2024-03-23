@@ -3,23 +3,22 @@
 
 CVisionAlgorithms::CVisionAlgorithms()
 {
-	m_vsParamManeger = new CVisionParameterManager;
-	m_vsResultManager = new CVisionResultManager;
+	m_pImageBuffer = NULL;
 }
 
 CVisionAlgorithms::~CVisionAlgorithms()
 {
 }
 
-void CVisionAlgorithms::Run()
+BOOL CVisionAlgorithms::Run(emAlgorithms algorithm)
 {
-	switch (m_emAlgorithm)
+	switch (algorithm)
 	{
 	case emCountPixel:
-		NVision_CountPixelAlgorithm();
+		return NVision_CountPixelAlgorithm();
 		break;
 	case emCalculateArea:
-		NVision_CalculateAreaAlgorithm();
+		return NVision_CalculateAreaAlgorithm();
 		break;
 	case emCalculateCoordinate:
 		break;
@@ -36,31 +35,89 @@ void CVisionAlgorithms::Run()
 	}
 }
 
+LPBYTE CVisionAlgorithms::GetImageBuffer()
+{
+	if (m_pImageBuffer == NULL)
+		return nullptr;
+
+	return m_pImageBuffer->GetBufferImage(0);
+}
+
 LPBYTE CVisionAlgorithms::GetResultImageBuffer()
 {
-	if (m_ResultImageBuffer.empty())
+	if (m_resultImageBuffer.empty())
 		return NULL;
 
-	return (LPBYTE)m_ResultImageBuffer.data;
+	return (LPBYTE)m_resultImageBuffer.data;
+}
+
+LPBYTE CVisionAlgorithms::GetResultROIBuffer_Train()
+{
+	if (m_resultROIBuffer.empty())
+		return nullptr;
+
+	return (LPBYTE)m_resultROIBuffer.data;
+}
+
+BOOL CVisionAlgorithms::GetResultCntPxl_Train(CAlgorithmsCountPixelResult* pCntPxlTrainRes)
+{
+	pCntPxlTrainRes->m_nNumberOfPixel = m_cntPxlRes.m_nNumberOfPixel;
+	pCntPxlTrainRes->m_bResult = m_cntPxlRes.m_bResult;
+
+	return TRUE;
+}
+
+BOOL CVisionAlgorithms::GetResultCalArea_Train(CAlgorithmsCalculateAreaResult* pCalAreaTrainRes)
+{
+	pCalAreaTrainRes->m_dArea = m_calAreaRes.m_dArea;
+	pCalAreaTrainRes->m_bResult = m_calAreaRes.m_bResult;
+
+	return TRUE;
+}
+
+BOOL CVisionAlgorithms::SetImageBuffer(LPBYTE pImgBuff)
+{
+	if (pImgBuff == NULL)
+		return FALSE;
+
+	return m_pImageBuffer->SetFrameImage(0, pImgBuff);
 }
 
 
-void CVisionAlgorithms::NVision_CountPixelAlgorithm()
+BOOL CVisionAlgorithms::NVision_CountPixelAlgorithm()
 {
-	CParameterCountPixel param = m_vsParamManeger->GetParamCntPxl();
-
+	
 	//char cText[1024] = {};
 	//sprintf_s(cText, "This is Count Pixel tool, %s: %s", "angle rotation: ", std::to_string(std::get<4>(param.m_tupROI)));
 	//// code here
 	//AfxMessageBox((CString)cText);
+
+	// when the algorithm handle is done then assign the result received for the CAlgorithmsCountPixelResult object
+
+	return TRUE;
 }
 
-void CVisionAlgorithms::NVision_CalculateAreaAlgorithm()
+BOOL CVisionAlgorithms::NVision_CalculateAreaAlgorithm()
 {
-	CParameterCalculateArea param = m_vsParamManeger->GetParamCalArea();
-
+	
 	//char cText[1024] = {};
 	//sprintf_s(cText, "This is Cal Area tool, %s: %s", "area: ", std::to_string(param.m_arrArea[1]));
 	//// code here
 	//AfxMessageBox((CString)cText);
+
+	// when the algorithm handle is done then assign the result received for the CAlgorithmsCountPixelResult object
+
+	return TRUE;
+}
+
+BOOL CVisionAlgorithms::NVision_CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamTrainCntPxl)
+{
+
+	return TRUE;
+}
+
+BOOL CVisionAlgorithms::NVision_CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea)
+{
+
+	return TRUE;
 }

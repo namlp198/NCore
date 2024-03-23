@@ -3,6 +3,7 @@
 #include "TempInspectRecipe.h"
 #include "TempInspectDefine.h"
 #include "TempInspectStatus.h"
+#include "TempInspectResult.h"
 #include "WorkThreadArray.h"
 
 interface ITempInspectCoreToParent
@@ -12,6 +13,7 @@ interface ITempInspectCoreToParent
 	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY) = 0;
 	virtual CTempInspectRecipe*             GetRecipe(int nIdx) = 0;
 	virtual CTempInspectSystemConfig*       GetSystemConfig() = 0;
+	virtual CTempInspectResult*             GetInspectResult(int nIdx) = 0;
 	virtual CTempInspectStatus*             GetTempInspectStatus(int nCamIdx) = 0;
 	virtual int								PopInspectWaitFrame(int nCamIdx) = 0;
 };
@@ -67,6 +69,7 @@ private:
 	CCriticalSection					m_csWorkThreadArray[MAX_THREAD_COUNT];
 	CWorkThreadArray*                   m_pWorkThreadArray[MAX_THREAD_COUNT];
 
+	CCriticalSection					m_csProcessing;
 	CCriticalSection					m_csPostProcessing;
 
 	// interface
@@ -75,7 +78,4 @@ private:
 	std::vector<BOOL>					m_vecProcessedFrame;
 
 	CTempInspectRecipe*                 m_pRecipe[MAX_CAMERA_INSP_COUNT];
-
-	// Result Buffer
-	cv::Mat							    m_ResultImageBuffer[MAX_CAMERA_INSP_COUNT];
 };

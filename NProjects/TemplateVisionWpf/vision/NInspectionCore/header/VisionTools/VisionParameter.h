@@ -27,16 +27,39 @@ struct CParameterSelectROI
 	int                        m_nPriority;
 };
 
-struct CParameterCountPixel
+struct CRectForTrainLocTool
 {
-	std::tuple<int, int, int, int, double>       m_tupROI;
-	int                                          m_arrThresholdGray[2];
-	int                                          m_arrNumberOfPixel[2];
+	int m_nRectIn_X;
+	int m_nRectIn_Y;
+	int m_nRectIn_Width;
+	int m_nRectIn_Height;
+	int m_nRectOut_X;
+	int m_nRectOut_Y;
+	int m_nRectOut_Width;
+	int m_nRectOut_Height;
 };
 
-struct CParameterCalculateArea
+struct CParamCntPxlAlgorithm
 {
-	std::tuple<int, int, int, int, double>       m_tupROI;
-	int                                          m_nThreshold;
-	int                                          m_arrArea[2];
+	int m_nROIX;
+	int m_nROIY;
+	int m_nROIWidth;
+	int m_nROIHeight;
+	double m_dROIAngleRotate;
+	int m_nThresholdGrayMin;
+	int m_nThresholdGrayMax;
+	int m_nNumberOfPxlMin;
+	int m_nNumberOfPxlMax;
+};
+
+struct CParamCalAreaAlgorithm
+{
+	int m_nROIX;
+	int m_nROIY;
+	int m_nROIWidth;
+	int m_nROIHeight;
+	double m_dROIAngleRotate;
+	int m_nThreshold;
+	int m_nAreaMin;
+	int m_nAreaMax;
 };
