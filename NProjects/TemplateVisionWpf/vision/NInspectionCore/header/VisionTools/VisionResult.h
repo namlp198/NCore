@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VisionDefine.h"
+#include <vector>
 
 struct CLocatorToolResult
 {
@@ -27,4 +28,14 @@ struct CAlgorithmsCalculateAreaResult
 {
 	int          m_dArea;
 	BOOL         m_bResult;
+};
+
+class AFX_EXT_CLASS CVisionResults
+{
+public:
+	CVisionResults();
+	~CVisionResults();
+
+private:
+	
 };

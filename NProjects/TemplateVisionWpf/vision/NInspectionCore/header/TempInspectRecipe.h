@@ -1,28 +1,11 @@
 #pragma once
 
-#include "interface_vision.h"
+#include <queue>
 #include "TempInspectDefine.h"
 #include "TempInspectSystemConfig.h"
 #include "LocatorTool.h"
 #include "SelectROITool.h"
-#include <queue>
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-#include "RapidXMLSTD.hpp"
 
-struct CameraInfo
-{
-	int               m_nId;
-	CString           m_csName;
-	CString           m_csInterfaceType;
-	CString           m_csSensorType;
-	CString           m_csManufacturer;
-	int               m_nFrameWidth;
-	int               m_nFrameHeight;
-	CString           m_csSerialNumber;
-};
-
-typedef std::queue<ITools> QueueTools;
 typedef std::queue<CLocatorTool> QueueLocTools;
 typedef std::queue<CSelectROITool> QueueSelROITools;
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "VisionAlgorithms.h"
-#include "interface_vision.h"
 #include <string>
 
 class AFX_EXT_CLASS CSelectROITool

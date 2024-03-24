@@ -3,12 +3,10 @@
 #include "TempInspectCore.h"
 #include "TempInspectSystemConfig.h"
 #include "TempInspectStatus.h"
-#include "TempInspectResult.h"
 #include "TempInspectRecipe.h"
 
 class AFX_EXT_CLASS CTempInspectProcessor : public ITempInspectHikCamToParent,
-	                                        public ITempInspectCoreToParent,
-	                                        public ITempInspectResultToParent
+	                                        public ITempInspectCoreToParent
 {
 public:
 	CTempInspectProcessor();
@@ -34,7 +32,6 @@ public:
 	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY);
 	virtual CTempInspectRecipe*             GetRecipe(int nIdx) { return m_pTempInspRecipe[nIdx]; }
 	virtual CTempInspectSystemConfig*       GetSystemConfig() { return m_pTempInspSysConfig; }
-	virtual CTempInspectResult*             GetInspectResult(int nIdx) { return m_pTempInspResult[nIdx]; }
 	virtual CTempInspectStatus*             GetTempInspectStatus(int nCamIdx) { return m_pTempInspStatus[nCamIdx]; }
 	virtual int                             PopInspectWaitFrame(int nCamIdx);
 
@@ -72,9 +69,6 @@ private:
 						                
 	// status			                
 	CTempInspectStatus*                 m_pTempInspStatus[MAX_CAMERA_INSP_COUNT];
-						                
-	// result			                
-	CTempInspectResult*                 m_pTempInspResult[MAX_CAMERA_INSP_COUNT];
 
 	// Inspect Wait Frame List
 	CCriticalSection					m_csInspectWaitList[MAX_CAMERA_INSP_COUNT];

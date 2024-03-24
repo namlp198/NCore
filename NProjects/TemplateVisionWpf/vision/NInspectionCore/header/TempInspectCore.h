@@ -3,8 +3,8 @@
 #include "TempInspectRecipe.h"
 #include "TempInspectDefine.h"
 #include "TempInspectStatus.h"
-#include "TempInspectResult.h"
 #include "WorkThreadArray.h"
+#include "VisionResult.h"
 
 interface ITempInspectCoreToParent
 {
@@ -13,7 +13,6 @@ interface ITempInspectCoreToParent
 	virtual LPBYTE							GetBufferImage(int nCamIdx, UINT nY) = 0;
 	virtual CTempInspectRecipe*             GetRecipe(int nIdx) = 0;
 	virtual CTempInspectSystemConfig*       GetSystemConfig() = 0;
-	virtual CTempInspectResult*             GetInspectResult(int nIdx) = 0;
 	virtual CTempInspectStatus*             GetTempInspectStatus(int nCamIdx) = 0;
 	virtual int								PopInspectWaitFrame(int nCamIdx) = 0;
 };

@@ -86,9 +86,6 @@ void CTempInspectCore::RunningThread(int nThreadIndex)
 		// for avoid UI Freezing
 		Sleep(1);
 
-		// clear result
-		m_pInterface->GetInspectResult(m_nCamIndex)->Reset();
-
 		int nFrameIdx = m_pInterface->PopInspectWaitFrame(m_nCamIndex);
 
 		// Not Grab Image..
@@ -107,12 +104,6 @@ void CTempInspectCore::RunningThread(int nThreadIndex)
 
 		// Process
 		ProcessFrame(m_pRecipe[m_nCamIndex], nThreadIndex, nFrameIdx);
-
-		// judgement
-		m_pInterface->GetInspectResult(m_nCamIndex)->Judge_Result();
-
-		// draw the result
-		m_pInterface->GetInspectResult(m_nCamIndex)->Draw_Result(m_nCamIndex);
 
 		// inform inspect completed
 		m_pInterface->InspectComplete(m_nCamIndex);
@@ -164,7 +155,7 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 		locTool.SetImageBuffer(pImageBuffer);
 		if (locTool.Run())
 		{
-			m_pInterface->GetInspectResult(m_nCamIndex)->GetVecLocToolResult().push_back(locTool.GetLocRes());
+			
 		}
 		pLocTools.pop();
 	}
@@ -178,7 +169,7 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 
 		// get result of locator tool for translate or rotate ROI follow that is result. 
 		// *note*: currently, this vector will have only an object that should be always selected first object
-		selROITool.GetVsAlgorithms().SetLocResult(m_pInterface->GetInspectResult(m_nCamIndex)->GetVecLocToolResult()[0]);
+		
 		// get the algorithm of this ROI
 		emAlgorithms algorithm = selROITool.GetVsAlgorithms().GetAlgorithm();
 
@@ -188,10 +179,10 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 			switch(algorithm)
 			{
 			case emCountPixel:
-				m_pInterface->GetInspectResult(m_nCamIndex)->GetVecCntPxlResult().push_back(selROITool.GetVsAlgorithms().GetCntPxlRes());
+				
 				break;
 			case emCalculateArea:
-				m_pInterface->GetInspectResult(m_nCamIndex)->GetVecCalAreaResult().push_back(selROITool.GetVsAlgorithms().GetCalAreaRes());
+				break;
 			}
 		}
 		pSelROITools.pop();

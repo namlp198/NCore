@@ -126,9 +126,6 @@
     <ClInclude Include="header\VisionTools\VisionResult.h">
       <Filter>Header Files\VisionTools</Filter>
     </ClInclude>
-    <ClInclude Include="header\VisionTools\interface_vision.h">
-      <Filter>Header Files\VisionTools</Filter>
-    </ClInclude>
     <ClInclude Include="header\VisionTools\VisionDefine.h">
       <Filter>Header Files\VisionTools</Filter>
     </ClInclude>
@@ -136,9 +133,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\TempInspectStatus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\TempInspectResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -215,13 +209,7 @@
     <ClCompile Include="cpp\TempInspectSystemConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\VisionTools\VisionManager.cpp">
-      <Filter>Source Files\VisionTools</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\TempInspectStatus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\TempInspectResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

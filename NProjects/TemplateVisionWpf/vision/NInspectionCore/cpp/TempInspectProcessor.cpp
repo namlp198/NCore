@@ -12,7 +12,6 @@ CTempInspectProcessor::CTempInspectProcessor()
 		m_pTempInspCore[i] = NULL;
 		m_pTempInspRecipe[i] = NULL;
 		m_pTempInspStatus[i] = NULL;
-		m_pTempInspResult[i] = NULL;
 		m_pImageBuffer[i] = NULL;
 
 		std::swap(m_queueInspectWaitList[i], emptyList);
@@ -68,14 +67,6 @@ BOOL CTempInspectProcessor::Initialize()
 			delete m_pTempInspStatus[i], m_pTempInspStatus[i] = NULL;
 
 		m_pTempInspStatus[i] = new CTempInspectStatus;
-	}
-
-	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
-	{
-		if (m_pTempInspResult[i] != NULL)
-			delete m_pTempInspResult[i], m_pTempInspResult[i] = NULL;
-
-		m_pTempInspResult[i] = new CTempInspectResult(this);
 	}
 
 	if (m_pLocToolTrain != NULL)

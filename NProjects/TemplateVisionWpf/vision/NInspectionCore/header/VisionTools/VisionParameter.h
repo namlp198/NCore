@@ -1,9 +1,20 @@
 #pragma once
 
 #include "VisionDefine.h"
-#include <tuple>
 #include <string>
 #include <iostream>
+
+struct CameraInfo
+{
+	int               m_nId;
+	CString           m_csName;
+	CString           m_csInterfaceType;
+	CString           m_csSensorType;
+	CString           m_csManufacturer;
+	int               m_nFrameWidth;
+	int               m_nFrameHeight;
+	CString           m_csSerialNumber;
+};
 
 struct CParameterLocator
 {

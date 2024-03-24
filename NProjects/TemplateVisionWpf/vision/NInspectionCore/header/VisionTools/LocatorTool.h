@@ -2,10 +2,7 @@
 
 #include "VisionParameter.h"
 #include "VisionResult.h"
-#include "TempInspectRecipe.h"
-#include "TempInspectSystemConfig.h"
-#include "TempInspectResult.h"
-#include "interface_vision.h"
+#include "VisionDefine.h"
 #include "SharedMemoryBuffer.h"
 
 class AFX_EXT_CLASS CLocatorTool

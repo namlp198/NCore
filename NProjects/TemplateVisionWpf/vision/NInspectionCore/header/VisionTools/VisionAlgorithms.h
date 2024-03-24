@@ -1,7 +1,8 @@
 #pragma once
 
-#include "TempInspectRecipe.h"
-#include "TempInspectSystemConfig.h"
+#include "VisionParameter.h"
+#include "VisionResult.h"
+#include "VisionDefine.h"
 #include "SharedMemoryBuffer.h"
 
 class AFX_EXT_CLASS CVisionAlgorithms

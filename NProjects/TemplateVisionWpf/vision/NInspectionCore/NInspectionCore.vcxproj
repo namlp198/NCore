@@ -154,7 +154,6 @@ copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProces
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="header\TempInspectResult.h" />
     <ClInclude Include="header\TempInspectStatus.h" />
     <ClInclude Include="header\TempInspectSystemConfig.h" />
     <ClInclude Include="header\TempInspectCore.h" />
@@ -175,7 +174,6 @@ copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProces
     <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h" />
     <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h" />
     <ClInclude Include="header\Tools\View\SharedMemoryBuffer.h" />
-    <ClInclude Include="header\VisionTools\interface_vision.h" />
     <ClInclude Include="header\VisionTools\LocatorTool.h" />
     <ClInclude Include="header\VisionTools\SelectROITool.h" />
     <ClInclude Include="header\VisionTools\VisionAlgorithms.h" />
@@ -185,7 +183,6 @@ copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProces
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\TempInspectResult.cpp" />
     <ClCompile Include="cpp\TempInspectStatus.cpp" />
     <ClCompile Include="cpp\TempInspectSystemConfig.cpp" />
     <ClCompile Include="cpp\TempInspectCore.cpp" />
@@ -208,7 +205,6 @@ copy /Y $(SolutionDir)NProjects\TemplateVisionWpf\bin\Release\NTempInspectProces
     <ClCompile Include="cpp\VisionTools\LocatorTool.cpp" />
     <ClCompile Include="cpp\VisionTools\SelectROITool.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionAlgorithms.cpp" />
-    <ClCompile Include="cpp\VisionTools\VisionManager.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionParameter.cpp" />
     <ClCompile Include="cpp\VisionTools\VisionResult.cpp" />
     <ClCompile Include="pch.cpp">
