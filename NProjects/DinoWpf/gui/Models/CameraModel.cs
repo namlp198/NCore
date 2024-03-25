@@ -14,6 +14,7 @@ namespace DinoWpf.Models
         private string _name = string.Empty;
         private string _interfaceType = string.Empty;
         private string _sensorType = string.Empty;
+        private int _channels = 1;
         private string _manufacturer = string.Empty;
         private int _frameWidth = 0;
         private int _frameHeight = 0;
@@ -24,6 +25,7 @@ namespace DinoWpf.Models
         public string Name { get => _name; set { SetProperty(ref _name, value); } }
         public string InterfaceType { get => _interfaceType; set { SetProperty(ref _interfaceType, value); } }
         public string SensorType { get => _sensorType; set { SetProperty(ref _sensorType, value); } }
+        public int Channels { get => _channels; set { SetProperty(ref _channels, value); } }
         public string Manufacturer { get => _manufacturer; set { SetProperty(ref _manufacturer, value); } }
         public int FrameWidth { get => _frameWidth; set { SetProperty(ref _frameWidth, value); } }
         public int FrameHeight { get => _frameHeight; set { SetProperty(ref _frameHeight, value); } }

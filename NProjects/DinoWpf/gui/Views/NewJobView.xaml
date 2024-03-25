@@ -147,6 +147,10 @@
                                             FontSize="16"
                                             IsReadOnly="False"
                                             Binding="{Binding SensorType,Mode=TwoWay}" />
+                        <DataGridTextColumn Header="Channels"
+                                            FontSize="16"
+                                            IsReadOnly="False"
+                                            Binding="{Binding Channels,Mode=TwoWay}" />
                         <DataGridTextColumn Header="Frame Width"
                                             FontSize="16"
                                             IsReadOnly="False"

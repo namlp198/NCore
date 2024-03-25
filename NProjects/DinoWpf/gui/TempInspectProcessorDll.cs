@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,14 @@ using System.Threading.Tasks;
 namespace DinoWpf
 {
     #region Tool Results
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CSumResult
+    {
+        bool m_bSumResult;
+        IntPtr m_resultImageBuffer;
+    }
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CLocatorToolResult
     {
@@ -171,6 +180,145 @@ namespace DinoWpf
         extern private static IntPtr GetBufferImageHikCam(IntPtr tempInspProcessor, int nCamIdx);
         public IntPtr GetBufferImageHikCam(int nCamIdx) { return GetBufferImageHikCam(m_pTempInspectProcessor, nCamIdx); }
 
+
+        #region Train
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool TrainLocator_TemplateMatching(IntPtr tempInspProcessor, int nCamIdx, IntPtr dataTrain);
+        public bool TrainLocator_TemplateMatching(int nCamIdx, ref RectForTrainLocTool rectForTrainLocTool)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(rectForTrainLocTool));
+            Marshal.StructureToPtr(rectForTrainLocTool, pPointer, false);
+            bool bRetValue = TrainLocator_TemplateMatching(m_pTempInspectProcessor, nCamIdx, pPointer);
+            return bRetValue;
+        }
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool CountPixelAlgorithm_Train(IntPtr tempInspProcessor, IntPtr pParamCntPxlTrain);
+        public bool CountPixelAlgorithm_Train(ref CParamCntPxlAlgorithm pParamCntPxlTrain)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pParamCntPxlTrain));
+            Marshal.StructureToPtr(pParamCntPxlTrain, pPointer, false);
+            bool bRetValue = CountPixelAlgorithm_Train(m_pTempInspectProcessor, pPointer);
+            return bRetValue;
+        }
+
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool CalculateAreaAlgorithm_Train(IntPtr tempInspProcessor, IntPtr pParamTrainCalArea);
+        public bool CalculateAreaAlgorithm_Train(ref CParamCalAreaAlgorithm pParamTrainCalArea)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pParamTrainCalArea));
+            Marshal.StructureToPtr(pParamTrainCalArea, pPointer, false);
+            bool bRetValue = CalculateAreaAlgorithm_Train(m_pTempInspectProcessor, pPointer);
+            return bRetValue;
+        }
+        #endregion
+
+        #region Get Image
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetTemplateImage(IntPtr tempInspProcessor);
+        public IntPtr GetTemplateImage()
+        {
+            return GetTemplateImage(m_pTempInspectProcessor);
+        }
+
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetResultROIBuffer_Train(IntPtr tempInspProcessor);
+        public IntPtr GetResultROIBuffer_Train()
+        {
+            return GetResultROIBuffer_Train(m_pTempInspectProcessor);
+        }
+        #endregion
+
+        #region Get Data
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetDataTrained_TemplateMatching(IntPtr tempInspProcessor, IntPtr dataTrained);
+        public bool GetDataTrained_TemplateMatching(ref CLocatorToolResult locatorToolResult)
+        {
+            CLocatorToolResult dataTrained = new CLocatorToolResult();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
+            Marshal.StructureToPtr(dataTrained, pPointer, false);
+            bool bRetValue = GetDataTrained_TemplateMatching(m_pTempInspectProcessor, pPointer);
+            locatorToolResult = (CLocatorToolResult)Marshal.PtrToStructure(pPointer, typeof(CLocatorToolResult));
+            return bRetValue;
+        }
+
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetResultCntPxl_Train(IntPtr tempInspProcessor, IntPtr dataTrained);
+        public bool GetResultCntPxl_Train(ref CAlgorithmsCountPixelResult cntPxlRes)
+        {
+            CAlgorithmsCountPixelResult dataTrained = new CAlgorithmsCountPixelResult();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
+            Marshal.StructureToPtr(dataTrained, pPointer, false);
+            bool bRetValue = GetResultCntPxl_Train(m_pTempInspectProcessor, pPointer);
+            cntPxlRes = (CAlgorithmsCountPixelResult)Marshal.PtrToStructure(pPointer, typeof(CAlgorithmsCountPixelResult));
+            return bRetValue;
+        }
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetResultCalArea_Train(IntPtr tempInspProcessor, IntPtr dataTrained);
+        public bool GetResultCalArea_Train(ref CAlgorithmsCalculateAreaResult cntCalArea)
+        {
+            CAlgorithmsCalculateAreaResult dataTrained = new CAlgorithmsCalculateAreaResult();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
+            Marshal.StructureToPtr(dataTrained, pPointer, false);
+            bool bRetValue = GetResultCalArea_Train(m_pTempInspectProcessor, pPointer);
+            cntCalArea = (CAlgorithmsCalculateAreaResult)Marshal.PtrToStructure(pPointer, typeof(CAlgorithmsCalculateAreaResult));
+            return bRetValue;
+        }
+
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetSumResult(IntPtr tempInspProcessor, int nCamIdx, IntPtr sumResult);
+        public bool GetSumResult(int nCamIdx, ref CSumResult sumRes)
+        {
+            CSumResult sumResult = new CSumResult();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sumResult));
+            Marshal.StructureToPtr(sumResult, pPointer, false);
+            bool bRetValue = GetSumResult(m_pTempInspectProcessor, nCamIdx, pPointer);
+            sumRes = (CSumResult)Marshal.PtrToStructure(pPointer, typeof(CSumResult));
+            return bRetValue;
+        }
+        #endregion
 
 #if DEBUG
         [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]

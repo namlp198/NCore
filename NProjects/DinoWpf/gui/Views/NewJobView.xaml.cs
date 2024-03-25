@@ -68,6 +68,7 @@ namespace DinoWpf.Views
                         cameraInfo.Name = string.Empty;
                         cameraInfo.InterfaceType = string.Empty;
                         cameraInfo.SensorType = string.Empty;
+                        cameraInfo.Channels = 1;
                         cameraInfo.Manufacturer = string.Empty;
                         cameraInfo.FrameWidth = 0;
                         cameraInfo.FrameHeight = 0;
@@ -263,6 +264,7 @@ namespace DinoWpf.Views
                         _xmlManagement.AddAttributeToNode(nodeCam, "name", cameraInfo.Name);
                         _xmlManagement.AddAttributeToNode(nodeCam, "interfaceType", cameraInfo.InterfaceType);
                         _xmlManagement.AddAttributeToNode(nodeCam, "sensorType", cameraInfo.SensorType);
+                        _xmlManagement.AddAttributeToNode(nodeCam, "channels", cameraInfo.Channels +"");
                         _xmlManagement.AddAttributeToNode(nodeCam, "manufacturer", cameraInfo.Manufacturer);
                         _xmlManagement.AddAttributeToNode(nodeCam, "frameWidth", cameraInfo.FrameWidth + "");
                         _xmlManagement.AddAttributeToNode(nodeCam, "frameHeight", cameraInfo.FrameHeight + "");

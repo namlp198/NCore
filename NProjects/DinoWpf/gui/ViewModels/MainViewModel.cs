@@ -202,6 +202,7 @@ namespace DinoWpf.ViewModels
                         camera.Name = _xmlManagement.GetAttributeValueFromNode(nodeCamera, "name");
                         camera.InterfaceType = _xmlManagement.GetAttributeValueFromNode(nodeCamera, "interfaceType");
                         camera.SensorType = _xmlManagement.GetAttributeValueFromNode(nodeCamera, "sensorType");
+                        camera.Channels = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeCamera, "channels"));
                         camera.Manufacturer = _xmlManagement.GetAttributeValueFromNode(nodeCamera, "manufacturer");
                         camera.FrameWidth = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeCamera, "frameWidth"));
                         camera.FrameHeight = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeCamera, "frameHeight"));
