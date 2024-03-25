@@ -214,8 +214,8 @@ namespace NpcCore.Wpf.Controls
         private ModeTool _modeTool = ModeTool.Default;
         private ModeGrab _modeGrab = ModeGrab.ModeGrab_SingleGrab;
 
-        private double _comWidth = 6;
-        private double _comOffset = 3;
+        private double _comWidth = 20;
+        private double _comOffset = 10;
         #endregion
 
         #region Methods
@@ -1627,7 +1627,7 @@ namespace NpcCore.Wpf.Controls
 
             MatrixTransform matrixTransform1 = new MatrixTransform(mat1);
             dc.PushTransform(matrixTransform1);
-            dc.PushOpacity(0.6);
+            dc.PushOpacity(0.35);
 
 
             if (!_enableSelectRect)
@@ -1671,8 +1671,8 @@ namespace NpcCore.Wpf.Controls
             {
                 //3 point draw line and ellipse
                 Point pointLine1 = new Point(_rect.Left + _rect.Width / 2, _rect.Top - _comOffset);
-                Point pointLine2 = new Point(_rect.Left + _rect.Width / 2, _rect.Top - 20);
-                Point pointCenterEllipse = new Point(_rect.Left + _rect.Width / 2, _rect.Top - 20);
+                Point pointLine2 = new Point(_rect.Left + _rect.Width / 2, _rect.Top - 40);
+                Point pointCenterEllipse = new Point(_rect.Left + _rect.Width / 2, _rect.Top - 40);
 
                 //draw line rotate
                 dc.DrawLine(new Pen(colorPen, _thicknessPen), pointLine1, pointLine2);
@@ -1700,11 +1700,11 @@ namespace NpcCore.Wpf.Controls
 
             MatrixTransform matrixTransform1 = new MatrixTransform(mat1);
             dc.PushTransform(matrixTransform1);
-            dc.PushOpacity(0.55);
+            dc.PushOpacity(0.35);
 
             if (!_enableSelectRect)
             {
-                dc.DrawRectangle(Brushes.GreenYellow, new Pen(Brushes.LightYellow, 2), _rect);
+                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.LightYellow, 2), _rect);
             }
             else
             {
@@ -1742,7 +1742,7 @@ namespace NpcCore.Wpf.Controls
 
             if (!_enableSelectRectInside)
             {
-                dc.DrawRectangle(Brushes.LightYellow, new Pen(Brushes.OrangeRed, 2), _rectInside);
+                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.OrangeRed, 2), _rectInside);
             }
             else
             {
@@ -1758,7 +1758,7 @@ namespace NpcCore.Wpf.Controls
                 //var rectCenterChild = new Rect(_rectChild.Left + _rectChild.Width / 2 - 10f, _rectChild.Top + _rectChild.Height / 2 - 10f, 20f, 20f);
 
                 //Draw Rectangle Child
-                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.OrangeRed, _thicknessPen), _rectInside);
+                dc.DrawRectangle(Brushes.LightSlateGray, new Pen(Brushes.OrangeRed, _thicknessPen), _rectInside);
                 dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectTopLeftChild);
                 dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectTopRightChild);
                 dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectBottomLeftChild);
