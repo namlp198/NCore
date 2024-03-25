@@ -139,6 +139,8 @@ void CTempInspectRecipe::ReadCameraInfo(XMLElement* xmlCam, int nId)
 	m_pCameraInfos->m_csInterfaceType = xmlCam->first_attribute("interfaceType")->value();
 	// sensorType
 	m_pCameraInfos->m_csSensorType = xmlCam->first_attribute("sensorType")->value();
+	// channels
+	m_pCameraInfos->m_nChannels = std::stoi(xmlCam->first_attribute("channels")->value());
 	// manufacturer
 	m_pCameraInfos->m_csManufacturer = xmlCam->first_attribute("manufacturer")->value();
 	// frame width

@@ -126,3 +126,91 @@ bool SetTriggerSourceHikCam(CTempInspectProcessor* pProcessor, int nCamIdx, int 
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }
+
+bool TrainLocator_TemplateMatching(CTempInspectProcessor* pProcessor, int nCamIdx, CRectForTrainLocTool* rectForTrainLoc)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->TrainLocator_TemplateMatching(nCamIdx, rectForTrainLoc);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+BYTE* GetTemplateImage(CTempInspectProcessor* pProcessor)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetTemplateImage();
+}
+
+bool GetDataTrained_TemplateMatching(CTempInspectProcessor* pProcessor, CLocatorToolResult* dataTrained)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetDataTrained_TemplateMatching(dataTrained);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool CountPixelAlgorithm_Train(CTempInspectProcessor* pProcessor, CParamCntPxlAlgorithm* pParamCntPxlTrain)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->CountPixelAlgorithm_Train(pParamCntPxlTrain);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool CalculateAreaAlgorithm_Train(CTempInspectProcessor* pProcessor, CParamCalAreaAlgorithm* pParamTrainCalArea)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->CalculateAreaAlgorithm_Train(pParamTrainCalArea);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+BYTE* GetResultROIBuffer_Train(CTempInspectProcessor* pProcessor)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetResultROIBuffer_Train();
+}
+
+bool GetResultCntPxl_Train(CTempInspectProcessor* pProcessor, CAlgorithmsCountPixelResult* pCntPxlTrainRes)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetResultCntPxl_Train(pCntPxlTrainRes);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool GetResultCalArea_Train(CTempInspectProcessor* pProcessor, CAlgorithmsCalculateAreaResult* pCalAreaTrainRes)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetResultCalArea_Train(pCalAreaTrainRes);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool GetSumResult(CTempInspectProcessor* pProcessor, int nCamIdx, CSumResult* pSumRes)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetSumResult(nCamIdx, pSumRes);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+

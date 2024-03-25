@@ -5,10 +5,8 @@ CTempInspectCore::CTempInspectCore(ITempInspectCoreToParent* pInterface)
 {
 	m_pInterface = pInterface;
 
-	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
-	{
-		m_pRecipe[i] = NULL;
-	}
+	m_pRecipe = new CTempInspectRecipe;
+	m_pVsResult = new CVisionResults;
 }
 
 CTempInspectCore::~CTempInspectCore()
@@ -79,12 +77,15 @@ void CTempInspectCore::RunningThread(int nThreadIndex)
 		return;
 
 	// Load Recipe according cam index
-	m_pRecipe[m_nCamIndex] = m_pInterface->GetRecipe(m_nCamIndex);
+	m_pRecipe = m_pInterface->GetRecipe(m_nCamIndex);
 
 	while (m_bRunningThread[nThreadIndex] == TRUE)
 	{
 		// for avoid UI Freezing
 		Sleep(1);
+
+		// reset result
+		m_pVsResult->Reset_Result();
 
 		int nFrameIdx = m_pInterface->PopInspectWaitFrame(m_nCamIndex);
 
@@ -103,7 +104,11 @@ void CTempInspectCore::RunningThread(int nThreadIndex)
 		m_vecProcessedFrame[nFrameIdx] = TRUE;
 
 		// Process
-		ProcessFrame(m_pRecipe[m_nCamIndex], nThreadIndex, nFrameIdx);
+		ProcessFrame(m_pRecipe, nThreadIndex, nFrameIdx);
+
+		m_pVsResult->Judgement_Result();
+		m_pVsResult->Draw_Result();
+		m_pResultImageBuffer = m_pVsResult->GetResultImageBuffer();
 
 		// inform inspect completed
 		m_pInterface->InspectComplete(m_nCamIndex);
@@ -144,6 +149,13 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 	if (pImageBuffer == NULL)
 		return;
 
+	// set result image
+	int nFrameWidth = pRecipe->GetCameraInfos()->m_nFrameWidth;
+	int nFrameHeight = pRecipe->GetCameraInfos()->m_nFrameHeight;
+	int chanels = pRecipe->GetCameraInfos()->m_nChannels;
+	cv::Mat* matResult = m_pVsResult->GetResultImage();
+	matResult = new cv::Mat(nFrameHeight, nFrameWidth, chanels, pImageBuffer);
+
 	QueueLocTools pLocTools = pRecipe->GetQueueLocTools();
 	QueueSelROITools pSelROITools = pRecipe->GetQueueSelROITools();
 
@@ -155,7 +167,7 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 		locTool.SetImageBuffer(pImageBuffer);
 		if (locTool.Run())
 		{
-			
+			m_pVsResult->GetVecLocToolRes()->push_back(locTool.GetLocRes());
 		}
 		pLocTools.pop();
 	}
@@ -169,19 +181,21 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 
 		// get result of locator tool for translate or rotate ROI follow that is result. 
 		// *note*: currently, this vector will have only an object that should be always selected first object
-		
+		selROITool.GetVsAlgorithms().SetLocResult(m_pVsResult->GetVecLocToolRes()->at(0));
+
 		// get the algorithm of this ROI
 		emAlgorithms algorithm = selROITool.GetVsAlgorithms().GetAlgorithm();
 
 		if (selROITool.Run(algorithm))
 		{
 			// push the result to the vectors follow the algorithm
-			switch(algorithm)
+			switch (algorithm)
 			{
 			case emCountPixel:
-				
+				m_pVsResult->GetVecCntPxlRes()->push_back(selROITool.GetVsAlgorithms().GetCntPxlRes());
 				break;
 			case emCalculateArea:
+				m_pVsResult->GetVecCalAreaRes()->push_back(selROITool.GetVsAlgorithms().GetCalAreaRes());
 				break;
 			}
 		}
@@ -189,3 +203,4 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 	}
 	localLock.Unlock();
 }
+

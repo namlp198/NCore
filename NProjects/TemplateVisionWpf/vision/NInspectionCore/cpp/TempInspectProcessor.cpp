@@ -20,6 +20,7 @@ CTempInspectProcessor::CTempInspectProcessor()
 
 CTempInspectProcessor::~CTempInspectProcessor()
 {
+	Destroy();
 }
 
 BOOL CTempInspectProcessor::Initialize()
@@ -60,6 +61,7 @@ BOOL CTempInspectProcessor::Initialize()
 	}
 	m_pHikCamera = new CTempInspectHikCam(this);
 	m_pHikCamera->Initialize();
+	m_pHikCamera->RegisterReceivedImageCallback(ReceivedImageCallback, this);
 
 	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
@@ -87,11 +89,22 @@ BOOL CTempInspectProcessor::Destroy()
 		m_pHikCamera->Destroy();
 		delete m_pHikCamera, m_pHikCamera = NULL;
 	}
+	if (m_pTempInspSysConfig != NULL)
+		delete m_pTempInspSysConfig, m_pTempInspSysConfig = NULL;
 
 	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		if (m_pTempInspCore[i] != NULL)
 			delete m_pTempInspCore[i], m_pTempInspCore[i] = NULL;
+
+		if(m_pTempInspRecipe[i] != NULL)
+			delete m_pTempInspRecipe[i], m_pTempInspRecipe[i] = NULL;
+
+		if(m_pImageBuffer[i] != NULL)
+			delete m_pImageBuffer[i], m_pImageBuffer[i] = NULL;
+
+		if(m_pTempInspStatus[i] != NULL)
+			delete m_pTempInspStatus[i], m_pTempInspStatus[i] = NULL;
 	}
 
 	return TRUE;
@@ -295,7 +308,7 @@ BOOL CTempInspectProcessor::TrainLocator_TemplateMatching(int nCamIdx, CRectForT
 	if (rectForTrainLoc == NULL)
 		return FALSE;
 
-	return m_pLocToolTrain->NVision_FindLocator_TemplateMatching_Train(nCamIdx, rectForTrainLoc);
+	return m_pLocToolTrain->NVision_FindLocator_TemplateMatching_TRAIN(nCamIdx, rectForTrainLoc);
 }
 
 BOOL CTempInspectProcessor::GetDataTrained_TemplateMatching(CLocatorToolResult* dataTrained)
@@ -312,7 +325,7 @@ BOOL CTempInspectProcessor::CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pPa
 	if (pParamCntPxlTrain == NULL)
 		return FALSE;
 
-	return m_pVsAlgorithm->NVision_CountPixelAlgorithm_Train(pParamCntPxlTrain);
+	return m_pVsAlgorithm->NVision_CountPixelAlgorithm_TRAIN(pParamCntPxlTrain);
 }
 
 BOOL CTempInspectProcessor::CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea)
@@ -322,7 +335,7 @@ BOOL CTempInspectProcessor::CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm*
 	if (pParamTrainCalArea == NULL)
 		return FALSE;
 
-	return m_pVsAlgorithm->NVision_CalculateAreaAlgorithm_Train(pParamTrainCalArea);
+	return m_pVsAlgorithm->NVision_CalculateAreaAlgorithm_TRAIN(pParamTrainCalArea);
 }
 
 BYTE* CTempInspectProcessor::GetResultROIBuffer_Train()
@@ -355,7 +368,15 @@ BOOL CTempInspectProcessor::GetResultCalArea_Train(CAlgorithmsCalculateAreaResul
 	return m_pVsAlgorithm->GetResultCalArea_Train(pCalAreaTrainRes);
 }
 
-BYTE* CTempInspectProcessor::GetImageTemplate()
+BOOL CTempInspectProcessor::GetSumResult(int nCamIdx, CSumResult* pSumRes)
+{
+	if (m_pTempInspCore[nCamIdx] == NULL)
+		return FALSE;
+
+	return m_pTempInspCore[nCamIdx]->GetVsResult()->GetSumResult(pSumRes);
+}
+
+BYTE* CTempInspectProcessor::GetTemplateImage()
 {
 	if (m_pLocToolTrain == NULL)
 		return nullptr;

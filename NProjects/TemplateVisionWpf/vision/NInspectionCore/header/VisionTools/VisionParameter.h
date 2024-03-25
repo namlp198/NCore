@@ -10,6 +10,7 @@ struct CameraInfo
 	CString           m_csName;
 	CString           m_csInterfaceType;
 	CString           m_csSensorType;
+	int               m_nChannels;
 	CString           m_csManufacturer;
 	int               m_nFrameWidth;
 	int               m_nFrameHeight;

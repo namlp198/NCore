@@ -44,8 +44,8 @@ public:
 	BOOL             NVision_CalculateAreaAlgorithm();
 
 	// all func for train data in the step create recipe to camera
-	BOOL             NVision_CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamTrainCntPxl);
-	BOOL             NVision_CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea);
+	BOOL             NVision_CountPixelAlgorithm_TRAIN(CParamCntPxlAlgorithm* pParamTrainCntPxl);
+	BOOL             NVision_CalculateAreaAlgorithm_TRAIN(CParamCalAreaAlgorithm* pParamTrainCalArea);
 
 private:
 

@@ -31,7 +31,7 @@ public:
 
 public:
 	BOOL                    NVision_FindLocator_TemplateMatching(); // this func is in order to when the vision camera runtime
-	BOOL                    NVision_FindLocator_TemplateMatching_Train(int nCamIdx, CRectForTrainLocTool* paramTrainLoc); // this func is in order to train to get data
+	BOOL                    NVision_FindLocator_TemplateMatching_TRAIN(int nCamIdx, CRectForTrainLocTool* paramTrainLoc); // this func is in order to train to get data
 
 private:
 

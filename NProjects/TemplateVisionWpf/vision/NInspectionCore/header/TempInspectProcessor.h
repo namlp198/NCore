@@ -43,15 +43,20 @@ public:
 public:
 	// LocatorTool: train loc tool and after that get: data trained, template image
 	BOOL                   TrainLocator_TemplateMatching(int nCamIdx, CRectForTrainLocTool* rectForTrainLoc); // step 1
-	BYTE*                  GetImageTemplate();                                             // step 2
+	BYTE*                  GetTemplateImage();                                             // step 2
 	BOOL                   GetDataTrained_TemplateMatching(CLocatorToolResult* dataTrained); // step 3
 
 	// SelectROITool
 	BOOL                   CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamCntPxlTrain);
 	BOOL                   CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea);
 	BYTE*                  GetResultROIBuffer_Train();
+	// pass a reference from the client have format is a structure for getting to data Count Pixel after then trained.
 	BOOL                   GetResultCntPxl_Train(CAlgorithmsCountPixelResult* pCntPxlTrainRes);
+	// pass a reference from the client have format is a structure for getting to data Area after then trained.
 	BOOL                   GetResultCalArea_Train(CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
+
+public:
+	BOOL                   GetSumResult(int nCamIdx, CSumResult* pSumRes); // this func will to get to the result when the program runtime
 
 private:
 

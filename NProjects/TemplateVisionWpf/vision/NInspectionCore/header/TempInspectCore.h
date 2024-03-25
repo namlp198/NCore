@@ -56,8 +56,11 @@ public:
 	void ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex);
 
 public:
-	UINT GetCamIndex() { return m_nCamIndex; }
-	void SetCamIndex(UINT nCamIdx) { m_nCamIndex = nCamIdx; }
+	UINT                GetCamIndex() { return m_nCamIndex; }
+	void                SetCamIndex(UINT nCamIdx) { m_nCamIndex = nCamIdx; }
+	LPBYTE              GetResultImageBuffer() { return m_pResultImageBuffer; }
+
+	CVisionResults*     GetVsResult() { return m_pVsResult; }
 
 private:
 	UINT								m_nThreadCount;
@@ -76,5 +79,10 @@ private:
 
 	std::vector<BOOL>					m_vecProcessedFrame;
 
-	CTempInspectRecipe*                 m_pRecipe[MAX_CAMERA_INSP_COUNT];
+	CTempInspectRecipe*                 m_pRecipe;
+
+	// result
+	CVisionResults*                     m_pVsResult;
+
+	LPBYTE                              m_pResultImageBuffer;
 };
