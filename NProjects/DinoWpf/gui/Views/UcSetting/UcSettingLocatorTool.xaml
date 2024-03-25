@@ -131,7 +131,7 @@
                           EnableColumnVirtualization="True"
                           EnableRowVirtualization="True"
                           Height="200">
-                    <!--<DataGrid.Columns>
+                    <DataGrid.Columns>
                         <DataGridTextColumn Header="X"
                                             FontSize="14"/>
                         <DataGridTextColumn Header="Y"
@@ -140,9 +140,9 @@
                                             FontSize="14" />
                         <DataGridTextColumn Header="Height"
                                             FontSize="14" />
-                    </DataGrid.Columns>-->
+                    </DataGrid.Columns>
                 </DataGrid>
-                <Button VerticalContentAlignment="Center"
+                <!--<Button VerticalContentAlignment="Center"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Name="btnTrain"
@@ -164,7 +164,7 @@
                                        TextAlignment="Center" />
                         </StackPanel>
                     </Button.Content>
-                </Button>
+                </Button>-->
             </StackPanel>
         </Grid>
         <Border Grid.Row="1"

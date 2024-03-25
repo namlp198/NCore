@@ -121,10 +121,39 @@ namespace DinoWpf.Views.Uc
 
         private void UcCreateRecipe_UcSelectedROI(object sender, RoutedEventArgs e)
         {
+            switch(_ucSettingROITool.AlgorithmSelected)
+            {
+                case Algorithms.CountPixel:
+                    CParamCntPxlAlgorithm cParamCntPxlAlgorithm = new CParamCntPxlAlgorithm();
+                    cParamCntPxlAlgorithm.m_nROIX = (int)ucCreateRecipe.ROISelected.X;
+                    cParamCntPxlAlgorithm.m_nROIY = (int)ucCreateRecipe.ROISelected.Y;
+                    cParamCntPxlAlgorithm.m_nROIWidth = (int)ucCreateRecipe.ROISelected.Width;
+                    cParamCntPxlAlgorithm.m_nROIHeight = (int)ucCreateRecipe.ROISelected.Height;
+                    cParamCntPxlAlgorithm.m_dROIAngleRotate = ucCreateRecipe.AngleRotate;
+                    cParamCntPxlAlgorithm.m_nThresholdGrayMin = 100;
+                    cParamCntPxlAlgorithm.m_nThresholdGrayMax = 200;
+                    cParamCntPxlAlgorithm.m_nNumberOfPxlMin = 3000;
+                    cParamCntPxlAlgorithm.m_nNumberOfPxlMax = 8000;
+                    InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.CountPixelAlgorithm_Train(ref cParamCntPxlAlgorithm);
+                    break;
+                case Algorithms.CalculateArea:
+                    break;
+            }
         }
 
         private void UcCreateRecipe_UcTrainLocator(object sender, RoutedEventArgs e)
         {
+            RectForTrainLocTool rectForTrainLocTool = new RectForTrainLocTool();
+            rectForTrainLocTool.m_nRectIn_X = (int)ucCreateRecipe.RectInSide.X;
+            rectForTrainLocTool.m_nRectIn_Y = (int)ucCreateRecipe.RectInSide.Y;
+            rectForTrainLocTool.m_nRectIn_Width = (int)ucCreateRecipe.RectInSide.Width;
+            rectForTrainLocTool.m_nRectIn_Height = (int)ucCreateRecipe.RectInSide.Height;
+            rectForTrainLocTool.m_nRectOut_X = (int)ucCreateRecipe.RectOutSide.X;
+            rectForTrainLocTool.m_nRectOut_Y = (int)ucCreateRecipe.RectOutSide.Y;
+            rectForTrainLocTool.m_nRectOut_Width = (int)ucCreateRecipe.RectOutSide.Width;
+            rectForTrainLocTool.m_nRectOut_Height = (int)ucCreateRecipe.RectOutSide.Height;
+
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.TrainLocator_TemplateMatching(ucCreateRecipe.CameraIndex, ref rectForTrainLocTool);
         }
 
         private void UcCreateRecipe_SettingLocator(object sender, RoutedEventArgs e)

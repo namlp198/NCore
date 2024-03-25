@@ -44,6 +44,13 @@ namespace DinoWpf.Views.UcSetting
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(UcSettingLocatorTool));
+
+        public static readonly RoutedEvent TrainLocatorToolEvent = EventManager.RegisterRoutedEvent(
+            "TrainLocatorTool",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(UcSettingLocatorTool));
+
         public event RoutedEventHandler SaveParamLocatorTool
         {
             add
@@ -53,6 +60,18 @@ namespace DinoWpf.Views.UcSetting
             remove
             {
                 base.RemoveHandler(SaveParamLocatorToolEvent, value);
+            }
+        }
+
+        public event RoutedEventHandler TrainLocatorTool
+        {
+            add
+            {
+                base.AddHandler(TrainLocatorToolEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(TrainLocatorToolEvent, value);
             }
         }
 
@@ -161,7 +180,7 @@ namespace DinoWpf.Views.UcSetting
 
         private void btnTrain_Click(object sender, RoutedEventArgs e)
         {
-            
+            RaiseEvent(new RoutedEventArgs(TrainLocatorToolEvent, this));
         }
     }
 }
