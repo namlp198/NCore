@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Job id="0" name="job0" numberOfCamera="2">
-	<Camera id="0" name="cam0" interfaceType="usb3" sensorType="color" manufacturer="HikRobot" frameWidth="2448" frameHeight="2048" serialNumber="DA0069518">
-		<Recipe id="0" name="rcp_cam0" cameraIdParent="0">
-			<LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0">
-				<RectangleInSide x="0" y="0" width="0" height="0" />
-				<RectangleOutSide x="0" y="0" width="0" height="0" />
-				<DataTrain x="0" y="0"/>
-			</LocatorTool>
-			<SelectROITool id="ROI0" name="count_pixel" type="rectangle" algorithm="CountPixel" rotations="True" priority="2">
-				<Parameters>
-					<ROI x="11" y="22" width="33" height="44" angleRotate="90.0"/>
-					<ThresholdGray min="100" max="255" />
-					<NumberOfPixel min="1000" max="5000" />
-				</Parameters>
-			</SelectROITool>
-			<SelectROITool id="ROI1" name="calculate_area" type="rectangle" algorithm="CalculateArea" rotations="True" priority="3">
-				<Parameters>
-					<ROI x="0" y="0" width="0" height="0" angleRotate="25.0"/>
-					<Threshold value="80" />
-					<Area min="500" max="1500" />
-				</Parameters>
-			</SelectROITool>
-		</Recipe>
-	</Camera>
-	<Camera id="1" name="cam1" interfaceType="usb3" sensorType="color" manufacturer="HikRobot" frameWidth="2448" frameHeight="2048" serialNumber="DA0069522">
-		<Recipe id="0" name="rcp_cam1" cameraIdParent="1">
-			<LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0">
-				<RectangleInSide x="0" y="0" width="0" height="0" />
-				<RectangleOutSide x="0" y="0" width="0" height="0" />
-				<DataTrain x="0" y="0" />
-			</LocatorTool>
-			<SelectROITool id="ROI0" name="calculate_area" type="rectangle" algorithm="CalculateArea" rotations="True" priority="2">
-				<Parameters>
-					<ROI x="0" y="0" width="0" height="0" angleRotate="0.0"/>
-					<Threshold value="0" />
-					<Area min="0" max="0" />
-				</Parameters>
-			</SelectROITool>
-		</Recipe>
-	</Camera>
+  <Camera id="0" name="cam0" interfaceType="usb3" sensorType="color" channels="3" manufacturer="HikRobot" frameWidth="2448" frameHeight="2048" serialNumber="DA0069518">
+    <Recipe id="0" name="rcp_cam0" cameraIdParent="0">
+      <LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0">
+        <RectangleInSide x="0" y="0" width="0" height="0" />
+        <RectangleOutSide x="0" y="0" width="0" height="0" />
+        <DataTrain x="0" y="0" />
+      </LocatorTool>
+      <SelectROITool id="ROI0" name="count_pixel" type="rectangle" algorithm="CountPixel" rotations="True" priority="2">
+        <Parameters>
+          <ROI x="11" y="22" width="33" height="44" angleRotate="90.0" />
+          <ThresholdGray min="100" max="255" />
+          <NumberOfPixel min="1000" max="5000" />
+        </Parameters>
+      </SelectROITool>
+      <SelectROITool id="ROI1" name="calculate_area" type="rectangle" algorithm="CalculateArea" rotations="True" priority="3">
+        <Parameters>
+          <ROI x="0" y="0" width="0" height="0" angleRotate="25.0" />
+          <Threshold value="80" />
+          <Area min="500" max="1500" />
+        </Parameters>
+      </SelectROITool>
+    </Recipe>
+  </Camera>
+  <Camera id="1" name="cam1" interfaceType="usb3" sensorType="color" channels="3" manufacturer="HikRobot" frameWidth="2448" frameHeight="2048" serialNumber="DA0069522">
+    <Recipe id="0" name="rcp_cam1" cameraIdParent="1">
+      <LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0">
+        <RectangleInSide x="0" y="0" width="0" height="0" />
+        <RectangleOutSide x="0" y="0" width="0" height="0" />
+        <DataTrain x="0" y="0" />
+      </LocatorTool>
+      <SelectROITool id="ROI0" name="calculate_area" type="rectangle" algorithm="CalculateArea" rotations="True" priority="2">
+        <Parameters>
+          <ROI x="0" y="0" width="0" height="0" angleRotate="0.0" />
+          <Threshold value="0" />
+          <Area min="0" max="0" />
+        </Parameters>
+      </SelectROITool>
+    </Recipe>
+  </Camera>
 </Job>
