@@ -122,10 +122,11 @@ BOOL CLocatorTool::NVision_FindLocator_TemplateMatching()
 BOOL CLocatorTool::NVision_FindLocator_TemplateMatching_TRAIN(int nCamIdx, CRectForTrainLocTool* paramTrainLoc)
 {
 	CString csData;
-	csData.Format(_T("rectInside_X:%d, rectInside_Y:%d, rectInsie_Width:%d, rectInsie_Height:%d", 
-		paramTrainLoc->m_nRectIn_X, paramTrainLoc->m_nRectIn_Y, paramTrainLoc->m_nRectIn_Width, paramTrainLoc->m_nRectIn_Height));
-
+	csData.Format(_T("rectInside_X:%d, rectInside_Y:%d, rectInsie_Width:%d, rectInsie_Height:%d"),
+		paramTrainLoc->m_nRectIn_X, paramTrainLoc->m_nRectIn_Y, paramTrainLoc->m_nRectIn_Width, paramTrainLoc->m_nRectIn_Height);
 	AfxMessageBox(csData);
+
+
 
 	return TRUE;
 }

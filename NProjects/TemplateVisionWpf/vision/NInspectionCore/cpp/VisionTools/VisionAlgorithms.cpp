@@ -113,8 +113,8 @@ BOOL CVisionAlgorithms::NVision_CalculateAreaAlgorithm()
 BOOL CVisionAlgorithms::NVision_CountPixelAlgorithm_TRAIN(CParamCntPxlAlgorithm* pParamTrainCntPxl)
 {
 	CString csData;
-	csData.Format(_T("ROI_X:%d, ROI_Y:%d, ROI_Width:%d, ROI_Height:%d, ROI_Angle:%d",
-		pParamTrainCntPxl->m_nROIX, pParamTrainCntPxl->m_nROIY, pParamTrainCntPxl->m_nROIWidth, pParamTrainCntPxl->m_nROIHeight, pParamTrainCntPxl->m_dROIAngleRotate));
+	csData.Format(_T("ROI_X:%d, ROI_Y:%d, ROI_Width:%d, ROI_Height:%d, ROI_Angle:%.3f"),
+		pParamTrainCntPxl->m_nROIX, pParamTrainCntPxl->m_nROIY, pParamTrainCntPxl->m_nROIWidth, pParamTrainCntPxl->m_nROIHeight, pParamTrainCntPxl->m_dROIAngleRotate);
 
 	AfxMessageBox(csData);
 
@@ -124,8 +124,8 @@ BOOL CVisionAlgorithms::NVision_CountPixelAlgorithm_TRAIN(CParamCntPxlAlgorithm*
 BOOL CVisionAlgorithms::NVision_CalculateAreaAlgorithm_TRAIN(CParamCalAreaAlgorithm* pParamTrainCalArea)
 {
 	CString csData;
-	csData.Format(_T("ROI_X:%d, ROI_Y:%d, ROI_Width:%d, ROI_Height:%d, ROI_Angle:%d",
-		pParamTrainCalArea->m_nROIX, pParamTrainCalArea->m_nROIY, pParamTrainCalArea->m_nROIWidth, pParamTrainCalArea->m_nROIHeight, pParamTrainCalArea->m_dROIAngleRotate));
+	csData.Format(_T("ROI_X:%d, ROI_Y:%d, ROI_Width:%d, ROI_Height:%d, ROI_Angle:%.3f"),
+		pParamTrainCalArea->m_nROIX, pParamTrainCalArea->m_nROIY, pParamTrainCalArea->m_nROIWidth, pParamTrainCalArea->m_nROIHeight, pParamTrainCalArea->m_dROIAngleRotate);
 
 	AfxMessageBox(csData);
 
