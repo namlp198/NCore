@@ -25,7 +25,7 @@ using System.Windows.Shapes;
 
 namespace NCore.Wpf.NUcBufferViewer
 {
-    public enum ModeGrab
+    public enum GrabMode
     {
         [Description("None")]
         None = -1,
@@ -61,7 +61,7 @@ namespace NCore.Wpf.NUcBufferViewer
         private List<string> _cameraLst = new List<string>();
 
         private List<string> _modeGrabStr = new List<string>();
-        private ModeGrab _modeGrabSelected = ModeGrab.None;
+        private GrabMode _modeGrabSelected = GrabMode.None;
         private ETriggerMode _eTriggerMode;
         private ETriggerSource _eTriggerSource;
         private int _modeGrabSelectedIdx = -1;
@@ -232,8 +232,8 @@ namespace NCore.Wpf.NUcBufferViewer
         private List<string> GetEnumDescriptionToListString()
         {
             List<string> modeTestString = new List<string>();
-            List<ModeGrab> modeTests = Enum.GetValues(typeof(ModeGrab))
-                                           .Cast<ModeGrab>()
+            List<GrabMode> modeTests = Enum.GetValues(typeof(GrabMode))
+                                           .Cast<GrabMode>()
                                            .ToList();
 
             foreach (var item in modeTests)
@@ -387,7 +387,7 @@ namespace NCore.Wpf.NUcBufferViewer
                 {
                     if(_isFakeCamera == true)
                     {
-                        ModeGrabSelected = ModeGrab.None; // when using Fake Camera mode then Grab Mode also reset become None Mode
+                        ModeGrabSelected = GrabMode.None; // when using Fake Camera mode then Grab Mode also reset become None Mode
                         ModeGrabSelectedIndex = 2; // combobox also select index have item is None
 
                         DOpacity1 = 0.2d;
@@ -435,7 +435,7 @@ namespace NCore.Wpf.NUcBufferViewer
                 }
             }
         }
-        public ModeGrab ModeGrabSelected
+        public GrabMode ModeGrabSelected
         {
             get => _modeGrabSelected;
             set
@@ -444,18 +444,18 @@ namespace NCore.Wpf.NUcBufferViewer
                 {
                     switch (_modeGrabSelected)
                     {
-                        case ModeGrab.SingleGrab:
+                        case GrabMode.SingleGrab:
                             TriggerMode = ETriggerMode.TriggerMode_External; // Trigger Mode ON
                             TriggerSoure = ETriggerSource.TriggerSource_Software; // Trigger Source = SOFTWARE TRIGGER
                             break;
-                        case ModeGrab.ContinuousGrab:
+                        case GrabMode.ContinuousGrab:
                             TriggerMode = ETriggerMode.TriggerMode_Internal; // Trigger Mode OFF
                             TriggerSoure = ETriggerSource.TriggerSource_Hardware; // Trigger Source = HARDWARE TRIGGER
 
-                            imageExt.ModeGrab = NpcCore.Wpf.Controls.ModeGrab.ModeGrab_ContinuousGrab;
+                            imageExt.GrabMode = NpcCore.Wpf.Controls.GrabMode.GrabMode_ContinuousGrab;
 
                             break;
-                        case ModeGrab.None:
+                        case GrabMode.None:
                             TriggerMode = ETriggerMode.TriggerMode_None;
                             TriggerSoure = ETriggerSource.TriggerSource_None;
                             break;
@@ -496,13 +496,13 @@ namespace NCore.Wpf.NUcBufferViewer
                     switch(_modeGrabSelectedIdx)
                     {
                         case 0:
-                            ModeGrabSelected = ModeGrab.SingleGrab;
+                            ModeGrabSelected = GrabMode.SingleGrab;
                             break;
                         case 1:
-                            ModeGrabSelected = ModeGrab.ContinuousGrab;
+                            ModeGrabSelected = GrabMode.ContinuousGrab;
                             break;
                         default:
-                            ModeGrabSelected = ModeGrab.None;
+                            ModeGrabSelected = GrabMode.None;
                             break;
                     }
                 }
