@@ -132,8 +132,11 @@ namespace NCore.Wpf.NUcBufferViewer
         private void ImageExt_TrainLocator(object sender, RoutedEventArgs e)
         {
             ImageExt imageExt = (ImageExt)sender;
-            RectOutSide = imageExt.Rect;
-            RectInSide = imageExt.RectInside;
+            RectOutSide = imageExt.RectReal;
+
+            Rect rectInside = new Rect(imageExt.RectInside.Left + imageExt.OffsetRect.X, imageExt.RectInside.Top + imageExt.OffsetRect.Y,
+                                       imageExt.RectInside.Width, imageExt.RectInside.Height);
+            RectInSide = rectInside;
 
             RaiseEvent(new RoutedEventArgs(UcTrainLocatorEvent, this));
         }
@@ -141,7 +144,7 @@ namespace NCore.Wpf.NUcBufferViewer
         private void ImageExt_SelectedROI(object sender, RoutedEventArgs e)
         {
             ImageExt imageExt = (ImageExt)sender;
-            ROISelected = imageExt.Rect;
+            ROISelected = imageExt.RectReal;
             AngleRotate = imageExt.RectRotation;
 
             RaiseEvent(new RoutedEventArgs(UcSelectedROIEvent, this));
