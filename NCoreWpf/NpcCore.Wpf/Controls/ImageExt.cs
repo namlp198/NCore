@@ -211,8 +211,9 @@ namespace NpcCore.Wpf.Controls
         private Point _offsetXYInside;
         private Single _rectRotation;
 
-        private ModeTool _modeTool = ModeTool.Default;
-        private ModeGrab _modeGrab = ModeGrab.ModeGrab_SingleGrab;
+        private ToolMode _toolMode = ToolMode.ToolMode_Default;
+        private GrabMode _grabMode = GrabMode.GrabMode_SingleGrab;
+        private ViewMode _viewMode = ViewMode.ViewMode_CreateRecipe;
 
         private double _comWidth = 20;
         private double _comOffset = 10;
@@ -1436,7 +1437,7 @@ namespace NpcCore.Wpf.Controls
                     _enableRotate = false;
                     _drag = false;
 
-                    ModeTool = ModeTool.LocatorTool;
+                    ToolMode = ToolMode.ToolMode_LocatorTool;
 
                     this.InvalidateVisual();
                 }
@@ -1455,7 +1456,7 @@ namespace NpcCore.Wpf.Controls
                     _enableRotate = true;
                     _drag = true;
 
-                    ModeTool = ModeTool.SelectRoiTool;
+                    ToolMode = ToolMode.ToolMode_SelectRoiTool;
 
                     this.InvalidateVisual();
                 }
@@ -1571,31 +1572,43 @@ namespace NpcCore.Wpf.Controls
             set => _rectRotation = value;
         }
 
-        public ModeTool ModeTool
+        public ToolMode ToolMode
         {
-            get => _modeTool;
+            get => _toolMode;
             set
             {
-                if(SetProperty(ref _modeTool, value))
+                if(SetProperty(ref _toolMode, value))
                 {
                     // change mode tool
                 }
             }
         }
 
-        public ModeGrab ModeGrab
+        public GrabMode GrabMode
         {
-            get => _modeGrab;
+            get => _grabMode;
             set
             {
-                if (SetProperty(ref _modeGrab, value))
+                if (SetProperty(ref _grabMode, value))
                 {
                     // change mode grab
-                    if(_modeGrab == ModeGrab.ModeGrab_ContinuousGrab)
+                    if(_grabMode == GrabMode.GrabMode_ContinuousGrab)
                     {
                         EnableSelectRoiTool = false;
                         EnableLocatorTool = false;
                     }
+                }
+            }
+        }
+
+        public ViewMode ViewMode
+        {
+            get => _viewMode;
+            set
+            {
+                if(SetProperty(ref _viewMode, value))
+                {
+
                 }
             }
         }
@@ -1775,13 +1788,20 @@ namespace NpcCore.Wpf.Controls
         {
             base.OnRender(dc);
 
-            if (_enableSelectRoiTool && !_completedSelectRoi)
+            if (_viewMode == ViewMode.ViewMode_CreateRecipe)
             {
-                RenderSelectRoiTool(dc);
+                if (_enableSelectRoiTool && !_completedSelectRoi)
+                {
+                    RenderSelectRoiTool(dc);
+                }
+                else if (_enableLocatorTool && !_completedSelectRoi)
+                {
+                    RenderLocatorTool(dc);
+                }
             }
-            else if (_enableLocatorTool && !_completedSelectRoi)
+            else
             {
-                RenderLocatorTool(dc);
+
             }
         }
     }
@@ -1835,15 +1855,20 @@ namespace NpcCore.Wpf.Controls
         RotationChild,
         CenterChild
     }
-    public enum ModeTool
+    public enum ToolMode
     {
-        Default,
-        SelectRoiTool,
-        LocatorTool
+        ToolMode_Default,
+        ToolMode_SelectRoiTool,
+        ToolMode_LocatorTool
     }
-    public enum ModeGrab
+    public enum GrabMode
     {
-        ModeGrab_SingleGrab,
-        ModeGrab_ContinuousGrab,
+        GrabMode_SingleGrab,
+        GrabMode_ContinuousGrab,
+    }
+    public enum ViewMode
+    {
+        ViewMode_CreateRecipe,
+        ViewMode_ViewResult
     }
 }
