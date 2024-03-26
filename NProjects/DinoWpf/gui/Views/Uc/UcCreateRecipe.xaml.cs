@@ -121,7 +121,7 @@ namespace DinoWpf.Views.Uc
 
         private void UcCreateRecipe_UcSelectedROI(object sender, RoutedEventArgs e)
         {
-            switch(_ucSettingROITool.AlgorithmSelected)
+            switch (_ucSettingROITool.AlgorithmSelected)
             {
                 case Algorithms.CountPixel:
                     CParamCntPxlAlgorithm cParamCntPxlAlgorithm = new CParamCntPxlAlgorithm();
@@ -134,7 +134,7 @@ namespace DinoWpf.Views.Uc
                     cParamCntPxlAlgorithm.m_nThresholdGrayMax = 200;
                     cParamCntPxlAlgorithm.m_nNumberOfPxlMin = 3000;
                     cParamCntPxlAlgorithm.m_nNumberOfPxlMax = 8000;
-                    InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.CountPixelAlgorithm_Train(ref cParamCntPxlAlgorithm);
+                    InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.CountPixelAlgorithm_Train(ucCreateRecipe.CameraIndex, ref cParamCntPxlAlgorithm);
                     break;
                 case Algorithms.CalculateArea:
                     break;
@@ -152,8 +152,12 @@ namespace DinoWpf.Views.Uc
             rectForTrainLocTool.m_nRectOut_Y = (int)ucCreateRecipe.RectOutSide.Y;
             rectForTrainLocTool.m_nRectOut_Width = (int)ucCreateRecipe.RectOutSide.Width;
             rectForTrainLocTool.m_nRectOut_Height = (int)ucCreateRecipe.RectOutSide.Height;
+            rectForTrainLocTool.m_dMatchingRateLimit = 0.8;
 
-            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.TrainLocator_TemplateMatching(ucCreateRecipe.CameraIndex, ref rectForTrainLocTool);
+            if (InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.TrainLocator_TemplateMatching(ucCreateRecipe.CameraIndex, ref rectForTrainLocTool))
+            {
+                _cameraStreamingController.GetResultImage();
+            }
         }
 
         private void UcCreateRecipe_SettingLocator(object sender, RoutedEventArgs e)

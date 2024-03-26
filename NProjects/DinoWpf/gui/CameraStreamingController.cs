@@ -41,6 +41,14 @@ namespace DinoWpf
                 await m_NUcBufferViewer.UpdateImage();
             });
         }
+        public void GetResultImage()
+        {
+            Task.Factory.StartNew(async() =>
+            {
+                m_NUcBufferViewer.BufferView = InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.GetResultImageBuffer(_camIdx);
+                await m_NUcBufferViewer.UpdateImage();
+            });
+        }
         public async Task ContinuousGrab(CameraType cameraType)
         {
             // Never run two parallel tasks for the webcam streaming

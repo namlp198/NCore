@@ -22,6 +22,7 @@ namespace DinoWpf
     {
         public int m_nX;
         public int m_nY;
+        public double m_dMatchingRate;
         public int m_nDelta_x;
         public int m_nDelta_y;
         public double m_dDif_Angle;
@@ -54,6 +55,7 @@ namespace DinoWpf
         public int m_nRectOut_Y;
         public int m_nRectOut_Width;
         public int m_nRectOut_Height;
+        public double m_dMatchingRateLimit;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -201,12 +203,12 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool CountPixelAlgorithm_Train(IntPtr tempInspProcessor, IntPtr pParamCntPxlTrain);
-        public bool CountPixelAlgorithm_Train(ref CParamCntPxlAlgorithm pParamCntPxlTrain)
+        extern private static bool CountPixelAlgorithm_Train(IntPtr tempInspProcessor, int nCamIdx, IntPtr pParamCntPxlTrain);
+        public bool CountPixelAlgorithm_Train(int nCamIdx, ref CParamCntPxlAlgorithm pParamCntPxlTrain)
         {
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pParamCntPxlTrain));
             Marshal.StructureToPtr(pParamCntPxlTrain, pPointer, false);
-            bool bRetValue = CountPixelAlgorithm_Train(m_pTempInspectProcessor, pPointer);
+            bool bRetValue = CountPixelAlgorithm_Train(m_pTempInspectProcessor, nCamIdx, pPointer);
             return bRetValue;
         }
 
@@ -216,12 +218,12 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool CalculateAreaAlgorithm_Train(IntPtr tempInspProcessor, IntPtr pParamTrainCalArea);
-        public bool CalculateAreaAlgorithm_Train(ref CParamCalAreaAlgorithm pParamTrainCalArea)
+        extern private static bool CalculateAreaAlgorithm_Train(IntPtr tempInspProcessor, int nCamIdx, IntPtr pParamTrainCalArea);
+        public bool CalculateAreaAlgorithm_Train(int nCamIdx, ref CParamCalAreaAlgorithm pParamTrainCalArea)
         {
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pParamTrainCalArea));
             Marshal.StructureToPtr(pParamTrainCalArea, pPointer, false);
-            bool bRetValue = CalculateAreaAlgorithm_Train(m_pTempInspectProcessor, pPointer);
+            bool bRetValue = CalculateAreaAlgorithm_Train(m_pTempInspectProcessor, nCamIdx, pPointer);
             return bRetValue;
         }
         #endregion
@@ -232,10 +234,10 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static IntPtr GetTemplateImage(IntPtr tempInspProcessor);
-        public IntPtr GetTemplateImage()
+        extern private static IntPtr GetTemplateImage(IntPtr tempInspProcessor, int nCamIdx);
+        public IntPtr GetTemplateImage(int nCamIdx)
         {
-            return GetTemplateImage(m_pTempInspectProcessor);
+            return GetTemplateImage(m_pTempInspectProcessor, nCamIdx);
         }
 
 
@@ -244,10 +246,23 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static IntPtr GetResultROIBuffer_Train(IntPtr tempInspProcessor);
-        public IntPtr GetResultROIBuffer_Train()
+        extern private static IntPtr GetResultImageBuffer(IntPtr tempInspProcessor, int nCamIdx);
+        public IntPtr GetResultImageBuffer(int nCamIdx)
         {
-            return GetResultROIBuffer_Train(m_pTempInspectProcessor);
+            return GetResultImageBuffer(m_pTempInspectProcessor, nCamIdx);
+        }
+
+
+
+#if DEBUG
+        [DllImport("NTempInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetResultROIBuffer_Train(IntPtr tempInspProcessor, int nCamIdx);
+        public IntPtr GetResultROIBuffer_Train(int nCamIdx)
+        {
+            return GetResultROIBuffer_Train(m_pTempInspectProcessor, nCamIdx);
         }
         #endregion
 
@@ -258,13 +273,13 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool GetDataTrained_TemplateMatching(IntPtr tempInspProcessor, IntPtr dataTrained);
-        public bool GetDataTrained_TemplateMatching(ref CLocatorToolResult locatorToolResult)
+        extern private static bool GetDataTrained_TemplateMatching(IntPtr tempInspProcessor, int nCamIdx, IntPtr dataTrained);
+        public bool GetDataTrained_TemplateMatching(int nCamIdx, ref CLocatorToolResult locatorToolResult)
         {
             CLocatorToolResult dataTrained = new CLocatorToolResult();
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
             Marshal.StructureToPtr(dataTrained, pPointer, false);
-            bool bRetValue = GetDataTrained_TemplateMatching(m_pTempInspectProcessor, pPointer);
+            bool bRetValue = GetDataTrained_TemplateMatching(m_pTempInspectProcessor, nCamIdx, pPointer);
             locatorToolResult = (CLocatorToolResult)Marshal.PtrToStructure(pPointer, typeof(CLocatorToolResult));
             return bRetValue;
         }
@@ -275,13 +290,13 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool GetResultCntPxl_Train(IntPtr tempInspProcessor, IntPtr dataTrained);
-        public bool GetResultCntPxl_Train(ref CAlgorithmsCountPixelResult cntPxlRes)
+        extern private static bool GetResultCntPxl_Train(IntPtr tempInspProcessor, int nCamIdx, IntPtr dataTrained);
+        public bool GetResultCntPxl_Train(int nCamIdx, ref CAlgorithmsCountPixelResult cntPxlRes)
         {
             CAlgorithmsCountPixelResult dataTrained = new CAlgorithmsCountPixelResult();
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
             Marshal.StructureToPtr(dataTrained, pPointer, false);
-            bool bRetValue = GetResultCntPxl_Train(m_pTempInspectProcessor, pPointer);
+            bool bRetValue = GetResultCntPxl_Train(m_pTempInspectProcessor, nCamIdx, pPointer);
             cntPxlRes = (CAlgorithmsCountPixelResult)Marshal.PtrToStructure(pPointer, typeof(CAlgorithmsCountPixelResult));
             return bRetValue;
         }
@@ -291,13 +306,13 @@ namespace DinoWpf
 #else
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool GetResultCalArea_Train(IntPtr tempInspProcessor, IntPtr dataTrained);
-        public bool GetResultCalArea_Train(ref CAlgorithmsCalculateAreaResult cntCalArea)
+        extern private static bool GetResultCalArea_Train(IntPtr tempInspProcessor, int nCamIdx, IntPtr dataTrained);
+        public bool GetResultCalArea_Train(int nCamIdx, ref CAlgorithmsCalculateAreaResult cntCalArea)
         {
             CAlgorithmsCalculateAreaResult dataTrained = new CAlgorithmsCalculateAreaResult();
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
             Marshal.StructureToPtr(dataTrained, pPointer, false);
-            bool bRetValue = GetResultCalArea_Train(m_pTempInspectProcessor, pPointer);
+            bool bRetValue = GetResultCalArea_Train(m_pTempInspectProcessor, nCamIdx, pPointer);
             cntCalArea = (CAlgorithmsCalculateAreaResult)Marshal.PtrToStructure(pPointer, typeof(CAlgorithmsCalculateAreaResult));
             return bRetValue;
         }
