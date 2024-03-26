@@ -49,6 +49,7 @@ struct CRectForTrainLocTool
 	int m_nRectOut_Y;
 	int m_nRectOut_Width;
 	int m_nRectOut_Height;
+	double m_dMatchingRateLimit;
 };
 
 struct CParamCntPxlAlgorithm

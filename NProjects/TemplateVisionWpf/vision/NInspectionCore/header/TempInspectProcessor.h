@@ -37,23 +37,24 @@ public:
 
 public:
 	CTempInspectHikCam*    GetHikCamControl() { return m_pHikCamera; }
-	CLocatorTool*          GetLocToolControl() { return m_pLocToolTrain; }
-	CVisionAlgorithms*     GetVsAlgorithmControl() { return m_pVsAlgorithm; }
+	CLocatorTool*          GetLocToolControl(int nCamIdx) { return m_pLocToolTrain[nCamIdx]; }
+	CVisionAlgorithms*     GetVsAlgorithmControl(int nCamIdx) { return m_pVsAlgorithm[nCamIdx]; }
 
 public:
 	// LocatorTool: train loc tool and after that get: data trained, template image
 	BOOL                   TrainLocator_TemplateMatching(int nCamIdx, CRectForTrainLocTool* rectForTrainLoc); // step 1
-	BYTE*                  GetTemplateImage();                                             // step 2
-	BOOL                   GetDataTrained_TemplateMatching(CLocatorToolResult* dataTrained); // step 3
+	BYTE*                  GetTemplateImage(int nCamIdx);  
+	BYTE*                  GetResultImageBuffer(int nCamIdx);// step 2
+	BOOL                   GetDataTrained_TemplateMatching(int nCamIdx, CLocatorToolResult* dataTrained); // step 3
 
 	// SelectROITool
-	BOOL                   CountPixelAlgorithm_Train(CParamCntPxlAlgorithm* pParamCntPxlTrain);
-	BOOL                   CalculateAreaAlgorithm_Train(CParamCalAreaAlgorithm* pParamTrainCalArea);
-	BYTE*                  GetResultROIBuffer_Train();
+	BOOL                   CountPixelAlgorithm_Train(int nCamIdx, CParamCntPxlAlgorithm* pParamCntPxlTrain);
+	BOOL                   CalculateAreaAlgorithm_Train(int nCamIdx, CParamCalAreaAlgorithm* pParamTrainCalArea);
+	BYTE*                  GetResultROIBuffer_Train(int nCamIdx);
 	// pass a reference from the client have format is a structure for getting to data Count Pixel after then trained.
-	BOOL                   GetResultCntPxl_Train(CAlgorithmsCountPixelResult* pCntPxlTrainRes);
+	BOOL                   GetResultCntPxl_Train(int nCamIdx, CAlgorithmsCountPixelResult* pCntPxlTrainRes);
 	// pass a reference from the client have format is a structure for getting to data Area after then trained.
-	BOOL                   GetResultCalArea_Train(CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
+	BOOL                   GetResultCalArea_Train(int nCamIdx, CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
 
 public:
 	BOOL                   GetSumResult(int nCamIdx, CSumResult* pSumRes); // this func will to get to the result when the program runtime
@@ -83,7 +84,7 @@ private:
 	CSharedMemoryBuffer*                m_pImageBuffer[MAX_CAMERA_INSP_COUNT];
 
 	// Locator tool - this is object for train locator tool
-	CLocatorTool*                       m_pLocToolTrain;
+	CLocatorTool*                       m_pLocToolTrain[MAX_CAMERA_INSP_COUNT];
 	// Vision Algorithm
-	CVisionAlgorithms*                  m_pVsAlgorithm;
+	CVisionAlgorithms*                  m_pVsAlgorithm[MAX_CAMERA_INSP_COUNT];
 };

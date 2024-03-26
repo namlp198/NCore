@@ -26,12 +26,14 @@ public:
 	BOOL                   SetImageBuffer(LPBYTE pBuff);
 public:
 	BOOL                   Run();
-	BOOL                   Initialize(CameraInfo pCamInfo);
+	BOOL                   Initialize(CameraInfo* pCamInfo);
 	BOOL                   SaveImageTemplate(cv::Mat* pSaveImage, CString strFileTitle);
+	void                   DrawAxis(cv::Mat& img, cv::Point p, cv::Point q, cv::Scalar colour,const float scale = 0.2);
+	void                   DrawCenterPt(cv::Mat& img, cv::Point p, cv::Scalar colour);
 
 public:
 	BOOL                    NVision_FindLocator_TemplateMatching(); // this func is in order to when the vision camera runtime
-	BOOL                    NVision_FindLocator_TemplateMatching_TRAIN(int nCamIdx, CRectForTrainLocTool* paramTrainLoc); // this func is in order to train to get data
+	BOOL                    NVision_FindLocator_TemplateMatching_TRAIN(int nCamIdx, BYTE* pBuff, CameraInfo* camInfo, CString templatePath, CRectForTrainLocTool* paramTrainLoc); // this func is in order to train to get data
 
 private:
 
@@ -44,6 +46,6 @@ private:
 
 	CSharedMemoryBuffer*            m_pImageBuffer;
 
-	cv::Mat                         m_resultImageBuffer;
-	cv::Mat                         m_imageTemplate;
+	cv::Mat                         m_matResultImage;
+	cv::Mat                         m_matImageTemplate;
 };

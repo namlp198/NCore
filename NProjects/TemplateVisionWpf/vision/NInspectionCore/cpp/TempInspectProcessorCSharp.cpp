@@ -137,68 +137,76 @@ bool TrainLocator_TemplateMatching(CTempInspectProcessor* pProcessor, int nCamId
 	else               return true;
 }
 
-BYTE* GetTemplateImage(CTempInspectProcessor* pProcessor)
+BYTE* GetTemplateImage(CTempInspectProcessor* pProcessor, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetTemplateImage();
+	return pProcessor->GetTemplateImage(nCamIdx);
 }
 
-bool GetDataTrained_TemplateMatching(CTempInspectProcessor* pProcessor, CLocatorToolResult* dataTrained)
+bool GetDataTrained_TemplateMatching(CTempInspectProcessor* pProcessor, int nCamIdx, CLocatorToolResult* dataTrained)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->GetDataTrained_TemplateMatching(dataTrained);
+	BOOL bRet = pProcessor->GetDataTrained_TemplateMatching(nCamIdx, dataTrained);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
 
-bool CountPixelAlgorithm_Train(CTempInspectProcessor* pProcessor, CParamCntPxlAlgorithm* pParamCntPxlTrain)
+bool CountPixelAlgorithm_Train(CTempInspectProcessor* pProcessor, int nCamIdx, CParamCntPxlAlgorithm* pParamCntPxlTrain)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->CountPixelAlgorithm_Train(pParamCntPxlTrain);
+	BOOL bRet = pProcessor->CountPixelAlgorithm_Train(nCamIdx, pParamCntPxlTrain);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
 
-bool CalculateAreaAlgorithm_Train(CTempInspectProcessor* pProcessor, CParamCalAreaAlgorithm* pParamTrainCalArea)
+bool CalculateAreaAlgorithm_Train(CTempInspectProcessor* pProcessor, int nCamIdx, CParamCalAreaAlgorithm* pParamTrainCalArea)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->CalculateAreaAlgorithm_Train(pParamTrainCalArea);
+	BOOL bRet = pProcessor->CalculateAreaAlgorithm_Train(nCamIdx, pParamTrainCalArea);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
 
-BYTE* GetResultROIBuffer_Train(CTempInspectProcessor* pProcessor)
+BYTE* GetResultROIBuffer_Train(CTempInspectProcessor* pProcessor, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetResultROIBuffer_Train();
+	return pProcessor->GetResultROIBuffer_Train(nCamIdx);
 }
 
-bool GetResultCntPxl_Train(CTempInspectProcessor* pProcessor, CAlgorithmsCountPixelResult* pCntPxlTrainRes)
+BYTE* GetResultImageBuffer(CTempInspectProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetResultImageBuffer(nCamIdx);
+}
+
+bool GetResultCntPxl_Train(CTempInspectProcessor* pProcessor, int nCamIdx, CAlgorithmsCountPixelResult* pCntPxlTrainRes)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->GetResultCntPxl_Train(pCntPxlTrainRes);
+	BOOL bRet = pProcessor->GetResultCntPxl_Train(nCamIdx, pCntPxlTrainRes);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
 
-bool GetResultCalArea_Train(CTempInspectProcessor* pProcessor, CAlgorithmsCalculateAreaResult* pCalAreaTrainRes)
+bool GetResultCalArea_Train(CTempInspectProcessor* pProcessor, int nCamIdx, CAlgorithmsCalculateAreaResult* pCalAreaTrainRes)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->GetResultCalArea_Train(pCalAreaTrainRes);
+	BOOL bRet = pProcessor->GetResultCalArea_Train(nCamIdx, pCalAreaTrainRes);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
