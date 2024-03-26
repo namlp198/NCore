@@ -54,6 +54,7 @@ BOOL CTempInspectProcessor::Initialize()
 	// Test Run
 	//m_pTempInspCore->StartInspect(0);
 
+#ifdef NSIMULATOR
 	if (m_pHikCamera != NULL)
 	{
 		m_pHikCamera->Destroy();
@@ -62,6 +63,7 @@ BOOL CTempInspectProcessor::Initialize()
 	m_pHikCamera = new CTempInspectHikCam(this);
 	m_pHikCamera->Initialize();
 	m_pHikCamera->RegisterReceivedImageCallback(ReceivedImageCallback, this);
+#endif // SIMULATOR
 
 	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
