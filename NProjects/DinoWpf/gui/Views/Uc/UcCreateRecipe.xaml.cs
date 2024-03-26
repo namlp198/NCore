@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using NpcCore.Wpf.Struct_Vision;
 
 namespace DinoWpf.Views.Uc
 {
