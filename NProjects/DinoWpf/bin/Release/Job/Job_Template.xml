@@ -2,10 +2,10 @@
 <Job id="0" name="job0" numberOfCamera="2">
   <Camera id="0" name="cam0" interfaceType="usb3" sensorType="color" channels="3" manufacturer="HikRobot" frameWidth="2448" frameHeight="2048" serialNumber="DA0069518">
     <Recipe id="0" name="rcp_cam0" cameraIdParent="0">
-      <LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0">
-        <RectangleInSide x="0" y="0" width="0" height="0" />
-        <RectangleOutSide x="0" y="0" width="0" height="0" />
-        <DataTrain x="0" y="0" />
+      <LocatorTool id="Loc0" name="Locator0" priority="1" hasChildren="True" children="ROI0" matchingRate="0.9">
+        <RectangleInSide x="1045" y="357" width="450" height="317" />
+        <RectangleOutSide x="695" y="141" width="1149" height="749" />
+        <DataTrain x="1270" y="515" />
       </LocatorTool>
       <SelectROITool id="ROI0" name="count_pixel" type="rectangle" algorithm="CountPixel" rotations="True" priority="2">
         <Parameters>
@@ -25,7 +25,7 @@
   </Camera>
   <Camera id="1" name="cam1" interfaceType="usb3" sensorType="color" channels="3" manufacturer="HikRobot" frameWidth="2448" frameHeight="2048" serialNumber="DA0069522">
     <Recipe id="0" name="rcp_cam1" cameraIdParent="1">
-      <LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0">
+      <LocatorTool id="Loc0" name="locator" priority="1" hasChildren="True" children="ROI0" matchingRate="0.8">
         <RectangleInSide x="0" y="0" width="0" height="0" />
         <RectangleOutSide x="0" y="0" width="0" height="0" />
         <DataTrain x="0" y="0" />
