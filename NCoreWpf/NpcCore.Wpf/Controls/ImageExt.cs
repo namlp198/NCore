@@ -1,6 +1,8 @@
-﻿using System;
+﻿using NpcCore.Wpf.Struct_Vision;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Contexts;
@@ -214,6 +216,8 @@ namespace NpcCore.Wpf.Controls
         private ToolMode _toolMode = ToolMode.ToolMode_Default;
         private GrabMode _grabMode = GrabMode.GrabMode_SingleGrab;
         private ViewMode _viewMode = ViewMode.ViewMode_CreateRecipe;
+
+        private List<CLocatorToolResult> _lstLocToolRes = new List<CLocatorToolResult>();
 
         private double _comWidth = 20;
         private double _comOffset = 10;
@@ -1608,11 +1612,94 @@ namespace NpcCore.Wpf.Controls
             {
                 if(SetProperty(ref _viewMode, value))
                 {
+                    if(_viewMode == ViewMode.ViewMode_ViewResult)
+                    {
+                        EnableSelectRoiTool = false;
+                        EnableLocatorTool = false;
+                    }
+                    this.InvalidateVisual();
+                }
+            }
+        }
 
+        public List<CLocatorToolResult> ListLocToolRes
+        {
+            get => _lstLocToolRes;
+            set
+            {
+                if(SetProperty(ref _lstLocToolRes, value))
+                {
+                    _viewMode = ViewMode.ViewMode_ViewResult;
+                    this.InvalidateVisual();
                 }
             }
         }
         #endregion
+
+        [Obsolete]
+        private void RenderResult_LocatorTool(DrawingContext dc)
+        {
+            foreach(var locToolRes in _lstLocToolRes)
+            {
+                Matrix mat = new Matrix();
+                mat.Translate(0, 0);
+
+                MatrixTransform matrixTransform = new MatrixTransform(mat);
+                dc.PushTransform(matrixTransform);
+                dc.PushOpacity(1.0);
+
+                if (locToolRes.m_bResult == true)
+                    dc.DrawText(new FormattedText("OK", new CultureInfo("en-US"), FlowDirection.LeftToRight, new Typeface("Verdana"), 80, foreground: Brushes.Green), new Point(30, 30));
+                else
+                    dc.DrawText(new FormattedText("NG", new CultureInfo("en-US"), FlowDirection.LeftToRight, new Typeface("Verdana"), 80, foreground: Brushes.Red), new Point(30, 30));
+
+                dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 3), _rectReal);
+
+                Point cntPt = new Point(locToolRes.m_nX, locToolRes.m_nY);
+                Point p1 = new Point(cntPt.X + 500, cntPt.Y);
+                Point p2 = new Point(cntPt.X, cntPt.Y + 500);
+                DrawAxis(dc, cntPt, p1, 0.2f);
+                DrawAxis(dc, cntPt, p2, 0.2f);
+                DrawCenterPt(dc, cntPt);
+            }
+            dc.Pop();   
+        }
+
+        private void DrawCenterPt(DrawingContext dc, Point cntPt)
+        {
+            int seg = 15;
+            int squareEdge = (int)(seg * Math.Tan(Math.PI / 4));
+
+            Point p1 = new Point(cntPt.X + seg, cntPt.Y - squareEdge);
+            Point p2 = new Point(cntPt.X - seg, cntPt.Y + squareEdge);
+            dc.DrawLine(new Pen(Brushes.LightSalmon, 1), p1, p2);
+
+            Point p3 = new Point(cntPt.X - seg, cntPt.Y - squareEdge);
+            Point p4 = new Point(cntPt.X + seg, cntPt.Y + squareEdge);
+            dc.DrawLine(new Pen(Brushes.LightSalmon, 1), p3, p4);
+
+            dc.DrawEllipse(Brushes.LightSalmon, new Pen(Brushes.LightSalmon, 1), cntPt, _comWidth * 0.2, _comWidth * 0.2);
+        }
+
+        private void DrawAxis(DrawingContext dc, Point p1, Point p2, float scale = 0.2f)
+        {
+            double angle = Math.Atan2(p1.Y - p2.Y, p1.X - p2.X);
+            double hypotenuse = Math.Sqrt(Math.Pow((p1.Y - p2.Y), 2) + Math.Pow((p1.X - p2.X), 2));
+
+            // Here we lengthen the arrow by a factor of scale
+            p2.X = (int)(p1.X - scale*hypotenuse*Math.Cos(angle));
+            p2.Y = (int)(p1.Y - scale*hypotenuse*Math.Sin(angle));
+            dc.DrawLine(new Pen(Brushes.LightCoral, 2), p1, p2);
+
+            // create the arrow hooks
+            p1.X = (int)(p2.X + 9 * Math.Cos(angle + Math.PI / 4));
+            p1.Y = (int)(p2.Y + 9 * Math.Sin(angle + Math.PI / 4));
+            dc.DrawLine(new Pen(Brushes.LightCoral, 2), p1, p2);
+
+            p1.X = (int)(p2.X + 9 * Math.Cos(angle - Math.PI / 4));
+            p1.Y = (int)(p2.Y + 9 * Math.Sin(angle - Math.PI / 4));
+            dc.DrawLine(new Pen(Brushes.LightCoral, 2), p1, p2);
+        }
 
         private void RenderSelectRectTool(DrawingContext dc)
         {
@@ -1784,6 +1871,7 @@ namespace NpcCore.Wpf.Controls
             }
             dc.Pop();
         }
+
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
@@ -1799,9 +1887,9 @@ namespace NpcCore.Wpf.Controls
                     RenderLocatorTool(dc);
                 }
             }
-            else
+            else if(_viewMode == ViewMode.ViewMode_ViewResult)
             {
-
+                RenderResult_LocatorTool(dc);
             }
         }
     }
