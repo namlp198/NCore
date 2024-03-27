@@ -84,9 +84,6 @@ void CTempInspectCore::RunningThread(int nThreadIndex)
 		// for avoid UI Freezing
 		Sleep(1);
 
-		// reset result
-		m_pVsResult->Reset_Result();
-
 		int nFrameIdx = m_pInterface->PopInspectWaitFrame(m_nCamIndex);
 
 		// Not Grab Image..
@@ -105,10 +102,6 @@ void CTempInspectCore::RunningThread(int nThreadIndex)
 
 		// Process
 		ProcessFrame(m_pRecipe, nThreadIndex, nFrameIdx);
-
-		m_pVsResult->Judgement_Result();
-		m_pVsResult->Draw_Result();
-		m_pResultImageBuffer = m_pVsResult->GetResultImageBuffer();
 
 		// inform inspect completed
 		m_pInterface->InspectComplete(m_nCamIndex);
@@ -153,8 +146,6 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 	int nFrameWidth = pRecipe->GetCameraInfos()->m_nFrameWidth;
 	int nFrameHeight = pRecipe->GetCameraInfos()->m_nFrameHeight;
 	int chanels = pRecipe->GetCameraInfos()->m_nChannels;
-	cv::Mat* matResult = m_pVsResult->GetResultImage();
-	matResult = new cv::Mat(nFrameHeight, nFrameWidth, chanels, pImageBuffer);
 
 	QueueLocTools pLocTools = pRecipe->GetQueueLocTools();
 	QueueSelROITools pSelROITools = pRecipe->GetQueueSelROITools();
@@ -167,7 +158,7 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 		locTool.SetImageBuffer(pImageBuffer);
 		if (locTool.Run())
 		{
-			m_pVsResult->GetVecLocToolRes()->push_back(locTool.GetLocRes());
+			
 		}
 		pLocTools.pop();
 	}
@@ -181,7 +172,7 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 
 		// get result of locator tool for translate or rotate ROI follow that is result. 
 		// *note*: currently, this vector will have only an object that should be always selected first object
-		selROITool.GetVsAlgorithms().SetLocResult(m_pVsResult->GetVecLocToolRes()->at(0));
+		
 
 		// get the algorithm of this ROI
 		emAlgorithms algorithm = selROITool.GetVsAlgorithms().GetAlgorithm();
@@ -192,10 +183,10 @@ void CTempInspectCore::ProcessFrame(CTempInspectRecipe* pRecipe, UINT nThreadInd
 			switch (algorithm)
 			{
 			case emCountPixel:
-				m_pVsResult->GetVecCntPxlRes()->push_back(selROITool.GetVsAlgorithms().GetCntPxlRes());
+				
 				break;
 			case emCalculateArea:
-				m_pVsResult->GetVecCalAreaRes()->push_back(selROITool.GetVsAlgorithms().GetCalAreaRes());
+				
 				break;
 			}
 		}

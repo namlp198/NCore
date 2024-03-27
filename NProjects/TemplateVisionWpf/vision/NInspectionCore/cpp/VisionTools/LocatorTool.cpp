@@ -8,6 +8,10 @@ CLocatorTool::CLocatorTool()
 
 CLocatorTool::~CLocatorTool()
 {
+	if (m_pImageBuffer != NULL)
+		delete m_pImageBuffer, m_pImageBuffer = NULL;
+	if (m_pTemplateImageBuffer != NULL)
+		delete m_pTemplateImageBuffer, m_pTemplateImageBuffer = NULL;
 }
 
 LPBYTE CLocatorTool::GetImageBuffer()
@@ -20,10 +24,13 @@ LPBYTE CLocatorTool::GetImageBuffer()
 
 LPBYTE CLocatorTool::GetTemplateImageBuffer()
 {
-	if (m_matImageTemplate.empty())
+	//CSingleLock localLock(&m_crsGetTemplateImage);
+	//localLock.Lock();
+	if (m_pTemplateImageBuffer == NULL)
 		return nullptr;
-
-	return (LPBYTE)m_matImageTemplate.data;
+	
+	return m_pTemplateImageBuffer;
+	//localLock.Unlock();
 }
 
 LPBYTE CLocatorTool::GetResultImageBuffer()
@@ -38,6 +45,7 @@ BOOL CLocatorTool::GetDataTrained_TemplateMatching(CLocatorToolResult* pDataTrai
 {
 	pDataTrained->m_nX = m_locResult.m_nX;
 	pDataTrained->m_nY = m_locResult.m_nY;
+	pDataTrained->m_dMatchingRate = m_locResult.m_dMatchingRate;
 	pDataTrained->m_bResult = m_locResult.m_bResult;
 	pDataTrained->m_nDelta_x = m_locResult.m_nDelta_x;
 	pDataTrained->m_nDelta_y = m_locResult.m_nDelta_y;
@@ -192,6 +200,11 @@ BOOL CLocatorTool::NVision_FindLocator_TemplateMatching_TRAIN(int nCamIdx, BYTE*
 
 	if (m_matImageTemplate.empty())
 		return FALSE;
+	// copy image template to buffer
+	/*m_pTemplateImageBuffer = new BYTE[m_matImageTemplate.total()];
+	memcpy(m_pTemplateImageBuffer, m_matImageTemplate.data, m_matImageTemplate.total());*/
+	SetImageBuffer(pBuff);
+
 
 	USES_CONVERSION;
 	CString strPath;
@@ -231,23 +244,19 @@ BOOL CLocatorTool::NVision_FindLocator_TemplateMatching_TRAIN(int nCamIdx, BYTE*
 	m_locResult.m_nDelta_y = 0;
 	m_locResult.m_dDif_Angle = 0.0;
 
-	CString csMatchingRate;
+	// draw result
+	/*CString csMatchingRate;
 	csMatchingRate.Format(_T("Matching Rate: %.3f"), dMatchingRate);
 	char strMatchingRate[1024] = {};
 	sprintf_s(strMatchingRate, "%s", W2A(csMatchingRate));
 
-	// draw result
 	cv::Point cnt(m_locResult.m_nX, m_locResult.m_nY);
 	cv::Rect rect(paramTrainLoc->m_nRectOut_X, paramTrainLoc->m_nRectOut_Y, paramTrainLoc->m_nRectOut_Width, paramTrainLoc->m_nRectOut_Height);
 	cv::rectangle(m_matResultImage, rect, cv::Scalar(0, 255, 0), 1);
 	DrawAxis(m_matResultImage, cnt, cv::Point(cnt.x + 300, cnt.y), cv::Scalar(255, 255, 0));
 	DrawAxis(m_matResultImage, cnt, cv::Point(cnt.x, cnt.y + 300), cv::Scalar(255, 255, 0));
 	DrawCenterPt(m_matResultImage, cnt, cv::Scalar(0, 255, 255));
-	cv::putText(m_matResultImage, strMatchingRate, cv::Point(50, 30), cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 0, 255), 2);
-
-	m_pImageBuffer->SetFrameImage(0, (BYTE*)m_matResultImage.data);
-
-	//cv::imshow("result", m_matResultImage);
+	cv::putText(m_matResultImage, strMatchingRate, cv::Point(50, 30), cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 0, 255), 2);*/
 
 	m_matImageROI.release();
 	/*m_matImageTemplate.release();

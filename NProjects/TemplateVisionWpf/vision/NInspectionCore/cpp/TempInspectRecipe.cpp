@@ -180,22 +180,24 @@ void CTempInspectRecipe::ReadLocTool(XMLElement* xmlLoc)
 	paramLocTool.m_bHasChildren = hasChild;
 	// 5. children
 	paramLocTool.m_csChildren = xmlLoc->first_attribute("children")->value();
+	// 6. matching rate
+	paramLocTool.m_dMatchingRate = std::atof(xmlLoc->first_attribute("matchingRate")->value());
 
-	// 6. RectangleInSide
+	// 7. RectangleInSide
 	XMLElement* xmlRectInSide = xmlLoc->first_node("RectangleInSide");
 	paramLocTool.m_RectangleInSide[0] = std::atoi(xmlRectInSide->first_attribute("x")->value()); // x
 	paramLocTool.m_RectangleInSide[1] = std::atoi(xmlRectInSide->first_attribute("y")->value()); // y
 	paramLocTool.m_RectangleInSide[2] = std::atoi(xmlRectInSide->first_attribute("width")->value()); // width
 	paramLocTool.m_RectangleInSide[3] = std::atoi(xmlRectInSide->first_attribute("height")->value()); // height
 
-	// 7. RectangleOutSide
+	// 8. RectangleOutSide
 	XMLElement* xmlRectOutSide = xmlLoc->first_node("RectangleOutSide");
 	paramLocTool.m_RectangleOutSide[0] = std::atoi(xmlRectOutSide->first_attribute("x")->value()); // x
 	paramLocTool.m_RectangleOutSide[1] = std::atoi(xmlRectOutSide->first_attribute("y")->value()); // y
 	paramLocTool.m_RectangleOutSide[2] = std::atoi(xmlRectOutSide->first_attribute("width")->value()); // width
 	paramLocTool.m_RectangleOutSide[3] = std::atoi(xmlRectOutSide->first_attribute("height")->value()); // height
 
-	// 8. Data train
+	// 9. Data train
 	XMLElement* xmlDataTrain = xmlLoc->first_node("DataTrain");
 	paramLocTool.m_DataTrain[0] = std::atoi(xmlDataTrain->first_attribute("x")->value());
 	paramLocTool.m_DataTrain[1] = std::atoi(xmlDataTrain->first_attribute("y")->value());

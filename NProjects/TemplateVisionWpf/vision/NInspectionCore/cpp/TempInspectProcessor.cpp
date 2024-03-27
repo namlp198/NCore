@@ -383,14 +383,6 @@ BOOL CTempInspectProcessor::GetResultCalArea_Train(int nCamIdx, CAlgorithmsCalcu
 	return m_pVsAlgorithm[nCamIdx]->GetResultCalArea_Train(pCalAreaTrainRes);
 }
 
-BOOL CTempInspectProcessor::GetSumResult(int nCamIdx, CSumResult* pSumRes)
-{
-	if (m_pTempInspCore[nCamIdx] == NULL)
-		return FALSE;
-
-	return m_pTempInspCore[nCamIdx]->GetVsResult()->GetSumResult(pSumRes);
-}
-
 BYTE* CTempInspectProcessor::GetTemplateImage(int nCamIdx)
 {
 	if (m_pLocToolTrain == NULL)

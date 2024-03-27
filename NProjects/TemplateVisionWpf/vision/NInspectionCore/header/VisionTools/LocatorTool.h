@@ -44,7 +44,9 @@ private:
 
 	CRectForTrainLocTool            m_paramTrainLoc;
 
+	//CCriticalSection                m_crsGetTemplateImage;
 	CSharedMemoryBuffer*            m_pImageBuffer;
+	BYTE*                           m_pTemplateImageBuffer;
 
 	cv::Mat                         m_matResultImage;
 	cv::Mat                         m_matImageTemplate;

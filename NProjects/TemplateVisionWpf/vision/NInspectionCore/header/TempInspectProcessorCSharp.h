@@ -44,5 +44,4 @@ extern "C"
 
 	__declspec(dllexport) bool                           GetResultCalArea_Train(CTempInspectProcessor* pProcessor, int nCamIdx, CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
 
-	__declspec(dllexport) bool                           GetSumResult(CTempInspectProcessor* pProcessor, int nCamIdx, CSumResult* pSumRes);
 };

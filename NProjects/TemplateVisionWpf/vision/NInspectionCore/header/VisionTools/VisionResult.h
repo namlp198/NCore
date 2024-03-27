@@ -37,44 +37,13 @@ struct CAlgorithmsCalculateAreaResult
 	BOOL         m_bResult;
 };
 
-typedef std::vector<CLocatorToolResult> VecLocToolRes;
-typedef std::vector<CAlgorithmsCountPixelResult> VecCntPxlRes;
-typedef std::vector<CAlgorithmsCalculateAreaResult> VecCalAreaRes;
-
 class AFX_EXT_CLASS CVisionResults
 {
 public:
-	CVisionResults();
-	~CVisionResults();
-
-public:
-	// Getter
-	VecLocToolRes*      GetVecLocToolRes() { return m_vecLocToolRes; }
-	VecCntPxlRes*       GetVecCntPxlRes() { return m_vecCntPxlRes; }
-	VecCalAreaRes*      GetVecCalAreaRes() { return m_vecCalAreaRes; }
-	cv::Mat*            GetResultImage() { return m_pResultImage; }
-
-	LPBYTE              GetResultImageBuffer();
-	BOOL                GetSumResult(CSumResult* pSumRes);
-
-	// Setter
-	void                SetVecLocToolRes(VecLocToolRes* vecLocToolRes) { m_vecLocToolRes = vecLocToolRes; }
-	void                SetVecCntPxlRes(VecCntPxlRes* vecCntPxlRes) { m_vecCntPxlRes = vecCntPxlRes; }
-	void                SetVecCalAreaRes(VecCalAreaRes* vecCalAreaRes) { m_vecCalAreaRes = vecCalAreaRes; }
-
-
-public:
-	BOOL Judgement_Result();
-	BOOL Reset_Result();
-	BOOL Draw_Result();
-
+	CVisionResults(void);
+	~CVisionResults(void);
 private:
-	VecLocToolRes*      m_vecLocToolRes;
-	VecCntPxlRes*       m_vecCntPxlRes;
-	VecCalAreaRes*      m_vecCalAreaRes;
-
-	cv::Mat*            m_pResultImage;
-
-	// this variable summary all results
-	BOOL                m_bSumResult;
+	std::vector<CLocatorToolResult>                 m_vecLocToolRes;
+	std::vector<CAlgorithmsCountPixelResult>        m_vecCntPxlRes;
+	std::vector<CAlgorithmsCalculateAreaResult>     m_vecCalAreaRes;
 };

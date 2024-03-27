@@ -211,14 +211,4 @@ bool GetResultCalArea_Train(CTempInspectProcessor* pProcessor, int nCamIdx, CAlg
 	else               return true;
 }
 
-bool GetSumResult(CTempInspectProcessor* pProcessor, int nCamIdx, CSumResult* pSumRes)
-{
-	if (pProcessor == NULL)
-		return false;
-
-	BOOL bRet = pProcessor->GetSumResult(nCamIdx, pSumRes);
-	if (bRet == FALSE) return false;
-	else               return true;
-}
-
 

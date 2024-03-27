@@ -56,9 +56,6 @@ public:
 	// pass a reference from the client have format is a structure for getting to data Area after then trained.
 	BOOL                   GetResultCalArea_Train(int nCamIdx, CAlgorithmsCalculateAreaResult* pCalAreaTrainRes);
 
-public:
-	BOOL                   GetSumResult(int nCamIdx, CSumResult* pSumRes); // this func will to get to the result when the program runtime
-
 private:
 
 	// Hik cam

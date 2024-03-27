@@ -24,6 +24,7 @@ struct CParameterLocator
 	int                        m_nPriority;
 	BOOL                       m_bHasChildren;
 	CString                    m_csChildren;
+	double                     m_dMatchingRate;
 	int                        m_RectangleInSide[4];
 	int                        m_RectangleOutSide[4];
 	int                        m_DataTrain[2];
