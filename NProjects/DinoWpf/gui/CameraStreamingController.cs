@@ -41,9 +41,9 @@ namespace DinoWpf
                 await m_NUcBufferViewer.UpdateImage();
             });
         }
-        public void GetResultImage()
+        public void GetTemplateImage()
         {
-            Task.Factory.StartNew(async() =>
+            Task.Factory.StartNew(async () =>
             {
                 m_NUcBufferViewer.BufferView = InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.GetResultImageBuffer(_camIdx);
                 await m_NUcBufferViewer.UpdateImage();

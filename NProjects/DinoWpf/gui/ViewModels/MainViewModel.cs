@@ -230,6 +230,7 @@ namespace DinoWpf.ViewModels
                                         locator.Priority = int.Parse(_xmlManagement.GetAttributeValueFromNode(nodeTool, "priority"));
                                         locator.HasChildren = bool.Parse(_xmlManagement.GetAttributeValueFromNode(nodeTool, "hasChildren"));
                                         locator.Children = _xmlManagement.GetAttributeValueFromNode(nodeTool, "children");
+                                        locator.MatchingRate = double.Parse(_xmlManagement.GetAttributeValueFromNode(nodeTool, "matchingRate")); 
 
                                         XmlNodeList nodeListRect = nodeTool.ChildNodes;
                                         foreach (XmlNode nodeRect in nodeListRect)

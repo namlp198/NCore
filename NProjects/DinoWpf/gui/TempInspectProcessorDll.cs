@@ -200,6 +200,19 @@ namespace DinoWpf
         [DllImport("NTempInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
         extern private static bool GetDataTrained_TemplateMatching(IntPtr tempInspProcessor, int nCamIdx, IntPtr dataTrained);
+        public bool GetDataTrained_TemplateMatching(int nCamIdx, ref List<CLocatorToolResult> lstLocatorToolResult)
+        {
+            bool bRetValue = false;
+            CLocatorToolResult dataTrained = new CLocatorToolResult();
+            for (int i = 0; i < lstLocatorToolResult.Count; i++)
+            {
+                IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(dataTrained));
+                Marshal.StructureToPtr(dataTrained, pPointer, false);
+                bRetValue = GetDataTrained_TemplateMatching(m_pTempInspectProcessor, nCamIdx, pPointer);
+                lstLocatorToolResult[i] = (CLocatorToolResult)Marshal.PtrToStructure(pPointer, typeof(CLocatorToolResult));
+            }
+            return bRetValue;
+        }
         public bool GetDataTrained_TemplateMatching(int nCamIdx, ref CLocatorToolResult locatorToolResult)
         {
             CLocatorToolResult dataTrained = new CLocatorToolResult();
@@ -207,6 +220,7 @@ namespace DinoWpf
             Marshal.StructureToPtr(dataTrained, pPointer, false);
             bool bRetValue = GetDataTrained_TemplateMatching(m_pTempInspectProcessor, nCamIdx, pPointer);
             locatorToolResult = (CLocatorToolResult)Marshal.PtrToStructure(pPointer, typeof(CLocatorToolResult));
+
             return bRetValue;
         }
 

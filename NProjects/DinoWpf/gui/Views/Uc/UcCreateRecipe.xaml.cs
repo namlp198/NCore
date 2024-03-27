@@ -22,6 +22,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using NpcCore.Wpf.Struct_Vision;
+using CLocatorToolResult = NpcCore.Wpf.Struct_Vision.CLocatorToolResult;
+using RectForTrainLocTool = NpcCore.Wpf.Struct_Vision.RectForTrainLocTool;
+using System.Xml.Linq;
 
 namespace DinoWpf.Views.Uc
 {
@@ -75,6 +78,7 @@ namespace DinoWpf.Views.Uc
 
         private async void UcCreateRecipe_UcSingleGrab(object sender, RoutedEventArgs e)
         {
+            ucCreateRecipe.ViewMode = NpcCore.Wpf.Controls.ViewMode.ViewMode_CreateRecipe;
             // set trigger mode and trigger source
             InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerModeHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerMode);
             InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerSourceHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerSoure);
@@ -88,6 +92,7 @@ namespace DinoWpf.Views.Uc
 
         private async void UcCreateRecipe_UcContinuousGrab(object sender, RoutedEventArgs e)
         {
+            ucCreateRecipe.ViewMode = NpcCore.Wpf.Controls.ViewMode.ViewMode_CreateRecipe;
             // set trigger mode and trigger source
             InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerModeHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerMode);
             InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.SetTriggerSourceHikCam(ucCreateRecipe.CameraIndex, (int)ucCreateRecipe.TriggerSoure);
@@ -144,6 +149,8 @@ namespace DinoWpf.Views.Uc
 
         private void UcCreateRecipe_UcTrainLocator(object sender, RoutedEventArgs e)
         {
+            ucCreateRecipe.ListLocToolRes.Clear();
+
             RectForTrainLocTool rectForTrainLocTool = new RectForTrainLocTool();
             rectForTrainLocTool.m_nRectIn_X = (int)ucCreateRecipe.RectInSide.X;
             rectForTrainLocTool.m_nRectIn_Y = (int)ucCreateRecipe.RectInSide.Y;
@@ -153,57 +160,64 @@ namespace DinoWpf.Views.Uc
             rectForTrainLocTool.m_nRectOut_Y = (int)ucCreateRecipe.RectOutSide.Y;
             rectForTrainLocTool.m_nRectOut_Width = (int)ucCreateRecipe.RectOutSide.Width;
             rectForTrainLocTool.m_nRectOut_Height = (int)ucCreateRecipe.RectOutSide.Height;
-            rectForTrainLocTool.m_dMatchingRateLimit = 0.8;
+            rectForTrainLocTool.m_dMatchingRateLimit = double.Parse(_ucSettingLocator.txtMatchingRate.Text.Trim());
+
+            if (_ucSettingLocator != null)
+            {
+                List<RectForTrainLocTool> lstRectForTrain = new List<RectForTrainLocTool>();
+                lstRectForTrain.Add(rectForTrainLocTool);
+                _ucSettingLocator.ListRectForTrainLocTool = lstRectForTrain;
+            }
 
             if (InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.TrainLocator_TemplateMatching(ucCreateRecipe.CameraIndex, ref rectForTrainLocTool))
             {
-                _cameraStreamingController.GetResultImage();
+                CLocatorToolResult cLocatorToolResult = new CLocatorToolResult();
+                List<CLocatorToolResult> lstLocatorToolResult = new List<CLocatorToolResult>();
+                if(InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.GetDataTrained_TemplateMatching(ucCreateRecipe.CameraIndex, ref cLocatorToolResult))
+                {
+                    //_cameraStreamingController.GetTemplateImage();
+                    ucCreateRecipe.DataTrain[0] = cLocatorToolResult.m_nX;
+                    ucCreateRecipe.DataTrain[1] = cLocatorToolResult.m_nY;
+
+                    lstLocatorToolResult.Add(cLocatorToolResult);
+                    ucCreateRecipe.ListLocToolRes = lstLocatorToolResult;
+
+                    if (_ucSettingLocator != null)
+                    {
+                        _ucSettingLocator.ListLocToolRes = lstLocatorToolResult;
+                    }
+                }
             }
         }
 
         private void UcCreateRecipe_SettingLocator(object sender, RoutedEventArgs e)
         {
             _ucSettingLocator = new UcSettingLocatorTool();
-            contentSetting.Content = _ucSettingLocator;
             _ucSettingLocator.LocatorId = "Loc" + _locatorIdx;
             _ucSettingLocator.SaveParamLocatorTool += UcSettingLocator_SaveParam;
+            contentSetting.Content = _ucSettingLocator;
 
             ToolSelected = ToolSelected.LocatorTool;
-
-            XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
-            if (nodeRecipe != null)
-            {
-                XmlNode nodeLocator = _xmlManagement.AddChildNode(nodeRecipe, "LocatorTool");
-                if (nodeLocator != null)
-                {
-                    _xmlManagement.AddAttributeToNode(nodeLocator, "id", "Loc" + _locatorIdx);
-                    _xmlManagement.AddAttributeToNode(nodeLocator, "name", "locator" + _locatorIdx);
-                    _xmlManagement.AddAttributeToNode(nodeLocator, "priority", "1");
-                    _xmlManagement.AddAttributeToNode(nodeLocator, "hasChildren", "True");
-                    _xmlManagement.AddAttributeToNode(nodeLocator, "children", "");
-
-                    XmlNode nodeRectInside = _xmlManagement.AddChildNode(nodeLocator, "RectangleInSide");
-                    _xmlManagement.AddAttributeToNode(nodeRectInside, "x", "0");
-                    _xmlManagement.AddAttributeToNode(nodeRectInside, "y", "0");
-                    _xmlManagement.AddAttributeToNode(nodeRectInside, "width", "0");
-                    _xmlManagement.AddAttributeToNode(nodeRectInside, "height", "0");
-                    XmlNode nodeRectOutside = _xmlManagement.AddChildNode(nodeLocator, "RectangleOutSide");
-                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "x", "0");
-                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "y", "0");
-                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "width", "0");
-                    _xmlManagement.AddAttributeToNode(nodeRectOutside, "height", "0");
-                    XmlNode nodeDataTrain = _xmlManagement.AddChildNode(nodeLocator, "DataTrain");
-                    _xmlManagement.AddAttributeToNode(nodeDataTrain, "x", "0");
-                    _xmlManagement.AddAttributeToNode(nodeDataTrain, "y", "0");
-
-                    if (_xmlManagement.Save(_xmlPath))
-                        _locatorIdx++;
-                }
-            }
         }
 
         private void UcSettingLocator_SaveParam(object sender, RoutedEventArgs e)
         {
+            if(_ucSettingLocator.txtName.Text == string.Empty || _ucSettingLocator.txtPriority.Text == string.Empty 
+                || _ucSettingLocator.txtChildren.Text == string.Empty || _ucSettingLocator.txtMatchingRate.Text == string.Empty)
+            {
+                MessageBox.Show("Has the field is empty!");
+            }
+            XmlNode nodeRectLoc = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/LocatorTool[@id='" + _ucSettingLocator.LocatorId + "']");
+            if(nodeRectLoc != null)
+            {
+                _xmlManagement.AddAttributeToNode(nodeRectLoc, "id", _ucSettingLocator.LocatorId);
+                _xmlManagement.AddAttributeToNode(nodeRectLoc, "name", _ucSettingLocator.txtName.Text.Trim());
+                _xmlManagement.AddAttributeToNode(nodeRectLoc, "priority", _ucSettingLocator.txtPriority.Text.Trim());
+                _xmlManagement.AddAttributeToNode(nodeRectLoc, "hasChildren", _ucSettingLocator.cbbHasChildren.Text);
+                _xmlManagement.AddAttributeToNode(nodeRectLoc, "children", _ucSettingLocator.txtChildren.Text.Trim());
+                _xmlManagement.AddAttributeToNode(nodeRectLoc, "matchingRate", _ucSettingLocator.txtMatchingRate.Text.Trim());
+            }
+
             XmlNode nodeRectInside = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/LocatorTool[@id='" + _ucSettingLocator.LocatorId + "']/RectangleInSide");
             if (nodeRectInside != null)
             {
@@ -227,7 +241,10 @@ namespace DinoWpf.Views.Uc
                 _xmlManagement.AddAttributeToNode(nodeDataTrain, "y", (int)ucCreateRecipe.DataTrain[1] + "");
             }
 
-            _xmlManagement.Save(_xmlPath);
+           if( _xmlManagement.Save(_xmlPath))
+            {
+                MessageBox.Show("Save Recipe successfully!");
+            }
         }
 
         private void UcCreateRecipe_SettingROI(object sender, RoutedEventArgs e)

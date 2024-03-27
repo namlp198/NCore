@@ -1,4 +1,5 @@
 ﻿using DinoWpf.Models.ToolModel;
+using NpcCore.Wpf.Struct_Vision;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,13 +25,37 @@ namespace DinoWpf.Views.UcSetting
     public partial class UcSettingLocatorTool : UserControl, INotifyPropertyChanged
     {
         public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private List<RectForTrainLocTool> _lstRectForTrainLocTool = new List<RectForTrainLocTool>();
+        private List<CLocatorToolResult> _lstLocToolRes = new List<CLocatorToolResult>();
         public UcSettingLocatorTool()
         {
             InitializeComponent();
 
+            this.DataContext = this;
         }
         
+        public List<CLocatorToolResult> ListLocToolRes
+        {
+            get => _lstLocToolRes;
+            set
+            {
+                if(SetProperty(ref _lstLocToolRes, value))
+                {
+
+                }
+            }
+        }
+        public List<RectForTrainLocTool> ListRectForTrainLocTool
+        {
+            get => _lstRectForTrainLocTool;
+            set
+            {
+                if (SetProperty(ref _lstRectForTrainLocTool, value))
+                {
+
+                }
+            }
+        }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             // Save into job file at here
@@ -177,10 +202,5 @@ namespace DinoWpf.Views.UcSetting
             this.PropertyChanged?.Invoke(this, args);
         }
         #endregion
-
-        private void btnTrain_Click(object sender, RoutedEventArgs e)
-        {
-            RaiseEvent(new RoutedEventArgs(TrainLocatorToolEvent, this));
-        }
     }
 }
