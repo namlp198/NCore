@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using NpcCore.Wpf.Controls;
+using NpcCore.Wpf.Helpers;
+using NpcCore.Wpf.Struct_Vision;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NCore.Wpf.NUcBufferViewer;
 
 namespace NCore.Wpf.NUcBufferViewer
 {
@@ -34,6 +37,7 @@ namespace NCore.Wpf.NUcBufferViewer
         [Description("Continuous Grab")]
         ContinuousGrab = 1
     }
+ 
     public enum ETriggerMode
     {
         TriggerMode_None = -1,
@@ -59,9 +63,11 @@ namespace NCore.Wpf.NUcBufferViewer
         private bool _isFakeCamera = true;
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
         private List<string> _cameraLst = new List<string>();
+        private List<CLocatorToolResult> _lstLocToolRes = new List<CLocatorToolResult>();
 
         private List<string> _modeGrabStr = new List<string>();
         private GrabMode _modeGrabSelected = GrabMode.None;
+        private ViewMode _viewMode = ViewMode.ViewMode_CreateRecipe;
         private ETriggerMode _eTriggerMode;
         private ETriggerSource _eTriggerSource;
         private int _modeGrabSelectedIdx = -1;
@@ -71,7 +77,7 @@ namespace NCore.Wpf.NUcBufferViewer
         // ROI and angle rotate
         private Rect _rectOutSide = new Rect();
         private Rect _rectInSide = new Rect();
-        private int[] _dataTrain = new int[2];
+        private int[] _dataTrain = new int[2]; // element 0: coordinates X, element 1: coordinates Y
         private Rect _roi = new Rect();
         private double _angleRotate = 0.0;
 
@@ -79,6 +85,7 @@ namespace NCore.Wpf.NUcBufferViewer
         private bool _hasRecipe;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
+        private IntPtr m_pTemplateImageBuffer = IntPtr.Zero;
 
         private int _frameWidth = 640;
         private int _frameHeight = 480;
@@ -547,6 +554,9 @@ namespace NCore.Wpf.NUcBufferViewer
             get => _rectOutSide;
             set { if (SetProperty(ref _rectOutSide, value)) { } }
         }
+        /// <summary>
+        /// Note: [element0 - Center X], [element1 - Center Y]
+        /// </summary>
         public int[] DataTrain
         {
             get => _dataTrain;
@@ -646,6 +656,47 @@ namespace NCore.Wpf.NUcBufferViewer
                 if (SetProperty(ref _displayImagePath, value))
                 {
 
+                }
+            }
+        }
+        public List<CLocatorToolResult> ListLocToolRes
+        {
+            get => _lstLocToolRes;
+            set
+            {
+                if(SetProperty(ref _lstLocToolRes, value))
+                {
+                    imageExt.ListLocToolRes = _lstLocToolRes;
+                }
+            }
+        }
+
+        public IntPtr TemplateImageBuffer
+        {
+            get => m_pTemplateImageBuffer;
+            set
+            {
+                if(SetProperty(ref m_pTemplateImageBuffer, value))
+                {
+                    Task.Factory.StartNew(() =>
+                    {
+                        int size = (int)(_rectInSide.Width * _rectInSide.Height * 3);
+                        byte[] data = new byte[size];
+                        Marshal.Copy(data, 0, TemplateImageBuffer, size);
+                        imgPreProcessing.Source = ImageProcessingHelper.LoadImage(data);
+                    });
+                }
+            }
+        }
+
+        public ViewMode ViewMode
+        {
+            get => _viewMode;
+            set
+            {
+                imageExt.ViewMode = _viewMode;
+                if (SetProperty(ref _viewMode, value))
+                {
                 }
             }
         }
