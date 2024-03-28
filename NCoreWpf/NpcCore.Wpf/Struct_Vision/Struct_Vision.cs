@@ -60,26 +60,26 @@ namespace NpcCore.Wpf.Struct_Vision
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CParamCntPxlAlgorithm
     {
-        public int m_nROIX;
-        public int m_nROIY;
-        public int m_nROIWidth;
-        public int m_nROIHeight;
-        public double m_dROIAngleRotate;
-        public int m_nThresholdGrayMin;
-        public int m_nThresholdGrayMax;
-        public int m_nNumberOfPxlMin;
-        public int m_nNumberOfPxlMax;
+        public int m_nROIX {  get; set; }
+        public int m_nROIY { get; set; }
+        public int m_nROIWidth { get; set; }
+        public int m_nROIHeight { get; set; }
+        public double m_dROIAngleRotate { get; set; }
+        public int m_nThresholdGrayMin { get; set; }
+        public int m_nThresholdGrayMax { get; set; }
+        public int m_nNumberOfPxlMin { get; set; }
+        public int m_nNumberOfPxlMax { get; set; }
     }
     public struct CParamCalAreaAlgorithm
     {
-        public int m_nROIX;
-        public int m_nROIY;
-        public int m_nROIWidth;
-        public int m_nROIHeight;
-        public double m_dROIAngleRotate;
-        public int m_nThreshold;
-        public int m_nAreaMin;
-        public int m_nAreaMax;
+        public int m_nROIX { get; set; }
+        public int m_nROIY { get; set; }
+        public int m_nROIWidth { get; set; }
+        public int m_nROIHeight { get; set; }
+        public double m_dROIAngleRotate { get; set; }
+        public int m_nThreshold { get; set; }
+        public int m_nAreaMin { get; set; }
+        public int m_nAreaMax { get; set; }
     }
     #endregion
 }
