@@ -112,11 +112,11 @@ BOOL CVisionAlgorithms::NVision_CalculateAreaAlgorithm()
 
 BOOL CVisionAlgorithms::NVision_CountPixelAlgorithm_TRAIN(CParamCntPxlAlgorithm* pParamTrainCntPxl)
 {
-	CString csData;
+	/*CString csData;
 	csData.Format(_T("ROI_X:%d, ROI_Y:%d, ROI_Width:%d, ROI_Height:%d, ROI_Angle:%.3f"),
 		pParamTrainCntPxl->m_nROIX, pParamTrainCntPxl->m_nROIY, pParamTrainCntPxl->m_nROIWidth, pParamTrainCntPxl->m_nROIHeight, pParamTrainCntPxl->m_dROIAngleRotate);
 
-	AfxMessageBox(csData);
+	AfxMessageBox(csData);*/
 
 	return TRUE;
 }
