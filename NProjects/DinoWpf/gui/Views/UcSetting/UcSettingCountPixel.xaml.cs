@@ -1,4 +1,5 @@
 ﻿using DinoWpf.Models.ParameterModel;
+using NpcCore.Wpf.Struct_Vision;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,43 +19,89 @@ using System.Windows.Shapes;
 
 namespace DinoWpf.Views.UcSetting
 {
+    public struct ROIInfos
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Algorithm { get; set; }
+        public bool Rotations { get; set; }
+        public int Priority { get; set; }
+    }
     /// <summary>
     /// Interaction logic for UcSettingCountPixel.xaml
     /// </summary>
     public partial class UcSettingCountPixel : UserControl, INotifyPropertyChanged
     {
         public log4net.ILog Logger { get; } = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private string _thresholdGrayMin;
-        private string _thresholdGrayMax;
-        private string _minPixel;
-        private string _maxPixel;
+
+        private List<ROIInfos> _lstRoiInfos = new List<ROIInfos>();
+        private ROIInfos _roiInfosSelected = new ROIInfos();
+        private List<CParamCntPxlAlgorithm> _lstParamCntPxl = new List<CParamCntPxlAlgorithm>();
+        private CParamCntPxlAlgorithm _paramCntPxlSelected = new CParamCntPxlAlgorithm();
         public UcSettingCountPixel()
         {
             InitializeComponent();
-
             this.DataContext = this;
+
+            _lstRoiInfos.Clear();
+            List<ROIInfos> rOIInfos = new List<ROIInfos>();
+            _roiInfosSelected.Id = "ROI";
+            _roiInfosSelected.Name = "count_pixel";
+            _roiInfosSelected.Type = "rectangle";
+            _roiInfosSelected.Algorithm = "CountPixel";
+            _roiInfosSelected.Rotations = true;
+            _roiInfosSelected.Priority = 2;
+            rOIInfos.Add(_roiInfosSelected);
+            ListROIInfos = rOIInfos;
+
+            _lstParamCntPxl.Clear();
+            List<CParamCntPxlAlgorithm> cParamCntPxlAlgorithms = new List<CParamCntPxlAlgorithm>();
+            _paramCntPxlSelected.m_nThresholdGrayMin = 0;
+            _paramCntPxlSelected.m_nThresholdGrayMax = 0;
+            _paramCntPxlSelected.m_nNumberOfPxlMin = 0;
+            _paramCntPxlSelected.m_nThresholdGrayMax = 0;
+            _paramCntPxlSelected.m_nROIX = 0;
+            _paramCntPxlSelected.m_nROIY = 0;
+            _paramCntPxlSelected.m_nROIWidth = 0;
+            _paramCntPxlSelected.m_nROIHeight = 0;
+            _paramCntPxlSelected.m_dROIAngleRotate = 0.0;
+            cParamCntPxlAlgorithms.Add(_paramCntPxlSelected);
+            ListParamCntPxl = cParamCntPxlAlgorithms;
         }
 
         #region Properties
-        public string ThresholdGrayMin
+        public List<ROIInfos> ListROIInfos
         {
-            get => _thresholdGrayMin;
-            set { if (SetProperty(ref _thresholdGrayMin, value)) { } }
+            get => _lstRoiInfos;
+            set
+            {
+                if(SetProperty(ref _lstRoiInfos, value))
+                {
+
+                }
+            }
         }
-        public string ThresholdGrayMax
+        public ROIInfos ROIInfosSelected
         {
-            get => _thresholdGrayMax;
-            set { if (SetProperty(ref _thresholdGrayMax, value)) { } }
+            get => _roiInfosSelected;
+            set
+            {
+                if(SetProperty(ref _roiInfosSelected, value))
+                {
+
+                }
+            }
         }
-        public string MinPixel
+        public List<CParamCntPxlAlgorithm> ListParamCntPxl
         {
-            get => _minPixel;
-            set { if (SetProperty(ref _minPixel, value)) { } }
+            get => _lstParamCntPxl;
+            set => _lstParamCntPxl = value;
         }
-        public string MaxPixel
+        public CParamCntPxlAlgorithm ParamCntPxlSelected
         {
-            get => _maxPixel;
-            set { if (SetProperty(ref _maxPixel, value)) { } }
+            get => _paramCntPxlSelected;
+            set => _paramCntPxlSelected = value;
         }
         #endregion
         #region Implement INotifyPropertyChanged

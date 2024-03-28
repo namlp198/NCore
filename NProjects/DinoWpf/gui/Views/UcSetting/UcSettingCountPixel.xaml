@@ -79,7 +79,129 @@
                               IsChecked="True" />
                 </StackPanel>
             </Border>
-            <Grid Grid.Row="1"
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <DataGrid Name="dgDataROI"
+                              Margin="3"
+                              Background="{DynamicResource RGB_Night_50_54_63}"
+                              FontSize="14"
+                              Foreground="Black"
+                              GridLinesVisibility="All"
+                              AutoGenerateColumns="False"
+                              RenderOptions.ClearTypeHint="Enabled"
+                              SelectionUnit="FullRow"
+                              TextOptions.TextFormattingMode="Display"
+                              CanUserAddRows="False"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="False"
+                              CanUserResizeRows="False"
+                              EnableColumnVirtualization="True"
+                              EnableRowVirtualization="True"
+                              Height="100"
+                              ItemsSource="{Binding ListROIInfos}"
+                              SelectedItem="{Binding ROIInfosSelected, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name"
+                                                Width="120"
+                                                FontWeight="SemiBold"
+                                                FontSize="14"
+                                                Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Type"
+                                                FontWeight="SemiBold"
+                                                Width="80"
+                                                FontSize="14"
+                                                Binding="{Binding Type}" />
+                            <DataGridTextColumn Header="Algorithm"
+                                                FontWeight="SemiBold"
+                                                Width="100"
+                                                FontSize="14"
+                                                Binding="{Binding Algorithm}" />
+                            <DataGridTextColumn Header="Rotations"
+                                                FontWeight="SemiBold"
+                                                FontSize="14"
+                                                Binding="{Binding Rotations}" />
+                            <DataGridTextColumn Header="Priority"
+                                                FontWeight="SemiBold"
+                                                FontSize="14"
+                                                Binding="{Binding Priority}" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid Name="dgDataCntPxl"
+                              Margin="3"
+                              Background="{DynamicResource RGB_Night_50_54_63}"
+                              FontSize="14"
+                              Foreground="Black"
+                              GridLinesVisibility="All"
+                              AutoGenerateColumns="False"
+                              RenderOptions.ClearTypeHint="Enabled"
+                              SelectionUnit="FullRow"
+                              TextOptions.TextFormattingMode="Display"
+                              CanUserAddRows="False"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="False"
+                              CanUserResizeRows="False"
+                              EnableColumnVirtualization="True"
+                              EnableRowVirtualization="True"
+                              Height="100"
+                              ItemsSource="{Binding ListParamCntPxl}"
+                              SelectedItem="{Binding ParamCntPxlSelected, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Thresh Gray (min)"
+                                                FontWeight="SemiBold"
+                                                Width="120"
+                                                FontSize="14"
+                                                Binding="{Binding m_nThresholdGrayMin, Mode=TwoWay}" />
+                            <DataGridTextColumn Header="Thresh Gray (max)"
+                                                FontWeight="SemiBold"
+                                                Width="120"
+                                                FontSize="14"
+                                                Binding="{Binding m_nThresholdGrayMax, Mode=TwoWay}" />
+                            <DataGridTextColumn Header="Number of Pixel (min)"
+                                                FontWeight="SemiBold"
+                                                Width="120"
+                                                FontSize="14"
+                                                Binding="{Binding m_nNumberOfPxlMin, Mode=TwoWay}" />
+                            <DataGridTextColumn Header="Number of Pixel (max)"
+                                                FontWeight="SemiBold"
+                                                Width="120"
+                                                FontSize="14"
+                                                Binding="{Binding m_nNumberOfPxlMax, Mode=TwoWay}" />
+                            <DataGridTextColumn Header="X"
+                                                Width="45"
+                                                IsReadOnly="True"
+                                                FontWeight="SemiBold"
+                                                FontSize="14"
+                                                Binding="{Binding m_nROIX}" />
+                            <DataGridTextColumn Header="Y"
+                                                FontWeight="SemiBold"
+                                                IsReadOnly="True"
+                                                Width="45"
+                                                FontSize="14"
+                                                Binding="{Binding m_nROIY}" />
+                            <DataGridTextColumn Header="Width"
+                                                FontWeight="SemiBold"
+                                                IsReadOnly="True"
+                                                Width="80"
+                                                FontSize="14"
+                                                Binding="{Binding m_nROIWidth}" />
+                            <DataGridTextColumn Header="Height"
+                                                FontWeight="SemiBold"
+                                                IsReadOnly="True"
+                                                Width="80"
+                                                FontSize="14"
+                                                Binding="{Binding m_nROIHeight}" />
+                            <DataGridTextColumn Header="Angle Rotate"
+                                                FontWeight="SemiBold"
+                                                IsReadOnly="True"
+                                                Width="100"
+                                                FontSize="14"
+                                                Binding="{Binding m_dROIAngleRotate}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Grid>
+            <!--<Grid Grid.Row="1"
                   Margin="5 10 5 5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.4*" />
@@ -157,7 +279,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-            </Grid>
+            </Grid>-->
         </Grid>
     </Grid>
 </UserControl>

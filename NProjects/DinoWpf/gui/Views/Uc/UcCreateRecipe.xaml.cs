@@ -127,20 +127,34 @@ namespace DinoWpf.Views.Uc
 
         private void UcCreateRecipe_UcSelectedROI(object sender, RoutedEventArgs e)
         {
+            if(_ucSettingROITool.cbbAlgorithms.SelectedItem == null)
+            {
+                MessageBox.Show("Not yet algorithm!");
+                return;
+            }
+            _ucSettingROITool.ucSettingCountPixel.ListParamCntPxl.Clear();
             switch (_ucSettingROITool.AlgorithmSelected)
             {
                 case Algorithms.CountPixel:
-                    CParamCntPxlAlgorithm cParamCntPxlAlgorithm = new CParamCntPxlAlgorithm();
+                    
+                    CParamCntPxlAlgorithm cParamCntPxlAlgorithm = _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected;
                     cParamCntPxlAlgorithm.m_nROIX = (int)ucCreateRecipe.ROISelected.X;
                     cParamCntPxlAlgorithm.m_nROIY = (int)ucCreateRecipe.ROISelected.Y;
                     cParamCntPxlAlgorithm.m_nROIWidth = (int)ucCreateRecipe.ROISelected.Width;
                     cParamCntPxlAlgorithm.m_nROIHeight = (int)ucCreateRecipe.ROISelected.Height;
                     cParamCntPxlAlgorithm.m_dROIAngleRotate = ucCreateRecipe.AngleRotate;
-                    cParamCntPxlAlgorithm.m_nThresholdGrayMin = 100;
-                    cParamCntPxlAlgorithm.m_nThresholdGrayMax = 200;
-                    cParamCntPxlAlgorithm.m_nNumberOfPxlMin = 3000;
-                    cParamCntPxlAlgorithm.m_nNumberOfPxlMax = 8000;
+                    //cParamCntPxlAlgorithm.m_nThresholdGrayMin = _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nThresholdGrayMin;
+                    //cParamCntPxlAlgorithm.m_nThresholdGrayMax = _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nThresholdGrayMax;
+                    //cParamCntPxlAlgorithm.m_nNumberOfPxlMin = _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nNumberOfPxlMin;
+                    //cParamCntPxlAlgorithm.m_nNumberOfPxlMax = _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nNumberOfPxlMax;
+
+                    List<CParamCntPxlAlgorithm> lst = new List<CParamCntPxlAlgorithm>();
+                    lst.Add(cParamCntPxlAlgorithm);
+                    _ucSettingROITool.ucSettingCountPixel.ListParamCntPxl = lst;
+                    _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected = cParamCntPxlAlgorithm;
                     InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.CountPixelAlgorithm_Train(ucCreateRecipe.CameraIndex, ref cParamCntPxlAlgorithm);
+
+                    _ucSettingROITool.btnSave.IsEnabled = true;
                     break;
                 case Algorithms.CalculateArea:
                     break;
@@ -243,6 +257,7 @@ namespace DinoWpf.Views.Uc
 
            if( _xmlManagement.Save(_xmlPath))
             {
+                _locatorIdx++;
                 MessageBox.Show("Save Recipe successfully!");
             }
         }
@@ -250,28 +265,11 @@ namespace DinoWpf.Views.Uc
         private void UcCreateRecipe_SettingROI(object sender, RoutedEventArgs e)
         {
             _ucSettingROITool = new UcSettingROITool();
-            contentSetting.Content = _ucSettingROITool;
             _ucSettingROITool.ROIId = "ROI" + _roiIdx;
+            _ucSettingROITool.btnSave.IsEnabled = false;
             _ucSettingROITool.SaveParamROITool += _ucSettingROITool_SaveParam;
+            contentSetting.Content = _ucSettingROITool;
             ToolSelected = ToolSelected.SelectROITool;
-
-            XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
-            if (nodeRecipe != null)
-            {
-                XmlNode nodeSelectROI = _xmlManagement.AddChildNode(nodeRecipe, "SelectROITool");
-                if (nodeSelectROI != null)
-                {
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "id", "ROI" + _roiIdx);
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "name", "");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "type", "");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "algorithm", "");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "rotations", "");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI, "priority", "");
-
-                    if (_xmlManagement.Save(_xmlPath))
-                        _roiIdx++;
-                }
-            }
         }
 
         private void _ucSettingROITool_SaveParam(object sender, RoutedEventArgs e)
@@ -280,12 +278,34 @@ namespace DinoWpf.Views.Uc
             {
                 case Algorithms.CountPixel:
                     XmlNode nodeSelectROI_CountPixel = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/SelectROITool[@id='" + _ucSettingROITool.ROIId + "']");
-                    if (nodeSelectROI_CountPixel == null) return;
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "name", "count_pixel");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "type", "rectangle");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "algorithm", "CountPixel");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "rotations", "True");
-                    _xmlManagement.AddAttributeToNode(nodeSelectROI_CountPixel, "priority", "2");
+                    if (nodeSelectROI_CountPixel == null)
+                    {
+                        XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
+                        if (nodeRecipe != null)
+                        {
+                            XmlNode nodeSelectROI = _xmlManagement.AddChildNode(nodeRecipe, "SelectROITool");
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "id", "ROI" + _roiIdx);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "name", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Name);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "type", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Type);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "algorithm", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Algorithm);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "rotations", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Rotations.ToString());
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "priority", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Priority + "");
+                        }
+                        nodeSelectROI_CountPixel = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe/SelectROITool[@id='" + _ucSettingROITool.ROIId + "']");
+                    }
+                    else
+                    {
+                        XmlNode nodeRecipe = _xmlManagement.SelectSingleNode("//Job/Camera[@id='" + MainViewModel.Instance.CameraIdSelected + "']/Recipe");
+                        if (nodeRecipe != null)
+                        {
+                            XmlNode nodeSelectROI = nodeRecipe.SelectSingleNode("//SelectROITool");
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "name", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Name);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "type", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Type);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "algorithm", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Algorithm);
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "rotations", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Rotations.ToString());
+                            _xmlManagement.AddAttributeToNode(nodeSelectROI, "priority", _ucSettingROITool.ucSettingCountPixel.ROIInfosSelected.Priority + "");
+                        }
+                    }
 
                     XmlNode nodeParams = null;
                     XmlNode nodeROI_CountPxl = null;
@@ -298,6 +318,13 @@ namespace DinoWpf.Views.Uc
                         nodeThresholdGray = _xmlManagement.AddChildNode(nodeParams, "ThresholdGray");
                         nodeNumberOfPixel = _xmlManagement.AddChildNode(nodeParams, "NumberOfPixel");
                     }
+                    else
+                    {
+                        nodeParams = nodeSelectROI_CountPixel.SelectSingleNode("//Parameters");
+                        nodeROI_CountPxl = nodeSelectROI_CountPixel.SelectSingleNode("//Parameters/ROI");
+                        nodeThresholdGray = nodeSelectROI_CountPixel.SelectSingleNode("//Parameters/ThresholdGray");
+                        nodeNumberOfPixel = nodeSelectROI_CountPixel.SelectSingleNode("//Parameters/NumberOfPixel");
+                    }
 
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "x", (int)ucCreateRecipe.ROISelected.X + "");
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "y", (int)ucCreateRecipe.ROISelected.Y + "");
@@ -305,13 +332,17 @@ namespace DinoWpf.Views.Uc
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "height", (int)ucCreateRecipe.ROISelected.Height + "");
                     _xmlManagement.AddAttributeToNode(nodeROI_CountPxl, "angleRotate", ucCreateRecipe.AngleRotate + "");
 
-                    _xmlManagement.AddAttributeToNode(nodeThresholdGray, "min", _ucSettingROITool.ucSettingCountPixel.ThresholdGrayMin);
-                    _xmlManagement.AddAttributeToNode(nodeThresholdGray, "max", _ucSettingROITool.ucSettingCountPixel.ThresholdGrayMax);
+                    _xmlManagement.AddAttributeToNode(nodeThresholdGray, "min", _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nThresholdGrayMin + "");
+                    _xmlManagement.AddAttributeToNode(nodeThresholdGray, "max", _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nThresholdGrayMax + "");
 
-                    _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "min", _ucSettingROITool.ucSettingCountPixel.MinPixel);
-                    _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "max", _ucSettingROITool.ucSettingCountPixel.MaxPixel);
+                    _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "min", _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nNumberOfPxlMin + "");
+                    _xmlManagement.AddAttributeToNode(nodeNumberOfPixel, "max", _ucSettingROITool.ucSettingCountPixel.ParamCntPxlSelected.m_nNumberOfPxlMax + "");
 
-                    _xmlManagement.Save(_xmlPath);
+                    if(_xmlManagement.Save(_xmlPath))
+                    {
+                        _roiIdx++;
+                        MessageBox.Show("Saved param ROI successfully!");
+                    }
 
                     break;
                 case Algorithms.CalculateArea:
