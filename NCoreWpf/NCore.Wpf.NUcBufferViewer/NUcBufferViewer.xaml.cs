@@ -130,7 +130,7 @@ namespace NCore.Wpf.NUcBufferViewer
         private void ImageExt_SaveImage(object sender, RoutedEventArgs e)
         {
             ImageExt imageExt = (ImageExt)sender;
-            ROISelected = imageExt.Rect;
+            ROISelected = imageExt.RectReal;
             AngleRotate = imageExt.RectRotation;
 
             RaiseEvent(new RoutedEventArgs(UcSaveImageEvent, this));
