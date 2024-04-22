@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{282f05a8-d8f5-4d57-9b15-2492836cbcb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera">
+      <UniqueIdentifier>{4c715dff-45b0-4325-8b9e-24a70bb0c414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\View">
+      <UniqueIdentifier>{77b9f5e4-1cae-4d6d-929c-52156b169b1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\ThreadPool">
+      <UniqueIdentifier>{c1a940d8-6b41-4db5-9b05-3ff79016eb5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{2c36474d-2bda-435f-87aa-d8246ced7e59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera">
+      <UniqueIdentifier>{b026b065-ac63-458e-9b1b-3c2d34f3c866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\ThreadPool">
+      <UniqueIdentifier>{e84b246d-937c-4214-baf9-293efed6946e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\View">
+      <UniqueIdentifier>{e9bf83ad-d8b7-4d6b-b3c5-958430e6d010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\IOManagement">
+      <UniqueIdentifier>{b3c04e07-e92b-4b7b-8e8e-00d67d1d7269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\IOManagement">
+      <UniqueIdentifier>{5b4f05ae-e9be-4726-8620-a7abc133fda2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\JigInspectDinoCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\JigInspectProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\JigInspectProcessorCSharp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\JigInspectConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\JigInspectRecipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\DeviceEnumerator.h">
+      <Filter>Header Files\Tools\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\FrameGrabber_UsbCam.h">
+      <Filter>Header Files\Tools\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\PriorityThread.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\ThreadData.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\ThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\TimerThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WaitThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\View\SharedMemoryBuffer.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\IOManagement\IOManagement_PLC_Pana.h">
+      <Filter>Header Files\Tools\IOManagement</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\JigInspectDinoCam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\JigInspectProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\JigInspectProcessorCSharp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\JigInspectConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\JigInspectRecipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\DeviceEnumerator.cpp">
+      <Filter>Source Files\Tools\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\FrameGrabber_UsbCam.cpp">
+      <Filter>Source Files\Tools\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\PriorityThread.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\ThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\TimerThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WaitThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadArray.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\View\SharedMemoryBuffer.cpp">
+      <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\IOManagement\IOManagement_PLC_Pana.cpp">
+      <Filter>Source Files\Tools\IOManagement</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
