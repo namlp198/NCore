@@ -195,13 +195,13 @@ BOOL ImageProcessor::Initialize()
 	}
 
 	// Inspection Hik Cam
-	if (m_pInspHikCam != NULL)
+	/*if (m_pInspHikCam != NULL)
 	{
 		m_pInspHikCam->Destroy();
 		delete m_pInspHikCam, m_pInspHikCam = NULL;
 	}
 	m_pInspHikCam = new InspectionHikCam;
-	m_pInspHikCam->Initialize();
+	m_pInspHikCam->Initialize();*/
 
 	// Inspection Basler Cam
 	/*if (m_pInspBaslerCam != NULL)
@@ -222,13 +222,13 @@ BOOL ImageProcessor::Initialize()
 	m_pInspBaslerCam_New->Initialize();*/
 
 	// Inspection Usb Camera
-	/*if (m_pInspUsbCam != NULL)
+	if (m_pInspUsbCam != NULL)
 	{
 		m_pInspUsbCam->Destroy();
 		delete m_pInspUsbCam, m_pInspUsbCam = NULL;
 	}
 	m_pInspUsbCam = new CInspectionUsbCam;
-	m_pInspUsbCam->Initialize();*/
+	m_pInspUsbCam->Initialize();
 
 	return TRUE;
 }
