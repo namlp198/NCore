@@ -1,0 +1,156 @@
+﻿<Window x:Class="DinoVisionGUI.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DinoVisionGUI.Views"
+        xmlns:Uc="clr-namespace:NCore.Wpf.UcZoomBoxViewer;assembly=NCore.Wpf.UcZoomBoxViewer"
+        mc:Ignorable="d"
+        Title="MainView"
+        Height="800"
+        Width="1280"
+        Background="{DynamicResource RGB_Night_33_41_57}"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush"
+                         Color="#2e3d5a" />
+        <!-- TabItem Style-->
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid>
+                            <Border x:Name="Border1"
+                                    BorderBrush="LightGray"
+                                    CornerRadius="2 2 0 0"
+                                    BorderThickness="0.6">
+                                <ContentPresenter ContentSource="Header"
+                                                  Margin="10 2 10 2"
+                                                  TextBlock.Foreground="White" />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected"
+                                     Value="False">
+                                <Setter TargetName="Border1"
+                                        Property="Margin"
+                                        Value="0 2 0 0" />
+                                <Setter TargetName="Border1"
+                                        Property="BorderThickness"
+                                        Value="1" />
+                                <Setter TargetName="Border1"
+                                        Property="Background"
+                                        Value="LightGray" />
+                                <Setter Property="Panel.ZIndex"
+                                        Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="True">
+                                <Setter TargetName="Border1"
+                                        Property="Margin"
+                                        Value="-5,0,-5,0" />
+                                <Setter TargetName="Border1"
+                                        Property="BorderThickness"
+                                        Value="1,1,1,0" />
+                                <Setter TargetName="Border1"
+                                        Property="Background"
+                                        Value="{StaticResource BackgroundBrush}" />
+                                <Setter Property="Panel.ZIndex"
+                                        Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.1*" />
+            <RowDefinition Height="14*" />
+            <RowDefinition Height="0.8*" />
+        </Grid.RowDefinitions>
+        <ToolBar Margin="2"
+                 Background="{DynamicResource RGB_Night_46_61_90}">
+            <Button Margin="5"
+                    Name="btnSettings"
+                    Command="{Binding ShowSettingsViewCmd}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{DynamicResource IMG_Setting_3}"
+                               Margin="8" />
+                        <TextBlock Text="Settings"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   FontSize="14"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   Margin="0 0 5 0" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Separator Margin="5" />
+            <Button Margin="5"
+                    Name="btnInit"
+                    Command="{Binding InitializeCmd}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{DynamicResource IMG_Refresh}"
+                               Margin="8" />
+                        <TextBlock Text="Initialize"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   FontSize="14"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   Margin="0 0 5 0" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Separator Margin="5" />
+        </ToolBar>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3.8*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="LightGray"
+                    BorderThickness="1">
+                <Uc:UcZoomBoxViewer Margin="3"
+                                    x:Name="ucZoomBoxViewer" />
+            </Border>
+            <Border Margin="3"
+                    Grid.Column="1">
+                <TabControl Background="{DynamicResource RGB_Night_61_66_77}">
+                    <TabItem Header="Results"
+                             FontSize="16"
+                             FontFamily="Segoe UI"
+                             FontWeight="Bold"
+                             Foreground="Black">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="System Log"
+                             FontSize="16"
+                             FontFamily="Segoe UI"
+                             FontWeight="Bold"
+                             Foreground="Black">
+
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </Grid>
+        <StatusBar Grid.Row="2"
+                   Background="{DynamicResource RGB_Night_42_45_52}">
+
+        </StatusBar>
+    </Grid>
+</Window>
