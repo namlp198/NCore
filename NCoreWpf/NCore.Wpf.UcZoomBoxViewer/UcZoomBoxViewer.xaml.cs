@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,6 +28,17 @@ namespace NCore.Wpf.UcZoomBoxViewer
 {
     public enum ModeView { Mono, Color }
     public enum ECamState { Stoped, Started}
+    public enum EMachineMode 
+    {
+        [Description("Inspect")]
+        EMachineMode_Inspect,
+        [Description("Live")]
+        EMachineMode_LiveCam,
+        [Description("Manual")]
+        EMachineMode_ManualTest,
+        [Description("Simulator")]
+        EMachineMode_Simulator
+    }
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
@@ -34,6 +46,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
     {
         private int _camIdx = -1;
         private bool _hasRecipe;
+        private bool _isVisibleRecipeButton = true;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -46,12 +59,20 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private const int _resolutionX = 96;
         private const int _resolutionY = 96;
 
+        private List<string> _machineModeList = new List<string>();
+        private string _machineModeSelected = "Simulator";
+
         private ModeView _eModeView = ModeView.Mono;
         private ECamState _camState = ECamState.Stoped;
+        private EMachineMode _eMachineMode = EMachineMode.EMachineMode_Simulator;
 
         public UcZoomBoxViewer()
         {
             InitializeComponent();
+
+            this.DataContext = this;
+
+            MachineModeList = GetEnumDescriptionToListString();
 
             // Try creating a new image with a custom palette.
             List<System.Windows.Media.Color> colors = new List<System.Windows.Media.Color>();
@@ -132,6 +153,55 @@ namespace NCore.Wpf.UcZoomBoxViewer
             }
         }
 
+        public EMachineMode MachineMode
+        {
+            get { return _eMachineMode; }
+            set
+            {
+                if (SetProperty(ref _eMachineMode, value))
+                {
+                    RaiseEvent(new RoutedEventArgs(SwitchMachineModeEvent, this));
+                    switch (_eMachineMode)
+                    {
+                        case EMachineMode.EMachineMode_Inspect:
+                            btnContinuousGrab.IsEnabled = false;
+                            btnSingleGrab.IsEnabled = false;
+                            btnLoadImage.IsEnabled = false;
+                            btnContinuousGrab.Opacity = 0.2d;
+                            btnSingleGrab.Opacity = 0.2d;
+                            btnLoadImage.Opacity = 0.2d;
+                            break;
+                        case EMachineMode.EMachineMode_LiveCam:
+                            btnContinuousGrab.IsEnabled = true;
+                            btnSingleGrab.IsEnabled = false;
+                            btnLoadImage.IsEnabled = false;
+                            btnContinuousGrab.Opacity = 1.0d;
+                            btnSingleGrab.Opacity = 0.2d;
+                            btnLoadImage.Opacity = 0.2d;
+                            break;
+                        case EMachineMode.EMachineMode_ManualTest:
+                            btnContinuousGrab.IsEnabled = false;
+                            btnSingleGrab.IsEnabled = true;
+                            btnLoadImage.IsEnabled = false;
+                            btnContinuousGrab.Opacity = 0.2d;
+                            btnSingleGrab.Opacity = 1.0d;
+                            btnLoadImage.Opacity = 0.2d;
+                            break;
+                        case EMachineMode.EMachineMode_Simulator:
+                            btnContinuousGrab.IsEnabled = false;
+                            btnSingleGrab.IsEnabled = false;
+                            btnLoadImage.IsEnabled = true;
+                            btnContinuousGrab.Opacity = 0.2d;
+                            btnSingleGrab.Opacity = 0.2d;
+                            btnLoadImage.Opacity = 1.0d;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
         public int CameraIndex
         {
             get => _camIdx;
@@ -163,6 +233,59 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 }
             }
         }
+        public bool IsVisibleRecipeButton
+        {
+            get => _isVisibleRecipeButton;
+            set
+            {
+                if (SetProperty(ref _isVisibleRecipeButton, value))
+                {
+                    
+                }
+            }
+        }
+
+        public List<string> MachineModeList
+        {
+            get => _machineModeList;
+            set
+            {
+                if (SetProperty(ref _machineModeList, value))
+                {
+
+                }
+            }
+        }
+
+        public string MachineModeSelected
+        {
+            get => _machineModeSelected;
+            set
+            {
+                if (SetProperty(ref _machineModeSelected, value))
+                {
+                    switch (_machineModeSelected)
+                    {
+                        case "Inspect":
+                            MachineMode = EMachineMode.EMachineMode_Inspect;
+                            break;
+                        case "Live":
+                            MachineMode = EMachineMode.EMachineMode_LiveCam;
+                            break;
+                        case "Manual":
+                            MachineMode = EMachineMode.EMachineMode_ManualTest;
+                            break;
+                        case "Simulator":
+                            MachineMode = EMachineMode.EMachineMode_Simulator;
+                            break;
+                        default:
+                            MachineMode = EMachineMode.EMachineMode_Inspect;
+                            break;
+                    }
+                }
+            }
+        }
+
         #endregion
 
         // KERNEL FUNCTIONS
@@ -294,6 +417,37 @@ namespace NCore.Wpf.UcZoomBoxViewer
             await task;
         }
 
+        private string GetEnumDescription(Enum enumObj)
+        {
+            FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
+            if (fieldInfo != null)
+            {
+                object[] attribArray = fieldInfo.GetCustomAttributes(false);
+                if (attribArray != null && attribArray.Length > 0 && attribArray[0] is DescriptionAttribute attrib)
+                {
+                    return attrib.Description;
+                }
+            }
+            return enumObj.ToString();
+        }
+        private List<string> GetEnumDescriptionToListString()
+        {
+            List<string> modeTestString = new List<string>();
+            List<EMachineMode> modeTests = Enum.GetValues(typeof(EMachineMode))
+                                           .Cast<EMachineMode>()
+                                           .ToList();
+
+            foreach (var item in modeTests)
+            {
+                string s = GetEnumDescription(item);
+                //if (s.Equals("Null"))
+                //    continue;
+                modeTestString.Add(s);
+            }
+
+            return modeTestString;
+        }
+
         public void SetGrayscalePalette(Bitmap Image)
         {
             ColorPalette GrayscalePalette = Image.Palette;
@@ -302,6 +456,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
                 GrayscalePalette.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
             Image.Palette = GrayscalePalette;
         }
+
         #endregion
 
         #region Event
@@ -370,6 +525,78 @@ namespace NCore.Wpf.UcZoomBoxViewer
             remove
             {
                 base.RemoveHandler(StopCamEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent UcContinuousGrabEvent = EventManager.RegisterRoutedEvent(
+        "UcContinuousGrab",
+        RoutingStrategy.Bubble,
+        typeof(RoutedEventHandler),
+        typeof(ImageExt));
+
+        public event RoutedEventHandler UcContinuousGrab
+        {
+            add
+            {
+                base.AddHandler(UcContinuousGrabEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UcContinuousGrabEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent UcSingleGrabEvent = EventManager.RegisterRoutedEvent(
+           "UcSingleGrab",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(ImageExt));
+
+        public event RoutedEventHandler UcSingleGrab
+        {
+            add
+            {
+                base.AddHandler(UcSingleGrabEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UcSingleGrabEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent UcLoadImageEvent = EventManager.RegisterRoutedEvent(
+           "UcLoadImage",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(ImageExt));
+
+        public event RoutedEventHandler UcLoadImage
+        {
+            add
+            {
+                base.AddHandler(UcLoadImageEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(UcLoadImageEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent SwitchMachineModeEvent = EventManager.RegisterRoutedEvent(
+           "SwitchMachineMode",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(ImageExt));
+
+        public event RoutedEventHandler SwitchMachineMode
+        {
+            add
+            {
+                base.AddHandler(SwitchMachineModeEvent, value);
+            }
+            remove
+            {
+                base.RemoveHandler(SwitchMachineModeEvent, value);
             }
         }
 
@@ -492,6 +719,21 @@ namespace NCore.Wpf.UcZoomBoxViewer
         {
             RaiseEvent(new RoutedEventArgs(StartCamEvent, this));
             CamState = ECamState.Started;
+        }
+
+        private void btnContinuousGrab_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(UcContinuousGrabEvent, this));
+        }
+
+        private void btnSingleGrab_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(UcSingleGrabEvent, this));
+        }
+
+        private void btnLoadImage_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(UcLoadImageEvent, this));
         }
 
         //private void btnStop_Click(object sender, RoutedEventArgs e)

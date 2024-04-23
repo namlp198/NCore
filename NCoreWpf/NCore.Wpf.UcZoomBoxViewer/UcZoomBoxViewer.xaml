@@ -84,9 +84,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="45" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <Grid>
             <Border Margin="2"
@@ -107,78 +107,146 @@
                     <Separator Margin="3"
                                BorderBrush="LightGray"
                                BorderThickness="1"/>-->
-                    <Button x:Name="btnCreateRecipe"
-                            Click="btnCreateRecipe_Click"
-                            IsEnabled="{Binding HasRecipe, Converter={StaticResource InvertBooleanConverter}}">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_CrossToolBar}"
-                                       Margin="5 2 3 2" />
-                                <TextBlock Text="Create Recipe"
-                                           Margin="5 0 5 0"
-                                           Foreground="White"
-                                           FontSize="12"
-                                           VerticalAlignment="Center"
-                                           FontWeight="SemiBold" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
+                    <DockPanel>
+                        <TextBlock Text="Mode"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Margin="5 0 5 0"
+                                   FontSize="14"
+                                   FontWeight="Bold" />
+                        <ComboBox  Margin="3"
+                                   x:Name="cbbMachineMode"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Width="100"
+                                   ItemsSource="{Binding MachineModeList}"
+                                   SelectedItem="{Binding MachineModeSelected, Mode=TwoWay}"/>
+                    </DockPanel>
                     <Separator BorderThickness="1"
                                BorderBrush="LightGray"
                                Margin="3" />
-                    <Button x:Name="btnUpdateRecipe"
-                            Click="btnUpdateRecipe_Click"
-                            IsEnabled="{Binding HasRecipe}"
-                            Opacity="0.3">
+                    <Button Background="WhiteSmoke"
+                            Name="btnContinuousGrab"
+                            Click="btnContinuousGrab_Click"
+                            IsEnabled="False"
+                            Opacity="0.2"
+                            Margin="3"
+                            Width="45"
+                            Height="30">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_Update_Recipe}"
+                                <Image Source="{DynamicResource IMG_CameraLive}"
                                        Margin="3" />
-                                <TextBlock Text="Update Recipe"
-                                           Margin="5 0 5 0"
-                                           Foreground="White"
-                                           FontSize="12"
-                                           VerticalAlignment="Center"
-                                           FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Name="btnSingleGrab"
+                            Click="btnSingleGrab_Click"
+                            IsEnabled="False"
+                            Opacity="0.2"
+                            Margin="3"
+                            Width="45"
+                            Height="30">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_CameraGrab}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Margin="3"
+                            x:Name="btnLoadImage"
+                            Click="btnLoadImage_Click"
+                            IsEnabled="False"
+                            Opacity="0.2"
+                            Width="45"
+                            Height="30">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_Load_Img}"
+                                       Margin="3" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <Separator BorderThickness="1"
                                BorderBrush="LightGray"
                                Margin="3" />
-                    <Button x:Name="btnRun"
-                            Click="btnRun_Click">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_StartRecipe_1}"
-                                       Margin="5 2 0 2" />
-                                <TextBlock Text="Run"
-                                           Margin="5 0 0 0"
-                                           Foreground="White"
-                                           FontSize="12"
-                                           VerticalAlignment="Center"
-                                           FontWeight="SemiBold" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <!--<Separator BorderThickness="1"
-                               BorderBrush="LightGray"
-                               Margin="3" />-->
-                    <!--<Button x:Name="btnStop"
-                            Click="btnStop_Click">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_Stop_All}"
-                                       Margin="5 2 0 2" />
-                                <TextBlock Text="Stop"
-                                           Margin="5 0 0 0"
-                                           Foreground="White"
-                                           FontSize="12"
-                                           VerticalAlignment="Center"
-                                           FontWeight="SemiBold" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>-->
+                    <DockPanel Visibility="{Binding IsVisibleRecipeButton, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button x:Name="btnCreateRecipe"
+                                Click="btnCreateRecipe_Click"
+                                IsEnabled="{Binding HasRecipe, Converter={StaticResource InvertBooleanConverter}}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{DynamicResource IMG_CrossToolBar}"
+                                           Margin="5 2 3 2" />
+                                    <TextBlock Text="Create Recipe"
+                                               Margin="5 0 5 0"
+                                               Foreground="White"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               FontWeight="SemiBold" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Separator BorderThickness="1"
+                                   BorderBrush="LightGray"
+                                   Margin="3" />
+                        <Button x:Name="btnUpdateRecipe"
+                                Click="btnUpdateRecipe_Click"
+                                IsEnabled="{Binding HasRecipe}"
+                                Opacity="0.3">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{DynamicResource IMG_Update_Recipe}"
+                                           Margin="3" />
+                                    <TextBlock Text="Update Recipe"
+                                               Margin="5 0 5 0"
+                                               Foreground="White"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               FontWeight="SemiBold" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Separator BorderThickness="1"
+                                   BorderBrush="LightGray"
+                                   Margin="3" />
+                        <Button x:Name="btnRun"
+                                Click="btnRun_Click">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{DynamicResource IMG_StartRecipe_1}"
+                                           Margin="5 2 0 2" />
+                                    <TextBlock Text="Run"
+                                               Margin="5 0 0 0"
+                                               Foreground="White"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               FontWeight="SemiBold" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <!--<Separator BorderThickness="1"
+           BorderBrush="LightGray"
+           Margin="3" />-->
+                        <!--<Button x:Name="btnStop"
+        Click="btnStop_Click">
+    <Button.Content>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="{DynamicResource IMG_Stop_All}"
+                   Margin="5 2 0 2" />
+            <TextBlock Text="Stop"
+                       Margin="5 0 0 0"
+                       Foreground="White"
+                       FontSize="12"
+                       VerticalAlignment="Center"
+                       FontWeight="SemiBold" />
+        </StackPanel>
+    </Button.Content>
+</Button>-->
+                    </DockPanel>
                 </ToolBar>
             </Border>
         </Grid>
