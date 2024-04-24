@@ -11,6 +11,9 @@ namespace DinoVisionGUI
     {
         public JigInspectProcessorManager JigInspProcessorManager = new JigInspectProcessorManager();
 
+        public delegate void InspectionComplete_Handler();
+        public static event InspectionComplete_Handler InspectionComplete;
+
         private static InterfaceManager _instance = null;
         public static InterfaceManager Instance
         {
@@ -22,6 +25,11 @@ namespace DinoVisionGUI
             }
             private set { }
             
+        }
+
+        public void CallbackInsCompleteFunc()
+        {
+            InspectionComplete();
         }
     }
 }

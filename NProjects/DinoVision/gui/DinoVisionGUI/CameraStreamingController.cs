@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DinoVisionGUI
 {
-    public enum CameraType { Hik, iRayple, Basler, UsbCam}
+    public enum CameraType { Hik, iRayple, Basler, UsbCam }
     public class CameraStreamingController : IDisposable
     {
         private int _camIdx = 0;
@@ -34,14 +34,13 @@ namespace DinoVisionGUI
         }
         public async Task SingleGrab()
         {
-            await Task.Factory.StartNew(async () =>
-            {
-                InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SingleGrabDinoCam(_camIdx);
-                m_NUcZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetBufferDinoCam(_camIdx);
-                await m_NUcZoomBoxViewer.UpdateImage();
-            });
+            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(_camIdx);
+            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SingleGrabDinoCam(_camIdx);
+            m_NUcZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetBufferDinoCam(_camIdx);
+            await m_NUcZoomBoxViewer.UpdateImage();
+            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(_camIdx);
         }
-      
+
         public async Task ContinuousGrab(CameraType cameraType)
         {
             // Never run two parallel tasks for the webcam streaming
@@ -51,7 +50,7 @@ namespace DinoVisionGUI
             switch (cameraType)
             {
                 case CameraType.UsbCam:
-                   
+
                     var initializationSemaphore0 = new SemaphoreSlim(0, 1);
 
                     _cancellationTokenSource = new CancellationTokenSource();
@@ -60,7 +59,7 @@ namespace DinoVisionGUI
                     {
                         while (!_cancellationTokenSource.IsCancellationRequested)
                         {
-                            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SingleGrabDinoCam(_camIdx);
+                            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.StartGrabDinoCam(_camIdx);
                             m_NUcZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetBufferDinoCam(_camIdx);
                             await m_NUcZoomBoxViewer.UpdateImage();
 
@@ -93,7 +92,7 @@ namespace DinoVisionGUI
         {
             switch (cameraType)
             {
-                case CameraType.Hik:
+                case CameraType.UsbCam:
                     // If "Dispose" gets called before Stop
                     if (_cancellationTokenSource.IsCancellationRequested)
                         return;

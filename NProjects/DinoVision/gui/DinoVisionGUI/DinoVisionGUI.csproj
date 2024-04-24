@@ -53,6 +53,7 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NCore.Wpf.UcZoomBoxViewer">
@@ -97,24 +98,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CameraStreamingController.cs" />
-    <Compile Include="Command\Cmd\ShowLoginViewCmd.cs" />
-    <Compile Include="Command\Cmd\ShowSettingsViewCmd.cs" />
-    <Compile Include="Command\CommandBase.cs" />
-    <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="IOManagement_PLC_Pana.cs" />
     <Compile Include="JigInspectProcessorDll.cs" />
     <Compile Include="JigInspectProcessorManager.cs" />
-    <Compile Include="Models\JigInspectConfigurations.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Views\LoginView.xaml.cs">
+    <Compile Include="LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
+    <Compile Include="MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsView.xaml.cs">
+    <Compile Include="SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -130,15 +123,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsView.xaml">
+    <Page Include="SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

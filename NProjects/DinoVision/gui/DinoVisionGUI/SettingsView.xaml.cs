@@ -1,5 +1,4 @@
-﻿using DinoVisionGUI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DinoVisionGUI.Views
+namespace DinoVisionGUI
 {
     /// <summary>
     /// Interaction logic for SettingsView.xaml
@@ -23,8 +22,6 @@ namespace DinoVisionGUI.Views
         public SettingsView()
         {
             InitializeComponent();
-
-            this.DataContext = SettingsViewModel.Instance;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using DinoVisionGUI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -14,6 +13,9 @@ namespace DinoVisionGUI
     public class IOManagement_PLC_Pana : IDisposable
     {
         #region variable
+        public delegate void NewImageUpdateHandler(IOManagement_PLC_Pana sender);
+        public event NewImageUpdateHandler NewImageUpdate;
+
         private static readonly object _lockObj = new object();
         private CancellationTokenSource _cancellationTokenSource;
         private Task _previewTask;
@@ -22,6 +24,7 @@ namespace DinoVisionGUI
         private string _portName = "COM4";
         private string _dataSendToRead = "%01#RCS";
         private string _dataSendToWrite = "%01#WCS";
+        private byte[] _readBuffer = new byte[200];
         private bool SerialPortIsReceiving;
 
         private EIOMode _ioMode = EIOMode.IOMode_Read;
@@ -30,17 +33,31 @@ namespace DinoVisionGUI
         private bool m_bPCControlMode = false;
         private bool m_bInspectCompleted = false;
         private bool m_bJudgeOKNG = false;
+        private int m_nCamIdx;
 
         #endregion
-
+        #region Singleton
+        //private static IOManagement_PLC_Pana _instance;
+        //public static IOManagement_PLC_Pana Instance
+        //{
+        //    get { return _instance; }
+        //    private set { }
+        //}
+        #endregion
         #region Constructor
-        public IOManagement_PLC_Pana()
+        public IOManagement_PLC_Pana(int nCamIdx)
         {
-            // read to configurations
-            m_bPCControlMode = MainViewModel.Instance.JigInspConfigModel.m_bPCControlMode;
+            //if (_instance == null) _instance = this;
+            //else return;
+
+            m_nCamIdx = nCamIdx;
+            m_bPCControlMode = false;
 
             // Init serial port
             InitSerialPort();
+
+            // reset all]
+            ResetAllInOut();
         }
         #endregion
 
@@ -60,11 +77,6 @@ namespace DinoVisionGUI
         #region methods
         bool InitSerialPort()
         {
-            if (!string.IsNullOrEmpty(MainViewModel.Instance.JigInspConfigModel.m_sCOMPort))
-            {
-                _portName = MainViewModel.Instance.JigInspConfigModel.m_sCOMPort;
-            }
-
             _serialPort.PortName = _portName;
             _serialPort.BaudRate = 9600;
             _serialPort.Parity = Parity.Odd;
@@ -81,19 +93,47 @@ namespace DinoVisionGUI
         }
         void CloseSerialPort()
         {
+            ResetAllInOut();
+
             if (_serialPort.IsOpen)
                 _serialPort.Close();
         }
 
+        void ResetAllInOut()
+        {
+            if (_serialPort.IsOpen)
+            {
+                // CLOSE clynder 1
+                ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                         contactName: "Y", contactIdx: "1", level: "0");
+                Thread.Sleep(150);
+                // TURN OFF Lighting
+                ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                         contactName: "Y", contactIdx: "3", level: "0");
+                Thread.Sleep(150);
+                // CLOSE clynder 2
+                ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                         contactName: "Y", contactIdx: "2", level: "0");
+                Thread.Sleep(150);
+                // Reset signal NG
+                ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                         contactName: "Y", contactIdx: "0", level: "0");
+                Thread.Sleep(150);
+                // Reset signal OK
+                ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                         contactName: "Y", contactIdx: "5", level: "0");
+                Thread.Sleep(150);
+            }
+        }
+
         private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            byte[] _readBuffer = new byte[200];
             int rslength = 0;
             bool loop = true; // Judge whether the data of the receive buffer is all received
             SerialPortIsReceiving = true; // the bool type of judge whether the serial port is processing data
             try
             {
-                Thread.Sleep(20);
+                Thread.Sleep(5);
                 while (loop)
                 {
                     if (_serialPort.BytesToRead == rslength)
@@ -105,7 +145,7 @@ namespace DinoVisionGUI
                         rslength = _serialPort.BytesToRead;
                         // Get the number of bytes of data in the receive buffer
                     }
-                    Thread.Sleep(20);
+                    Thread.Sleep(5);
                 }
                 _serialPort.Read(_readBuffer, 0, rslength); // Read the receive buffer data
                 _serialPort.DiscardInBuffer();//Clear the receive buffer data
@@ -147,34 +187,35 @@ namespace DinoVisionGUI
             }
         }
 
-        void ManipulateWithPLCContact(EIOMode eIOMode,string _dataSendTo, string contactName, string contactIdx, string level)
+        void ManipulateWithPLCContact(EIOMode eIOMode, string dataSendTo, string contactName, string contactIdx, string level)
         {
+            string dataSendToPLC = string.Empty;
             switch (eIOMode)
             {
                 case EIOMode.IOMode_Read:
                     // set IO mode is Read
                     _ioMode = EIOMode.IOMode_Read;
                     string extend_read = contactName + "000" + contactIdx;
-                    _dataSendTo += extend_read;
+                    dataSendToPLC = dataSendTo + extend_read;
                     break;
                 case EIOMode.IOMode_Write:
                     // set IO mode is Write
                     _ioMode = EIOMode.IOMode_Write;
-                    string extend = contactName + "000" + contactIdx + level;
-                    _dataSendTo += extend;
+                    string extend_write = contactName + "000" + contactIdx + level;
+                    dataSendToPLC = dataSendTo + extend_write;
                     break;
                 default:
                     break;
             }
 
             byte t = 0;
-            byte[] bSend = Encoding.ASCII.GetBytes(_dataSendTo);
-            for (int i = 0; i < _dataSendTo.Length; i++) //XOR for instruction data, calculate the check code
+            byte[] bSend = Encoding.ASCII.GetBytes(dataSendToPLC);
+            for (int i = 0; i < dataSendToPLC.Length; i++) //XOR for instruction data, calculate the check code
             {
                 t ^= bSend[i];
             }
             string strBCC = t.ToString("X2");
-            string strSend = _dataSendTo + strBCC + (char)13;
+            string strSend = dataSendToPLC + strBCC + (char)13;
             byte[] bytesSend = Encoding.ASCII.GetBytes(strSend);
             _serialPort.Write(bytesSend, 0, bytesSend.Length); // Send instructions
         }
@@ -207,70 +248,77 @@ namespace DinoVisionGUI
             {
                 while (!_cancellationTokenSource.IsCancellationRequested)
                 {
-                    if (m_bPCControlMode)
-                    {
-                        // wait for read status of START button
-                        while (m_nLevelLogicReadPLCContact == 0)
-                        {
-                            ManipulateWithPLCContact(EIOMode.IOMode_Read,_dataSendToRead,
-                                                 contactName: "X", contactIdx: "0", level: "");
-                            await Task.Delay(100);
-                        }
-
-                        // OPEN clynder 1
-                        ManipulateWithPLCContact(EIOMode.IOMode_Write,_dataSendToWrite,
-                                                 contactName: "Y", contactIdx: "1", level: "1");
-                    }
-
-                    // reset level logic
-                    m_nLevelLogicReadPLCContact = 0;
-
-                    // wait for read status of sensor clynder 1
+                    // wait for read status of START button
                     while (m_nLevelLogicReadPLCContact == 0)
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Read, _dataSendToRead,
-                                             contactName: "X", contactIdx: "1", level: "");
-                        await Task.Delay(100);
+                                             contactName: "X", contactIdx: "0", level: "");
+                        Thread.Sleep(50);
                     }
-
                     // reset level logic
                     m_nLevelLogicReadPLCContact = 0;
 
-                    // TURN ON Lighting
                     if (m_bPCControlMode)
-                        ManipulateWithPLCContact(EIOMode.IOMode_Write,_dataSendToWrite,
+                    {
+                        // OPEN clynder 1
+                        ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                                 contactName: "Y", contactIdx: "1", level: "1");
+                        Thread.Sleep(100);
+                        // TURN ON Lighting
+                        ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "3", level: "1");
-                    // OPEN dino cam
+                        Thread.Sleep(100);
+                    }
 
+                    // OPEN dino cam
+                    InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(m_nCamIdx);
 
                     if (m_bPCControlMode)
+                    {
+                        // wait for read status of sensor clynder 1
+                        while (m_nLevelLogicReadPLCContact == 0)
+                        {
+                            ManipulateWithPLCContact(EIOMode.IOMode_Read, _dataSendToRead,
+                                                 contactName: "X", contactIdx: "1", level: "");
+                            Thread.Sleep(50);
+                        }
+
+                        // reset level logic
+                        m_nLevelLogicReadPLCContact = 0;
+
                         // OPEN clynder 2
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "2", level: "1");
+                        Thread.Sleep(100);
+                    }
+
 
                     // wait for read status of SENSOR clynder 2
                     while (m_nLevelLogicReadPLCContact == 0)
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Read, _dataSendToRead,
                                              contactName: "X", contactIdx: "2", level: "");
-                        await Task.Delay(100);
+                        Thread.Sleep(50);
                     }
 
                     // reset level logic
                     m_nLevelLogicReadPLCContact = 0;
 
-
                     // TRIGGER DINO CAMERA
+                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SingleGrabDinoCam(m_nCamIdx);
+                    //NewImageUpdate?.Invoke(this);
 
+                    // START INSPECTION
+                    InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.InspectStart(0, m_nCamIdx);
 
                     // wait for inspect complete
                     int count = 1;
                     while (!m_bInspectCompleted)
                     {
+                        Thread.Sleep(1000);
+                        count++;
                         if (count > 5) // timeout = 5s
                             m_bInspectCompleted = true;
-                        await Task.Delay(1000);
-                        count++;
                     }
 
                     // Send IO the result OK/NG
@@ -278,19 +326,21 @@ namespace DinoVisionGUI
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "5", level: "1");
-                        await Task.Delay(200);
+                        Thread.Sleep(150);
 
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "5", level: "0");
+                        Thread.Sleep(100);
                     }
                     else
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "0", level: "1");
-                        await Task.Delay(200);
+                        Thread.Sleep(150);
 
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "0", level: "0");
+                        Thread.Sleep(100);
                     }
 
                     // RESET ALL
@@ -299,14 +349,27 @@ namespace DinoVisionGUI
                         // CLOSE clynder 1
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "1", level: "0");
+                        Thread.Sleep(100);
                         // TURN OFF Lighting
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "3", level: "0");
+                        Thread.Sleep(100);
                         // CLOSE clynder 2
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "2", level: "0");
+                        Thread.Sleep(100);
                     }
 
+                    // reset level logic
+                    m_nLevelLogicReadPLCContact = 0;
+            
+                    m_bInspectCompleted = false;
+
+                    // CLOSE dino cam
+                    InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(m_nCamIdx);
+                    Thread.Sleep(20);
+
+                    await Task.Delay(1);
                 }
             }, _cancellationTokenSource.Token);
 
@@ -337,7 +400,7 @@ namespace DinoVisionGUI
                 // Wait for it, to avoid conflicts with read/write of _lastFrame
                 await _previewTask;
             }
-            CloseSerialPort();
+            //CloseSerialPort();
         }
         #endregion
 
