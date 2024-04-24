@@ -8,13 +8,13 @@ CFramGrabber_UsbCam::CFramGrabber_UsbCam(int nCamId)
 
 CFramGrabber_UsbCam::~CFramGrabber_UsbCam()
 {
-	Disconnect();
+	Destroy();
 }
 
-bool CFramGrabber_UsbCam::Connect(int nId)
+bool CFramGrabber_UsbCam::Connect()
 {
 	if (m_pCamera != NULL)
-		m_pCamera->open(nId);
+		m_pCamera->open(m_nId);
 
 	if (m_pCamera->isOpened())
 	{
@@ -28,6 +28,15 @@ bool CFramGrabber_UsbCam::Disconnect()
 	if (m_pCamera != NULL)
 		m_pCamera->release();
 	m_bConnected = false;
+	return true;
+}
+
+bool CFramGrabber_UsbCam::Close()
+{
+	if (m_pCamera != NULL)
+		m_pCamera->release();
+	m_bConnected = false;
+
 	delete m_pCamera;
 	m_pCamera = NULL;
 	return true;
@@ -37,35 +46,18 @@ void CFramGrabber_UsbCam::StartGrab()
 {
 	if (!m_bConnected)
 		return;
-
-	CSingleLock lockLocal(&m_MemberLock, TRUE);
-	m_bGrabbing = 1;
-	lockLocal.Unlock();
-
 	cv::Mat lastFrame;
-	while (m_bGrabbing)
-	{
-		// Read next frame and save into m_pLastFrame
-		m_pCamera->read(lastFrame);
+	m_pCamera->read(lastFrame);
+	CSingleLock lockBuffer(&m_MemberLock, TRUE);
+	m_pCameraImageBuffer->SetFrameImage(0, lastFrame.data);
+	lockBuffer.Unlock();
 
-		// check m_pLastFram is null
-		if (!lastFrame.empty())
-		{
-			// call interface func
-			CSingleLock lockBuffer(&m_MemberLock, TRUE);
-			m_pCameraImageBuffer->SetFrameImage(0, lastFrame.data);
-			lockBuffer.Unlock();
-		}
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(33));
-	}
+	lastFrame.release();
 }
 
 void CFramGrabber_UsbCam::StopGrab()
 {
-	CSingleLock lockLocal(&m_MemberLock, TRUE);
-	m_bGrabbing = 0;
-	lockLocal.Unlock();
+	Disconnect();
 }
 
 void CFramGrabber_UsbCam::SingleGrab()
@@ -84,8 +76,10 @@ void CFramGrabber_UsbCam::SingleGrab()
 	//cv::imshow("test", matCopy);
 	//cv::imwrite("test2.jpg", matCopy);
 	lockBuffer.Unlock();
-
 	lastFrame.release();
+
+	//std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	//Disconnect();
 }
 
 
@@ -96,7 +90,7 @@ void CFramGrabber_UsbCam::Initialize()
 
 void CFramGrabber_UsbCam::Destroy()
 {
-	Disconnect();
+	Close();
 	if (m_pCameraImageBuffer != NULL)
 	{
 		m_pCameraImageBuffer->DeleteSharedMemory();

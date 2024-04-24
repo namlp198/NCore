@@ -10,6 +10,7 @@
 #include "JigInspectDinoCam.h"
 #include "JigInspectConfig.h"
 #include "JigInspectRecipe.h"
+#include "JigInspectResults.h"
 
 #define MAX_CAMERA_INSP_COUNT 1
 #define FRAME_WIDTH 640
@@ -18,7 +19,7 @@
 
 typedef void _stdcall CallbackInspectComplete();
 
-class AFX_EXT_CLASS CJigInspectProcessor
+class AFX_EXT_CLASS CJigInspectProcessor : IJigInspectDinoCamToParent
 {
 public:
 	CJigInspectProcessor();
@@ -32,15 +33,21 @@ public:
 	BOOL CreateBuffer();
 
 public:
-	BOOL                    InspectStart(int nThreadCount, int nCamIdx);
-	BOOL                    InspectStop(int nCamIdx);
-	virtual void			InspectComplete(int nCamIdx);
+	BOOL                    InspectStart(int nCamIdx);
 	virtual LPBYTE          GetFrameImage(int nCamIdx, UINT nFrameIndex);
 	virtual LPBYTE          GetBufferImage(int nCamIdx, UINT nY);
 
 public:
 	//getter
-	CJigInspectDinoCam* GetDinoCamControl() { return m_pInspDinoCam; }
+	CJigInspectDinoCam*           GetDinoCamControl() { return m_pInspDinoCam; }
+
+	virtual CJigInspectRecipe*    GetRecipe(int nCamIdx) { return m_pJigInspRecipe[nCamIdx]; }
+	virtual CJigInspectConfig*    GetSystemConfig(int nCamIdx) { return m_pJigInspConfig[nCamIdx]; }
+	virtual CJigInspectResults*   GetJigInspectResult(int nCamIdx) { return m_pJigInspResutls[nCamIdx]; }
+	virtual void				  InspectComplete();
+
+public:
+	BOOL                          GetInspectionResult(int nCamIdx, CJigInspectResults* pJigInspRes);
 
 public:
 	// Callback
@@ -53,9 +60,11 @@ private:
 	// Image Buffer
 	CSharedMemoryBuffer*             m_pImageBuffer[MAX_CAMERA_INSP_COUNT];
 
-	CJigInspectConfig*               m_pJigInspConfig;
+	CJigInspectConfig*               m_pJigInspConfig[MAX_CAMERA_INSP_COUNT];
 
-	CJigInspectRecipe*               m_pJigInspRecipe;
+	CJigInspectRecipe*               m_pJigInspRecipe[MAX_CAMERA_INSP_COUNT];
+
+	CJigInspectResults*              m_pJigInspResutls[MAX_CAMERA_INSP_COUNT];
 
 	CJigInspectDinoCam*              m_pInspDinoCam;
 };

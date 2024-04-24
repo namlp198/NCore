@@ -30,17 +30,7 @@ bool InspectStart(CJigInspectProcessor* pProcessor, int nThreadCount, int nCamId
     if (pProcessor == NULL)
         return false;
 
-    BOOL bRet = pProcessor->InspectStart(nThreadCount, nCamIdx);
-    if (bRet == FALSE) return false;
-    else               return true;
-}
-
-bool InspectStop(CJigInspectProcessor* pProcessor, int nCamIdx)
-{
-    if (pProcessor == NULL)
-        return false;
-
-    BOOL bRet = pProcessor->InspectStop(nCamIdx);
+    BOOL bRet = pProcessor->InspectStart(nCamIdx);
     if (bRet == FALSE) return false;
     else               return true;
 }
@@ -59,6 +49,20 @@ bool SingleGrabDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
     else if (retVal == 1) return true;
 }
 
+bool StartGrabDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    CJigInspectDinoCam* pDinoCam = pProcessor->GetDinoCamControl();
+    if (pDinoCam == NULL)
+        return false;
+
+    int retVal = pDinoCam->StartGrab(nCamIdx);
+    if (retVal == 0) return false;
+    else if (retVal == 1) return true;
+}
+
 bool StopGrabDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
 {
     if (pProcessor == NULL)
@@ -73,6 +77,34 @@ bool StopGrabDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
     else if (retVal == 1) return true;
 }
 
+bool ConnectDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    CJigInspectDinoCam* pDinoCam = pProcessor->GetDinoCamControl();
+    if (pDinoCam == NULL)
+        return false;
+
+    int retVal = pDinoCam->Connect(nCamIdx);
+    if (retVal == 0) return false;
+    else if (retVal == 1) return true;
+}
+
+bool DisconnectDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    CJigInspectDinoCam* pDinoCam = pProcessor->GetDinoCamControl();
+    if (pDinoCam == NULL)
+        return false;
+
+    int retVal = pDinoCam->Disconnect(nCamIdx);
+    if (retVal == 0) return false;
+    else if (retVal == 1) return true;
+}
+
 BYTE* GetBufferDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
 {
     if (pProcessor == NULL)
@@ -83,4 +115,34 @@ BYTE* GetBufferDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
         return NULL;
 
     return pDinoCam->GetBufferImage(nCamIdx);
+}
+
+BYTE* GetResultBufferImageDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
+{
+    if (pProcessor == NULL)
+        return NULL;
+
+    CJigInspectDinoCam* pDinoCam = pProcessor->GetDinoCamControl();
+    if (pDinoCam == NULL)
+        return NULL;
+
+    return pDinoCam->GetResultBufferImage(nCamIdx);
+}
+
+bool GetInspectionResult(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectResults* pJigInspResult)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    BOOL bRet = pProcessor->GetInspectionResult(nCamIdx, pJigInspResult);
+    if (bRet == FALSE) return false;
+    else               return true;
+}
+
+void RegCallBackInspectCompleteFunc(CJigInspectProcessor* pProcessor, CallbackInspectComplete* pFunc)
+{
+    if (pProcessor == NULL)
+        return;
+
+    pProcessor->RegCallbackInscompleteFunc(pFunc);
 }

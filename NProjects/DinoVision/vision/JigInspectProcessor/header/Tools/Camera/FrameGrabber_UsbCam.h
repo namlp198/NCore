@@ -15,7 +15,7 @@ public:
 	~CFramGrabber_UsbCam();
 
 public:
-	bool         Connect(int nId);
+	bool         Connect();
 	bool         Disconnect();
 
 	void        StartGrab();
@@ -59,7 +59,7 @@ public:
 	void SetGrabbing(bool bValue) { m_bGrabbing = bValue; }
 
 private:
-
+	bool                  Close();
 	BOOL                  CreateBuffer();
 
 private:

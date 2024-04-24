@@ -16,23 +16,36 @@ CJigInspectProcessor::~CJigInspectProcessor()
 
 BOOL CJigInspectProcessor::Initialize()
 {
-	if (m_pJigInspConfig != NULL)
-		delete m_pJigInspConfig, m_pJigInspConfig == NULL;
-	m_pJigInspConfig = new CJigInspectConfig;
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pJigInspConfig[i] != NULL)
+			delete m_pJigInspConfig[i], m_pJigInspConfig[i] == NULL;
+		m_pJigInspConfig[i] = new CJigInspectConfig;
+	}
 
 	// Load Sys Config
 	if (LoadConfigurations() == FALSE)
 		return FALSE;
 	
-	if (m_pJigInspRecipe != NULL)
-		delete m_pJigInspRecipe, m_pJigInspRecipe == NULL;
-	m_pJigInspRecipe = new CJigInspectRecipe;
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pJigInspRecipe[i] != NULL)
+			delete m_pJigInspRecipe[i], m_pJigInspRecipe[i] == NULL;
+		m_pJigInspRecipe[i] = new CJigInspectRecipe;
+	}
 
 	//// Load Recipe
 	//if (LoadRecipe() == FALSE)
 	//{
 	//	return FALSE;
 	//}
+
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pJigInspResutls[i] != NULL)
+			delete m_pJigInspResutls[i], m_pJigInspResutls[i] == NULL;
+		m_pJigInspResutls[i] = new CJigInspectResults;
+	}
 
 	// Create Image Buffer..
 	if (CreateBuffer() == FALSE)
@@ -42,30 +55,45 @@ BOOL CJigInspectProcessor::Initialize()
 	{
 		delete m_pInspDinoCam, m_pInspDinoCam = NULL;
 	}
-	m_pInspDinoCam = new CJigInspectDinoCam;
+	m_pInspDinoCam = new CJigInspectDinoCam(this);
 	m_pInspDinoCam->Initialize();
 }
 
 BOOL CJigInspectProcessor::Destroy()
 {
-	if (m_pJigInspConfig != NULL)
-		delete m_pJigInspConfig, m_pJigInspConfig == NULL;
-
-	if (m_pJigInspRecipe != NULL)
-		delete m_pJigInspRecipe, m_pJigInspRecipe == NULL;
-
 	if (m_pInspDinoCam != NULL)
 		delete m_pInspDinoCam, m_pInspDinoCam = NULL;
+
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pJigInspConfig[i] != NULL)
+			delete m_pJigInspConfig[i], m_pJigInspConfig[i] == NULL;
+	}
+
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pJigInspRecipe[i] != NULL)
+			delete m_pJigInspRecipe[i], m_pJigInspRecipe[i] == NULL;
+	}
+
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		if (m_pJigInspResutls[i] != NULL)
+			delete m_pJigInspResutls[i], m_pJigInspResutls[i] == NULL;
+	}
 
 	return TRUE;
 }
 
 BOOL CJigInspectProcessor::LoadConfigurations()
 {
-	m_pJigInspConfig->m_csSensorType = _T("color");
-	m_pJigInspConfig->m_nChannels = 3;
-	m_pJigInspConfig->m_nFrameWidth = 640;
-	m_pJigInspConfig->m_nFrameHeight = 480;
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
+	{
+		m_pJigInspConfig[i]->m_csSensorType = _T("color");
+		m_pJigInspConfig[i]->m_nChannels = 3;
+		m_pJigInspConfig[i]->m_nFrameWidth = 640;
+		m_pJigInspConfig[i]->m_nFrameHeight = 480;
+	}
 
 	return TRUE;
 }
@@ -76,7 +104,7 @@ BOOL CJigInspectProcessor::CreateBuffer()
 	{
 		USES_CONVERSION;
 		char cSensorType[10] = {};
-		sprintf_s(cSensorType, "%s", W2A(m_pJigInspConfig->m_csSensorType));
+		sprintf_s(cSensorType, "%s", W2A(m_pJigInspConfig[i]->m_csSensorType));
 
 
 		int nFrameDepth = strcmp(cSensorType, "color") == 0 ? 24 : 8;
@@ -84,8 +112,8 @@ BOOL CJigInspectProcessor::CreateBuffer()
 
 		BOOL bRetValue = FALSE;
 
-		DWORD dwFrameWidth = (DWORD)m_pJigInspConfig->m_nFrameWidth;
-		DWORD dwFrameHeight = (DWORD)m_pJigInspConfig->m_nFrameHeight;
+		DWORD dwFrameWidth = (DWORD)m_pJigInspConfig[i]->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)m_pJigInspConfig[i]->m_nFrameHeight;
 		DWORD dwFrameCount = 0;
 		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * nFrameChannels;
 
@@ -135,18 +163,15 @@ BOOL CJigInspectProcessor::CreateBuffer()
 	return TRUE;
 }
 
-BOOL CJigInspectProcessor::InspectStart(int nThreadCount, int nCamIdx)
+BOOL CJigInspectProcessor::InspectStart(int nCamIdx)
 {
-	return 0;
-}
+	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+		return 0;
 
-BOOL CJigInspectProcessor::InspectStop(int nCamIdx)
-{
-	return 0;
-}
+	if (m_pInspDinoCam == NULL)
+		return FALSE;
 
-void CJigInspectProcessor::InspectComplete(int nCamIdx)
-{
+	m_pInspDinoCam->InspectStart(nCamIdx);
 }
 
 LPBYTE CJigInspectProcessor::GetFrameImage(int nCamIdx, UINT nFrameIndex)
@@ -163,6 +188,22 @@ LPBYTE CJigInspectProcessor::GetBufferImage(int nCamIdx, UINT nY)
 		return NULL;
 
 	return m_pImageBuffer[nCamIdx]->GetBufferImage(nY);
+}
+
+void CJigInspectProcessor::InspectComplete()
+{
+	if (m_pCallbackInsCompleteFunc == NULL)
+		return;
+
+	m_pCallbackInsCompleteFunc();
+}
+
+BOOL CJigInspectProcessor::GetInspectionResult(int nCamIdx, CJigInspectResults* pJigInspRes)
+{
+	pJigInspRes->m_bInspectCompleted = m_pJigInspResutls[nCamIdx]->m_bInspectCompleted;
+	pJigInspRes->m_bResultOKNG = m_pJigInspResutls[nCamIdx]->m_bResultOKNG;
+
+	return TRUE;
 }
 
 void CJigInspectProcessor::RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc)

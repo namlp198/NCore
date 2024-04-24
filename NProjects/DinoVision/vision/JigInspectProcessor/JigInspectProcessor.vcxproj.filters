@@ -99,6 +99,9 @@
     <ClInclude Include="header\Tools\Camera\FrameGrabber_UsbCam.h">
       <Filter>Header Files\Tools\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="header\JigInspectResults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="cpp\Tools\Camera\FrameGrabber_UsbCam.cpp">
       <Filter>Source Files\Tools\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\JigInspectResults.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

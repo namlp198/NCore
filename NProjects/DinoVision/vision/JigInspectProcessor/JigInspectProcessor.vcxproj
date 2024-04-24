@@ -152,6 +152,7 @@
     <ClInclude Include="header\JigInspectProcessor.h" />
     <ClInclude Include="header\JigInspectProcessorCSharp.h" />
     <ClInclude Include="header\JigInspectRecipe.h" />
+    <ClInclude Include="header\JigInspectResults.h" />
     <ClInclude Include="header\Tools\Camera\DeviceEnumerator.h" />
     <ClInclude Include="header\Tools\Camera\FrameGrabber_UsbCam.h" />
     <ClInclude Include="header\Tools\IOManagement\IOManagement_PLC_Pana.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="cpp\JigInspectProcessor.cpp" />
     <ClCompile Include="cpp\JigInspectProcessorCSharp.cpp" />
     <ClCompile Include="cpp\JigInspectRecipe.cpp" />
+    <ClCompile Include="cpp\JigInspectResults.cpp" />
     <ClCompile Include="cpp\Tools\Camera\DeviceEnumerator.cpp" />
     <ClCompile Include="cpp\Tools\Camera\FrameGrabber_UsbCam.cpp" />
     <ClCompile Include="cpp\Tools\IOManagement\IOManagement_PLC_Pana.cpp" />
