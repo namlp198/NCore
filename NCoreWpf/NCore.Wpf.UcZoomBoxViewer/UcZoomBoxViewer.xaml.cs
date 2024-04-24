@@ -47,6 +47,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private int _camIdx = -1;
         private bool _hasRecipe;
         private bool _isVisibleRecipeButton = true;
+        private bool m_bStreamming = false;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -61,6 +62,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
 
         private List<string> _machineModeList = new List<string>();
         private string _machineModeSelected = "Simulator";
+        private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
 
         private ModeView _eModeView = ModeView.Mono;
         private ECamState _camState = ECamState.Stoped;
@@ -136,7 +138,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
             {
                 if(SetProperty(ref _eModeView, value))
                 {
-
+                   
                 }
             }
         }
@@ -281,6 +283,36 @@ namespace NCore.Wpf.UcZoomBoxViewer
                         default:
                             MachineMode = EMachineMode.EMachineMode_Inspect;
                             break;
+                    }
+                }
+            }
+        }
+        public string DisplayImagePath
+        {
+            get => _displayImagePath;
+            set
+            {
+                if (SetProperty(ref _displayImagePath, value))
+                {
+
+                }
+            }
+        }
+
+        public bool IsStreamming
+        {
+            get => m_bStreamming;
+            set
+            {
+                if (SetProperty(ref m_bStreamming, value))
+                {
+                    if (m_bStreamming)
+                    {
+                        DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/btn_stop_all_50.png";
+                    }
+                    else
+                    {
+                        DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
                     }
                 }
             }

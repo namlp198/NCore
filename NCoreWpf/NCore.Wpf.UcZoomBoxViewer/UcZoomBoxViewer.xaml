@@ -135,7 +135,7 @@
                             Height="30">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_CameraLive}"
+                                <Image Source="{Binding DisplayImagePath}"
                                        Margin="3" />
                             </StackPanel>
                         </Button.Content>
