@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configs>
+	<CameraName>cam0</CameraName>
+	<InterfaceType>usb</InterfaceType>
+	<SensorType>color</SensorType>
+	<Channels>3</Channels>
+	<Manufacturer>Dino</Manufacturer>
+	<FrameWidth>640</FrameWidth>
+	<FrameHeight>480</FrameHeight>
+	<SerialNumber>xxx</SerialNumber>
+	<ImageSavePath>D:\DinoImage</ImageSavePath>
+	<ImageTemplatePath>D:\entry\NCore\NProjects\DinoVision\bin\Release\TemplateImage</ImageTemplatePath>
+	<RecipeName>model0</RecipeName>
+</Configs>
