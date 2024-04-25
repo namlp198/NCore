@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -11,11 +12,12 @@
 #include "JigInspectConfig.h"
 #include "JigInspectRecipe.h"
 #include "JigInspectResults.h"
+#include "JigInspectDefine.h"
 
-#define MAX_CAMERA_INSP_COUNT 1
-#define FRAME_WIDTH 640
-#define FRAME_HEIGHT 480
-#define MAX_FRAME_COUNT 15
+#include "rapidxml.hpp"
+#include "RapidXMLSTD.hpp"
+#include "rapidxml_utils.hpp"
+#include "rapidxml_print.hpp"
 
 typedef void _stdcall CallbackInspectComplete();
 
@@ -28,8 +30,12 @@ public:
 public:
 	BOOL Initialize();
 	BOOL Destroy();
-	BOOL LoadConfigurations();
-	//BOOL LoadRecipe();
+	BOOL LoadSysConfigurations(CJigInspectSystemConfig* pSysConfig);
+	BOOL LoadCamConfigurations(int nCamIdx, CJigInspectCameraConfig* pCamConfig);
+	BOOL LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe);
+	BOOL SaveSysConfigurations(CJigInspectSystemConfig* pSysConfig);
+	BOOL SaveCamConfigurations(int nCamIdx, CJigInspectCameraConfig* pCamConfig);
+	BOOL SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe);
 	BOOL CreateBuffer();
 
 public:
@@ -39,19 +45,25 @@ public:
 
 public:
 	//getter
-	CJigInspectDinoCam*           GetDinoCamControl() { return m_pInspDinoCam; }
+	CJigInspectDinoCam*                 GetDinoCamControl() { return m_pInspDinoCam; }
 
-	virtual CJigInspectRecipe*    GetRecipe(int nCamIdx) { return m_pJigInspRecipe[nCamIdx]; }
-	virtual CJigInspectConfig*    GetSystemConfig(int nCamIdx) { return m_pJigInspConfig[nCamIdx]; }
-	virtual CJigInspectResults*   GetJigInspectResult(int nCamIdx) { return m_pJigInspResutls[nCamIdx]; }
-	virtual void				  InspectComplete();
+	virtual CJigInspectRecipe*          GetRecipe(int nCamIdx) { return m_pJigInspRecipe[nCamIdx]; }
+	virtual CJigInspectCameraConfig*    GetCameraConfig(int nCamIdx) { return m_pJigInspCamConfig[nCamIdx]; }
+	virtual CJigInspectSystemConfig*    GetSystemConfig() { return m_pJigInspSysConfig; }
+	virtual CJigInspectResults*         GetJigInspectResult(int nCamIdx) { return m_pJigInspResutls[nCamIdx]; }
+	virtual void				        InspectComplete();
 
 public:
-	BOOL                          GetInspectionResult(int nCamIdx, CJigInspectResults* pJigInspRes);
+	BOOL                                GetInspectionResult(int nCamIdx, CJigInspectResults* pJigInspRes);
 
 public:
 	// Callback
-	void RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc);
+	void       RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc);
+
+public:
+	CString    GetCurrentApp();
+	BOOL       SetCamConfigPath();
+	BOOL       SetRecipePath(int nCamIdx, CString recipeName);
 
 private:
 
@@ -60,11 +72,17 @@ private:
 	// Image Buffer
 	CSharedMemoryBuffer*             m_pImageBuffer[MAX_CAMERA_INSP_COUNT];
 
-	CJigInspectConfig*               m_pJigInspConfig[MAX_CAMERA_INSP_COUNT];
+	CJigInspectSystemConfig*         m_pJigInspSysConfig;
+
+	CJigInspectCameraConfig*         m_pJigInspCamConfig[MAX_CAMERA_INSP_COUNT];
 
 	CJigInspectRecipe*               m_pJigInspRecipe[MAX_CAMERA_INSP_COUNT];
 
 	CJigInspectResults*              m_pJigInspResutls[MAX_CAMERA_INSP_COUNT];
 
 	CJigInspectDinoCam*              m_pInspDinoCam;
+
+	CString                          m_csSysConfigPath;
+	CString                          m_csCamConfigPath[MAX_CAMERA_INSP_COUNT];
+	CString                          m_csRecipePath[MAX_CAMERA_INSP_COUNT];
 };

@@ -4,17 +4,15 @@
 #include "JigInspectConfig.h"
 #include "JigInspectRecipe.h"
 #include "JigInspectResults.h"
-
-#define MAX_CAMERA_COUNT 1
-#define MAX_BUFFER_FRAME 15
-#define MAX_POSITION_COUNT 1
+#include "JigInspectDefine.h"
 
 interface IJigInspectDinoCamToParent
 {
-	virtual CJigInspectRecipe*    GetRecipe(int nCamIdx) = 0;
-	virtual CJigInspectConfig*    GetSystemConfig(int nCamIdx) = 0;
-	virtual CJigInspectResults*   GetJigInspectResult(int nCamIdx) = 0;
-	virtual void				  InspectComplete() = 0;
+	virtual CJigInspectRecipe*          GetRecipe(int nCamIdx) = 0;
+	virtual CJigInspectCameraConfig*    GetCameraConfig(int nCamIdx) = 0;
+	virtual CJigInspectSystemConfig*    GetSystemConfig() = 0;
+	virtual CJigInspectResults*         GetJigInspectResult(int nCamIdx) = 0;
+	virtual void				        InspectComplete() = 0;
 };
 
 class AFX_EXT_CLASS CJigInspectDinoCam
@@ -47,14 +45,14 @@ private:
 
 	IJigInspectDinoCamToParent*              m_pInterface;
 	// Usb Camera
-	BOOL							         m_bUsbCamera_ConnectStatus[MAX_CAMERA_COUNT];
-	CFramGrabber_UsbCam*                     m_pUsbCamera[MAX_CAMERA_COUNT];
+	BOOL							         m_bUsbCamera_ConnectStatus[MAX_CAMERA_INSP_COUNT];
+	CFramGrabber_UsbCam*                     m_pUsbCamera[MAX_CAMERA_INSP_COUNT];
 
 	// Area Cam Live Buffer Control
-	CCriticalSection				         m_csCameraFrameIdx[MAX_CAMERA_COUNT];
-	int								         m_pCameraCurrentFrameIdx[MAX_CAMERA_COUNT];
+	CCriticalSection				         m_csCameraFrameIdx[MAX_CAMERA_INSP_COUNT];
+	int								         m_pCameraCurrentFrameIdx[MAX_CAMERA_INSP_COUNT];
 	// Result Buffer
-	CSharedMemoryBuffer*                     m_pResultImageBuffer[MAX_CAMERA_COUNT];
+	CSharedMemoryBuffer*                     m_pResultImageBuffer[MAX_CAMERA_INSP_COUNT];
 	std::vector<int>                         m_vIdDevices;
 	std::map<int, Device>                    m_mapDevices;
 

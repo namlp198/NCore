@@ -139,6 +139,46 @@ bool GetInspectionResult(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInsp
     else               return true;
 }
 
+bool LoadSysConfigurations(CJigInspectProcessor* pProcessor, CJigInspectSystemConfig* pSysConfig)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    *(pSysConfig) = *(pProcessor->GetSystemConfig());
+
+    return true;
+}
+
+bool LoadCamConfigurations(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectCameraConfig* pCamConfig)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    *(pCamConfig) = *(pProcessor->GetCameraConfig(nCamIdx));
+
+    return true;
+}
+
+bool LoadRecipe(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectRecipe* pRecipe)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    *(pRecipe) = *(pProcessor->GetRecipe(nCamIdx));
+
+    return true;
+}
+
+bool SaveSysConfigurations(CJigInspectProcessor* pProcessor, CJigInspectSystemConfig* pSysConfig)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    BOOL bRet = pProcessor->SaveSysConfigurations(pSysConfig);
+    if (bRet == FALSE) return false;
+    else               return true;
+}
+
 void RegCallBackInspectCompleteFunc(CJigInspectProcessor* pProcessor, CallbackInspectComplete* pFunc)
 {
     if (pProcessor == NULL)

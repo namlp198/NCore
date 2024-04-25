@@ -1,4 +1,5 @@
 #pragma once
+#include "JigInspectDefine.h"
 
 class AFX_EXT_CLASS CJigInspectResults
 {

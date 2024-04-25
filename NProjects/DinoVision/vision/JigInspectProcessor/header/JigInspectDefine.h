@@ -1,0 +1,10 @@
+#pragma once
+
+#define MAX_STRING_SIZE						256
+
+#define MAX_BUFFER_FRAME 15
+
+#define MAX_CAMERA_INSP_COUNT 1
+#define FRAME_WIDTH 640
+#define FRAME_HEIGHT 480
+#define MAX_FRAME_COUNT 15

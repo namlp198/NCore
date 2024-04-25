@@ -1,10 +1,18 @@
 #include "pch.h"
 #include "JigInspectConfig.h"
 
-CJigInspectConfig::CJigInspectConfig(void)
+CJigInspectSystemConfig::CJigInspectSystemConfig(void)
 {
 }
 
-CJigInspectConfig::~CJigInspectConfig(void)
+CJigInspectSystemConfig::~CJigInspectSystemConfig(void)
+{
+}
+
+CJigInspectCameraConfig::CJigInspectCameraConfig(void)
+{
+}
+
+CJigInspectCameraConfig::~CJigInspectCameraConfig(void)
 {
 }

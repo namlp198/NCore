@@ -5,7 +5,7 @@ CJigInspectDinoCam::CJigInspectDinoCam(IJigInspectDinoCamToParent* pInterface)
 {
 	m_pInterface = pInterface;
 
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		m_pUsbCamera[i] = NULL;
 		m_pCameraCurrentFrameIdx[i] = 0;
@@ -23,13 +23,13 @@ BOOL CJigInspectDinoCam::Initialize()
 	int deviceCount = EnumerateDevices();
 	if (deviceCount == 0)
 		return FALSE;
-	int devices = deviceCount < MAX_CAMERA_COUNT ? deviceCount : MAX_CAMERA_COUNT;
+	int devices = deviceCount < MAX_CAMERA_INSP_COUNT ? deviceCount : MAX_CAMERA_INSP_COUNT;
 
 	for (int i = 0; i < deviceCount; i++)
 	{
-		int nChannels = 3;
-		DWORD dwFrameWidth = (DWORD)640;
-		DWORD dwFrameHeight = (DWORD)480;
+		int nChannels = m_pInterface->GetCameraConfig(i)->m_nChannels;
+		DWORD dwFrameWidth = (DWORD)m_pInterface->GetCameraConfig(i)->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)m_pInterface->GetCameraConfig(i)->m_nFrameHeight;
 		DWORD dwFrameCount = MAX_BUFFER_FRAME;
 		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * nChannels;
 
@@ -60,7 +60,7 @@ BOOL CJigInspectDinoCam::Initialize()
 
 BOOL CJigInspectDinoCam::Destroy()
 {
-	for (int i = 0; i < MAX_CAMERA_COUNT; i++)
+	for (int i = 0; i < MAX_CAMERA_INSP_COUNT; i++)
 	{
 		if (m_pUsbCamera[i] != NULL)
 		{
@@ -88,7 +88,7 @@ int CJigInspectDinoCam::EnumerateDevices()
 
 LPBYTE CJigInspectDinoCam::GetBufferImage(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return NULL;
 
 	CSingleLock localLock(&m_csCameraFrameIdx[nCamIdx]);
@@ -112,7 +112,7 @@ LPBYTE CJigInspectDinoCam::GetResultBufferImage(int nCamIdx)
 
 int CJigInspectDinoCam::StartGrab(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_pUsbCamera[nCamIdx] == NULL)
@@ -124,7 +124,7 @@ int CJigInspectDinoCam::StartGrab(int nCamIdx)
 
 int CJigInspectDinoCam::StopGrab(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_pUsbCamera[nCamIdx] == NULL)
@@ -137,7 +137,7 @@ int CJigInspectDinoCam::StopGrab(int nCamIdx)
 
 int CJigInspectDinoCam::SingleGrab(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_pUsbCamera[nCamIdx] == NULL)
@@ -150,7 +150,7 @@ int CJigInspectDinoCam::SingleGrab(int nCamIdx)
 
 int CJigInspectDinoCam::Connect(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_pUsbCamera[nCamIdx] == NULL)
@@ -163,7 +163,7 @@ int CJigInspectDinoCam::Connect(int nCamIdx)
 
 int CJigInspectDinoCam::Disconnect(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_pUsbCamera[nCamIdx] == NULL)
@@ -209,7 +209,7 @@ BOOL CJigInspectDinoCam::CreateResultBuffer(int nCamIdx, CFramGrabber_UsbCam* pU
 
 BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 {
-	if (nCamIdx < 0 || MAX_CAMERA_COUNT <= nCamIdx)
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
 		return 0;
 
 	if (m_pUsbCamera[nCamIdx] == NULL)

@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="header\JigInspectConfig.h" />
+    <ClInclude Include="header\JigInspectDefine.h" />
     <ClInclude Include="header\JigInspectDinoCam.h" />
     <ClInclude Include="header\JigInspectProcessor.h" />
     <ClInclude Include="header\JigInspectProcessorCSharp.h" />
