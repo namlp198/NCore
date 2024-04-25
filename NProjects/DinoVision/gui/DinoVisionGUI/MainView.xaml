@@ -76,7 +76,7 @@
                  Background="{DynamicResource RGB_Night_46_61_90}">
             <Button Margin="5"
                     Name="btnSettings"
-                    Command="{Binding ShowSettingsViewCmd}">
+                    Click="btnSettings_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource IMG_Setting_3}"

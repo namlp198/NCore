@@ -253,7 +253,7 @@ namespace DinoVisionGUI
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Read, _dataSendToRead,
                                              contactName: "X", contactIdx: "0", level: "");
-                        Thread.Sleep(50);
+                        Thread.Sleep(100);
                     }
                     // reset level logic
                     m_nLevelLogicReadPLCContact = 0;
@@ -280,7 +280,7 @@ namespace DinoVisionGUI
                         {
                             ManipulateWithPLCContact(EIOMode.IOMode_Read, _dataSendToRead,
                                                  contactName: "X", contactIdx: "1", level: "");
-                            Thread.Sleep(50);
+                            Thread.Sleep(100);
                         }
 
                         // reset level logic
@@ -298,7 +298,7 @@ namespace DinoVisionGUI
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Read, _dataSendToRead,
                                              contactName: "X", contactIdx: "2", level: "");
-                        Thread.Sleep(50);
+                        Thread.Sleep(100);
                     }
 
                     // reset level logic
@@ -367,7 +367,7 @@ namespace DinoVisionGUI
 
                     // CLOSE dino cam
                     InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(m_nCamIdx);
-                    Thread.Sleep(20);
+                    Thread.Sleep(50);
 
                     await Task.Delay(1);
                 }

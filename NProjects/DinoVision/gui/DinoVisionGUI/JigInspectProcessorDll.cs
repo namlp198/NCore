@@ -7,20 +7,66 @@ using System.Threading.Tasks;
 
 namespace DinoVisionGUI
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct CJigInspectConfigurations
+    public class ConstDefine
     {
-        public string m_sCOMPort;
-        public string m_sSaveImagePath;
-        public bool m_bIsShowDetail;
-        public bool m_bPCControlMode;
-    }
+        public const int MAX_STRING_SIZE = 256;
+
+        public const int MAX_CAMERA_INSP_COUNT = 1;
+    };
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CJigInspectResults
     {
         public int m_bInspectCompleted;
         public int m_bResultOKNG;
+    }
+
+    // System Setting
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CJigInspectSystemConfig
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sRecipePath;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sModel;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sCOMPort;
+        public int m_bUsePCControl;
+    }
+
+    // Cam setting
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CJigInspectCameraConfig
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sInterfaceType;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sSensorType;
+        public int m_nChannels;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sManufacturer;
+        public int m_nFrameWidth;
+        public int m_nFrameHeight;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sSerialNumber;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sImageSavePath;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sImageTemplatePath;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sRecipeName;
+    }
+
+    // recipe settings
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CJigInspectRecipe
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sAlgorithm;
     }
 
     // Inspection Compete CallBack
@@ -151,6 +197,76 @@ namespace DinoVisionGUI
             Marshal.StructureToPtr(inspRes, pPointer, false);
             bool bRet = GetInspectionResult(m_JigInspectProcessor, nCamIdx, pPointer);
             InspResults = (CJigInspectResults)Marshal.PtrToStructure(pPointer, typeof(CJigInspectResults));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadSysConfigurations(IntPtr tempInspProcessor, IntPtr pSysConfig);
+        public bool LoadSysConfigurations(ref CJigInspectSystemConfig sysConfig)
+        {
+            CJigInspectSystemConfig config = new CJigInspectSystemConfig();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(config));
+            Marshal.StructureToPtr(config, pPointer, false);
+            bool bRet = LoadSysConfigurations(m_JigInspectProcessor, pPointer);
+            sysConfig = (CJigInspectSystemConfig)Marshal.PtrToStructure(pPointer, typeof(CJigInspectSystemConfig));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadCamConfigurations(IntPtr tempInspProcessor, int nCamIdx, IntPtr pCamConfig);
+        public bool LoadCamConfigurations(int nCamIdx, ref CJigInspectCameraConfig camConfig)
+        {
+            CJigInspectCameraConfig config = new CJigInspectCameraConfig();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(config));
+            Marshal.StructureToPtr(config, pPointer, false);
+            bool bRet = LoadCamConfigurations(m_JigInspectProcessor, nCamIdx, pPointer);
+            camConfig = (CJigInspectCameraConfig)Marshal.PtrToStructure(pPointer, typeof(CJigInspectCameraConfig));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadRecipe(IntPtr tempInspProcessor, int nCamIdx, IntPtr pRecipe);
+        public bool LoadRecipe(int nCamIdx, ref CJigInspectRecipe recipe)
+        {
+            CJigInspectRecipe config = new CJigInspectRecipe();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(config));
+            Marshal.StructureToPtr(config, pPointer, false);
+            bool bRet = LoadRecipe(m_JigInspectProcessor, nCamIdx, pPointer);
+            recipe = (CJigInspectRecipe)Marshal.PtrToStructure(pPointer, typeof(CJigInspectRecipe));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveSysConfigurations(IntPtr tempInspProcessor, IntPtr pSysConfig);
+        public bool SaveSysConfigurations(ref CJigInspectSystemConfig sysConfig)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sysConfig));
+            Marshal.StructureToPtr(sysConfig, pPointer, false);
+            bool bRet = SaveSysConfigurations(m_JigInspectProcessor, pPointer);
 
             return bRet;
         }

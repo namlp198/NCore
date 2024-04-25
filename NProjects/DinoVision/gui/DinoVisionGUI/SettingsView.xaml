@@ -8,8 +8,10 @@
         Title="SettingsView"
         Height="800"
         Width="1280"
+        WindowState="Maximized"
         Background="{DynamicResource RGB_Night_33_41_57}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundBrush"
                          Color="#2e3d5a" />
@@ -62,6 +64,61 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <ControlTemplate x:Key="lblMainTemp"
+                         TargetType="Label">
+            <Grid>
+                <Border BorderBrush="{DynamicResource RGB_Night_56_59_65}"
+                        BorderThickness="0.6"
+                        CornerRadius="2"
+                        Margin="0.6">
+                    <Rectangle Fill="{DynamicResource RGB_Night_39_42_49}"
+                               Height="auto" />
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Bottom"
+                                  TextBlock.Foreground="White"
+                                  TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="SemiBold"
+                                  TextBlock.FontSize="16"
+                                  Margin="6 6 6 6"
+                                  ContentStringFormat="{}{0:0.##}" />
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="tbTemplate"
+                         TargetType="{x:Type TextBox}">
+            <Border BorderBrush="{DynamicResource RGB_Cold_58_80_68}"
+                    BorderThickness="0.6"
+                    CornerRadius="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           VerticalContentAlignment="Center"
+                           Width="20"
+                           Margin="0"
+                           VerticalAlignment="Stretch"
+                           Background="{DynamicResource RGB_Cold_58_80_68}"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           FontSize="16"
+                           Content=">" />
+                    <TextBox Grid.Column="1"
+                             FontSize="14"
+                             FontWeight="Bold"
+                             Foreground="Black"
+                             TextAlignment="Center"
+                             BorderBrush="{x:Null}"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                             HorizontalAlignment="Stretch" />
+                </Grid>
+            </Border>
+        </ControlTemplate>
     </Window.Resources>
     <Border Margin="3"
             Grid.Column="1">
@@ -72,13 +129,240 @@
                      FontWeight="Bold"
                      Foreground="Black">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0"
+                          Margin="30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Text="System Configurations"
+                                   Foreground="White"
+                                   FontSize="16"
+                                   TextAlignment="Left"
+                                   VerticalAlignment="Center"/>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            
+                            <!--Label-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Recipe Path"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Model" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="COM Port" />
+                            <Label Grid.Row="3"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Use PC Control" />
 
+                            <!--TextBox-->
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="1"
+                                     x:Name="txtRecipePath"
+                                     Text="{Binding RecipePath, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}"/>
+                            <TextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     x:Name="txtModel"
+                                     Text="{Binding Model, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}"/>
+                            <TextBox Grid.Row="2"
+                                     Grid.Column="1"
+                                     x:Name="txtCOMPort"
+                                     Text="{Binding COMPort, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}"/>
+                            <TextBox Grid.Row="3"
+                                     Grid.Column="1"
+                                     Text="{Binding UsePCControl, Mode=TwoWay}"
+                                     x:Name="txtUsePCControl"
+                                     Template="{StaticResource tbTemplate}"/>
+                            
+                            <!--Button-->
+                            <Button Grid.Column="1"
+                                    Grid.Row="4"
+                                    x:Name="btnSaveSysConfig"
+                                    Click="btnSaveSysConfig_Click"
+                                    Margin="3"
+                                    Width="100"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Column="1"
+                          Margin="30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Text="Camera Settings"
+                                   Foreground="White"
+                                   FontSize="16"
+                                   TextAlignment="Left"
+                                   VerticalAlignment="Center" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="45" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <!--Label-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Camera Name" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Interface Type" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Sensor Type" />
+                            <Label Grid.Row="3"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Channels" />
+                            <Label Grid.Row="4"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Manufacturer" />
+                            <Label Grid.Row="5"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Frame Width" />
+                            <Label Grid.Row="6"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Frame Height" />
+                            <Label Grid.Row="7"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Serial Number" />
+                            <Label Grid.Row="8"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Image Save Path" />
+                            <Label Grid.Row="9"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Image Template Path" />
+                            <Label Grid.Row="10"
+                                   Grid.Column="0"
+                                   Template="{StaticResource lblMainTemp}"
+                                   Content="Recipe Name" />
+
+                            <!--TextBox-->
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="1"
+                                     Text="{Binding CameraName, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     Text="{Binding InterfaceType, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="2"
+                                     Grid.Column="1"
+                                     Text="{Binding SensorType, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="3"
+                                     Grid.Column="1"
+                                     Text="{Binding Channels, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="4"
+                                     Grid.Column="1"
+                                     Text="{Binding Manufacturer, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="5"
+                                     Grid.Column="1"
+                                     Text="{Binding FrameWidth, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="6"
+                                     Grid.Column="1"
+                                     Text="{Binding FrameHeight, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="7"
+                                     Grid.Column="1"
+                                     Text="{Binding SerialNumber, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="8"
+                                     Grid.Column="1"
+                                     Text="{Binding ImageSavePath, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="9"
+                                     Grid.Column="1"
+                                     Text="{Binding ImageTemplatePath, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+                            <TextBox Grid.Row="10"
+                                     Grid.Column="1"
+                                     Text="{Binding RecipeName, Mode=TwoWay}"
+                                     Template="{StaticResource tbTemplate}" />
+
+                            <!--Button-->
+                            <Button Grid.Column="1"
+                                    Grid.Row="11"
+                                    x:Name="btnSaveCamSettings"
+                                    Margin="3"
+                                    Width="100"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Recipe"

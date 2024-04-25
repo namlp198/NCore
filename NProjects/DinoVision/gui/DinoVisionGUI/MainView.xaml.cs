@@ -36,6 +36,7 @@ namespace DinoVisionGUI
 
             this.DataContext = this;
 
+            // init a IO manager
             m_IOManagement = new IOManagement_PLC_Pana(m_nCamIdx);
             m_IOManagement.NewImageUpdate += M_IOManagement_NewImageUpdate;
             InterfaceManager.InspectionComplete += InterfaceManager_InspectionComplete;
@@ -47,11 +48,28 @@ namespace DinoVisionGUI
             ucZoomBoxViewer.UcLoadImage += UcZoomBoxViewer_UcLoadImage;
             ucZoomBoxViewer.SwitchMachineMode += UcZoomBoxViewer_SwitchMachineMode;
 
-            ucZoomBoxViewer.MachineModeSelected = ucZoomBoxViewer.MachineModeList[0];
-
-            InterfaceManager.Instance.JigInspProcessorManager.Initialize();
+            // init a view for show image result
             m_nCamIdx = ucZoomBoxViewer.CameraIndex;
             m_CameraStreaming = new CameraStreamingController(640, 480, ucZoomBoxViewer, m_nCamIdx, ModeView.Color);
+
+            // 0: inspect, 1: Live, 2: Manual, 3: Simulator
+            // select inspect mode - view mode will be from color to mono
+            ucZoomBoxViewer.MachineModeSelected = ucZoomBoxViewer.MachineModeList[0];
+
+            // init Inspect Processor
+            InterfaceManager.Instance.JigInspProcessorManager.Initialize();
+
+            // read config
+            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadSysConfigurations(ref InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs);
+            for(int i = 0; i < ConstDefine.MAX_CAMERA_INSP_COUNT; i++)
+            {
+                InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadCamConfigurations(i, ref InterfaceManager.Instance.JigInspProcessorManager.CameraConfigs[i]);
+            }
+            for (int i = 0; i < ConstDefine.MAX_CAMERA_INSP_COUNT; i++)
+            {
+                InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadRecipe(i, ref InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i]);
+            }
+
         }
 
         private async void InterfaceManager_InspectionComplete()
@@ -78,8 +96,6 @@ namespace DinoVisionGUI
 
             ucZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetResultBufferImageDinoCam(m_nCamIdx);
             await ucZoomBoxViewer.UpdateImage();
-
-            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(m_nCamIdx);
         }
 
         private async void M_IOManagement_NewImageUpdate(IOManagement_PLC_Pana sender)
@@ -256,5 +272,11 @@ namespace DinoVisionGUI
             this.PropertyChanged?.Invoke(this, args);
         }
         #endregion
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsView settingsView = new SettingsView();
+            settingsView.ShowDialog();
+        }
     }
 }
