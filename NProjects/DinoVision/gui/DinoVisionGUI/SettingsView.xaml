@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrlsExt="clr-namespace:NpcCore.Wpf.Controls;assembly=NpcCore.Wpf"
         xmlns:local="clr-namespace:DinoVisionGUI"
         mc:Ignorable="d"
         Title="SettingsView"
@@ -301,34 +302,50 @@
                             <!--TextBox-->
                             <TextBox Grid.Row="0"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding CameraName, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="1"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding InterfaceType, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="2"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding SensorType, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="3"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding Channels, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="4"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding Manufacturer, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="5"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding FrameWidth, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="6"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding FrameHeight, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="7"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding SerialNumber, Mode=TwoWay}"
                                      Template="{StaticResource tbTemplate}" />
                             <TextBox Grid.Row="8"
@@ -348,6 +365,7 @@
                             <Button Grid.Column="1"
                                     Grid.Row="11"
                                     x:Name="btnSaveCamSettings"
+                                    Click="btnSaveCamSettings_Click"
                                     Margin="3"
                                     Width="100"
                                     HorizontalAlignment="Right"
@@ -370,7 +388,302 @@
                      FontFamily="Segoe UI"
                      FontWeight="Bold"
                      Foreground="Black">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.1*" />
+                        <RowDefinition Height="14*" />
+                        <RowDefinition Height="0.8*" />
+                    </Grid.RowDefinitions>
+                    <ToolBar Margin="2"
+                             Background="{DynamicResource RGB_Night_46_61_90}">
+                        <Button Margin="5 0 5 0"
+                                x:Name="btnLocatorTool"
+                                Click="btnLocatorTool_Click"
+                                ToolTip="Locator Tool">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{DynamicResource IMG_IC_BaseTeaching}"
+                                           Stretch="Fill"
+                                           Margin="5" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Separator Margin="5" />
+                    </ToolBar>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                                BorderBrush="LightGray"
+                                BorderThickness="0.8"
+                                CornerRadius="2"
+                                Margin="5">
+                            <ctrlsExt:ScrollViewerExt HorizontalScrollBarVisibility="Auto"
+                                                   VerticalScrollBarVisibility="Auto"
+                                                   CanContentScroll="True"
+                                                   x:Name="scrollViewerExt">
+                                <Grid Name="gridMain"
+                                      RenderTransformOrigin="0.0,0.0">
+                                    <Grid.LayoutTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform x:Name="scaleTransform" />
+                                            <TranslateTransform x:Name="translateTransform" />
+                                        </TransformGroup>
+                                    </Grid.LayoutTransform>
 
+                                    <ctrlsExt:ImageExt x:Name="imgView"
+                                                    Stretch="None">
+                                    </ctrlsExt:ImageExt>
+
+                                </Grid>
+                            </ctrlsExt:ScrollViewerExt>
+                        </Border>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <TextBlock Grid.Row="0"
+                                           Margin="10 0 0 0"
+                                           Text="Parameters"
+                                           Foreground="White"
+                                           FontSize="16"
+                                           TextAlignment="Left"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid Grid.Row="1"
+                                  Margin="10 5 10 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.2*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <!--Label-->
+                                <Label Grid.Row="0"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Recipe Name" />
+                                <Label Grid.Row="1"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Algorithm" />
+                                <Label Grid.Row="2"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="X" />
+                                <Label Grid.Row="3"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Y" />
+                                <Label Grid.Row="4"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Width" />
+                                <Label Grid.Row="5"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Height" />
+                                <Label Grid.Row="6"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Matching Rate" />
+                                <Label Grid.Row="7"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Center X" />
+                                <Label Grid.Row="8"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Center Y" />
+                                <Label Grid.Row="9"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Image Template" />
+                                <Label Grid.Row="10"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Offset ROI0 X" />
+                                <Label Grid.Row="11"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Offset ROI0 Y" />
+                                <Label Grid.Row="12"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Offset ROI1 X" />
+                                <Label Grid.Row="13"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Offset ROI1 Y" />
+                                <Label Grid.Row="14"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="ROI Width" />
+                                <Label Grid.Row="15"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="ROI Height" />
+                                <Label Grid.Row="16"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Number of Array" />
+                                <Label Grid.Row="17"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Threshold Height Min" />
+                                <Label Grid.Row="18"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Threshold Height Max" />
+
+                                <!--TextBox-->
+                                <TextBox Grid.Row="0"
+                                         Grid.Column="1"
+                                         Text="{Binding RecipeName_Recipe, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="1"
+                                         Grid.Column="1"
+                                         Text="{Binding Algorithm, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="2"
+                                         Grid.Column="1"
+                                         Text="{Binding RectX, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="3"
+                                         Grid.Column="1"
+                                         Text="{Binding RectY, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="4"
+                                         Grid.Column="1"
+                                         Text="{Binding RectWidth, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="5"
+                                         Grid.Column="1"
+                                         Text="{Binding RectHeight, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="6"
+                                         Grid.Column="1"
+                                         Text="{Binding MatchingRate, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="7"
+                                         Grid.Column="1"
+                                         Text="{Binding CenterX, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="8"
+                                         Grid.Column="1"
+                                         Text="{Binding CenterY, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="9"
+                                         Grid.Column="1"
+                                         Text="{Binding ImageTemplate, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="10"
+                                         Grid.Column="1"
+                                         Text="{Binding OffsetROI0_X, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="11"
+                                         Grid.Column="1"
+                                         Text="{Binding OffsetROI0_Y, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="12"
+                                         Grid.Column="1"
+                                         Text="{Binding OffsetROI1_X, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="13"
+                                         Grid.Column="1"
+                                         Text="{Binding OffsetROI1_Y, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="14"
+                                         Grid.Column="1"
+                                         Text="{Binding ROIWidth, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="15"
+                                         Grid.Column="1"
+                                         Text="{Binding ROIHeight, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="16"
+                                         Grid.Column="1"
+                                         Text="{Binding NumberOfArray, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="17"
+                                         Grid.Column="1"
+                                         Text="{Binding ThresholdHeightMin, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="18"
+                                         Grid.Column="1"
+                                         Text="{Binding ThresholdHeightMax, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            Grid.Column="1"
+                                            Grid.Row="19"
+                                            Margin="0 0 0 0">
+                                    <!--Button-->
+                                    <Button Margin="3"
+                                            Width="100"
+                                            Name="btnSaveRecipe"
+                                            Click="btnSaveRecipe_Click"
+                                            HorizontalAlignment="Right"
+                                            Foreground="White"
+                                            Background="{DynamicResource RGB_Cold_92_184_92}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock FontSize="14"
+                                                           FontWeight="Bold"
+                                                           Text="Save" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <!--Button-->
+                                    <Button Margin="3"
+                                            Width="100"
+                                            Name="btnApplyRecipe"
+                                            Click="btnApplyRecipe_Click"
+                                            HorizontalAlignment="Right"
+                                            Foreground="White"
+                                            Background="{DynamicResource RGB_Hot_206_59_63}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock FontSize="14"
+                                                           FontWeight="Bold"
+                                                           Text="Apply" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
     </Border>

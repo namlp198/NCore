@@ -12,6 +12,8 @@ namespace DinoVisionGUI
         public const int MAX_STRING_SIZE = 256;
 
         public const int MAX_CAMERA_INSP_COUNT = 1;
+
+        public const int MAX_ROI_AUTO = 2;
     };
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -59,14 +61,32 @@ namespace DinoVisionGUI
         public string m_sRecipeName;
     }
 
-    // recipe settings
+    // Recipe setting
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CJigInspectRecipe
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
-        public string m_sName;
+        public string m_sRecipeName;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
         public string m_sAlgorithm;
+        public int m_nRectX;
+        public int m_nRectY;
+        public int m_nRectWidth;
+        public int m_nRectHeight;
+        public double m_dMatchingRate;
+        public int m_nCenterX;
+        public int m_nCenterY;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
+        public string m_sImageTemplate;
+        public int m_nOffsetROI0_X;
+        public int m_nOffsetROI0_Y;
+        public int m_nOffsetROI1_X;
+        public int m_nOffsetROI1_Y;
+        public int m_nROIWidth;
+        public int m_nROIHeight;
+        public int m_nNumberOfArray;
+        public int m_nThresholdHeightMin;
+        public int m_nThresholdHeightMax;
     }
 
     // Inspection Compete CallBack
@@ -110,6 +130,35 @@ namespace DinoVisionGUI
 #endif
         extern private static bool InspectStart(IntPtr tempInspProcessor, int nThreadCount, int nCamIdx);
         public bool InspectStart(int nThreadCount, int nCamIdx) { return InspectStart(m_JigInspectProcessor, nThreadCount, nCamIdx); }
+
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GrabImageForLocatorTool(IntPtr tempInspProcessor, int nCamIdx);
+        public bool GrabImageForLocatorTool(int nCamIdx) { return GrabImageForLocatorTool(m_JigInspectProcessor, nCamIdx); }
+
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LocatorTrain(IntPtr tempInspProcessor, int nCamIdx, IntPtr pRecipe);
+        public bool LocatorTrain(int nCamIdx, ref CJigInspectRecipe recipe) 
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipe));
+            Marshal.StructureToPtr(recipe, pPointer, false);
+            bool bRet = LocatorTrain(m_JigInspectProcessor, nCamIdx, pPointer);
+
+            return bRet;
+        }
+
+
 
 #if DEBUG
         [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -267,6 +316,38 @@ namespace DinoVisionGUI
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sysConfig));
             Marshal.StructureToPtr(sysConfig, pPointer, false);
             bool bRet = SaveSysConfigurations(m_JigInspectProcessor, pPointer);
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveCamConfigurations(IntPtr tempInspProcessor, int nCamIdx, IntPtr pCamConfig);
+        public bool SaveCamConfigurations(int nCamIdx, ref CJigInspectCameraConfig camConfig)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(camConfig));
+            Marshal.StructureToPtr(camConfig, pPointer, false);
+            bool bRet = SaveCamConfigurations(m_JigInspectProcessor, nCamIdx, pPointer);
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveRecipe(IntPtr tempInspProcessor, int nCamIdx, IntPtr pRecipe);
+        public bool SaveRecipe(int nCamIdx, ref CJigInspectRecipe recipe)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipe));
+            Marshal.StructureToPtr(recipe, pPointer, false);
+            bool bRet = SaveRecipe(m_JigInspectProcessor, nCamIdx, pPointer);
 
             return bRet;
         }

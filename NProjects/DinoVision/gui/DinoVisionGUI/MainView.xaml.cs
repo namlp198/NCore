@@ -275,6 +275,11 @@ namespace DinoVisionGUI
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
+            if(ucZoomBoxViewer.MachineMode == EMachineMode.EMachineMode_Inspect)
+            {
+                MessageBox.Show("Could not setting when the machine is in Inspect Mode!");
+                return;
+            }
             SettingsView settingsView = new SettingsView();
             settingsView.ShowDialog();
         }

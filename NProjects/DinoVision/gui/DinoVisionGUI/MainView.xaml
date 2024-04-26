@@ -65,6 +65,49 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <ControlTemplate x:Key="lblMainTemp"
+                         TargetType="Label">
+            <Grid>
+                <Border BorderBrush="{DynamicResource RGB_Night_56_59_65}"
+                        BorderThickness="0.6"
+                        CornerRadius="2"
+                        Margin="0.6">
+                    <Rectangle Fill="{DynamicResource RGB_Night_39_42_49}"
+                               Height="auto" />
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Bottom"
+                                  TextBlock.Foreground="White"
+                                  TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="SemiBold"
+                                  TextBlock.FontSize="16"
+                                  Margin="6 6 6 6"
+                                  ContentStringFormat="{}{0:0.##}" />
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="lbShowResult"
+                         TargetType="Label">
+            <Grid>
+                <Border BorderBrush="{DynamicResource RGB_Night_56_59_65}"
+                        BorderThickness="0.6"
+                        CornerRadius="2"
+                        Margin="0.6">
+                    <Rectangle Fill="{TemplateBinding Background}"
+                               Height="auto" />
+                </Border>
+                <ContentPresenter Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Bottom"
+                                  TextBlock.Foreground="{TemplateBinding Foreground}"
+                                  TextBlock.FontFamily="Open Sans"
+                                  TextBlock.FontWeight="SemiBold"
+                                  TextBlock.FontSize="16"
+                                  Margin="6 6 6 6"
+                                  ContentStringFormat="{}{0:0.##}" />
+            </Grid>
+        </ControlTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -136,13 +179,72 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <Label Name="lbResult"
-                                   FontWeight="SemiBold"
-                                   FontSize="80"
-                                   Content="..."
-                                   VerticalContentAlignment="Center"
-                                   HorizontalContentAlignment="Center"
-                                   Foreground="White"/>
+                            <Border Margin="3"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="0.6"
+                                    CornerRadius="2">
+                                <Label Name="lbResult"
+                                       FontWeight="SemiBold"
+                                       FontSize="100"
+                                       Content="NONE"
+                                       VerticalContentAlignment="Center"
+                                       HorizontalContentAlignment="Center"
+                                       Foreground="White" />
+                            </Border>
+                            <Border Grid.Row="1"
+                                    Margin="3"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="0.6"
+                                    CornerRadius="2">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0"
+                                           Grid.Column="0"
+                                           Template="{StaticResource lblMainTemp}"
+                                           Content="OK"/>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="0"
+                                           Template="{StaticResource lblMainTemp}"
+                                           Content="NG" />
+                                    <Label Grid.Row="2"
+                                           Grid.Column="0"
+                                           Template="{StaticResource lblMainTemp}"
+                                           Content="Total" />
+                                    <Label Grid.Row="3"
+                                           Grid.Column="0"
+                                           Template="{StaticResource lblMainTemp}"
+                                           Content="Process" />
+                                    <Label Grid.Row="0"
+                                           Grid.Column="1"
+                                           Template="{StaticResource lbShowResult}"
+                                           Background="{DynamicResource RGB_Cold_71_127_75}"
+                                           Foreground="White"/>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Template="{StaticResource lbShowResult}"
+                                           Background="{DynamicResource RGB_Hot_206_59_63}"
+                                           Foreground="White"/>
+                                    <Label Grid.Row="2"
+                                           Grid.Column="1"
+                                           Template="{StaticResource lbShowResult}"
+                                           Background="White"
+                                           Foreground="Black"/>
+                                    <Label Grid.Row="3"
+                                           Grid.Column="1"
+                                           Template="{StaticResource lbShowResult}"
+                                           Background="{DynamicResource RGB_Night_61_66_77}"
+                                           Foreground="White"/>
+                                </Grid>
+                            </Border>
                         </Grid>
                     </TabItem>
                     <TabItem Header="System Log"
