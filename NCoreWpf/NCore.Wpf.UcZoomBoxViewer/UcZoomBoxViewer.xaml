@@ -397,7 +397,6 @@
                 <StatusBar Margin="3"
                            Background="{DynamicResource RGB_Night_50_54_63}">
                     <TextBlock Style="{DynamicResource styleTextBlock}"
-                               Text="..."
                                Foreground="Gray"
                                Margin="5 0 5 0" />
                 </StatusBar>
