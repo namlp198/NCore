@@ -238,3 +238,94 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 
 	return 1;
 }
+
+BOOL CJigInspectDinoCam::GrabImageForLocatorTool(int nCamIdx)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_pUsbCamera[nCamIdx] == NULL)
+		return 0;
+
+	// 1. grab image
+	m_pUsbCamera[nCamIdx]->SingleGrab();
+
+	// 2. get buffer
+	LPBYTE buff = m_pUsbCamera[nCamIdx]->GetBufferImage();
+	cv::Mat mat(m_pUsbCamera[nCamIdx]->GetFrameHeight(), m_pUsbCamera[nCamIdx]->GetFrameWidth(), CV_8UC3, buff);
+
+	cv::Mat matGray;
+	cv::cvtColor(mat, matGray, cv::COLOR_BGR2GRAY);
+
+	m_pResultImageBuffer[nCamIdx]->SetFrameImage(0, matGray.data);
+
+	return TRUE;
+}
+
+BOOL CJigInspectDinoCam::LocatorTrain(int nCamIdx, CJigInspectRecipe* pRecipe)
+{
+	// 1. get buffer
+	LPBYTE buff = m_pResultImageBuffer[nCamIdx]->GetBufferImage(0);
+	cv::Mat mat(m_pUsbCamera[nCamIdx]->GetFrameHeight(), m_pUsbCamera[nCamIdx]->GetFrameWidth(), CV_8UC1, buff);
+
+	if (mat.empty())
+		return FALSE;
+
+	USES_CONVERSION;
+	char sImageGrayPath[1024] = {};
+	sprintf_s(sImageGrayPath, "%s%s", W2A(m_pInterface->GetCameraConfig(nCamIdx)->m_sImageSavePath), "\\gray.png");
+
+	//cv::imwrite(sImageGrayPath, mat);
+
+	CJigInspectRecipe recipe;
+	recipe = *(pRecipe);
+
+	int nX = recipe.m_nRectX;
+	int nY = recipe.m_nRectY;
+	int nWidth = recipe.m_nRectWidth;
+	int nHeight = recipe.m_nRectHeight;
+
+	// 2. Get image template
+	cv::Mat templateImg(nHeight, nWidth, CV_8UC1);
+	for (size_t i = 0; i < templateImg.rows; i++)
+	{
+		memcpy(&templateImg.data[i * templateImg.step1()], &mat.data[(i + nY) * mat.step1() + nX], templateImg.cols);
+	}
+	
+	char sImageTemplatePath[1024] = {};
+	sprintf_s(sImageTemplatePath, "%s%s", W2A(m_pInterface->GetCameraConfig(nCamIdx)->m_sImageTemplatePath),"\\template_0.png");
+
+	cv::imwrite(sImageTemplatePath, templateImg);
+	
+	// 3. Find center
+	// Template matching
+	cv::Mat C = cv::Mat::zeros(mat.rows - templateImg.rows + 1, mat.cols - templateImg.cols + 1, CV_32FC1);
+
+	double dMin = 0.0;
+	double dMatchingRate = 0.0;
+	cv::Point ptLeftTop;
+	cv::Point ptFindResult;
+
+	cv::matchTemplate(mat, templateImg, C, cv::TM_CCOEFF_NORMED);
+	cv::minMaxLoc(C, &dMin, &dMatchingRate, NULL, &ptLeftTop);
+
+	ptFindResult.x = float(ptLeftTop.x) + (templateImg.cols / 2.0);
+	ptFindResult.y = float(ptLeftTop.y) + (templateImg.rows / 2.0);
+	dMatchingRate = dMatchingRate * 100.0;
+
+	double dMatchingRateLimit = recipe.m_dMatchingRate;
+
+	if (dMatchingRate < dMatchingRateLimit)
+	{
+		return FALSE;
+	}
+
+	recipe.m_nCenterX = ptFindResult.x;
+	recipe.m_nCenterY = ptFindResult.y;
+
+	// 4. Save result
+	*m_pInterface->GetRecipe(nCamIdx) = recipe;
+
+
+	return TRUE;
+}

@@ -14,6 +14,10 @@ extern "C"
 	/******************** Inspect ********************/
 	__declspec(dllexport) bool            InspectStart(CJigInspectProcessor* pProcessor, int nThreadCount, int nCamIdx);
 
+	__declspec(dllexport) bool            GrabImageForLocatorTool(CJigInspectProcessor* pProcessor, int nCamIdx);
+
+	__declspec(dllexport) bool            LocatorTrain(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectRecipe* pRecipe);
+
 	/******************** Connect and grab ********************/
 	__declspec(dllexport) bool            SingleGrabDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx);
 
@@ -41,6 +45,10 @@ extern "C"
 
 	/******************** Save settings ********************/
 	__declspec(dllexport) bool            SaveSysConfigurations(CJigInspectProcessor* pProcessor, CJigInspectSystemConfig* pSysConfig);
+
+	__declspec(dllexport) bool            SaveCamConfigurations(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectCameraConfig* pCamConfig);
+
+	__declspec(dllexport) bool            SaveRecipe(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectRecipe* pRecipeConfig);
 
 	/******************** Callback ********************/
 	__declspec(dllexport) void			  RegCallBackInspectCompleteFunc(CJigInspectProcessor* pProcessor, CallbackInspectComplete* pFunc);

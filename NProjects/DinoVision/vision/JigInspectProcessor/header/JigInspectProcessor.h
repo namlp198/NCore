@@ -55,6 +55,8 @@ public:
 
 public:
 	BOOL                                GetInspectionResult(int nCamIdx, CJigInspectResults* pJigInspRes);
+	BOOL                                GrabImageForLocatorTool(int nCamIdx);
+	BOOL                                LocatorTrain(int nCamIdx, CJigInspectRecipe* pRecipe);
 
 public:
 	// Callback

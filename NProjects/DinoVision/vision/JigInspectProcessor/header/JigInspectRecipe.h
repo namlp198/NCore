@@ -8,6 +8,23 @@ public:
 	~CJigInspectRecipe(void);
 
 public:
-	TCHAR m_sName[MAX_STRING_SIZE];
+	TCHAR m_sRecipeName[MAX_STRING_SIZE];
 	TCHAR m_sAlgorithm[MAX_STRING_SIZE];
+	int m_nRectX;
+	int m_nRectY;
+	int m_nRectWidth;
+	int m_nRectHeight;
+	double m_dMatchingRate;
+	int m_nCenterX;
+	int m_nCenterY;
+	TCHAR m_sImageTemplate[MAX_STRING_SIZE];
+	int m_nOffsetROI0_X;
+	int m_nOffsetROI0_Y;
+	int m_nOffsetROI1_X;
+	int m_nOffsetROI1_Y;
+	int m_nROIWidth;
+	int m_nROIHeight;
+	int m_nNumberOfArray;
+	int m_nThresholdHeightMin;
+	int m_nThresholdHeightMax;
 };

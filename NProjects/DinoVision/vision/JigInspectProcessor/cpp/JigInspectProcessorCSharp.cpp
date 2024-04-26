@@ -35,6 +35,26 @@ bool InspectStart(CJigInspectProcessor* pProcessor, int nThreadCount, int nCamId
     else               return true;
 }
 
+bool GrabImageForLocatorTool(CJigInspectProcessor* pProcessor, int nCamIdx)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    BOOL bRet = pProcessor->GrabImageForLocatorTool(nCamIdx);
+    if (bRet == FALSE) return false;
+    else               return true;
+}
+
+bool LocatorTrain(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectRecipe* pRecipe)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    BOOL bRet = pProcessor->LocatorTrain(nCamIdx, pRecipe);
+    if (bRet == FALSE) return false;
+    else               return true;
+}
+
 bool SingleGrabDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
 {
     if (pProcessor == NULL)
@@ -175,6 +195,26 @@ bool SaveSysConfigurations(CJigInspectProcessor* pProcessor, CJigInspectSystemCo
         return false;
 
     BOOL bRet = pProcessor->SaveSysConfigurations(pSysConfig);
+    if (bRet == FALSE) return false;
+    else               return true;
+}
+
+bool SaveCamConfigurations(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectCameraConfig* pCamConfig)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    BOOL bRet = pProcessor->SaveCamConfigurations(nCamIdx, pCamConfig);
+    if (bRet == FALSE) return false;
+    else               return true;
+}
+
+bool SaveRecipe(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectRecipe* pRecipeConfig)
+{
+    if (pProcessor == NULL)
+        return false;
+
+    BOOL bRet = pProcessor->SaveRecipe(nCamIdx, pRecipeConfig);
     if (bRet == FALSE) return false;
     else               return true;
 }

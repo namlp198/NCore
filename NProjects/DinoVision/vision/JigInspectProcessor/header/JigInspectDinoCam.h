@@ -40,6 +40,8 @@ public:
 public:
 	BOOL                            CreateResultBuffer(int nCamIdx, CFramGrabber_UsbCam* pUsbCam);
 	BOOL                            InspectStart(int nCamIdx);
+	BOOL                            GrabImageForLocatorTool(int nCamIdx);
+	BOOL                            LocatorTrain(int nCamIdx, CJigInspectRecipe* pRecipe);
 
 private:
 

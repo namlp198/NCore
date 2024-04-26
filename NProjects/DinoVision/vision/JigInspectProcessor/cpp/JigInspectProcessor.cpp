@@ -337,12 +337,36 @@ BOOL CJigInspectProcessor::LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 
 	// 5. start read
 	CString csName = pRoot->first_node("RecipeName")->value();
-	ZeroMemory(camRecipe.m_sName, sizeof(camRecipe.m_sName));
-	wsprintf(camRecipe.m_sName, _T("%s"), (TCHAR*)(LPCTSTR)csName);
+	ZeroMemory(camRecipe.m_sRecipeName, sizeof(camRecipe.m_sRecipeName));
+	wsprintf(camRecipe.m_sRecipeName, _T("%s"), (TCHAR*)(LPCTSTR)csName);//1
 
 	CString csAlgorithm = pRoot->first_node("Algorithm")->value();
 	ZeroMemory(camRecipe.m_sAlgorithm, sizeof(camRecipe.m_sAlgorithm));
-	wsprintf(camRecipe.m_sAlgorithm, _T("%s"), (TCHAR*)(LPCTSTR)csAlgorithm);
+	wsprintf(camRecipe.m_sAlgorithm, _T("%s"), (TCHAR*)(LPCTSTR)csAlgorithm);//2
+
+	camRecipe.m_nRectX = std::atoi(pRoot->first_node("RectX")->value());//3
+	camRecipe.m_nRectY = std::atoi(pRoot->first_node("RectY")->value());//4
+	camRecipe.m_nRectWidth = std::atoi(pRoot->first_node("RectWidth")->value());//5
+	camRecipe.m_nRectHeight = std::atoi(pRoot->first_node("RectHeight")->value());//6
+	camRecipe.m_dMatchingRate = std::stod(pRoot->first_node("MatchingRate")->value());//7
+	camRecipe.m_nCenterX = std::atoi(pRoot->first_node("CenterX")->value());//8
+	camRecipe.m_nCenterY = std::atoi(pRoot->first_node("CenterY")->value());//9
+
+	CString csImageTemplate = pRoot->first_node("ImageTemplate")->value();
+	ZeroMemory(camRecipe.m_sImageTemplate, sizeof(camRecipe.m_sImageTemplate));
+	wsprintf(camRecipe.m_sImageTemplate, _T("%s"), (TCHAR*)(LPCTSTR)csImageTemplate);//10
+
+	camRecipe.m_nOffsetROI0_X = std::atoi(pRoot->first_node("Offset_ROI0_X")->value());//11
+	camRecipe.m_nOffsetROI0_Y = std::atoi(pRoot->first_node("Offset_ROI0_Y")->value());//12
+	camRecipe.m_nOffsetROI1_X = std::atoi(pRoot->first_node("Offset_ROI1_X")->value());//13
+	camRecipe.m_nOffsetROI1_Y = std::atoi(pRoot->first_node("Offset_ROI1_Y")->value());//14
+
+	camRecipe.m_nROIWidth = std::atoi(pRoot->first_node("ROI_Width")->value());//15
+	camRecipe.m_nROIHeight = std::atoi(pRoot->first_node("ROI_Height")->value());//16
+
+	camRecipe.m_nNumberOfArray = std::atoi(pRoot->first_node("NumberOfArray")->value());//17
+	camRecipe.m_nThresholdHeightMin = std::atoi(pRoot->first_node("ThresholdHeightMin")->value());//18
+	camRecipe.m_nThresholdHeightMax = std::atoi(pRoot->first_node("ThresholdHeightMax")->value());//19
 
 	*(pRecipe) = camRecipe;
 	
@@ -422,12 +446,217 @@ BOOL CJigInspectProcessor::SaveSysConfigurations(CJigInspectSystemConfig* pSysCo
 
 BOOL CJigInspectProcessor::SaveCamConfigurations(int nCamIdx, CJigInspectCameraConfig* pCamConfig)
 {
-	return 0;
+	if (m_csCamConfigPath[nCamIdx].IsEmpty())
+	{
+		AfxMessageBox(_T("Config Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csCamConfigPath[nCamIdx]);
+	if (m_csCamConfigPath[nCamIdx].Right(3).CompareNoCase(_T("xml")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Config file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CJigInspectCameraConfig camConfig;
+	camConfig = *(pCamConfig);
+
+	// Convert path
+	USES_CONVERSION;
+	char cCamConfigPath[1024] = {};
+	sprintf_s(cCamConfigPath, "%s", W2A(m_csCamConfigPath[nCamIdx]));
+
+	XMLDocument_2 xmlDoc;
+	std::string error;
+
+	std::ifstream fs(cCamConfigPath, std::ios::in | std::ios::out);
+	/* "Read file into vector<char>"  See linked thread above*/
+	std::vector<char> buffer((std::istreambuf_iterator<char>(fs)), std::istreambuf_iterator<char>());
+	buffer.push_back('\0');
+	xmlDoc.parse<rapidxml::parse_full | rapidxml::parse_no_data_nodes>(&buffer[0]);
+
+	rapidxml::xml_node<>* pRoot = xmlDoc.first_node("Configs");
+
+	// write data
+
+	const char* sCameraName = W2A(camConfig.m_sName);
+	pRoot->first_node("CameraName")->value(sCameraName);
+
+	const char* sInterfaceType = W2A(camConfig.m_sInterfaceType);
+	pRoot->first_node("InterfaceType")->value(sInterfaceType);
+
+	const char* sSensorType = W2A(camConfig.m_sSensorType);
+	pRoot->first_node("SensorType")->value(sSensorType);
+
+	char sChannels[10];
+	sprintf_s(sChannels, "%d", camConfig.m_nChannels);
+	pRoot->first_node("Channels")->value(sChannels);
+
+	const char* sManufacturer = W2A(camConfig.m_sManufacturer);
+	pRoot->first_node("Manufacturer")->value(sManufacturer);
+
+	char sFrameWidth[10];
+	sprintf_s(sFrameWidth, "%d", camConfig.m_nFrameWidth);
+	pRoot->first_node("FrameWidth")->value(sFrameWidth);
+
+	char sFrameHeight[10];
+	sprintf_s(sFrameHeight, "%d", camConfig.m_nFrameHeight);
+	pRoot->first_node("FrameHeight")->value(sFrameHeight);
+
+	const char* sSerialNumber = W2A(camConfig.m_sSerialNumber);
+	pRoot->first_node("SerialNumber")->value(sSerialNumber);
+
+	const char* sImageSavePath = W2A(camConfig.m_sImageSavePath);
+	pRoot->first_node("ImageSavePath")->value(sImageSavePath);
+
+	const char* sImageTemplatePath = W2A(camConfig.m_sImageTemplatePath);
+	pRoot->first_node("ImageTemplatePath")->value(sImageTemplatePath);
+
+	const char* sRecipeName = W2A(camConfig.m_sRecipeName);
+	pRoot->first_node("RecipeName")->value(sRecipeName);
+
+	// Convert the modified XML back to a string
+	std::string data;
+	rapidxml::print(std::back_inserter(data), xmlDoc);
+
+	std::ofstream file;
+	file.open(cCamConfigPath);
+	file << data;
+	file.close();
+
+	return TRUE;
 }
 
 BOOL CJigInspectProcessor::SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 {
-	return 0;
+	if (m_csRecipePath[nCamIdx].IsEmpty())
+	{
+		AfxMessageBox(_T("Config Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csRecipePath[nCamIdx]);
+	if (m_csRecipePath[nCamIdx].Right(3).CompareNoCase(_T("xml")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Config file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CJigInspectRecipe recipe;
+	recipe = *(pRecipe);
+
+	// Convert path
+	USES_CONVERSION;
+	char cRecipePath[1024] = {};
+	sprintf_s(cRecipePath, "%s", W2A(m_csRecipePath[nCamIdx]));
+
+	XMLDocument_2 xmlDoc;
+	std::string error;
+
+	std::ifstream fs(cRecipePath, std::ios::in | std::ios::out);
+	std::string inputXml;
+	std::string line;
+	while (std::getline(fs, line))
+	{
+		inputXml += line;
+	}
+	std::vector<char> buffer(inputXml.begin(), inputXml.end());
+	buffer.push_back('\0');
+	xmlDoc.parse<rapidxml::parse_full | rapidxml::parse_no_data_nodes>(&buffer[0]);
+
+	rapidxml::xml_node<>* pRoot = xmlDoc.first_node("Recipe");
+
+#pragma region Write Data
+	const char* sRecipeName = W2A(recipe.m_sRecipeName);
+	pRoot->first_node("RecipeName")->value(sRecipeName);//1
+
+	const char* sAlgorithm = W2A(recipe.m_sAlgorithm);
+	pRoot->first_node("Algorithm")->value(sAlgorithm);//2
+
+	char sRectX[10];
+	sprintf_s(sRectX, "%d", recipe.m_nRectX);
+	pRoot->first_node("RectX")->value(sRectX);//3
+
+	char sRectY[10];
+	sprintf_s(sRectY, "%d", recipe.m_nRectY);
+	pRoot->first_node("RectY")->value(sRectY);//4
+
+	char sRectWidth[10];
+	sprintf_s(sRectWidth, "%d", recipe.m_nRectWidth);
+	pRoot->first_node("RectWidth")->value(sRectWidth);//5
+
+	char sRectHeight[10];
+	sprintf_s(sRectHeight, "%d", recipe.m_nRectHeight);
+	pRoot->first_node("RectHeight")->value(sRectHeight);//6
+
+	char sMatchingRate[10];
+	sprintf_s(sMatchingRate, "%.2f", recipe.m_dMatchingRate);
+	pRoot->first_node("MatchingRate")->value(sMatchingRate);//7
+
+	char sCenterX[10];
+	sprintf_s(sCenterX, "%d", recipe.m_nCenterX);
+	pRoot->first_node("CenterX")->value(sCenterX);//8
+
+	char sCenterY[10];
+	sprintf_s(sCenterY, "%d", recipe.m_nCenterY);
+	pRoot->first_node("CenterY")->value(sCenterY);//9
+
+	const char* sImageTemplate = W2A(recipe.m_sImageTemplate);
+	pRoot->first_node("ImageTemplate")->value(sImageTemplate);//10
+
+	char sOffset_ROI0_X[10];
+	sprintf_s(sOffset_ROI0_X, "%d", recipe.m_nOffsetROI0_X);
+	pRoot->first_node("Offset_ROI0_X")->value(sOffset_ROI0_X);//11
+
+	char sOffset_ROI0_Y[10];
+	sprintf_s(sOffset_ROI0_Y, "%d", recipe.m_nOffsetROI0_Y);
+	pRoot->first_node("Offset_ROI0_Y")->value(sOffset_ROI0_Y);//12
+
+	char sOffset_ROI1_X[10];
+	sprintf_s(sOffset_ROI1_X, "%d", recipe.m_nOffsetROI1_X);
+	pRoot->first_node("Offset_ROI1_X")->value(sOffset_ROI1_X);//13
+
+	char sOffset_ROI1_Y[10];
+	sprintf_s(sOffset_ROI1_Y, "%d", recipe.m_nOffsetROI1_Y);
+	pRoot->first_node("Offset_ROI1_Y")->value(sOffset_ROI1_Y);//14
+
+	char sROI_Width[10];
+	sprintf_s(sROI_Width, "%d", recipe.m_nROIWidth);
+	pRoot->first_node("ROI_Width")->value(sROI_Width);//15
+
+	char sROI_Height[10];
+	sprintf_s(sROI_Height, "%d", recipe.m_nROIHeight);
+	pRoot->first_node("ROI_Height")->value(sROI_Height);//16
+
+	char sNumberOfArray[10];
+	sprintf_s(sNumberOfArray, "%d", recipe.m_nNumberOfArray);
+	pRoot->first_node("NumberOfArray")->value(sNumberOfArray);//17
+
+	char sThresholdHeightMin[10];
+	sprintf_s(sThresholdHeightMin, "%d", recipe.m_nThresholdHeightMin);
+	pRoot->first_node("ThresholdHeightMin")->value(sThresholdHeightMin);//18
+
+	char sThresholdHeightMax[10];
+	sprintf_s(sThresholdHeightMax, "%d", recipe.m_nThresholdHeightMax);
+	pRoot->first_node("ThresholdHeightMax")->value(sThresholdHeightMax);//19
+
+#pragma endregion
+
+	// Convert the modified XML back to a string
+	std::string data;
+	rapidxml::print(std::back_inserter(data), xmlDoc);
+
+	std::ofstream file;
+	file.open(cRecipePath);
+	file << data;
+	file.close();
+
+	return TRUE;
 }
 
 BOOL CJigInspectProcessor::CreateBuffer()
@@ -536,6 +765,29 @@ BOOL CJigInspectProcessor::GetInspectionResult(int nCamIdx, CJigInspectResults* 
 	pJigInspRes->m_bResultOKNG = m_pJigInspResutls[nCamIdx]->m_bResultOKNG;
 
 	return TRUE;
+}
+
+BOOL CJigInspectProcessor::GrabImageForLocatorTool(int nCamIdx)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_pInspDinoCam == NULL)
+		return FALSE;
+
+	m_pInspDinoCam->GrabImageForLocatorTool(nCamIdx);
+}
+
+BOOL CJigInspectProcessor::LocatorTrain(int nCamIdx, CJigInspectRecipe* pRecipe)
+{
+	if (nCamIdx < 0 || MAX_CAMERA_INSP_COUNT <= nCamIdx)
+		return 0;
+
+	if (m_pInspDinoCam == NULL)
+		return FALSE;
+
+	m_pInspDinoCam->LocatorTrain(nCamIdx, pRecipe);
+	//SaveRecipe(nCamIdx, m_pJigInspRecipe[nCamIdx]);
 }
 
 void CJigInspectProcessor::RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc)
