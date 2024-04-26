@@ -28,6 +28,23 @@ namespace NpcCore.Wpf.Struct_Vision
         public bool m_bResult { get; set; }
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CLocatorToolResult_Simple
+    {
+        public int m_nCenterX { get; set; }
+        public int m_nCenterY { get; set; }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CROIGenAuto
+    {
+        public int m_nNumberOfArray;
+        public int m_nROI_X;
+        public int m_nROI_Y;
+        public int m_nROI_Width;
+        public int m_nROI_Height;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CAlgorithmsCountPixelResult
     {
         public int m_nNumberOfPixel;

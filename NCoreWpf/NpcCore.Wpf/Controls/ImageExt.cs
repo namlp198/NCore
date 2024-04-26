@@ -121,6 +121,8 @@ namespace NpcCore.Wpf.Controls
         }
         #endregion
 
+        private const int MAX_ROI_AUTO = 2;
+
         AnchorPoint _dragAnchor = AnchorPoint.None;
         HitType _mouseHitType = HitType.None;
 
@@ -218,6 +220,8 @@ namespace NpcCore.Wpf.Controls
         private ViewMode _viewMode = ViewMode.ViewMode_CreateRecipe;
 
         private List<CLocatorToolResult> _lstLocToolRes = new List<CLocatorToolResult>();
+        private CLocatorToolResult_Simple _locToolRes_Simple = new CLocatorToolResult_Simple();
+        private CROIGenAuto[] _arrROIGenAuto = new CROIGenAuto[MAX_ROI_AUTO];
 
         private double _comWidth = 20;
         private double _comOffset = 10;
@@ -1433,7 +1437,7 @@ namespace NpcCore.Wpf.Controls
             get => _enableLocatorTool;
             set
             {
-                if(SetProperty(ref _enableLocatorTool, value))
+                if (SetProperty(ref _enableLocatorTool, value))
                 {
                     _enableSelectRoiTool = false;
                     _isSelectingRoi = false;
@@ -1457,7 +1461,7 @@ namespace NpcCore.Wpf.Controls
                     _enableLocatorTool = false;
                     _isSelectingRoi = true;
                     _enableSelectRect = true;
-                    _enableRotate = true;
+                    //_enableRotate = true;
                     _drag = true;
 
                     ToolMode = ToolMode.ToolMode_SelectRoiTool;
@@ -1581,7 +1585,7 @@ namespace NpcCore.Wpf.Controls
             get => _toolMode;
             set
             {
-                if(SetProperty(ref _toolMode, value))
+                if (SetProperty(ref _toolMode, value))
                 {
                     // change mode tool
                 }
@@ -1596,7 +1600,7 @@ namespace NpcCore.Wpf.Controls
                 if (SetProperty(ref _grabMode, value))
                 {
                     // change mode grab
-                    if(_grabMode == GrabMode.GrabMode_ContinuousGrab)
+                    if (_grabMode == GrabMode.GrabMode_ContinuousGrab)
                     {
                         EnableSelectRoiTool = false;
                         EnableLocatorTool = false;
@@ -1610,9 +1614,9 @@ namespace NpcCore.Wpf.Controls
             get => _viewMode;
             set
             {
-                if(SetProperty(ref _viewMode, value))
+                if (SetProperty(ref _viewMode, value))
                 {
-                    if(_viewMode == ViewMode.ViewMode_ViewResult)
+                    if (_viewMode == ViewMode.ViewMode_ViewResult)
                     {
                         EnableSelectRoiTool = false;
                         EnableLocatorTool = false;
@@ -1627,19 +1631,44 @@ namespace NpcCore.Wpf.Controls
             get => _lstLocToolRes;
             set
             {
-                if(SetProperty(ref _lstLocToolRes, value))
+                if (SetProperty(ref _lstLocToolRes, value))
                 {
                     _viewMode = ViewMode.ViewMode_ViewResult;
                     this.InvalidateVisual();
                 }
             }
         }
+        public CLocatorToolResult_Simple LocToolRes_Simple
+        {
+            get => _locToolRes_Simple;
+            set
+            {
+                if (SetProperty(ref _locToolRes_Simple, value))
+                {
+                    _viewMode = ViewMode.ViewMode_ViewResultSimple;
+                    this.InvalidateVisual();
+                }
+            }
+        }
+        public CROIGenAuto[] ArrROIGenAuto
+        {
+            get => _arrROIGenAuto;
+            set
+            {
+                if (SetProperty(ref _arrROIGenAuto, value))
+                {
+                    _viewMode = ViewMode.ViewMode_ViewResultSimple;
+                    this.InvalidateVisual();
+                }
+            }
+        }
+
         #endregion
 
         [Obsolete]
         private void RenderResult_LocatorTool(DrawingContext dc)
         {
-            foreach(var locToolRes in _lstLocToolRes)
+            foreach (var locToolRes in _lstLocToolRes)
             {
                 Matrix mat = new Matrix();
                 mat.Translate(0, 0);
@@ -1662,12 +1691,59 @@ namespace NpcCore.Wpf.Controls
                 DrawAxis(dc, cntPt, p2, 0.2f);
                 DrawCenterPt(dc, cntPt);
             }
-            dc.Pop();   
+            dc.Pop();
         }
+        private void RenderResult_LocatorTool_Simple(DrawingContext dc)
+        {
+            Matrix mat = new Matrix();
+            mat.Translate(0, 0);
 
+            MatrixTransform matrixTransform = new MatrixTransform(mat);
+            dc.PushTransform(matrixTransform);
+            dc.PushOpacity(0.7);
+
+            dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 1), _rectReal);
+
+            Point cntPt = new Point(_locToolRes_Simple.m_nCenterX, _locToolRes_Simple.m_nCenterY);
+            Point p1 = new Point(cntPt.X + 300, cntPt.Y);
+            Point p2 = new Point(cntPt.X, cntPt.Y + 300);
+            DrawAxis(dc, cntPt, p1, 0.2f);
+            DrawAxis(dc, cntPt, p2, 0.2f);
+            DrawCenterPt(dc, cntPt);
+
+            dc.Pop();
+        }
+        private void RenderROI_Auto(DrawingContext dc)
+        {
+            Matrix mat = new Matrix();
+            mat.Translate(0, 0);
+
+            MatrixTransform matrixTransform = new MatrixTransform(mat);
+            dc.PushTransform(matrixTransform);
+            dc.PushOpacity(0.7);
+
+            for(int i = 0; i < _arrROIGenAuto.Length; i++)
+            {
+                int numberOfArray = _arrROIGenAuto[i].m_nNumberOfArray;
+                int ROI_X = _arrROIGenAuto[i].m_nROI_X;
+                int ROI_Y = _arrROIGenAuto[i].m_nROI_Y;
+                int width = _arrROIGenAuto[i].m_nROI_Width;
+                int height = _arrROIGenAuto[i].m_nROI_Height;
+
+                for (int j = 0; j < numberOfArray; j++)
+                {
+                    Rect arrRect = new Rect(ROI_X, ROI_Y, width / numberOfArray, height);
+                    dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 1), arrRect);
+
+                    ROI_X += width / numberOfArray;
+                }
+            }
+
+            dc.Pop();
+        }
         private void DrawCenterPt(DrawingContext dc, Point cntPt)
         {
-            int seg = 15;
+            int seg = 10;
             int squareEdge = (int)(seg * Math.Tan(Math.PI / 4));
 
             Point p1 = new Point(cntPt.X + seg, cntPt.Y - squareEdge);
@@ -1678,7 +1754,7 @@ namespace NpcCore.Wpf.Controls
             Point p4 = new Point(cntPt.X + seg, cntPt.Y + squareEdge);
             dc.DrawLine(new Pen(Brushes.LightSalmon, 1), p3, p4);
 
-            dc.DrawEllipse(Brushes.LightSalmon, new Pen(Brushes.LightSalmon, 1), cntPt, _comWidth * 0.2, _comWidth * 0.2);
+            dc.DrawEllipse(Brushes.LightSalmon, new Pen(Brushes.LightSalmon, 1), cntPt, _comWidth * 0.1, _comWidth * 0.1);
         }
 
         private void DrawAxis(DrawingContext dc, Point p1, Point p2, float scale = 0.2f)
@@ -1687,18 +1763,18 @@ namespace NpcCore.Wpf.Controls
             double hypotenuse = Math.Sqrt(Math.Pow((p1.Y - p2.Y), 2) + Math.Pow((p1.X - p2.X), 2));
 
             // Here we lengthen the arrow by a factor of scale
-            p2.X = (int)(p1.X - scale*hypotenuse*Math.Cos(angle));
-            p2.Y = (int)(p1.Y - scale*hypotenuse*Math.Sin(angle));
-            dc.DrawLine(new Pen(Brushes.LightCoral, 2), p1, p2);
+            p2.X = (int)(p1.X - scale * hypotenuse * Math.Cos(angle));
+            p2.Y = (int)(p1.Y - scale * hypotenuse * Math.Sin(angle));
+            dc.DrawLine(new Pen(Brushes.LightCoral, 1), p1, p2);
 
             // create the arrow hooks
             p1.X = (int)(p2.X + 9 * Math.Cos(angle + Math.PI / 4));
             p1.Y = (int)(p2.Y + 9 * Math.Sin(angle + Math.PI / 4));
-            dc.DrawLine(new Pen(Brushes.LightCoral, 2), p1, p2);
+            dc.DrawLine(new Pen(Brushes.LightCoral, 1), p1, p2);
 
             p1.X = (int)(p2.X + 9 * Math.Cos(angle - Math.PI / 4));
             p1.Y = (int)(p2.Y + 9 * Math.Sin(angle - Math.PI / 4));
-            dc.DrawLine(new Pen(Brushes.LightCoral, 2), p1, p2);
+            dc.DrawLine(new Pen(Brushes.LightCoral, 1), p1, p2);
         }
 
         private void RenderSelectRectTool(DrawingContext dc)
@@ -1784,7 +1860,7 @@ namespace NpcCore.Wpf.Controls
         }
         private void RenderSelectRoiTool(DrawingContext dc)
         {
-           RenderSelectRectTool(dc);
+            RenderSelectRectTool(dc);
         }
         private void RenderLocatorTool(DrawingContext dc)
         {
@@ -1887,9 +1963,14 @@ namespace NpcCore.Wpf.Controls
                     RenderLocatorTool(dc);
                 }
             }
-            else if(_viewMode == ViewMode.ViewMode_ViewResult)
+            else if (_viewMode == ViewMode.ViewMode_ViewResult)
             {
                 RenderResult_LocatorTool(dc);
+            }
+            else if (_viewMode == ViewMode.ViewMode_ViewResultSimple)
+            {
+                RenderResult_LocatorTool_Simple(dc);
+                RenderROI_Auto(dc);
             }
         }
     }
@@ -1957,6 +2038,7 @@ namespace NpcCore.Wpf.Controls
     public enum ViewMode
     {
         ViewMode_CreateRecipe,
-        ViewMode_ViewResult
+        ViewMode_ViewResult,
+        ViewMode_ViewResultSimple
     }
 }
