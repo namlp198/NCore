@@ -2,4 +2,22 @@
 <Recipe>
 	<RecipeName>model0</RecipeName>
 	<Algorithm>method1</Algorithm>
+	<RectX>229</RectX>
+	<RectY>263</RectY>
+	<RectWidth>173</RectWidth>
+	<RectHeight>132</RectHeight>
+	<MatchingRate>0.80</MatchingRate>
+	<CenterX>315</CenterX>
+	<CenterY>329</CenterY>
+	<ImageTemplate>template_0.png</ImageTemplate>
+	<Offset_ROI0_X>170</Offset_ROI0_X>
+	<Offset_ROI0_Y>110</Offset_ROI0_Y>
+	<Offset_ROI1_X>40</Offset_ROI1_X>
+	<Offset_ROI1_Y>110</Offset_ROI1_Y>
+	<ROI_Width>140</ROI_Width>
+	<ROI_Height>25</ROI_Height>
+	<NumberOfArray>5</NumberOfArray>
+	<ThresholdHeightMin>0</ThresholdHeightMin>
+	<ThresholdHeightMax>0</ThresholdHeightMax>
 </Recipe>
+
