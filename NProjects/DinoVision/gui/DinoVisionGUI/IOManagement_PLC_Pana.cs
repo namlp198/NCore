@@ -21,7 +21,7 @@ namespace DinoVisionGUI
         private Task _previewTask;
 
         private SerialPort _serialPort = new SerialPort();
-        private string _portName = "COM4";
+        private string _portName = "COM1";
         private string _dataSendToRead = "%01#RCS";
         private string _dataSendToWrite = "%01#WCS";
         private byte[] _readBuffer = new byte[200];
@@ -77,6 +77,9 @@ namespace DinoVisionGUI
         #region methods
         bool InitSerialPort()
         {
+            if (InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_sCOMPort.CompareTo("") != 0)
+                _portName = InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_sCOMPort;
+
             _serialPort.PortName = _portName;
             _serialPort.BaudRate = 9600;
             _serialPort.Parity = Parity.Odd;

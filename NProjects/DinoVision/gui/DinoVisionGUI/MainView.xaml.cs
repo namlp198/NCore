@@ -30,12 +30,20 @@ namespace DinoVisionGUI
 
         private int m_nCamIdx;
         private bool m_bResultOKNG;
+        private int m_nCountOK;
+        private int m_nCountNG;
+        private int m_nCountTotal;
+        private double m_dProcessTime;
         public MainView()
         {
             InitializeComponent();
 
             this.DataContext = this;
 
+            // init Inspect Processor
+            InterfaceManager.Instance.JigInspProcessorManager.Initialize();
+            // read config
+            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadSysConfigurations(ref InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs);
             // init a IO manager
             m_IOManagement = new IOManagement_PLC_Pana(m_nCamIdx);
             m_IOManagement.NewImageUpdate += M_IOManagement_NewImageUpdate;
@@ -56,11 +64,6 @@ namespace DinoVisionGUI
             // select inspect mode - view mode will be from color to mono
             ucZoomBoxViewer.MachineModeSelected = ucZoomBoxViewer.MachineModeList[0];
 
-            // init Inspect Processor
-            InterfaceManager.Instance.JigInspProcessorManager.Initialize();
-
-            // read config
-            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadSysConfigurations(ref InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs);
             for(int i = 0; i < ConstDefine.MAX_CAMERA_INSP_COUNT; i++)
             {
                 InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadCamConfigurations(i, ref InterfaceManager.Instance.JigInspProcessorManager.CameraConfigs[i]);
@@ -70,6 +73,12 @@ namespace DinoVisionGUI
                 InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadRecipe(i, ref InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i]);
             }
 
+            LoginView.LoginSystemSuccess += LoginView_LoginSystemSuccess;
+        }
+
+        private void LoginView_LoginSystemSuccess(LoginView login)
+        {
+            MessageBox.Show("Login success.");
         }
 
         private async void InterfaceManager_InspectionComplete()
@@ -80,17 +89,20 @@ namespace DinoVisionGUI
             m_IOManagement.IsInspectCompleted = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_bInspectCompleted == 1? true : false;
             m_IOManagement.IsJudgeOKNG = m_bResultOKNG = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_bResultOKNG == 1? true : false;
 
+            CountTotal++;
             await this.Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (m_bResultOKNG)
                 {
                     lbResult.Content = "OK";
                     lbResult.Background = Brushes.Green;
+                    CountOK++;
                 }
                 else
                 {
                     lbResult.Content = "NG";
                     lbResult.Background = Brushes.Red;
+                    CountNG++;
                 }
             }));
 
@@ -282,6 +294,51 @@ namespace DinoVisionGUI
             }
             SettingsView settingsView = new SettingsView();
             settingsView.ShowDialog();
+        }
+
+        #region Properties
+        public int CountOK
+        {
+            get => m_nCountOK;
+            set
+            {
+                if(SetProperty(ref  m_nCountOK, value)) { }
+            }
+        }
+        public int CountNG
+        {
+            get => m_nCountNG;
+            set
+            {
+                if (SetProperty(ref m_nCountNG, value)) { }
+            }
+        }
+        public int CountTotal
+        {
+            get => m_nCountTotal;
+            set
+            {
+                if (SetProperty(ref m_nCountTotal, value)) { }
+            }
+        }
+        public double ProcessTime
+        {
+            get => m_dProcessTime;
+            set
+            {
+                if (SetProperty(ref m_dProcessTime, value)) { }
+            }
+        }
+        #endregion
+
+        private void btnInit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            LoginView loginView = new LoginView();
+            loginView.ShowDialog();
         }
     }
 }

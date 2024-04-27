@@ -137,7 +137,7 @@
             <Separator Margin="5" />
             <Button Margin="5"
                     Name="btnInit"
-                    Command="{Binding InitializeCmd}">
+                    Click="btnInit_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource IMG_Refresh}"
@@ -153,6 +153,23 @@
                 </Button.Content>
             </Button>
             <Separator Margin="5" />
+            <Button Margin="5"
+                    Name="btnLogin"
+                    Click="btnLogin_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{DynamicResource IMG_Account_2}"
+                               Margin="9" />
+                        <TextBlock Text="Login"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   FontSize="14"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   Margin="0 0 5 0" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
         </ToolBar>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -223,26 +240,32 @@
                                            Grid.Column="0"
                                            Template="{StaticResource lblMainTemp}"
                                            Content="Process" />
+                                    
+                                    <!--Show statistics-->
                                     <Label Grid.Row="0"
                                            Grid.Column="1"
                                            Template="{StaticResource lbShowResult}"
                                            Background="{DynamicResource RGB_Cold_71_127_75}"
-                                           Foreground="White"/>
+                                           Foreground="White"
+                                           Content="{Binding CountOK}"/>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
                                            Template="{StaticResource lbShowResult}"
                                            Background="{DynamicResource RGB_Hot_206_59_63}"
-                                           Foreground="White"/>
+                                           Foreground="White"
+                                           Content="{Binding CountNG}"/>
                                     <Label Grid.Row="2"
                                            Grid.Column="1"
                                            Template="{StaticResource lbShowResult}"
                                            Background="White"
-                                           Foreground="Black"/>
+                                           Foreground="Black"
+                                           Content="{Binding CountTotal}"/>
                                     <Label Grid.Row="3"
                                            Grid.Column="1"
                                            Template="{StaticResource lbShowResult}"
                                            Background="{DynamicResource RGB_Night_61_66_77}"
-                                           Foreground="White"/>
+                                           Foreground="White"
+                                           Content="{Binding ProcessTime}"/>
                                 </Grid>
                             </Border>
                         </Grid>

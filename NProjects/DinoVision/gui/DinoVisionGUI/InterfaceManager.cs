@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DinoVisionGUI
 {
-    internal class InterfaceManager
+    public class InterfaceManager
     {
         public JigInspectProcessorManager JigInspProcessorManager = new JigInspectProcessorManager();
 
