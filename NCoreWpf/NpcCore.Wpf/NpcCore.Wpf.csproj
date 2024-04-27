@@ -896,5 +896,11 @@
   <ItemGroup>
     <Resource Include="Resources\Images\btn_update_recipe.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\account.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\account_2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
