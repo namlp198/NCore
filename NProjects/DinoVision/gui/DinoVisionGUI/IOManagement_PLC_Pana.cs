@@ -22,10 +22,10 @@ namespace DinoVisionGUI
 
         private SerialPort _serialPort = new SerialPort();
         private string _portName = "COM1";
-        private string _dataSendToRead = "%01#RCS";
-        private string _dataSendToWrite = "%01#WCS";
         private byte[] _readBuffer = new byte[200];
         private bool SerialPortIsReceiving;
+        public const string _dataSendToRead = "%01#RCS";
+        public const string _dataSendToWrite = "%01#WCS";
 
         private EIOMode _ioMode = EIOMode.IOMode_Read;
         private int m_nLevelLogicReadPLCContact = 0;
@@ -57,8 +57,9 @@ namespace DinoVisionGUI
             InitSerialPort();
 
             // reset all]
-            ResetAllInOut();
+            //ResetAllInOut();
         }
+
         #endregion
 
         #region Properties
@@ -102,30 +103,40 @@ namespace DinoVisionGUI
                 _serialPort.Close();
         }
 
-        void ResetAllInOut()
+        public void ResetAllInOut()
         {
             if (_serialPort.IsOpen)
             {
+                if (!m_bPCControlMode)
+                {
+                    // Reset signal OK
+                    ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
+                                             contactName: "R", contactIdx: "0", level: "1");
+                    Thread.Sleep(200);
+                    return;
+                }
+
                 // CLOSE clynder 1
                 ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                          contactName: "Y", contactIdx: "1", level: "0");
-                Thread.Sleep(150);
+                Thread.Sleep(100);
                 // TURN OFF Lighting
                 ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                          contactName: "Y", contactIdx: "3", level: "0");
-                Thread.Sleep(150);
+                Thread.Sleep(100);
                 // CLOSE clynder 2
                 ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                          contactName: "Y", contactIdx: "2", level: "0");
-                Thread.Sleep(150);
+                Thread.Sleep(100);
                 // Reset signal NG
                 ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                          contactName: "Y", contactIdx: "0", level: "0");
-                Thread.Sleep(150);
+                Thread.Sleep(100);
                 // Reset signal OK
                 ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                          contactName: "Y", contactIdx: "5", level: "0");
-                Thread.Sleep(150);
+                Thread.Sleep(100);
+
             }
         }
 
@@ -190,7 +201,7 @@ namespace DinoVisionGUI
             }
         }
 
-        void ManipulateWithPLCContact(EIOMode eIOMode, string dataSendTo, string contactName, string contactIdx, string level)
+        public void ManipulateWithPLCContact(EIOMode eIOMode, string dataSendTo, string contactName, string contactIdx, string level)
         {
             string dataSendToPLC = string.Empty;
             switch (eIOMode)
@@ -274,7 +285,7 @@ namespace DinoVisionGUI
                     }
 
                     // OPEN dino cam
-                    InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(m_nCamIdx);
+                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(m_nCamIdx);
 
                     if (m_bPCControlMode)
                     {
@@ -304,6 +315,8 @@ namespace DinoVisionGUI
                         Thread.Sleep(100);
                     }
 
+                    Thread.Sleep(100); // wait for the product in steady
+
                     // reset level logic
                     m_nLevelLogicReadPLCContact = 0;
 
@@ -329,20 +342,12 @@ namespace DinoVisionGUI
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "5", level: "1");
-                        Thread.Sleep(150);
-
-                        ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
-                                                 contactName: "Y", contactIdx: "5", level: "0");
                         Thread.Sleep(100);
                     }
                     else
                     {
                         ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                                  contactName: "Y", contactIdx: "0", level: "1");
-                        Thread.Sleep(150);
-
-                        ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
-                                                 contactName: "Y", contactIdx: "0", level: "0");
                         Thread.Sleep(100);
                     }
 
@@ -365,14 +370,14 @@ namespace DinoVisionGUI
 
                     // reset level logic
                     m_nLevelLogicReadPLCContact = 0;
-            
+
                     m_bInspectCompleted = false;
 
                     // CLOSE dino cam
-                    InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(m_nCamIdx);
-                    Thread.Sleep(50);
+                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(m_nCamIdx);
+                    //Thread.Sleep(50);
 
-                    await Task.Delay(1);
+                    await Task.Delay(2);
                 }
             }, _cancellationTokenSource.Token);
 
@@ -403,13 +408,12 @@ namespace DinoVisionGUI
                 // Wait for it, to avoid conflicts with read/write of _lastFrame
                 await _previewTask;
             }
-            //CloseSerialPort();
         }
         #endregion
 
         public void Dispose()
         {
-            CloseSerialPort();
+            //CloseSerialPort();
             _cancellationTokenSource.Cancel();
         }
     }

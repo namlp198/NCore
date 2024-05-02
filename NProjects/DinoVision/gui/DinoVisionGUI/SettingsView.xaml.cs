@@ -732,13 +732,13 @@ namespace DinoVisionGUI
         private async void btnLocatorTool_Click(object sender, RoutedEventArgs e)
         {
             imgView.ViewMode = ViewMode.ViewMode_CreateRecipe;
-            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(0);
+            //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(0);
             InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GrabImageForLocatorTool(0);
 
             _bufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetResultBufferImageDinoCam(0);
 
             await UpdateImage();
-            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(0);
+            //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(0);
         }
 
         private IntPtr _bufferView = IntPtr.Zero;

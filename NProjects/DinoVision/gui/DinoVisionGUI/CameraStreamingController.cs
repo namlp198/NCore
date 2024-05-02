@@ -34,11 +34,11 @@ namespace DinoVisionGUI
         }
         public async Task SingleGrab()
         {
-            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(_camIdx);
+            //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(_camIdx);
             InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SingleGrabDinoCam(_camIdx);
             m_NUcZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetBufferDinoCam(_camIdx);
             await m_NUcZoomBoxViewer.UpdateImage();
-            InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(_camIdx);
+            //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(_camIdx);
         }
 
         public async Task ContinuousGrab(CameraType cameraType)
