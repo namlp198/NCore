@@ -52,7 +52,7 @@ BOOL CJigInspectDinoCam::Initialize()
 		}
 		CreateResultBuffer(i, m_pUsbCamera[i]);
 
-		m_pUsbCamera[i]->Disconnect();
+		//m_pUsbCamera[i]->Disconnect();
 	}
 
 	return TRUE;
