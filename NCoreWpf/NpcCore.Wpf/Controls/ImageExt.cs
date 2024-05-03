@@ -1700,9 +1700,9 @@ namespace NpcCore.Wpf.Controls
 
             MatrixTransform matrixTransform = new MatrixTransform(mat);
             dc.PushTransform(matrixTransform);
-            dc.PushOpacity(0.7);
+            dc.PushOpacity(1.0);
 
-            dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 1), _rectReal);
+            dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 2), _rectReal);
 
             Point cntPt = new Point(_locToolRes_Simple.m_nCenterX, _locToolRes_Simple.m_nCenterY);
             Point p1 = new Point(cntPt.X + 300, cntPt.Y);
@@ -1720,7 +1720,7 @@ namespace NpcCore.Wpf.Controls
 
             MatrixTransform matrixTransform = new MatrixTransform(mat);
             dc.PushTransform(matrixTransform);
-            dc.PushOpacity(0.7);
+            dc.PushOpacity(1.0);
 
             for(int i = 0; i < _arrROIGenAuto.Length; i++)
             {
@@ -1733,7 +1733,7 @@ namespace NpcCore.Wpf.Controls
                 for (int j = 0; j < numberOfArray; j++)
                 {
                     Rect arrRect = new Rect(ROI_X, ROI_Y, width / numberOfArray, height);
-                    dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 1), arrRect);
+                    dc.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Green, 2), arrRect);
 
                     ROI_X += width / numberOfArray;
                 }

@@ -27,6 +27,23 @@ namespace NpcCore.Wpf.Struct_Vision
         public double m_dDif_Angle { get; set; }
         public bool m_bResult { get; set; }
     }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CLocatorTool_TemplateMatching_Result
+    {
+        public int m_nLeft;
+        public int m_nTop;
+        public int m_nWidth;
+        public int m_nHeight;
+        public int m_nCenterX;
+        public int m_nCenterY;
+        public double m_dMatchingRate;
+        public int m_nDelta_X;
+        public int m_nDelta_Y;
+        public double m_dDif_Angle;
+        public bool m_bResult;
+    }
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CLocatorToolResult_Simple
     {

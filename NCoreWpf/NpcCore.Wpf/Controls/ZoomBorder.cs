@@ -16,14 +16,17 @@ namespace NpcCore.Wpf.Controls
         private UIElement child = null;
         private Point origin;
         private Point start;
+        private ScaleTransform m_st = new ScaleTransform();
+        private TranslateTransform m_tt = new TranslateTransform();
+        private TransformGroup m_tg = new TransformGroup();
 
-        public static ZoomBorder _instance;
-        public static ZoomBorder Instance()
-        {
-            if (_instance == null)
-                _instance = new ZoomBorder();
-            return _instance;
-        }
+        //public static ZoomBorder _instance;
+        //public static ZoomBorder Instance()
+        //{
+        //    if (_instance == null)
+        //        _instance = new ZoomBorder();
+        //    return _instance;
+        //}
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -42,6 +45,17 @@ namespace NpcCore.Wpf.Controls
               .Children.First(tr => tr is ScaleTransform);
         }
 
+        public ScaleTransform ST
+        {
+            get => m_st;
+            set => m_st = value;
+        }
+        public TranslateTransform TT
+        {
+            get => m_tt;
+            set => m_tt = value;
+        }
+
         public override UIElement Child
         {
             get { return base.Child; }
@@ -58,12 +72,9 @@ namespace NpcCore.Wpf.Controls
             this.child = element;
             if (child != null)
             {
-                TransformGroup group = new TransformGroup();
-                ScaleTransform st = new ScaleTransform();
-                group.Children.Add(st);
-                TranslateTransform tt = new TranslateTransform();
-                group.Children.Add(tt);
-                child.RenderTransform = group;
+                m_tg.Children.Add(m_st);
+                m_tg.Children.Add(m_tt);
+                child.RenderTransform = m_tg;
                 child.RenderTransformOrigin = new Point(0.0, 0.0);
 
                 //event border
@@ -81,14 +92,14 @@ namespace NpcCore.Wpf.Controls
             if (child != null)
             {
                 // reset zoom
-                var st = GetScaleTransform(child);
-                st.ScaleX = 1.0;
-                st.ScaleY = 1.0;
+                m_st = GetScaleTransform(child);
+                m_st.ScaleX = 1.0;
+                m_st.ScaleY = 1.0;
 
                 // reset pan
-                var tt = GetTranslateTransform(child);
-                tt.X = 0.0;
-                tt.Y = 0.0;
+                m_tt = GetTranslateTransform(child);
+                m_tt.X = 0.0;
+                m_tt.Y = 0.0;
             }
         }
 
@@ -99,25 +110,25 @@ namespace NpcCore.Wpf.Controls
         {
             if (child != null)
             {
-                var st = GetScaleTransform(child);
-                var tt = GetTranslateTransform(child);
+                m_st = GetScaleTransform(child);
+                m_tt = GetTranslateTransform(child);
 
                 double zoom = e.Delta > 0 ? .2 : -.2;
-                if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
+                if (!(e.Delta > 0) && (m_st.ScaleX < .4 || m_st.ScaleY < .4))
                     return;
 
                 Point relative = e.GetPosition(child);
                 double absoluteX;
                 double absoluteY;
 
-                absoluteX = relative.X * st.ScaleX + tt.X;
-                absoluteY = relative.Y * st.ScaleY + tt.Y;
+                absoluteX = relative.X * m_st.ScaleX + m_tt.X;
+                absoluteY = relative.Y * m_st.ScaleY + m_tt.Y;
 
-                st.ScaleX += zoom;
-                st.ScaleY += zoom;
+                m_st.ScaleX += zoom;
+                m_st.ScaleY += zoom;
 
-                tt.X = absoluteX - relative.X * st.ScaleX;
-                tt.Y = absoluteY - relative.Y * st.ScaleY;
+                m_tt.X = absoluteX - relative.X * m_st.ScaleX;
+                m_tt.Y = absoluteY - relative.Y * m_st.ScaleY;
             }
         }
 
@@ -126,9 +137,9 @@ namespace NpcCore.Wpf.Controls
 
             if (child != null)
             {
-                var tt = GetTranslateTransform(child);
+                m_tt = GetTranslateTransform(child);
                 start = e.GetPosition(this);
-                origin = new Point(tt.X, tt.Y);
+                origin = new Point(m_tt.X, m_tt.Y);
                 this.Cursor = Cursors.ScrollAll;
                 child.CaptureMouse();
             }
@@ -157,10 +168,10 @@ namespace NpcCore.Wpf.Controls
             {
                 if (child.IsMouseCaptured)
                 {
-                    var tt = GetTranslateTransform(child);
+                    m_tt = GetTranslateTransform(child);
                     Vector v = start - e.GetPosition(this);
-                    tt.X = origin.X - v.X;
-                    tt.Y = origin.Y - v.Y;
+                    m_tt.X = origin.X - v.X;
+                    m_tt.Y = origin.Y - v.Y;
                 }
             }
 
