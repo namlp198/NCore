@@ -109,10 +109,10 @@ namespace DinoVisionGUI
             {
                 if (!m_bPCControlMode)
                 {
-                    // Reset signal OK
+                    // Reset all
                     ManipulateWithPLCContact(EIOMode.IOMode_Write, _dataSendToWrite,
                                              contactName: "R", contactIdx: "0", level: "1");
-                    Thread.Sleep(200);
+                    Thread.Sleep(100);
                     return;
                 }
 
@@ -248,7 +248,7 @@ namespace DinoVisionGUI
          * TRIGGER LIGHTING:      Y03
          */
 
-        public async Task StartInspect()
+        public void StartInspect()
         {
             // Never run two parallel tasks
             if (_previewTask != null && !_previewTask.IsCompleted)
@@ -284,9 +284,6 @@ namespace DinoVisionGUI
                         Thread.Sleep(100);
                     }
 
-                    // OPEN dino cam
-                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(m_nCamIdx);
-
                     if (m_bPCControlMode)
                     {
                         // wait for read status of sensor clynder 1
@@ -306,7 +303,6 @@ namespace DinoVisionGUI
                         Thread.Sleep(100);
                     }
 
-
                     // wait for read status of SENSOR clynder 2
                     while (m_nLevelLogicReadPLCContact == 0)
                     {
@@ -315,10 +311,10 @@ namespace DinoVisionGUI
                         Thread.Sleep(100);
                     }
 
-                    Thread.Sleep(100); // wait for the product in steady
-
                     // reset level logic
                     m_nLevelLogicReadPLCContact = 0;
+
+                    Thread.Sleep(200); // wait for the product in steady
 
                     // TRIGGER DINO CAMERA
                     //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SingleGrabDinoCam(m_nCamIdx);
@@ -368,14 +364,7 @@ namespace DinoVisionGUI
                         Thread.Sleep(100);
                     }
 
-                    // reset level logic
-                    m_nLevelLogicReadPLCContact = 0;
-
                     m_bInspectCompleted = false;
-
-                    // CLOSE dino cam
-                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(m_nCamIdx);
-                    //Thread.Sleep(50);
 
                     await Task.Delay(2);
                 }
@@ -383,18 +372,18 @@ namespace DinoVisionGUI
 
             // Async initialization to have the possibility to show an animated loader without freezing the GUI
             // The alternative was the long polling. (while !variable) await Task.Delay
-            await initializationSemaphore0.WaitAsync();
+            initializationSemaphore0.Wait();
             initializationSemaphore0.Dispose();
             initializationSemaphore0 = null;
 
             if (_previewTask.IsFaulted)
             {
                 // To let the exceptions exit
-                await _previewTask;
+                _previewTask.Wait(_cancellationTokenSource.Token);
             }
         }
 
-        public async Task StopInspect()
+        public void StopInspect()
         {
             // If "Dispose" gets called before Stop
             if (_cancellationTokenSource.IsCancellationRequested)
@@ -406,7 +395,7 @@ namespace DinoVisionGUI
                 _cancellationTokenSource.Cancel();
 
                 // Wait for it, to avoid conflicts with read/write of _lastFrame
-                await _previewTask;
+                _previewTask.Wait(_cancellationTokenSource.Token);
             }
         }
         #endregion

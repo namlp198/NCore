@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpcCore.Wpf.Struct_Vision;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -21,6 +22,7 @@ namespace DinoVisionGUI
     {
         public int m_bInspectCompleted;
         public int m_bResultOKNG;
+        public CLocatorTool_TemplateMatching_Result m_TemplateMatchingResult;
     }
 
     // System Setting
@@ -230,6 +232,15 @@ namespace DinoVisionGUI
 #endif
         extern private static IntPtr GetResultBufferImageDinoCam(IntPtr tempInspProcessor, int nCamIdx);
         public IntPtr GetResultBufferImageDinoCam(int nCamIdx) { return GetResultBufferImageDinoCam(m_JigInspectProcessor, nCamIdx); }
+
+
+#if DEBUG
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("JigInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetResultBufferImageDinoCam_BGR(IntPtr tempInspProcessor, int nCamIdx);
+        public IntPtr GetResultBufferImageDinoCam_BGR(int nCamIdx) { return GetResultBufferImageDinoCam_BGR(m_JigInspectProcessor, nCamIdx); }
 
 
 

@@ -94,18 +94,20 @@ namespace DinoVisionGUI
             {
                 if (m_bResultOKNG)
                 {
+                    ucZoomBoxViewer.IsOK = true;
                     lbResult.Content = "OK";
                     lbResult.Background = Brushes.Green;
                     CountOK++;
                 }
                 else
                 {
+                    ucZoomBoxViewer.IsOK = false;
                     lbResult.Content = "NG";
                     lbResult.Background = Brushes.Red;
                     CountNG++;
                 }
             }));
-
+            ucZoomBoxViewer.TemplateMatchingResult = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_TemplateMatchingResult;
             ucZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetResultBufferImageDinoCam(m_nCamIdx);
             await ucZoomBoxViewer.UpdateImage();
         }
@@ -124,47 +126,28 @@ namespace DinoVisionGUI
             }
         }
 
-        private async void UcZoomBoxViewer_SwitchMachineMode(object sender, RoutedEventArgs e)
+        private void UcZoomBoxViewer_SwitchMachineMode(object sender, RoutedEventArgs e)
         {
             SwitchMachineMode();
-
-            switch (ucZoomBoxViewer.MachineMode)
-            {
-                case EMachineMode.EMachineMode_Inspect:
-                    ucZoomBoxViewer.ModeView = ModeView.Mono;
-                    await m_IOManagement.StartInspect();
-                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(ucZoomBoxViewer.CameraIndex);
-                    break;
-                case EMachineMode.EMachineMode_LiveCam:
-                    ucZoomBoxViewer.ModeView = ModeView.Color;
-                    await m_IOManagement.StopInspect();
-                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.ConnectDinoCam(ucZoomBoxViewer.CameraIndex);
-                    break;
-                case EMachineMode.EMachineMode_ManualTest:
-                    ucZoomBoxViewer.ModeView = ModeView.Color;
-                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(ucZoomBoxViewer.CameraIndex);
-                    await m_IOManagement.StopInspect();
-                    break;
-                case EMachineMode.EMachineMode_Simulator:
-                    ucZoomBoxViewer.ModeView = ModeView.Color;
-                    //InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.DisconnectDinoCam(ucZoomBoxViewer.CameraIndex);
-                    await m_IOManagement.StopInspect();
-                    break;
-            }
-            
         }
 
         private void SwitchMachineMode()
         {
-            if (ucZoomBoxViewer.MachineMode == NCore.Wpf.UcZoomBoxViewer.EMachineMode.EMachineMode_Inspect ||
-               ucZoomBoxViewer.MachineMode == NCore.Wpf.UcZoomBoxViewer.EMachineMode.EMachineMode_Simulator)
+            if (ucZoomBoxViewer.MachineMode == NCore.Wpf.UcZoomBoxViewer.EMachineMode.EMachineMode_Inspect)
             {
                 m_IOManagement.ResetAllInOut();
+                Thread.Sleep(100);
+
+                ucZoomBoxViewer.ModeView = ModeView.Mono;
+                Task.Run(new Action(() => m_IOManagement.StartInspect()));
                 return;
             }
 
-            m_IOManagement.ResetAllInOut();
+            ucZoomBoxViewer.ModeView = ModeView.Color;
+            Task.Run( new Action(() => m_IOManagement.StopInspect()));
 
+            Thread.Sleep(100);
+            m_IOManagement.ResetAllInOut();
             m_IOManagement.ManipulateWithPLCContact(EIOMode.IOMode_Write, IOManagement_PLC_Pana._dataSendToWrite,
                                      contactName: "R", contactIdx: "2", level: "1");
             Thread.Sleep(100);
