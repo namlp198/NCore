@@ -6,6 +6,8 @@
 #include "JigInspectResults.h"
 #include "JigInspectDefine.h"
 
+#define _DRAW_RESULT
+
 interface IJigInspectDinoCamToParent
 {
 	virtual CJigInspectRecipe*          GetRecipe(int nCamIdx) = 0;
@@ -28,6 +30,7 @@ public:
 	LPBYTE                          GetBufferImage(int nCamIdx);
 
 	LPBYTE                          GetResultBufferImage(int nCamIdx);
+	LPBYTE                          GetResultBufferImage_BGR(int nCamIdx);
 
 public:
 	int                             StartGrab(int nCamIdx);
@@ -55,6 +58,8 @@ private:
 	int								         m_pCameraCurrentFrameIdx[MAX_CAMERA_INSP_COUNT];
 	// Result Buffer
 	CSharedMemoryBuffer*                     m_pResultImageBuffer[MAX_CAMERA_INSP_COUNT];
+	CSharedMemoryBuffer*                     m_pResultImageBuffer_BGR[MAX_CAMERA_INSP_COUNT];
+
 	std::vector<int>                         m_vIdDevices;
 	std::map<int, Device>                    m_mapDevices;
 

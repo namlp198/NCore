@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="header\CLocatorTool_TemplateMatching_Result.h" />
     <ClInclude Include="header\JigInspectConfig.h" />
     <ClInclude Include="header\JigInspectDefine.h" />
     <ClInclude Include="header\JigInspectDinoCam.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\CLocatorTool_TemplateMatching_Result.cpp" />
     <ClCompile Include="cpp\JigInspectConfig.cpp" />
     <ClCompile Include="cpp\JigInspectDinoCam.cpp" />
     <ClCompile Include="cpp\JigInspectProcessor.cpp" />

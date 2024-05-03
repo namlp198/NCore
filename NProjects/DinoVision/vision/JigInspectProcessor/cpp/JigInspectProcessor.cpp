@@ -764,6 +764,18 @@ BOOL CJigInspectProcessor::GetInspectionResult(int nCamIdx, CJigInspectResults* 
 	pJigInspRes->m_bInspectCompleted = m_pJigInspResutls[nCamIdx]->m_bInspectCompleted;
 	pJigInspRes->m_bResultOKNG = m_pJigInspResutls[nCamIdx]->m_bResultOKNG;
 
+	pJigInspRes->m_TemplateMatchingResult.m_nLeft = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_nLeft;
+	pJigInspRes->m_TemplateMatchingResult.m_nTop = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_nTop;
+	pJigInspRes->m_TemplateMatchingResult.m_nWidth = m_pJigInspRecipe[nCamIdx]->m_nRectWidth;
+	pJigInspRes->m_TemplateMatchingResult.m_nHeight = m_pJigInspRecipe[nCamIdx]->m_nRectHeight;
+	pJigInspRes->m_TemplateMatchingResult.m_nCenterX = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_nCenterX;
+	pJigInspRes->m_TemplateMatchingResult.m_nCenterY = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_nCenterY;
+	pJigInspRes->m_TemplateMatchingResult.m_dMatchingRate = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_dMatchingRate;
+	pJigInspRes->m_TemplateMatchingResult.m_nDelta_X = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_nDelta_X;
+	pJigInspRes->m_TemplateMatchingResult.m_nDelta_Y = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_nDelta_Y;
+	pJigInspRes->m_TemplateMatchingResult.m_dDif_Angle = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_dDif_Angle;
+	pJigInspRes->m_TemplateMatchingResult.m_bResult = m_pJigInspResutls[nCamIdx]->m_TemplateMatchingResult.m_bResult;
+
 	return TRUE;
 }
 

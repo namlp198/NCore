@@ -149,6 +149,18 @@ BYTE* GetResultBufferImageDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx)
     return pDinoCam->GetResultBufferImage(nCamIdx);
 }
 
+BYTE* GetResultBufferImageDinoCam_BGR(CJigInspectProcessor* pProcessor, int nCamIdx)
+{
+    if (pProcessor == NULL)
+        return NULL;
+
+    CJigInspectDinoCam* pDinoCam = pProcessor->GetDinoCamControl();
+    if (pDinoCam == NULL)
+        return NULL;
+
+    return pDinoCam->GetResultBufferImage_BGR(nCamIdx);
+}
+
 bool GetInspectionResult(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectResults* pJigInspResult)
 {
     if (pProcessor == NULL)

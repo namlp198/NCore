@@ -105,6 +105,9 @@
     <ClInclude Include="header\JigInspectDefine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\CLocatorTool_TemplateMatching_Result.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -156,6 +159,9 @@
       <Filter>Source Files\Tools\Camera</Filter>
     </ClCompile>
     <ClCompile Include="cpp\JigInspectResults.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\CLocatorTool_TemplateMatching_Result.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

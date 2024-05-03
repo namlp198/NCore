@@ -34,6 +34,8 @@ extern "C"
 
 	__declspec(dllexport) BYTE*           GetResultBufferImageDinoCam(CJigInspectProcessor* pProcessor, int nCamIdx);
 
+	__declspec(dllexport) BYTE*           GetResultBufferImageDinoCam_BGR(CJigInspectProcessor* pProcessor, int nCamIdx);
+
 	__declspec(dllexport) bool            GetInspectionResult(CJigInspectProcessor* pProcessor, int nCamIdx, CJigInspectResults* pJigInspResult);
 
 	/******************** Load settings ********************/
