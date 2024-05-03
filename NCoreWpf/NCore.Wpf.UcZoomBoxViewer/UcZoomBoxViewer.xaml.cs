@@ -1,9 +1,11 @@
 ﻿using NpcCore.Wpf.Controls;
+using NpcCore.Wpf.Struct_Vision;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,6 +25,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NCore.Wpf.UcZoomBoxViewer
 {
@@ -48,6 +51,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private bool _hasRecipe;
         private bool _isVisibleRecipeButton = true;
         private bool m_bStreamming = false;
+        private bool m_bIsOK = false;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -67,6 +71,8 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private ModeView _eModeView = ModeView.Mono;
         private ECamState _camState = ECamState.Stoped;
         private EMachineMode _eMachineMode = EMachineMode.EMachineMode_Simulator;
+
+        private CLocatorTool_TemplateMatching_Result m_TemplateMatchingResult = new CLocatorTool_TemplateMatching_Result();
 
         public UcZoomBoxViewer()
         {
@@ -93,7 +99,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
             get { return _ucBmpSource; }
             set
             {
-                if(SetProperty(ref _ucBmpSource, value))
+                if (SetProperty(ref _ucBmpSource, value))
                 {
 
                 }
@@ -104,7 +110,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
             get { return _bufferView; }
             set
             {
-                if(SetProperty(ref _bufferView, value))
+                if (SetProperty(ref _bufferView, value))
                 {
 
                 }
@@ -136,9 +142,9 @@ namespace NCore.Wpf.UcZoomBoxViewer
             get { return _eModeView; }
             set
             {
-                if(SetProperty(ref _eModeView, value))
+                if (SetProperty(ref _eModeView, value))
                 {
-                   
+
                 }
             }
         }
@@ -209,7 +215,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
             get => _camIdx;
             set
             {
-                if(SetProperty(ref _camIdx, value))
+                if (SetProperty(ref _camIdx, value))
                 {
 
                 }
@@ -220,9 +226,9 @@ namespace NCore.Wpf.UcZoomBoxViewer
             get => _hasRecipe;
             set
             {
-                if(SetProperty(ref _hasRecipe, value))
+                if (SetProperty(ref _hasRecipe, value))
                 {
-                    if(_hasRecipe)
+                    if (_hasRecipe)
                     {
                         btnCreateRecipe.Opacity = 0.3;
                         btnUpdateRecipe.Opacity = 1.0;
@@ -242,7 +248,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
             {
                 if (SetProperty(ref _isVisibleRecipeButton, value))
                 {
-                    
+
                 }
             }
         }
@@ -314,6 +320,30 @@ namespace NCore.Wpf.UcZoomBoxViewer
                     {
                         DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
                     }
+                }
+            }
+        }
+
+        public bool IsOK
+        {
+            get => m_bIsOK;
+            set
+            {
+                if (SetProperty(ref m_bIsOK, value))
+                {
+
+                }
+            }
+        }
+
+        public CLocatorTool_TemplateMatching_Result TemplateMatchingResult
+        {
+            get => m_TemplateMatchingResult;
+            set
+            {
+                if (SetProperty(ref m_TemplateMatchingResult, value))
+                {
+
                 }
             }
         }
@@ -432,10 +462,15 @@ namespace NCore.Wpf.UcZoomBoxViewer
                         SetGrayscalePalette(bmp);
                     }
 
-                    Bitmap pImageBMP = bmp;
+                    Bitmap pImageBMP = DrawResult(bmp);
+                   
                     BitmapSource bmpSrc = BitmapToImageSource(pImageBMP);
                     bmpSrc.Freeze();
-                    imageViewer.Dispatcher.Invoke(() => imageViewer.Source = bmpSrc);
+
+                    imageViewer.Dispatcher.Invoke(() => 
+                    { 
+                        imageViewer.Source = bmpSrc;
+                    });
                 }
                 else if (_eModeView == ModeView.Color)
                 {
@@ -447,6 +482,38 @@ namespace NCore.Wpf.UcZoomBoxViewer
 
             task.Start();
             await task;
+        }
+
+        private Bitmap DrawResult(Bitmap pImageBMP)
+        {
+            Bitmap bp = new Bitmap(pImageBMP.Width, pImageBMP.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            using (Graphics gr = Graphics.FromImage(bp))
+                gr.DrawImage(pImageBMP, new System.Drawing.Rectangle(0, 0, bp.Width, bp.Height));
+
+            Graphics g = Graphics.FromImage(bp);
+            // Create a brush while specifying its color
+            if (m_bIsOK)
+            {
+                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(m_TemplateMatchingResult.m_nLeft, m_TemplateMatchingResult.m_nTop,
+                    m_TemplateMatchingResult.m_nWidth, m_TemplateMatchingResult.m_nHeight);
+
+                System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Blue));
+                // Create a pen
+                System.Drawing.Pen pen = new System.Drawing.Pen(brush, 2.0f);
+
+                g.DrawRectangle(pen, rect);
+            }
+            else
+            {
+                var fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
+                var font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
+                var solidBrush = new SolidBrush(System.Drawing.Color.Red);
+
+                g.TextRenderingHint = TextRenderingHint.AntiAlias;
+                g.DrawString("Can't Find Template", font, solidBrush, new PointF(20, 20));
+            }
+
+            return bp;
         }
 
         private string GetEnumDescription(Enum enumObj)
@@ -773,5 +840,6 @@ namespace NCore.Wpf.UcZoomBoxViewer
         //    RaiseEvent(new RoutedEventArgs(StopCamEvent, this));
         //    CamState = ECamState.Stoped;
         //}
+
     }
 }

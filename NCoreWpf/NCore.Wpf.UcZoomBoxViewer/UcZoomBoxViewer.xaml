@@ -270,8 +270,9 @@
                                   CornerRadius="3"
                                   BorderThickness="1"
                                   Margin="3"
-                                  x:Name="zoomBoder"
+                                  Name="zoomBorder"
                                   Visibility="{Binding CameraIndex, Converter={StaticResource HasCameraToVisibilityConverter}, ConverterParameter=imageViewer}">
+                    <!--<Ctrls:ImageShow x:Name="imageViewer" />-->
                     <Image x:Name="imageViewer" />
                 </Ctrls:ZoomBorder>
                 <TabControl Grid.Column="1"
