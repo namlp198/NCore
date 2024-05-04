@@ -6,7 +6,11 @@
 #include "JigInspectResults.h"
 #include "JigInspectDefine.h"
 
-#define _DRAW_RESULT
+#define NUMBER_OF_ROI 2
+#define SAVE_IMAGE_TEST
+//#undef SAVE_IMAGE_TEST
+#define DRAW_RESULT
+//#undef DRAW_RESULT
 
 interface IJigInspectDinoCamToParent
 {
@@ -45,6 +49,11 @@ public:
 	BOOL                            InspectStart(int nCamIdx);
 	BOOL                            GrabImageForLocatorTool(int nCamIdx);
 	BOOL                            LocatorTrain(int nCamIdx, CJigInspectRecipe* pRecipe);
+
+protected:
+	BOOL     FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit, int nX, int nY, 
+		                      int nRowROIUnitPos, int nColROIUnitPos, std::map<int, int>& mapNGPosition, CJigInspectRecipe recipe);
+	void     DrawAxis(cv::Mat& img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale = 0.2);
 
 private:
 

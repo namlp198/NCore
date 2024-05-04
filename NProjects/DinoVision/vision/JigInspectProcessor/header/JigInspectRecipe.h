@@ -27,4 +27,6 @@ public:
 	int m_nNumberOfArray;
 	int m_nThresholdHeightMin;
 	int m_nThresholdHeightMax;
+	int m_nThresholdWidthMin;
+	int m_nThresholdWidthMax;
 };
