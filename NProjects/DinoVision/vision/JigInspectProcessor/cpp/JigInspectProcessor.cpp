@@ -367,6 +367,8 @@ BOOL CJigInspectProcessor::LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 	camRecipe.m_nNumberOfArray = std::atoi(pRoot->first_node("NumberOfArray")->value());//17
 	camRecipe.m_nThresholdHeightMin = std::atoi(pRoot->first_node("ThresholdHeightMin")->value());//18
 	camRecipe.m_nThresholdHeightMax = std::atoi(pRoot->first_node("ThresholdHeightMax")->value());//19
+	camRecipe.m_nThresholdWidthMin = std::atoi(pRoot->first_node("ThresholdWidthMin")->value());//20
+	camRecipe.m_nThresholdWidthMax = std::atoi(pRoot->first_node("ThresholdWidthMax")->value());//21
 
 	*(pRecipe) = camRecipe;
 	
@@ -395,6 +397,7 @@ BOOL CJigInspectProcessor::SaveSysConfigurations(CJigInspectSystemConfig* pSysCo
 
 	CJigInspectSystemConfig sysConfig;
 	sysConfig = *(pSysConfig);
+	*(m_pJigInspSysConfig) = *(pSysConfig);
 
 	// Convert path
 	USES_CONVERSION;
@@ -463,6 +466,7 @@ BOOL CJigInspectProcessor::SaveCamConfigurations(int nCamIdx, CJigInspectCameraC
 
 	CJigInspectCameraConfig camConfig;
 	camConfig = *(pCamConfig);
+	*(m_pJigInspCamConfig[nCamIdx]) = *(pCamConfig);
 
 	// Convert path
 	USES_CONVERSION;
@@ -549,6 +553,7 @@ BOOL CJigInspectProcessor::SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 
 	CJigInspectRecipe recipe;
 	recipe = *(pRecipe);
+	*(m_pJigInspRecipe[nCamIdx]) = *(pRecipe);
 
 	// Convert path
 	USES_CONVERSION;
@@ -644,6 +649,14 @@ BOOL CJigInspectProcessor::SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 	char sThresholdHeightMax[10];
 	sprintf_s(sThresholdHeightMax, "%d", recipe.m_nThresholdHeightMax);
 	pRoot->first_node("ThresholdHeightMax")->value(sThresholdHeightMax);//19
+
+	char sThresholdWidthMin[10];
+	sprintf_s(sThresholdWidthMin, "%d", recipe.m_nThresholdWidthMin);
+	pRoot->first_node("ThresholdWidthMin")->value(sThresholdWidthMin);//20
+
+	char sThresholdWidthMax[10];
+	sprintf_s(sThresholdWidthMax, "%d", recipe.m_nThresholdWidthMax);
+	pRoot->first_node("ThresholdWidthMax")->value(sThresholdWidthMax);//21
 
 #pragma endregion
 
