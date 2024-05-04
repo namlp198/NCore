@@ -1,4 +1,7 @@
-﻿using NCore.Wpf.UcZoomBoxViewer;
+﻿#define GUI_DRAW
+#undef GUI_DRAW
+
+using NCore.Wpf.UcZoomBoxViewer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -94,21 +97,25 @@ namespace DinoVisionGUI
             {
                 if (m_bResultOKNG)
                 {
-                    ucZoomBoxViewer.IsOK = true;
+                    ucZoomBoxViewer.IsAllInspectionOK = true;
                     lbResult.Content = "OK";
                     lbResult.Background = Brushes.Green;
                     CountOK++;
                 }
                 else
                 {
-                    ucZoomBoxViewer.IsOK = false;
+                    ucZoomBoxViewer.IsAllInspectionOK = false;
                     lbResult.Content = "NG";
                     lbResult.Background = Brushes.Red;
                     CountNG++;
                 }
             }));
             ucZoomBoxViewer.TemplateMatchingResult = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_TemplateMatchingResult;
+#if GUI_DRAW
             ucZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetResultBufferImageDinoCam(m_nCamIdx);
+#else
+            ucZoomBoxViewer.BufferView = InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetResultBufferImageDinoCam_BGR(m_nCamIdx);
+#endif
             await ucZoomBoxViewer.UpdateImage();
         }
 
@@ -138,7 +145,11 @@ namespace DinoVisionGUI
                 m_IOManagement.ResetAllInOut();
                 Thread.Sleep(100);
 
+#if GUI_DRAW
                 ucZoomBoxViewer.ModeView = ModeView.Mono;
+#else
+                ucZoomBoxViewer.ModeView = ModeView.Color;
+#endif
                 Task.Run(new Action(() => m_IOManagement.StartInspect()));
                 return;
             }

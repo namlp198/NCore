@@ -89,6 +89,8 @@ namespace DinoVisionGUI
         public int m_nNumberOfArray;
         public int m_nThresholdHeightMin;
         public int m_nThresholdHeightMax;
+        public int m_nThresholdWidthMin;
+        public int m_nThresholdWidthMax;
     }
 
     // Inspection Compete CallBack

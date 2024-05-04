@@ -243,6 +243,8 @@ namespace DinoVisionGUI
         private int m_nNumberOfArray;
         private int m_nThresholdHeightMin;
         private int m_nThresholdHeightMax;
+        private int m_nThresholdWidthMin;
+        private int m_nThresholdWidthMax;
 
         public string RecipeName_Recipe
         {
@@ -450,6 +452,29 @@ namespace DinoVisionGUI
                 }
             }
         }
+
+        public int ThresholdWidthMin
+        {
+            get { return m_nThresholdWidthMin; }
+            set
+            {
+                if (SetProperty(ref m_nThresholdWidthMin, value))
+                {
+
+                }
+            }
+        }
+        public int ThresholdWidthMax
+        {
+            get { return m_nThresholdWidthMax; }
+            set
+            {
+                if (SetProperty(ref m_nThresholdWidthMax, value))
+                {
+
+                }
+            }
+        }
         #endregion
         public SettingsView()
         {
@@ -516,6 +541,8 @@ namespace DinoVisionGUI
                 NumberOfArray = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nNumberOfArray;
                 ThresholdHeightMin = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdHeightMin;
                 ThresholdHeightMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdHeightMax;
+                ThresholdWidthMin = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdWidthMin;
+                ThresholdWidthMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdWidthMax;
             }
         }
         void UpdateROIGenAuto()
@@ -723,6 +750,8 @@ namespace DinoVisionGUI
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nNumberOfArray = NumberOfArray;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdHeightMin = ThresholdHeightMin;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdHeightMax = ThresholdHeightMax;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdWidthMin = ThresholdWidthMin;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdWidthMax = ThresholdWidthMax;
             if (InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SaveRecipe(0, ref InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0]))
             {
                 MessageBox.Show("saved successfully!");
