@@ -51,7 +51,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
         private bool _hasRecipe;
         private bool _isVisibleRecipeButton = true;
         private bool m_bStreamming = false;
-        private bool m_bIsOK = false;
+        private bool m_bAllInspectionOK = false;
         private BitmapSource _ucBmpSource;
         private IntPtr _bufferView = IntPtr.Zero;
 
@@ -324,14 +324,14 @@ namespace NCore.Wpf.UcZoomBoxViewer
             }
         }
 
-        public bool IsOK
+        public bool IsAllInspectionOK
         {
-            get => m_bIsOK;
+            get => m_bAllInspectionOK;
             set
             {
-                if (SetProperty(ref m_bIsOK, value))
+                if (SetProperty(ref m_bAllInspectionOK, value))
                 {
-
+                    
                 }
             }
         }
@@ -492,7 +492,7 @@ namespace NCore.Wpf.UcZoomBoxViewer
 
             Graphics g = Graphics.FromImage(bp);
             // Create a brush while specifying its color
-            if (m_bIsOK)
+            if (m_bAllInspectionOK && m_TemplateMatchingResult.m_bResult)
             {
                 System.Drawing.Rectangle rect = new System.Drawing.Rectangle(m_TemplateMatchingResult.m_nLeft, m_TemplateMatchingResult.m_nTop,
                     m_TemplateMatchingResult.m_nWidth, m_TemplateMatchingResult.m_nHeight);
