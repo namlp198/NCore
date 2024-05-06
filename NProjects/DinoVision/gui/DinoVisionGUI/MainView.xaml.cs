@@ -67,7 +67,7 @@ namespace DinoVisionGUI
             // select inspect mode - view mode will be from color to mono
             ucZoomBoxViewer.MachineModeSelected = ucZoomBoxViewer.MachineModeList[0];
 
-            for(int i = 0; i < ConstDefine.MAX_CAMERA_INSP_COUNT; i++)
+            for (int i = 0; i < ConstDefine.MAX_CAMERA_INSP_COUNT; i++)
             {
                 InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.LoadCamConfigurations(i, ref InterfaceManager.Instance.JigInspProcessorManager.CameraConfigs[i]);
             }
@@ -89,8 +89,8 @@ namespace DinoVisionGUI
             InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.GetInspectionResult(m_nCamIdx,
                                    ref InterfaceManager.Instance.JigInspProcessorManager.JigInspResults);
 
-            m_IOManagement.IsInspectCompleted = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_bInspectCompleted == 1? true : false;
-            m_IOManagement.IsJudgeOKNG = m_bResultOKNG = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_bResultOKNG == 1? true : false;
+            m_IOManagement.IsInspectCompleted = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_bInspectCompleted == 1 ? true : false;
+            m_IOManagement.IsJudgeOKNG = m_bResultOKNG = InterfaceManager.Instance.JigInspProcessorManager.JigInspResults.m_bResultOKNG == 1 ? true : false;
 
             CountTotal++;
             await this.Dispatcher.BeginInvoke(new Action(() =>
@@ -155,7 +155,7 @@ namespace DinoVisionGUI
             }
 
             ucZoomBoxViewer.ModeView = ModeView.Color;
-            Task.Run( new Action(() => m_IOManagement.StopInspect()));
+            Task.Run(new Action(() => m_IOManagement.StopInspect()));
 
             Thread.Sleep(100);
             m_IOManagement.ResetAllInOut();
@@ -298,7 +298,7 @@ namespace DinoVisionGUI
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            if(ucZoomBoxViewer.MachineMode == EMachineMode.EMachineMode_Inspect)
+            if (ucZoomBoxViewer.MachineMode == EMachineMode.EMachineMode_Inspect)
             {
                 MessageBox.Show("Could not setting when the machine is in Inspect Mode!");
                 return;
@@ -313,7 +313,7 @@ namespace DinoVisionGUI
             get => m_nCountOK;
             set
             {
-                if(SetProperty(ref  m_nCountOK, value)) { }
+                if (SetProperty(ref m_nCountOK, value)) { }
             }
         }
         public int CountNG
@@ -344,7 +344,25 @@ namespace DinoVisionGUI
 
         private void btnInit_Click(object sender, RoutedEventArgs e)
         {
+            // re-initialize all
 
+            // 0: inspect, 1: Live, 2: Manual, 3: Simulator
+            if(ucZoomBoxViewer.MachineModeSelected != "Inspect")
+            {
+                ucZoomBoxViewer.MachineModeSelected = ucZoomBoxViewer.MachineModeList[0];
+                return;
+            }
+
+            m_IOManagement.ResetAllInOut();
+            Thread.Sleep(100);
+
+#if GUI_DRAW
+            ucZoomBoxViewer.ModeView = ModeView.Mono;
+#else
+            ucZoomBoxViewer.ModeView = ModeView.Color;
+#endif
+            Task.Run(new Action(() => m_IOManagement.StartInspect()));
+            return;
         }
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
