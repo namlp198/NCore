@@ -245,6 +245,10 @@ namespace DinoVisionGUI
         private int m_nThresholdHeightMax;
         private int m_nThresholdWidthMin;
         private int m_nThresholdWidthMax;
+        private int m_nKSizeX;
+        private int m_nKSizeY;
+        private int m_nContourSizeMin;
+        private int m_nContourSizeMax;
 
         public string RecipeName_Recipe
         {
@@ -475,6 +479,54 @@ namespace DinoVisionGUI
                 }
             }
         }
+
+        public int KSizeX
+        {
+            get { return m_nKSizeX; }
+            set
+            {
+                if (SetProperty(ref m_nKSizeX, value))
+                {
+
+                }
+            }
+        }
+
+        public int KSizeY
+        {
+            get { return m_nKSizeY; }
+            set
+            {
+                if (SetProperty(ref m_nKSizeY, value))
+                {
+
+                }
+            }
+        }
+
+        public int ContourSizeMin
+        {
+            get { return m_nContourSizeMin; }
+            set
+            {
+                if (SetProperty(ref m_nContourSizeMin, value))
+                {
+
+                }
+            }
+        }
+
+        public int ContourSizeMax
+        {
+            get { return m_nContourSizeMax; }
+            set
+            {
+                if (SetProperty(ref m_nContourSizeMax, value))
+                {
+
+                }
+            }
+        }
         #endregion
         public SettingsView()
         {
@@ -543,6 +595,10 @@ namespace DinoVisionGUI
                 ThresholdHeightMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdHeightMax;
                 ThresholdWidthMin = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdWidthMin;
                 ThresholdWidthMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdWidthMax;
+                KSizeX = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeX;
+                KSizeY = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeY;
+                ContourSizeMin = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nContourSizeMin;
+                ContourSizeMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nContourSizeMax;
             }
         }
         void UpdateROIGenAuto()
@@ -752,6 +808,10 @@ namespace DinoVisionGUI
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdHeightMax = ThresholdHeightMax;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdWidthMin = ThresholdWidthMin;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdWidthMax = ThresholdWidthMax;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeX = KSizeX;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeY = KSizeY;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nContourSizeMin = ContourSizeMin;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nContourSizeMax = ContourSizeMax;
             if (InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SaveRecipe(0, ref InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0]))
             {
                 MessageBox.Show("saved successfully!");

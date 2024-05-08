@@ -487,6 +487,10 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <!--Label-->
                                 <Label Grid.Row="0"
@@ -573,6 +577,22 @@
                                        Grid.Column="0"
                                        Template="{StaticResource lblMainTemp}"
                                        Content="Threshold Width Max" />
+                                <Label Grid.Row="21"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="KSize X" />
+                                <Label Grid.Row="22"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="KSize Y" />
+                                <Label Grid.Row="23"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Contour Size Min" />
+                                <Label Grid.Row="24"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Contour Size Max" />
                                 <!--TextBox-->
                                 <TextBox Grid.Row="0"
                                          Grid.Column="1"
@@ -658,11 +678,27 @@
                                          Grid.Column="1"
                                          Text="{Binding ThresholdWidthMax, Mode=TwoWay}"
                                          Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="21"
+                                         Grid.Column="1"
+                                         Text="{Binding KSizeX, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="22"
+                                         Grid.Column="1"
+                                         Text="{Binding KSizeY, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="23"
+                                         Grid.Column="1"
+                                         Text="{Binding ContourSizeMin, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="24"
+                                         Grid.Column="1"
+                                         Text="{Binding ContourSizeMax, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
 
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Right"
                                             Grid.Column="1"
-                                            Grid.Row="21"
+                                            Grid.Row="25"
                                             Margin="0 0 0 0">
                                     <!--Button-->
                                     <Button Margin="3"

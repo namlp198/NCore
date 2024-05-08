@@ -91,6 +91,10 @@ namespace DinoVisionGUI
         public int m_nThresholdHeightMax;
         public int m_nThresholdWidthMin;
         public int m_nThresholdWidthMax;
+        public int m_nKSizeX;
+        public int m_nKSizeY;
+        public int m_nContourSizeMin;
+        public int m_nContourSizeMax;
     }
 
     // Inspection Compete CallBack
