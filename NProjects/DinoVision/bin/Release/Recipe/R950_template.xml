@@ -2,22 +2,28 @@
 <Recipe>
 	<RecipeName>R950</RecipeName>
 	<Algorithm>method1</Algorithm>
-	<RectX>229</RectX>
-	<RectY>263</RectY>
-	<RectWidth>173</RectWidth>
-	<RectHeight>132</RectHeight>
+	<RectX>170</RectX>
+	<RectY>259</RectY>
+	<RectWidth>299</RectWidth>
+	<RectHeight>198</RectHeight>
 	<MatchingRate>0.80</MatchingRate>
-	<CenterX>315</CenterX>
-	<CenterY>329</CenterY>
+	<CenterX>319</CenterX>
+	<CenterY>358</CenterY>
 	<ImageTemplate>template_0.png</ImageTemplate>
-	<Offset_ROI0_X>170</Offset_ROI0_X>
-	<Offset_ROI0_Y>110</Offset_ROI0_Y>
-	<Offset_ROI1_X>40</Offset_ROI1_X>
-	<Offset_ROI1_Y>110</Offset_ROI1_Y>
-	<ROI_Width>140</ROI_Width>
-	<ROI_Height>25</ROI_Height>
+	<Offset_ROI0_X>230</Offset_ROI0_X>
+	<Offset_ROI0_Y>145</Offset_ROI0_Y>
+	<Offset_ROI1_X>30</Offset_ROI1_X>
+	<Offset_ROI1_Y>145</Offset_ROI1_Y>
+	<ROI_Width>205</ROI_Width>
+	<ROI_Height>30</ROI_Height>
 	<NumberOfArray>5</NumberOfArray>
-	<ThresholdHeightMin>0</ThresholdHeightMin>
-	<ThresholdHeightMax>0</ThresholdHeightMax>
+	<ThresholdHeightMin>9</ThresholdHeightMin>
+	<ThresholdHeightMax>18</ThresholdHeightMax>
+	<ThresholdWidthMin>20</ThresholdWidthMin>
+	<ThresholdWidthMax>45</ThresholdWidthMax>
+	<KSizeX>12</KSizeX>
+	<KSizeY>5</KSizeY>
+	<ContourSizeMin>80</ContourSizeMin>
+	<ContourSizeMax>1000</ContourSizeMax>
 </Recipe>
 
