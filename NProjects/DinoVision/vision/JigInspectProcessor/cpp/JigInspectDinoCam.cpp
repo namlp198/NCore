@@ -379,7 +379,7 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 #ifdef DRAW_RESULT
 	cv::rectangle(mat, cv::Rect(ptLeftTop.x, ptLeftTop.y, recipe.m_nRectWidth, recipe.m_nRectHeight), cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
 	cv::circle(mat, ptFindResult, 3, cv::Scalar(255, 0, 255), cv::FILLED);
-	
+
 	m_pResultImageBuffer_BGR[nCamIdx]->SetFrameImage(0, mat.data);
 #endif // DRAW_RESULT
 
@@ -401,6 +401,10 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 	int nWidthMax = recipe.m_nThresholdWidthMax;
 	int nHeightMin = recipe.m_nThresholdHeightMin;
 	int nHeightMax = recipe.m_nThresholdHeightMax;
+	int nKSizeX = recipe.m_nKSizeX;
+	int nKSizeY = recipe.m_nKSizeY;
+	int nContourSizeMin = recipe.m_nContourSizeMin;
+	int nContourSizeMax = recipe.m_nContourSizeMax;
 
 	// pre-processing
 	cv::Mat matBGR;
@@ -411,13 +415,17 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 	std::vector<cv::Rect>             vecRect;
 	std::vector<cv::RotatedRect>      vecRotRect;
 
+#ifdef METHOD01
 	cv::Sobel(matROIUnit, matSobel, CV_8U, 0, 1, 3, 1.0, 0.0, cv::BORDER_DEFAULT);
-	//cv::imshow("sobel", matSobel);
-
 	cv::threshold(matSobel, matBinary, 0, 255, cv::THRESH_OTSU + cv::THRESH_BINARY);
-	//cv::imshow("Binary", matBinary);
+#endif // METHOD01
 
-	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(12, 5));
+#ifdef METHOD02
+	cv::threshold(matROIUnit, matBinary, 105, 255, cv::THRESH_BINARY);
+
+#endif // METHOD02
+
+	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(nKSizeX, nKSizeY)); // default: KSizeX = 12, KSizeY = 5
 	cv::morphologyEx(matBinary, matBinary, cv::MORPH_CLOSE, matEle);
 
 #ifdef SAVE_IMAGE_TEST
@@ -436,9 +444,12 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 	BOOL bRetHeight = TRUE;
 	for (int i = 0; i < contours.size(); i++)
 	{
-		if (contours[i].size() > 50)
+		if (contours[i].size() > nContourSizeMin && contours[i].size() < nContourSizeMax)
 		{
 			cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
+
+#ifdef _FIND_RECT_ROTATE_ALGORITHM
+
 			cv::Rect approxRect(cv::boundingRect(cv::Mat(contours_poly[i])));
 
 			bRet = (approxRect.width > approxRect.height) ? TRUE : FALSE;
@@ -473,34 +484,63 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 				cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
 			}
 
-		    // Find min rect
-		    /*cv::RotatedRect rotatedRect = cv::minAreaRect(cv::Mat(contours_poly[i]));
-				if (rotatedRect.size.width > rotatedRect.size.height && rotatedRect.size.height > 6)
-				{
-					rotatedRect.center.x -= matROIUnit.cols / 80;
-					//rotatedRect.size.width += matGray.cols / 80;
+#endif // FIND_RECT_ROTATE_ALGORITHM
 
-					vecRotRect.push_back(rotatedRect);
+#ifdef FIND_RECT_ROTATE_ALGORITHM
+			// Find min rect
+			cv::RotatedRect rotatedRect = cv::minAreaRect(cv::Mat(contours_poly[i]));
 
-	#ifdef _SHOW_RESULT
-					cv::Point2f vertices2f[4];
-					cv::Point vertices[4];
-					rotatedRect.points(vertices2f);
-					for (int i = 0; i < 4; ++i) {
-						vertices[i] = cv::Point(vertices2f[i].x + roi.x, vertices2f[i].y + roi.y);
-					}
+			bRet = (rotatedRect.size.width > rotatedRect.size.height) ? TRUE : FALSE;
 
-					for (int i = 0; i < 4; i++) {
-						cv::line(matCopy, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 0, 255), 1);
-					}
-					char chTemp[256] = {};
-					sprintf_s(chTemp, "angle: %.2f", rotatedRect.angle);
-					cv::putText(matCopy, chTemp, cv::Point(vertices[0].x, vertices[0].y + 20), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 0, 255), 1, cv::LINE_AA);
-	#endif // SHOW_RESULT
-				}*/
+			bRetWidth = (nWidthMin <= rotatedRect.size.width) ? TRUE : FALSE;
+			bRetWidth &= (rotatedRect.size.width <= nWidthMax) ? TRUE : FALSE;
+			bRetHeight = (nHeightMin <= rotatedRect.size.height) ? TRUE : FALSE;
+			bRetHeight &= (rotatedRect.size.height <= nHeightMax) ? TRUE : FALSE;
+
+			bRet &= (bRetWidth & bRetHeight);
+
+			vecRotRect.push_back(rotatedRect);
+
+
+			cv::Point2f vertices2f[4];
+			cv::Point vertices[4];
+			rotatedRect.points(vertices2f);
+			for (int i = 0; i < 4; ++i) {
+				vertices[i] = cv::Point(vertices2f[i].x + nX, vertices2f[i].y + nY);
+			}
+
+			for (int i = 0; i < 4; i++) {
+				cv::line(matDraw, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 255, 255), 1);
+			}
+
+			cv::Point p1(rotatedRect.center.x, rotatedRect.center.y - rotatedRect.size.height / 2);
+			cv::Point p2(rotatedRect.center.x, rotatedRect.center.y + rotatedRect.size.height / 2);
+			cv::Rect rectROI(nX, nY, matROIUnit.cols, matROIUnit.rows);
+
+			/*char result[100] = {};
+			sprintf_s(result, "%d|%d", rotatedRect.size.width, rotatedRect.size.height);*/
+
+			//cv::line(matBGR, p1, p2, cv::Scalar(255, 0, 255), 2, cv::LINE_AA);
+			//cv::line(matDraw, cv::Point(p1.x + nX, p1.y + nY), cv::Point(p2.x + nX, p2.y + nY), cv::Scalar(255, 0, 255), 2, cv::LINE_AA);
+
+			if (bRet == TRUE) {
+				cv::rectangle(matDraw, rectROI, cv::Scalar(0, 255, 0), 2, cv::LINE_AA);
+				//cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
+			}
+			else {
+				cv::rectangle(matDraw, rectROI, cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
+				//cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+			}
+			/*char chTemp[256] = {};
+			sprintf_s(chTemp, "angle: %.2f", rotatedRect.angle);
+			cv::putText(matCopy, chTemp, cv::Point(vertices[0].x, vertices[0].y + 20), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 0, 255), 1, cv::LINE_AA);*/
+
+		}
+
+	}
+#endif // FIND_RECT_ROTATE_ALGORITHM
 		}
 	}
-
 #ifdef SAVE_IMAGE_TEST
 	char sImageResultPath[1024] = {};
 	sprintf_s(sImageResultPath, "%s%s%d%s", W2A(m_pInterface->GetCameraConfig(0)->m_sImageTemplatePath), "\\result_", nColROIUnitPos + 1, ".png");

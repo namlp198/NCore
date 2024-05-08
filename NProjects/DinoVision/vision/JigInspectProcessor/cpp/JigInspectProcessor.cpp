@@ -370,6 +370,11 @@ BOOL CJigInspectProcessor::LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 	camRecipe.m_nThresholdWidthMin = std::atoi(pRoot->first_node("ThresholdWidthMin")->value());//20
 	camRecipe.m_nThresholdWidthMax = std::atoi(pRoot->first_node("ThresholdWidthMax")->value());//21
 
+	camRecipe.m_nKSizeX = std::atoi(pRoot->first_node("KSizeX")->value());//22
+	camRecipe.m_nKSizeY = std::atoi(pRoot->first_node("KSizeY")->value());//23
+	camRecipe.m_nContourSizeMin = std::atoi(pRoot->first_node("ContourSizeMin")->value());//24
+	camRecipe.m_nContourSizeMax = std::atoi(pRoot->first_node("ContourSizeMax")->value());//25
+
 	*(pRecipe) = camRecipe;
 	
 	return TRUE;
@@ -657,6 +662,22 @@ BOOL CJigInspectProcessor::SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 	char sThresholdWidthMax[10];
 	sprintf_s(sThresholdWidthMax, "%d", recipe.m_nThresholdWidthMax);
 	pRoot->first_node("ThresholdWidthMax")->value(sThresholdWidthMax);//21
+
+	char sKSizeX[10];
+	sprintf_s(sKSizeX, "%d", recipe.m_nKSizeX);
+	pRoot->first_node("KSizeX")->value(sKSizeX);//22
+
+	char sKSizeY[10];
+	sprintf_s(sKSizeY, "%d", recipe.m_nKSizeY);
+	pRoot->first_node("KSizeY")->value(sKSizeY);//23
+
+	char sContourSizeMin[10];
+	sprintf_s(sContourSizeMin, "%d", recipe.m_nContourSizeMin);
+	pRoot->first_node("ContourSizeMin")->value(sContourSizeMin);//24
+
+	char sContourSizeMax[10];
+	sprintf_s(sContourSizeMax, "%d", recipe.m_nContourSizeMax);
+	pRoot->first_node("ContourSizeMax")->value(sContourSizeMax);//25
 
 #pragma endregion
 
