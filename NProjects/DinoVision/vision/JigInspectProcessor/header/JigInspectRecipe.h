@@ -29,4 +29,8 @@ public:
 	int m_nThresholdHeightMax;
 	int m_nThresholdWidthMin;
 	int m_nThresholdWidthMax;
+	int m_nKSizeX;
+	int m_nKSizeY;
+	int m_nContourSizeMin;
+	int m_nContourSizeMax;
 };

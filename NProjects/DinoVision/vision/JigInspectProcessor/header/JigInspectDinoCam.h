@@ -11,6 +11,13 @@
 //#undef SAVE_IMAGE_TEST
 #define DRAW_RESULT
 //#undef DRAW_RESULT
+#define _FIND_RECT_ROTATE_ALGORITHM
+//#undef FIND_RECT_ROTATE_ALGORITHM
+
+#define METHOD01
+#undef METHOD01
+#define METHOD02
+//#undef METHOD02
 
 interface IJigInspectDinoCamToParent
 {
