@@ -166,6 +166,12 @@ BOOL CJigInspectProcessor::LoadSysConfigurations(CJigInspectSystemConfig* pSysCo
 	CString csUsePCControl = pRoot->first_node("UsePCControl")->value();
 	sysConfig.m_bUsePCControl = csUsePCControl.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
+	CString csIsShowDetail = pRoot->first_node("IsShowDetail")->value();
+	sysConfig.m_bShowDetail = csIsShowDetail.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csIsSaveImage = pRoot->first_node("IsSaveImage")->value();
+	sysConfig.m_bSaveImage = csIsSaveImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
 	*(pSysConfig) = sysConfig;
 
 	return TRUE;
@@ -370,10 +376,13 @@ BOOL CJigInspectProcessor::LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 	camRecipe.m_nThresholdWidthMin = std::atoi(pRoot->first_node("ThresholdWidthMin")->value());//20
 	camRecipe.m_nThresholdWidthMax = std::atoi(pRoot->first_node("ThresholdWidthMax")->value());//21
 
-	camRecipe.m_nKSizeX = std::atoi(pRoot->first_node("KSizeX")->value());//22
-	camRecipe.m_nKSizeY = std::atoi(pRoot->first_node("KSizeY")->value());//23
-	camRecipe.m_nContourSizeMin = std::atoi(pRoot->first_node("ContourSizeMin")->value());//24
-	camRecipe.m_nContourSizeMax = std::atoi(pRoot->first_node("ContourSizeMax")->value());//25
+	camRecipe.m_nKSizeX_Open = std::atoi(pRoot->first_node("KSizeX_Open")->value());//22
+	camRecipe.m_nKSizeY_Open = std::atoi(pRoot->first_node("KSizeY_Open")->value());//23
+	camRecipe.m_nKSizeX_Close = std::atoi(pRoot->first_node("KSizeX_Close")->value());//24
+	camRecipe.m_nKSizeY_Close = std::atoi(pRoot->first_node("KSizeY_Close")->value());//25
+	camRecipe.m_nContourSizeMin = std::atoi(pRoot->first_node("ContourSizeMin")->value());//26
+	camRecipe.m_nContourSizeMax = std::atoi(pRoot->first_node("ContourSizeMax")->value());//27
+	camRecipe.m_nThresholdBinary = std::atoi(pRoot->first_node("ThresholdBinary")->value());//28
 
 	*(pRecipe) = camRecipe;
 	
@@ -434,6 +443,14 @@ BOOL CJigInspectProcessor::SaveSysConfigurations(CJigInspectSystemConfig* pSysCo
 	CString csUsePCControl = sysConfig.m_bUsePCControl == TRUE ? _T("true") : _T("false");
 	const char* sUsePCControl = W2A(csUsePCControl);
 	pRoot->first_node("UsePCControl")->value(sUsePCControl);
+
+	CString csIsShowDetail = sysConfig.m_bShowDetail == TRUE ? _T("true") : _T("false");
+	const char* sIsShowDetail = W2A(csIsShowDetail);
+	pRoot->first_node("IsShowDetail")->value(sIsShowDetail);
+
+	CString csIsSaveImage = sysConfig.m_bSaveImage == TRUE ? _T("true") : _T("false");
+	const char* sIsSaveImage = W2A(csIsSaveImage);
+	pRoot->first_node("IsSaveImage")->value(sIsSaveImage);
 
 	// Convert the modified XML back to a string
 	std::string data;
@@ -663,21 +680,33 @@ BOOL CJigInspectProcessor::SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 	sprintf_s(sThresholdWidthMax, "%d", recipe.m_nThresholdWidthMax);
 	pRoot->first_node("ThresholdWidthMax")->value(sThresholdWidthMax);//21
 
-	char sKSizeX[10];
-	sprintf_s(sKSizeX, "%d", recipe.m_nKSizeX);
-	pRoot->first_node("KSizeX")->value(sKSizeX);//22
+	char sKSizeX_Open[10];
+	sprintf_s(sKSizeX_Open, "%d", recipe.m_nKSizeX_Open);
+	pRoot->first_node("KSizeX")->value(sKSizeX_Open);//22
 
-	char sKSizeY[10];
-	sprintf_s(sKSizeY, "%d", recipe.m_nKSizeY);
-	pRoot->first_node("KSizeY")->value(sKSizeY);//23
+	char sKSizeY_Open[10];
+	sprintf_s(sKSizeY_Open, "%d", recipe.m_nKSizeY_Open);
+	pRoot->first_node("KSizeY")->value(sKSizeY_Open);//23
+
+	char sKSizeX_Close[10];
+	sprintf_s(sKSizeX_Close, "%d", recipe.m_nKSizeX_Close);
+	pRoot->first_node("KSizeX")->value(sKSizeX_Close);//24
+
+	char sKSizeY_Close[10];
+	sprintf_s(sKSizeY_Close, "%d", recipe.m_nKSizeY_Close);
+	pRoot->first_node("KSizeY")->value(sKSizeY_Close);//25
 
 	char sContourSizeMin[10];
 	sprintf_s(sContourSizeMin, "%d", recipe.m_nContourSizeMin);
-	pRoot->first_node("ContourSizeMin")->value(sContourSizeMin);//24
+	pRoot->first_node("ContourSizeMin")->value(sContourSizeMin);//26
 
 	char sContourSizeMax[10];
 	sprintf_s(sContourSizeMax, "%d", recipe.m_nContourSizeMax);
-	pRoot->first_node("ContourSizeMax")->value(sContourSizeMax);//25
+	pRoot->first_node("ContourSizeMax")->value(sContourSizeMax);//27
+
+	char sThresholdBinary[10];
+	sprintf_s(sThresholdBinary, "%d", recipe.m_nThresholdBinary);
+	pRoot->first_node("ThresholdBinary")->value(sThresholdBinary);//28
 
 #pragma endregion
 

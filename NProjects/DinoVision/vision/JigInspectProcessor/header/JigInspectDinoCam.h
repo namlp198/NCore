@@ -59,7 +59,7 @@ public:
 
 protected:
 	BOOL     FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit, int nX, int nY, 
-		                      int nRowROIUnitPos, int nColROIUnitPos, std::map<int, int>& mapNGPosition, CJigInspectRecipe recipe);
+		                      int nRowROIUnitPos, int nColROIUnitPos, std::map<int, int>& mapNGPosition, CJigInspectRecipe recipe, CJigInspectSystemConfig config);
 	void     DrawAxis(cv::Mat& img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale = 0.2);
 
 private:

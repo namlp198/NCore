@@ -262,13 +262,17 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 	BOOL bRet = FALSE;
 
 	CJigInspectRecipe recipe;
+	CJigInspectSystemConfig config;
+	CJigInspectCameraConfig camConfig;
 	recipe = *m_pInterface->GetRecipe(nCamIdx);
+	config = *m_pInterface->GetSystemConfig();
+	camConfig = *m_pInterface->GetCameraConfig(nCamIdx);
 
 	// 3. read RECIPE
 	USES_CONVERSION;
 	char templateImgPath[1024];
 	const char* tempImgName = W2A(recipe.m_sImageTemplate);
-	sprintf_s(templateImgPath, "%s%s%s", W2A(m_pInterface->GetCameraConfig(nCamIdx)->m_sImageTemplatePath), "\\", tempImgName);
+	sprintf_s(templateImgPath, "%s%s%s", W2A(camConfig.m_sImageTemplatePath), "\\", tempImgName);
 
 	double dMatchingRateLimit = recipe.m_dMatchingRate * 100;
 	int nCenterX = recipe.m_nCenterX;
@@ -352,7 +356,7 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 					memcpy(&ROIUnit.data[i * ROIUnit.step1()], &matGray.data[(i + nOriginROI0_Y) * matGray.step1() + nOriginROI0_X], ROIUnit.cols);
 				}
 
-				bRet &= FindBoundingRect(mat, ROIUnit, nOriginROI0_X, nOriginROI0_Y, row, col, mapNGPosition, recipe);
+				bRet &= FindBoundingRect(mat, ROIUnit, nOriginROI0_X, nOriginROI0_Y, row, col, mapNGPosition, recipe, config);
 
 				nOriginROI0_X += nROIWidth_Unit;
 			}
@@ -361,14 +365,14 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 					memcpy(&ROIUnit.data[i * ROIUnit.step1()], &matGray.data[(i + nOriginROI1_Y) * matGray.step1() + nOriginROI1_X], ROIUnit.cols);
 				}
 
-				bRet &= FindBoundingRect(mat, ROIUnit, nOriginROI1_X, nOriginROI1_Y, row, col, mapNGPosition, recipe);
+				bRet &= FindBoundingRect(mat, ROIUnit, nOriginROI1_X, nOriginROI1_Y, row, col, mapNGPosition, recipe, config);
 
 				nOriginROI1_X += nROIWidth_Unit;
 			}
 
 #ifdef SAVE_IMAGE_TEST
 			char sImageTemplatePath[1024] = {};
-			sprintf_s(sImageTemplatePath, "%s%s%d%s", W2A(m_pInterface->GetCameraConfig(nCamIdx)->m_sImageTemplatePath), "\\test_", col + 1, ".png");
+			sprintf_s(sImageTemplatePath, "%s%s%d%s", W2A(camConfig.m_sImageTemplatePath), "\\test_", col + 1, ".png");
 			cv::imwrite(sImageTemplatePath, ROIUnit);
 #endif // SAVE_IMAGE_TEST
 
@@ -383,6 +387,14 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 	m_pResultImageBuffer_BGR[nCamIdx]->SetFrameImage(0, mat.data);
 #endif // DRAW_RESULT
 
+	if (config.m_bSaveImage) {
+		uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		char sImageName[1024] = {};
+		sprintf_s(sImageName, "%s%s%d%s", W2A(camConfig.m_sImageSavePath), "\\img_", ms, ".png");
+
+		cv::imwrite(sImageName, mat);
+	}
+
 	m_pResultImageBuffer[nCamIdx]->SetFrameImage(0, matGray.data);
 	m_pInterface->GetJigInspectResult(nCamIdx)->m_bInspectCompleted = TRUE;
 	m_pInterface->GetJigInspectResult(nCamIdx)->m_bResultOKNG = bRet;
@@ -394,17 +406,20 @@ BOOL CJigInspectDinoCam::InspectStart(int nCamIdx)
 }
 
 BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit, int nX, int nY,
-	int nRowROIUnitPos, int nColROIUnitPos, std::map<int, int>& mapNGPosition, CJigInspectRecipe recipe)
+	int nRowROIUnitPos, int nColROIUnitPos, std::map<int, int>& mapNGPosition, CJigInspectRecipe recipe, CJigInspectSystemConfig config)
 {
 	// THRESHOLD
 	int nWidthMin = recipe.m_nThresholdWidthMin;
 	int nWidthMax = recipe.m_nThresholdWidthMax;
 	int nHeightMin = recipe.m_nThresholdHeightMin;
 	int nHeightMax = recipe.m_nThresholdHeightMax;
-	int nKSizeX = recipe.m_nKSizeX;
-	int nKSizeY = recipe.m_nKSizeY;
+	int nKSizeX_Open = recipe.m_nKSizeX_Open;
+	int nKSizeY_Open = recipe.m_nKSizeY_Open;
+	int nKSizeX_Close = recipe.m_nKSizeX_Close;
+	int nKSizeY_Close = recipe.m_nKSizeY_Close;
 	int nContourSizeMin = recipe.m_nContourSizeMin;
 	int nContourSizeMax = recipe.m_nContourSizeMax;
+	int nThreshBinary = recipe.m_nThresholdBinary;
 
 	// pre-processing
 	cv::Mat matBGR;
@@ -421,11 +436,14 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 #endif // METHOD01
 
 #ifdef METHOD02
-	cv::threshold(matROIUnit, matBinary, 105, 255, cv::THRESH_BINARY);
+	cv::threshold(matROIUnit, matBinary, nThreshBinary, 255, cv::THRESH_BINARY);
 
 #endif // METHOD02
 
-	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(nKSizeX, nKSizeY)); // default: KSizeX = 12, KSizeY = 5
+	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(nKSizeX_Open, nKSizeY_Open));
+	cv::morphologyEx(matBinary, matBinary, cv::MORPH_OPEN, matEle);
+
+	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(nKSizeX_Close, nKSizeY_Close)); // default: KSizeX = 12, KSizeY = 5
 	cv::morphologyEx(matBinary, matBinary, cv::MORPH_CLOSE, matEle);
 
 #ifdef SAVE_IMAGE_TEST
@@ -469,19 +487,23 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 			char result[100] = {};
 			sprintf_s(result, "%d|%d", approxRect.width, approxRect.height);
 
-			cv::line(matBGR, p1, p2, cv::Scalar(255, 0, 255), 2, cv::LINE_AA);
-			cv::line(matDraw, cv::Point(p1.x + nX, p1.y + nY), cv::Point(p2.x + nX, p2.y + nY), cv::Scalar(255, 0, 255), 2, cv::LINE_AA);
+			if (config.m_bShowDetail) {
+				cv::line(matBGR, p1, p2, cv::Scalar(255, 0, 255), 2, cv::LINE_AA);
+				cv::line(matDraw, cv::Point(p1.x + nX, p1.y + nY), cv::Point(p2.x + nX, p2.y + nY), cv::Scalar(255, 0, 255), 2, cv::LINE_AA);
 
-			cv::rectangle(matBGR, cv::Rect(approxRect.x, approxRect.y, approxRect.width, approxRect.height), cv::Scalar(0, 255, 255), 1, cv::LINE_8);
-			cv::rectangle(matDraw, cv::Rect(approxRect.x + nX, approxRect.y + nY, approxRect.width, approxRect.height), cv::Scalar(0, 255, 255), 1, cv::LINE_8);
+				cv::rectangle(matBGR, cv::Rect(approxRect.x, approxRect.y, approxRect.width, approxRect.height), cv::Scalar(0, 255, 255), 1, cv::LINE_8);
+				cv::rectangle(matDraw, cv::Rect(approxRect.x + nX, approxRect.y + nY, approxRect.width, approxRect.height), cv::Scalar(0, 255, 255), 1, cv::LINE_8);
+			}
 
 			if (bRet == TRUE) {
 				cv::rectangle(matDraw, rectROI, cv::Scalar(0, 255, 0), 2, cv::LINE_AA);
-				cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
+				if (config.m_bShowDetail)
+					cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
 			}
 			else {
 				cv::rectangle(matDraw, rectROI, cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
-				cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+				if (config.m_bShowDetail)
+					cv::putText(matDraw, result, cv::Point(nX + 2, nY - 5), cv::FONT_HERSHEY_PLAIN, 0.7, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
 			}
 
 #endif // FIND_RECT_ROTATE_ALGORITHM
@@ -537,17 +559,17 @@ BOOL CJigInspectDinoCam::FindBoundingRect(cv::Mat& matDraw, cv::Mat& matROIUnit,
 
 		}
 
-	}
-#endif // FIND_RECT_ROTATE_ALGORITHM
 		}
+#endif // FIND_RECT_ROTATE_ALGORITHM
 	}
+}
 #ifdef SAVE_IMAGE_TEST
-	char sImageResultPath[1024] = {};
-	sprintf_s(sImageResultPath, "%s%s%d%s", W2A(m_pInterface->GetCameraConfig(0)->m_sImageTemplatePath), "\\result_", nColROIUnitPos + 1, ".png");
-	cv::imwrite(sImageResultPath, matBGR);
+char sImageResultPath[1024] = {};
+sprintf_s(sImageResultPath, "%s%s%d%s", W2A(m_pInterface->GetCameraConfig(0)->m_sImageTemplatePath), "\\result_", nColROIUnitPos + 1, ".png");
+cv::imwrite(sImageResultPath, matBGR);
 #endif // SAVE_IMAGE_TEST
 
-	return bRet;
+return bRet;
 }
 
 void CJigInspectDinoCam::DrawAxis(cv::Mat& img, cv::Point p, cv::Point q, cv::Scalar colour, const float scale)

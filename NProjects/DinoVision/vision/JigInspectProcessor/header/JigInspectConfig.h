@@ -12,6 +12,8 @@ public:
 	TCHAR            m_sModel[MAX_STRING_SIZE];
 	TCHAR            m_sCOMPort[MAX_STRING_SIZE];
 	BOOL             m_bUsePCControl;
+	BOOL             m_bShowDetail;
+	BOOL             m_bSaveImage;
 };
 
 class AFX_EXT_CLASS CJigInspectCameraConfig
