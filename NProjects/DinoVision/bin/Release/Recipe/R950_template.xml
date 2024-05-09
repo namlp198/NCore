@@ -21,9 +21,12 @@
 	<ThresholdHeightMax>18</ThresholdHeightMax>
 	<ThresholdWidthMin>20</ThresholdWidthMin>
 	<ThresholdWidthMax>45</ThresholdWidthMax>
-	<KSizeX>12</KSizeX>
-	<KSizeY>5</KSizeY>
+	<KSizeX_Open>1</KSizeX_Open>
+	<KSizeY_Open>1</KSizeY_Open>
+	<KSizeX_Close>19</KSizeX_Close>
+	<KSizeY_Close>3</KSizeY_Close>
 	<ContourSizeMin>80</ContourSizeMin>
 	<ContourSizeMax>1000</ContourSizeMax>
+	<ThresholdBinary>105</ThresholdBinary>
 </Recipe>
 

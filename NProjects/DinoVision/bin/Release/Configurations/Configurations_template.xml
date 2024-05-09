@@ -4,5 +4,7 @@
 	<Model>model0</Model>
 	<COMPort>COM4</COMPort>
 	<UsePCControl>false</UsePCControl>
+	<IsShowDetail>true</IsShowDetail>
+	<IsSaveImage>false</IsSaveImage>
 </Configurations>
 
