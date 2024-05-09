@@ -82,7 +82,7 @@
                                   TextBlock.Foreground="White"
                                   TextBlock.FontFamily="Open Sans"
                                   TextBlock.FontWeight="SemiBold"
-                                  TextBlock.FontSize="16"
+                                  TextBlock.FontSize="12"
                                   Margin="6 6 6 6"
                                   ContentStringFormat="{}{0:0.##}" />
             </Grid>
@@ -106,10 +106,10 @@
                            Background="{DynamicResource RGB_Cold_58_80_68}"
                            Foreground="White"
                            FontWeight="Bold"
-                           FontSize="16"
+                           FontSize="10"
                            Content=">" />
                     <TextBox Grid.Column="1"
-                             FontSize="14"
+                             FontSize="12"
                              FontWeight="Bold"
                              Foreground="Black"
                              TextAlignment="Center"
@@ -156,6 +156,7 @@
                                 <RowDefinition Height="35"/>
                                 <RowDefinition Height="35"/>
                                 <RowDefinition Height="35"/>
+                                <RowDefinition Height="35" />
                                 <RowDefinition Height="45"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
@@ -196,13 +197,38 @@
                                      Template="{StaticResource tbTemplate}"/>
                             <TextBox Grid.Row="3"
                                      Grid.Column="1"
+                                     IsEnabled="False"
+                                     IsReadOnly="True"
                                      Text="{Binding UsePCControl, Mode=TwoWay}"
                                      x:Name="txtUsePCControl"
                                      Template="{StaticResource tbTemplate}"/>
+
+                            <StackPanel Grid.Row="4"
+                                        Grid.ColumnSpan="2"
+                                        Orientation="Horizontal">
+                                <CheckBox Margin="20 1 1 1"
+                                          Name="chkShowDetail"
+                                          IsChecked="{Binding IsShowDetail}"
+                                          Checked="chkShowDetail_Checked"
+                                          Unchecked="chkShowDetail_Unchecked"
+                                          Content="Show Detail"
+                                          VerticalContentAlignment="Center"
+                                          FontSize="16"
+                                          Foreground="White"/>
+                                <CheckBox Margin="20 1 1 1"
+                                          Name="chkSaveImage"
+                                          IsChecked="{Binding IsSaveImage}"
+                                          Checked="chkSaveImage_Checked"
+                                          Unchecked="chkSaveImage_Unchecked"
+                                          Content="Save Image"
+                                          VerticalContentAlignment="Center"
+                                          FontSize="16"
+                                          Foreground="White" />
+                            </StackPanel>
                             
                             <!--Button-->
                             <Button Grid.Column="1"
-                                    Grid.Row="4"
+                                    Grid.Row="5"
                                     x:Name="btnSaveSysConfig"
                                     Click="btnSaveSysConfig_Click"
                                     Margin="3"
@@ -442,7 +468,7 @@
                         </Border>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
+                                <RowDefinition Height="20" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
@@ -450,7 +476,7 @@
                                            Margin="10 0 0 0"
                                            Text="Parameters"
                                            Foreground="White"
-                                           FontSize="16"
+                                           FontSize="14"
                                            TextAlignment="Left"
                                            VerticalAlignment="Center" />
                             </Grid>
@@ -489,8 +515,7 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
+                                    <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
                                 <!--Label-->
                                 <Label Grid.Row="0"
@@ -580,19 +605,31 @@
                                 <Label Grid.Row="21"
                                        Grid.Column="0"
                                        Template="{StaticResource lblMainTemp}"
-                                       Content="KSize X" />
+                                       Content="KSize X Open" />
                                 <Label Grid.Row="22"
                                        Grid.Column="0"
                                        Template="{StaticResource lblMainTemp}"
-                                       Content="KSize Y" />
+                                       Content="KSize Y Open" />
                                 <Label Grid.Row="23"
                                        Grid.Column="0"
                                        Template="{StaticResource lblMainTemp}"
-                                       Content="Contour Size Min" />
+                                       Content="KSize X Close" />
                                 <Label Grid.Row="24"
                                        Grid.Column="0"
                                        Template="{StaticResource lblMainTemp}"
+                                       Content="KSize Y Close" />
+                                <Label Grid.Row="25"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Contour Size Min" />
+                                <Label Grid.Row="26"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
                                        Content="Contour Size Max" />
+                                <Label Grid.Row="27"
+                                       Grid.Column="0"
+                                       Template="{StaticResource lblMainTemp}"
+                                       Content="Threshold Binary" />
                                 <!--TextBox-->
                                 <TextBox Grid.Row="0"
                                          Grid.Column="1"
@@ -680,25 +717,37 @@
                                          Template="{StaticResource tbTemplate}" />
                                 <TextBox Grid.Row="21"
                                          Grid.Column="1"
-                                         Text="{Binding KSizeX, Mode=TwoWay}"
+                                         Text="{Binding KSizeX_Open, Mode=TwoWay}"
                                          Template="{StaticResource tbTemplate}" />
                                 <TextBox Grid.Row="22"
                                          Grid.Column="1"
-                                         Text="{Binding KSizeY, Mode=TwoWay}"
+                                         Text="{Binding KSizeY_Open, Mode=TwoWay}"
                                          Template="{StaticResource tbTemplate}" />
                                 <TextBox Grid.Row="23"
                                          Grid.Column="1"
-                                         Text="{Binding ContourSizeMin, Mode=TwoWay}"
+                                         Text="{Binding KSizeX_Close, Mode=TwoWay}"
                                          Template="{StaticResource tbTemplate}" />
                                 <TextBox Grid.Row="24"
                                          Grid.Column="1"
+                                         Text="{Binding KSizeY_Close, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="25"
+                                         Grid.Column="1"
+                                         Text="{Binding ContourSizeMin, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="26"
+                                         Grid.Column="1"
                                          Text="{Binding ContourSizeMax, Mode=TwoWay}"
+                                         Template="{StaticResource tbTemplate}" />
+                                <TextBox Grid.Row="27"
+                                         Grid.Column="1"
+                                         Text="{Binding ThresholdBinary, Mode=TwoWay}"
                                          Template="{StaticResource tbTemplate}" />
 
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Right"
                                             Grid.Column="1"
-                                            Grid.Row="25"
+                                            Grid.Row="28"
                                             Margin="0 0 0 0">
                                     <!--Button-->
                                     <Button Margin="3"
@@ -710,7 +759,7 @@
                                             Background="{DynamicResource RGB_Cold_92_184_92}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock FontSize="14"
+                                                <TextBlock FontSize="12"
                                                            FontWeight="Bold"
                                                            Text="Save" />
                                             </StackPanel>
@@ -726,7 +775,7 @@
                                             Background="{DynamicResource RGB_Hot_206_59_63}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock FontSize="14"
+                                                <TextBlock FontSize="12"
                                                            FontWeight="Bold"
                                                            Text="Apply" />
                                             </StackPanel>

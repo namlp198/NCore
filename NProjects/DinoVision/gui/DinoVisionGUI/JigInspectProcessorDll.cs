@@ -36,6 +36,8 @@ namespace DinoVisionGUI
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstDefine.MAX_STRING_SIZE)]
         public string m_sCOMPort;
         public int m_bUsePCControl;
+        public int m_bShowDetail;
+        public int m_bSaveImage;
     }
 
     // Cam setting
@@ -91,10 +93,13 @@ namespace DinoVisionGUI
         public int m_nThresholdHeightMax;
         public int m_nThresholdWidthMin;
         public int m_nThresholdWidthMax;
-        public int m_nKSizeX;
-        public int m_nKSizeY;
+        public int m_nKSizeX_Open;
+        public int m_nKSizeY_Open;
+        public int m_nKSizeX_Close;
+        public int m_nKSizeY_Close;
         public int m_nContourSizeMin;
         public int m_nContourSizeMax;
+        public int m_nThresholdBinary;
     }
 
     // Inspection Compete CallBack

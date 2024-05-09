@@ -39,7 +39,8 @@ namespace DinoVisionGUI
         private string m_sModel;
         private string m_sCOMPort;
         private int m_nUsePCControl;
-
+        private bool m_bShowDetail;
+        private bool m_bSaveImage;
         public string RecipePath
         {
             get { return m_sRecipePath; }
@@ -79,6 +80,30 @@ namespace DinoVisionGUI
             set
             {
                 if (SetProperty(ref m_nUsePCControl, value))
+                {
+
+                }
+            }
+        }
+
+        public bool IsShowDetail
+        {
+            get { return m_bShowDetail; }
+            set
+            {
+                if (SetProperty(ref m_bShowDetail, value))
+                {
+
+                }
+            }
+        }
+
+        public bool IsSaveImage
+        {
+            get { return m_bSaveImage; }
+            set
+            {
+                if (SetProperty(ref m_bSaveImage, value))
                 {
 
                 }
@@ -245,10 +270,13 @@ namespace DinoVisionGUI
         private int m_nThresholdHeightMax;
         private int m_nThresholdWidthMin;
         private int m_nThresholdWidthMax;
-        private int m_nKSizeX;
-        private int m_nKSizeY;
+        private int m_nKSizeX_Open;
+        private int m_nKSizeY_Open;
+        private int m_nKSizeX_Close;
+        private int m_nKSizeY_Close;
         private int m_nContourSizeMin;
         private int m_nContourSizeMax;
+        private int m_nThresholdBinary;
 
         public string RecipeName_Recipe
         {
@@ -480,24 +508,48 @@ namespace DinoVisionGUI
             }
         }
 
-        public int KSizeX
+        public int KSizeX_Open
         {
-            get { return m_nKSizeX; }
+            get { return m_nKSizeX_Open; }
             set
             {
-                if (SetProperty(ref m_nKSizeX, value))
+                if (SetProperty(ref m_nKSizeX_Open, value))
                 {
 
                 }
             }
         }
 
-        public int KSizeY
+        public int KSizeY_Open
         {
-            get { return m_nKSizeY; }
+            get { return m_nKSizeY_Open; }
             set
             {
-                if (SetProperty(ref m_nKSizeY, value))
+                if (SetProperty(ref m_nKSizeY_Open, value))
+                {
+
+                }
+            }
+        }
+
+        public int KSizeX_Close
+        {
+            get { return m_nKSizeX_Close; }
+            set
+            {
+                if (SetProperty(ref m_nKSizeX_Close, value))
+                {
+
+                }
+            }
+        }
+
+        public int KSizeY_Close
+        {
+            get { return m_nKSizeY_Close; }
+            set
+            {
+                if (SetProperty(ref m_nKSizeY_Close, value))
                 {
 
                 }
@@ -527,6 +579,20 @@ namespace DinoVisionGUI
                 }
             }
         }
+
+        public int ThresholdBinary
+        {
+            get { return m_nThresholdBinary; }
+            set
+            {
+                if (SetProperty(ref m_nThresholdBinary, value))
+                {
+
+                }
+            }
+        }
+
+
         #endregion
         public SettingsView()
         {
@@ -552,6 +618,8 @@ namespace DinoVisionGUI
             Model = InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_sModel;
             COMPort = InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_sCOMPort;
             UsePCControl = InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_bUsePCControl;
+            IsShowDetail = InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_bShowDetail == 1? true : false;
+            IsSaveImage = InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_bSaveImage == 1 ? true : false;
         }
         void RefeshSetting_CamConfig()
         {
@@ -595,10 +663,13 @@ namespace DinoVisionGUI
                 ThresholdHeightMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdHeightMax;
                 ThresholdWidthMin = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdWidthMin;
                 ThresholdWidthMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdWidthMax;
-                KSizeX = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeX;
-                KSizeY = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeY;
+                KSizeX_Open = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeX_Open;
+                KSizeY_Open = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeY_Open;
+                KSizeX_Close = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeX_Close;
+                KSizeY_Close = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nKSizeY_Close;
                 ContourSizeMin = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nContourSizeMin;
                 ContourSizeMax = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nContourSizeMax;
+                ThresholdBinary = InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[i].m_nThresholdBinary;
             }
         }
         void UpdateROIGenAuto()
@@ -760,6 +831,8 @@ namespace DinoVisionGUI
             InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_sModel = Model;
             InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_sCOMPort = COMPort;
             InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_bUsePCControl = UsePCControl;
+            InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_bShowDetail = IsShowDetail == true? 1 : 0;
+            InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs.m_bSaveImage = IsSaveImage == true? 1 : 0;
             if (InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SaveSysConfigurations(ref InterfaceManager.Instance.JigInspProcessorManager.SystemConfigs))
             {
                 MessageBox.Show("saved successfully!");
@@ -808,10 +881,13 @@ namespace DinoVisionGUI
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdHeightMax = ThresholdHeightMax;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdWidthMin = ThresholdWidthMin;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdWidthMax = ThresholdWidthMax;
-            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeX = KSizeX;
-            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeY = KSizeY;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeX_Open = KSizeX_Open;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeY_Open = KSizeY_Open;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeX_Close = KSizeX_Close;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nKSizeY_Close = KSizeY_Close;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nContourSizeMin = ContourSizeMin;
             InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nContourSizeMax = ContourSizeMax;
+            InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0].m_nThresholdBinary = ThresholdBinary;
             if (InterfaceManager.Instance.JigInspProcessorManager.JigInspProcessorDll.SaveRecipe(0, ref InterfaceManager.Instance.JigInspProcessorManager.RecipeConfigs[0]))
             {
                 MessageBox.Show("saved successfully!");
@@ -984,6 +1060,26 @@ namespace DinoVisionGUI
             imgView.ArrROIGenAuto = lstROIGenAuto;
             imgView.LocToolRes_Simple = locToolRes_Simple;
             imgView.InvalidateVisual();
+        }
+
+        private void chkShowDetail_Checked(object sender, RoutedEventArgs e)
+        {
+            //btnSaveSysConfig_Click(null, null);
+        }
+
+        private void chkShowDetail_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //btnSaveSysConfig_Click(null, null);
+        }
+
+        private void chkSaveImage_Checked(object sender, RoutedEventArgs e)
+        {
+            //btnSaveSysConfig_Click(null, null);
+        }
+
+        private void chkSaveImage_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //btnSaveSysConfig_Click(null, null);
         }
     }
 }
