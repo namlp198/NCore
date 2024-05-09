@@ -682,19 +682,19 @@ BOOL CJigInspectProcessor::SaveRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 
 	char sKSizeX_Open[10];
 	sprintf_s(sKSizeX_Open, "%d", recipe.m_nKSizeX_Open);
-	pRoot->first_node("KSizeX")->value(sKSizeX_Open);//22
+	pRoot->first_node("KSizeX_Open")->value(sKSizeX_Open);//22
 
 	char sKSizeY_Open[10];
 	sprintf_s(sKSizeY_Open, "%d", recipe.m_nKSizeY_Open);
-	pRoot->first_node("KSizeY")->value(sKSizeY_Open);//23
+	pRoot->first_node("KSizeY_Open")->value(sKSizeY_Open);//23
 
 	char sKSizeX_Close[10];
 	sprintf_s(sKSizeX_Close, "%d", recipe.m_nKSizeX_Close);
-	pRoot->first_node("KSizeX")->value(sKSizeX_Close);//24
+	pRoot->first_node("KSizeX_Close")->value(sKSizeX_Close);//24
 
 	char sKSizeY_Close[10];
 	sprintf_s(sKSizeY_Close, "%d", recipe.m_nKSizeY_Close);
-	pRoot->first_node("KSizeY")->value(sKSizeY_Close);//25
+	pRoot->first_node("KSizeY_Close")->value(sKSizeY_Close);//25
 
 	char sContourSizeMin[10];
 	sprintf_s(sContourSizeMin, "%d", recipe.m_nContourSizeMin);
