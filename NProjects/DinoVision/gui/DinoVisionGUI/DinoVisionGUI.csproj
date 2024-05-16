@@ -59,8 +59,7 @@
     <Reference Include="NCore.Wpf.UcZoomBoxViewer">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.UcZoomBoxViewer.dll</HintPath>
     </Reference>
-    <Reference Include="Npc.Foundation, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Npc.Foundation">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Npc.Foundation.dll</HintPath>
     </Reference>
     <Reference Include="NpcCore.Wpf">
