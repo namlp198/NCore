@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{58bbd3d3-6aaa-4233-bf21-01b9176ea11d}</ProjectGuid>
+    <RootNamespace>SealingInspectProcessor</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)NProjects\SealingInspectMachine\bin</OutDir>
+    <TargetName>$(ProjectName)_Release64</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;SEALINGINSPECTPROCESSOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;SEALINGINSPECTPROCESSOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;SEALINGINSPECTPROCESSOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;SEALINGINSPECTPROCESSOR_EXPORTS;_WINDOWS;_USRDLL;_AFXEXT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\SealingInspectProcessor;$(SolutionDir)Libraries\Camera_MVS\include;$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)Libraries\RapidXML;$(SolutionDir)Libraries\tbb\include;..\SealingInspectProcessor\header;..\SealingInspectProcessor\header\Tools;..\SealingInspectProcessor\header\Tools\Camera\Hik;..\SealingInspectProcessor\header\Tools\IOManagement;..\SealingInspectProcessor\header\Tools\ThreadPool;..\SealingInspectProcessor\header\Tools\View;..\SealingInspectProcessor\header\Tools\Lighting;..\SealingInspectProcessor\header\Tools\Network;..\SealingInspectProcessor\header\Tools\ConfigFile;..\SealingInspectProcessor\header\Tools\Log;..\SealingInspectProcessor\header\Tools\UI;..\SealingInspectProcessor\header\Tools\Time;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\RapidXML;$(SolutionDir)Libraries\tbb\lib;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="header\SealingInspectCore_SideCam.h" />
+    <ClInclude Include="header\SealingInspectCore_TopCam.h" />
+    <ClInclude Include="header\SealingInspectDefine.h" />
+    <ClInclude Include="header\SealingInspectProcessor.h" />
+    <ClInclude Include="header\SealingInspectProcessorCSharp.h" />
+    <ClInclude Include="header\SealingInspectRecipe.h" />
+    <ClInclude Include="header\SealingInspectResult.h" />
+    <ClInclude Include="header\SealingInspectSystemSetting.h" />
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber.h" />
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabberParam.h" />
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber_MVS_GigE.h" />
+    <ClInclude Include="header\Tools\Camera\Hik\MvCamera.h" />
+    <ClInclude Include="header\Tools\ConfigFile\BasedConfig.h" />
+    <ClInclude Include="header\Tools\ConfigFile\Config.h" />
+    <ClInclude Include="header\Tools\ConfigFile\FileIOInterface.h" />
+    <ClInclude Include="header\Tools\ConfigFile\FileList.h" />
+    <ClInclude Include="header\Tools\ConfigFile\FileMap.h" />
+    <ClInclude Include="header\Tools\ConfigFile\FileVersionManager.h" />
+    <ClInclude Include="header\Tools\ConfigFile\IniManager.h" />
+    <ClInclude Include="header\Tools\ConfigFile\Registery.h" />
+    <ClInclude Include="header\Tools\IOManagement\ActDefine.h" />
+    <ClInclude Include="header\Tools\IOManagement\ActMulti.h" />
+    <ClInclude Include="header\Tools\IOManagement\IOControls.h" />
+    <ClInclude Include="header\Tools\IOManagement\IOControlsParam.h" />
+    <ClInclude Include="header\Tools\IOManagement\IOControls_PLC_MxComponent.h" />
+    <ClInclude Include="header\Tools\IOManagement\IOControls_Simulation.h" />
+    <ClInclude Include="header\Tools\IOManagement\mvcp.h" />
+    <ClInclude Include="header\Tools\IOManagement\Mvedio128mbTcp.h" />
+    <ClInclude Include="header\Tools\IOManagement\mvtype.h" />
+    <ClInclude Include="header\Tools\IOManagement\MxComponent.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControlsParam.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_CCS_PJ2_3005_4CA_PE.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_Dasol_Ch16.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_Inoray_TB30_B4.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_L_LIGHT_50W4CH_LP.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_NVSystem_AKP6.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_NVSystem_AKP_04RA.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_ONUV_OLC-304A.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_PLS_Ch8.h" />
+    <ClInclude Include="header\Tools\Lighting\LightControls_Simulation.h" />
+    <ClInclude Include="header\Tools\Lighting\Serial.h" />
+    <ClInclude Include="header\Tools\Lighting\SerialPort.h" />
+    <ClInclude Include="header\Tools\Log\FolderScheduling.h" />
+    <ClInclude Include="header\Tools\Log\ListBoxLog.h" />
+    <ClInclude Include="header\Tools\Network\TCPServer.h" />
+    <ClInclude Include="header\Tools\Network\TCPSocket.h" />
+    <ClInclude Include="header\Tools\ThreadPool\PriorityThread.h" />
+    <ClInclude Include="header\Tools\ThreadPool\ThreadData.h" />
+    <ClInclude Include="header\Tools\ThreadPool\ThreadPool.h" />
+    <ClInclude Include="header\Tools\ThreadPool\TimerThreadPool.h" />
+    <ClInclude Include="header\Tools\ThreadPool\WaitThreadPool.h" />
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h" />
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h" />
+    <ClInclude Include="header\Tools\Time\TimeCalculator.h" />
+    <ClInclude Include="header\Tools\UI\HWChecker.h" />
+    <ClInclude Include="header\Tools\UI\LogView.h" />
+    <ClInclude Include="header\Tools\View\SharedMemoryBuffer.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\SealingInspectCore_SideCam.cpp" />
+    <ClCompile Include="cpp\SealingInspectCore_TopCam.cpp" />
+    <ClCompile Include="cpp\SealingInspectProcessor.cpp" />
+    <ClCompile Include="cpp\SealingInspectProcessorCSharp.cpp" />
+    <ClCompile Include="cpp\SealingInspectRecipe.cpp" />
+    <ClCompile Include="cpp\SealingInspectResult.cpp" />
+    <ClCompile Include="cpp\SealingInspectSystemSetting.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Hik\MvCamera.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber_MVS.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\BasedConfig.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\Config.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\FileIOInterface.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\FileList.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\FileMap.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\FileVersionManager.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\IniManager.cpp" />
+    <ClCompile Include="cpp\Tools\ConfigFile\Registery.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\IOControls.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\IOControls_PLC_MxComponent.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\IOControls_Simulation.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\mvcp.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\Mvedio128mbTcp.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\mvtype.cpp" />
+    <ClCompile Include="cpp\Tools\IOManagement\MxComponent.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_CCS_PJ2_3005_4CA_PE.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_Dasol_16Ch.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_Inoray_TB30_B4.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_L_LIGHT_50W4CH_LP.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_NVSystem_AKP6.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_NVSystem_AKP_04RA.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_ONUV_OLC-304A.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_PLS_8Ch.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_Simulation.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\Serial.cpp" />
+    <ClCompile Include="cpp\Tools\Lighting\SerialPort.cpp" />
+    <ClCompile Include="cpp\Tools\Log\FolderScheduling.cpp" />
+    <ClCompile Include="cpp\Tools\Log\ListBoxLog.cpp" />
+    <ClCompile Include="cpp\Tools\Network\TCPServer.cpp" />
+    <ClCompile Include="cpp\Tools\Network\TCPSocket.cpp" />
+    <ClCompile Include="cpp\Tools\ThreadPool\PriorityThread.cpp" />
+    <ClCompile Include="cpp\Tools\ThreadPool\ThreadPool.cpp" />
+    <ClCompile Include="cpp\Tools\ThreadPool\TimerThreadPool.cpp" />
+    <ClCompile Include="cpp\Tools\ThreadPool\WaitThreadPool.cpp" />
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadArray.cpp" />
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadPool.cpp" />
+    <ClCompile Include="cpp\Tools\Time\TimeCalculator.cpp" />
+    <ClCompile Include="cpp\Tools\UI\HWChecker.cpp" />
+    <ClCompile Include="cpp\Tools\UI\LogView.cpp" />
+    <ClCompile Include="cpp\Tools\View\SharedMemoryBuffer.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
