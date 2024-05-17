@@ -71,6 +71,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SealingInspectProcessor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SealingInspectGUI", "NProjects\SealingInspectMachine\gui\SealingInspectGUI\SealingInspectGUI.csproj", "{7D57231F-8ED7-4D6E-A43A-A98F05BEF546}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Wpf.BufferViewerSimple", "NCoreWpf\NCore.Wpf.BufferViewerSimple\NCore.Wpf.BufferViewerSimple.csproj", "{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -405,6 +407,18 @@ Global
 		{7D57231F-8ED7-4D6E-A43A-A98F05BEF546}.Release|x64.Build.0 = Release|x64
 		{7D57231F-8ED7-4D6E-A43A-A98F05BEF546}.Release|x86.ActiveCfg = Release|Any CPU
 		{7D57231F-8ED7-4D6E-A43A-A98F05BEF546}.Release|x86.Build.0 = Release|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Release|x64.ActiveCfg = Release|x64
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Release|x64.Build.0 = Release|x64
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Release|x86.ActiveCfg = Release|Any CPU
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -431,6 +445,7 @@ Global
 		{03C5CF15-A33D-49A1-AA86-3738AEC3A76A} = {121CC458-7196-401B-82D5-0BEA6E2D1A8D}
 		{58BBD3D3-6AAA-4233-BF21-01B9176EA11D} = {03C5CF15-A33D-49A1-AA86-3738AEC3A76A}
 		{7D57231F-8ED7-4D6E-A43A-A98F05BEF546} = {03C5CF15-A33D-49A1-AA86-3738AEC3A76A}
+		{0BBA3140-9E8B-4A1E-833A-A72E3ADD4F72} = {A9F176C0-5B8C-4251-AEC6-7DB6BC753288}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2EBC4655-F715-4CB1-BFB4-893675AA0BFB}
