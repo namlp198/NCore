@@ -11,5 +11,8 @@ namespace SealingInspectGUI.Commons
     public class Defines
     {
         public static string StartupProgPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+        public const int FRAME_WIDTH = 2448;
+        public const int FRAME_HEIGHT = 2048;
     }
 }

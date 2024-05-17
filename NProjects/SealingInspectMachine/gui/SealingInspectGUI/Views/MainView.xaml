@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SealingInspectGUI.Views"
-        xmlns:Uc="clr-namespace:NCore.Wpf.UcZoomBoxViewer;assembly=NCore.Wpf.UcZoomBoxViewer"
         mc:Ignorable="d"
         Title="MainView"
         Height="450"
@@ -12,14 +11,15 @@
         Background="{DynamicResource RGB_Night_33_41_57}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.3*" />
             <RowDefinition Height="14*" />
-            <RowDefinition Height="0.6*" />
+            <RowDefinition Height="0.4*" />
         </Grid.RowDefinitions>
-        <ToolBar Margin="1"
+        <ToolBar Grid.Row="0"
+                 Margin="1"
                  Background="{DynamicResource RGB_Night_46_61_90}">
             <Button Margin="5"
                     Width="120"
@@ -145,7 +145,10 @@
                 </Button.Content>
             </Button>
         </ToolBar>
-        <ContentControl Name="contentMain"
-                        Grid.Row="1"/>
+
+        <ContentControl Grid.Row="1"
+                        Margin="2"
+                        Name="contentMain"/>
+
     </Grid>
 </Window>

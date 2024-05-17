@@ -56,8 +56,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NCore.Wpf.UcZoomBoxViewer">
-      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.UcZoomBoxViewer.dll</HintPath>
+    <Reference Include="NCore.Wpf.BufferViewerSimple">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSimple.dll</HintPath>
     </Reference>
     <Reference Include="Npc.Foundation">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Npc.Foundation.dll</HintPath>
@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\LoadImageCmd.cs" />
     <Compile Include="Command\Cmd\SelectSettingViewCmd.cs" />
     <Compile Include="Command\Cmd\SelectRunViewCmd.cs" />
     <Compile Include="Command\CommandBase.cs" />
@@ -101,22 +102,38 @@
     <Compile Include="Commons\Defines.cs" />
     <Compile Include="Manager\Class\SealingInspectProcessorDll.cs" />
     <Compile Include="Manager\InterfaceManager.cs" />
+    <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\LightControlManager.cs" />
     <Compile Include="Manager\SumManager\PlcManager.cs" />
     <Compile Include="Manager\SumManager\SequenceManager.cs" />
     <Compile Include="Manager\SumManager\SettingManager.cs" />
     <Compile Include="Models\model.cs" />
+    <Compile Include="ViewModels\SumCameraViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ResultViewModel.cs" />
     <Compile Include="ViewModels\RunViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
+    <Compile Include="ViewModels\StatisticsViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcSumCameraView.xaml.cs">
+      <DependentUpon>UcSumCameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcResultView.xaml.cs">
+      <DependentUpon>UcResultView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcViews\UcRunView.xaml.cs">
       <DependentUpon>UcRunView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcViews\UcSettingView.xaml.cs">
       <DependentUpon>UcSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcStatisticsView.xaml.cs">
+      <DependentUpon>UcStatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcShowDetail.xaml.cs">
+      <DependentUpon>UcShowDetail.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -134,11 +151,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UcViews\UcSumCameraView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UcViews\UcRunView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UcViews\UcSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcStatisticsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcShowDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

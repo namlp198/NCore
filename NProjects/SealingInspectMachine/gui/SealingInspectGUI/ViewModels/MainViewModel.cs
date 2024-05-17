@@ -1,5 +1,6 @@
 ﻿using Npc.Foundation.Base;
 using SealingInspectGUI.Command.Cmd;
+using SealingInspectGUI.Manager;
 using SealingInspectGUI.Views;
 using SealingInspectGUI.Views.UcViews;
 using System;
@@ -25,7 +26,8 @@ namespace SealingInspectGUI.ViewModels
         #endregion
 
         #region Constructor
-        public MainViewModel(Dispatcher dispatcher, MainView mainView, RunViewModel runVM, SettingViewModel settingVM)
+        public MainViewModel(Dispatcher dispatcher, MainView mainView, 
+                             RunViewModel runVM, SettingViewModel settingVM)
         {
             // construct a instance of MainViewModel
             if (_instance == null) _instance = this;
@@ -38,6 +40,13 @@ namespace SealingInspectGUI.ViewModels
 
             this.SelectRunViewCmd = new SelectRunViewCmd();
             this.SelectSettingViewCmd = new SelectSettingViewCmd();
+
+            InterfaceManager.Instance.m_sealingInspProcessor.Initialize();
+        }
+
+        ~MainViewModel()
+        {
+            InterfaceManager.Instance.m_sealingInspProcessor.DeleteSealingInspectProcessor();
         }
         #endregion
 
@@ -47,6 +56,7 @@ namespace SealingInspectGUI.ViewModels
 
         private SettingViewModel _settingVM;
         public SettingViewModel SettingVM { get => _settingVM; private set { } }
+
         #endregion
 
         #region variables

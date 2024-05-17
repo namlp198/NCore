@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SealingInspectGUI.Manager.Class;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace SealingInspectGUI.Manager
 {
     public class InterfaceManager
     {
+        public SimulationThread m_simulationThread = new SimulationThread();
+        public SealingInspectProcessorDll m_sealingInspProcessor = new SealingInspectProcessorDll();
+
         #region Singleton
         private static InterfaceManager _instance;
         public static InterfaceManager Instance
