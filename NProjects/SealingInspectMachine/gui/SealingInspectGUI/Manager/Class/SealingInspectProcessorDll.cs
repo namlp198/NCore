@@ -90,6 +90,15 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
+        extern private static bool LoadAllImageBuffer(IntPtr sealingInspProcessor, [MarshalAs(UnmanagedType.LPStr)] string dirPath, [MarshalAs(UnmanagedType.LPStr)] string imageType);
+        public bool LoadAllImageBuffer([MarshalAs(UnmanagedType.LPStr)] string dirPath, [MarshalAs(UnmanagedType.LPStr)] string imageType) { return LoadAllImageBuffer(m_sealingInspectProcessor, dirPath, imageType); }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
         extern private static bool ClearBufferImage_SIDE(IntPtr sealingInspProcessor, int nBuff);
         public bool ClearBufferImage_SIDE(int nBuff) { return ClearBufferImage_SIDE(m_sealingInspectProcessor, nBuff); }
 

@@ -19,10 +19,10 @@ namespace SealingInspectGUI.ViewModels
     {
         [Description("Top Cam 1")]
         TopCam1,
-        [Description("Side Cam 1")]
-        SideCam1,
         [Description("Top Cam 2")]
         TopCam2,
+        [Description("Side Cam 1")]
+        SideCam1,
         [Description("Side Cam 2")]
         SideCam2
     }
@@ -65,18 +65,13 @@ namespace SealingInspectGUI.ViewModels
 
         private void SimulationThread_UpdateUI(int nBuff)
         {
-            _dispatcher.BeginInvoke(new Action(async () =>
-            {
-                if (CameraSelected == ECameraList.TopCam1 ||
-                    CameraSelected == ECameraList.TopCam2)
-                    _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(m_nBuffIdx, 0);
+            if (CameraSelected == ECameraList.TopCam1 ||
+                CameraSelected == ECameraList.TopCam2)
+                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(m_nBuffIdx, 0);
 
-                else if (CameraSelected == ECameraList.SideCam1 ||
-                        CameraSelected == ECameraList.SideCam2)
-                    _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(m_nBuffIdx, 0);
-
-                await _settingView.buffVSSettings.UpdateImage();
-            }));
+            else if (CameraSelected == ECameraList.SideCam1 ||
+                    CameraSelected == ECameraList.SideCam2)
+                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(m_nBuffIdx, 0);
         }
         #endregion
 
