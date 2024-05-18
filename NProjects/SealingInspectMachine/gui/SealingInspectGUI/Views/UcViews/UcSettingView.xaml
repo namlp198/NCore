@@ -116,14 +116,14 @@
                 <RowDefinition />
                 <RowDefinition Height="1" />
                 <RowDefinition Height="35" />
-                <RowDefinition Height="1"/>
+                <RowDefinition Height="1" />
                 <RowDefinition Height="150" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
                     Margin="2">
-                <Ctrls:BufferViewerSimple Name="buffVSSettings"/>
+                <Ctrls:BufferViewerSimple Name="buffVSSettings" />
 
             </Border>
 
@@ -137,19 +137,35 @@
                         Margin="2"
                         Orientation="Horizontal"
                         Background="{DynamicResource RGB_Night_46_61_90}">
-                <DockPanel>
-                    <TextBlock Text="Camera"
-                               VerticalAlignment="Center"
-                               Foreground="White"
-                               Margin="5 0 5 0"
-                               FontSize="14"
-                               FontWeight="Bold" />
-                    <ComboBox  Margin="3"
-                               x:Name="cbbCameraList"
-                               FontSize="14"
-                               FontWeight="Bold"
-                               Width="100" />
-                </DockPanel>
+
+                <TextBlock Text="Camera"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Margin="5 0 5 0"
+                           FontSize="14"
+                           FontWeight="Bold" />
+                <ComboBox  Margin="3"
+                           x:Name="cbbCameraList"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Width="100"
+                           ItemsSource="{Binding CameraList}"
+                           SelectedItem="{Binding StrCameraSelected, Mode=TwoWay}" />
+
+                <TextBlock Text="Frame"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Margin="5 0 5 0"
+                           FontSize="14"
+                           FontWeight="Bold" />
+                <ComboBox  Margin="3"
+                           x:Name="cbbFrameList"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           ItemsSource="{Binding FrameList}"
+                           SelectedItem="{Binding StrFrameSelected, Mode=TwoWay}"
+                           Width="50"/>
+
                 <Button Background="WhiteSmoke"
                         Name="btnContinuousGrab"
                         Opacity="1"
@@ -188,21 +204,7 @@
                     </Button.Content>
                 </Button>
 
-                <RadioButton Content="Color"
-                             FontSize="14"
-                             FontWeight="SemiBold"
-                             Foreground="White"
-                             VerticalContentAlignment="Center"
-                             Margin="10 5 5 5"
-                             IsChecked="{Binding UseColor, Mode=TwoWay}"/>
-                <RadioButton Content="Mono"
-                             FontSize="14"
-                             FontWeight="SemiBold"
-                             Foreground="White"
-                             VerticalContentAlignment="Center"
-                             Margin="10 5 5 5" />
-
-                <Button Margin="40 2 2 2"
+                <Button Margin="50 2 2 2"
                         Content="Inpsect"
                         Foreground="Black"
                         Background="LightGray"
@@ -236,7 +238,7 @@
             </Grid>
 
         </Grid>
-        
+
         <!--separator-->
         <Grid Grid.Column="1"
               Margin="0 2 0 2"

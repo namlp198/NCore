@@ -17,7 +17,7 @@ namespace SealingInspectGUI.Command.Cmd
         }
         public override void Execute(object parameter)
         {
-            InterfaceManager.Instance.m_simulationThread.LoadImage(0);
+            InterfaceManager.Instance.m_simulationThread.LoadImage(MainViewModel.Instance.SettingVM.BuffIdx);
         }
     }
 }
