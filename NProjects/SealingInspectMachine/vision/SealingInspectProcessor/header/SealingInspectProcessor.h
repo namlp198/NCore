@@ -30,13 +30,13 @@ public:
 	BOOL LoadRecipe();
 
 public:
-	virtual LPBYTE                    GetBufferImage_Color(int nBuff, UINT nY);
-	BOOL                              LoadImageBuffer_Color(int nBuff, CString strFilePath);
+	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, UINT nY);
+	BOOL                              LoadImageBuffer_SIDE(int nBuff, CString strFilePath);
+	virtual LPBYTE                    GetBufferImage_TOP(int nBuff, UINT nY);
+	BOOL                              LoadImageBuffer_TOP(int nBuff, CString strFilePath);
 
-	virtual LPBYTE                    GetBufferImage_Mono(int nBuff, UINT nY);
-	BOOL                              LoadImageBuffer_Mono(int nBuff, CString strFilePath);
-
-	BOOL                              ClearBufferImage(int nBuff);
+	BOOL                              ClearBufferImage_SIDE(int nBuff);
+	BOOL                              ClearBufferImage_TOP(int nBuff);
 
 public:
 	// CallBack
@@ -50,16 +50,14 @@ public:
 
 private:
 	void						      SystemMessage(CString strMessage);
-	BOOL                              CreateBuffer_Color();
-	BOOL                              CreateBuffer_Mono();
+	BOOL                              CreateBuffer_SIDE();
+	BOOL                              CreateBuffer_TOP();
 
 private:
 	// Image Buffer
-	CSharedMemoryBuffer*           m_pImageBufferColor_Top[MAX_IMAGE_BUFFER];
-	CSharedMemoryBuffer*           m_pImageBufferMono_Top[MAX_IMAGE_BUFFER];
+	CSharedMemoryBuffer*           m_pImageBuffer_Top[MAX_IMAGE_BUFFER_TOP];
 
-	CSharedMemoryBuffer*           m_pImageBufferColor_Side[MAX_IMAGE_BUFFER];
-	CSharedMemoryBuffer*           m_pImageBufferMono_Side[MAX_IMAGE_BUFFER];
+	CSharedMemoryBuffer*           m_pImageBuffer_Side[MAX_IMAGE_BUFFER_SIDE];
 
 	CallbackLogFunc*               m_pCallbackLogFunc;
 

@@ -3,9 +3,13 @@
 
 CSealingInspectProcessor::CSealingInspectProcessor()
 {
-	for (int i = 0; i < MAX_IMAGE_BUFFER; i++) {
-		if (m_pImageBufferColor_Side[i] != NULL)
-			delete m_pImageBufferColor_Side[i], m_pImageBufferColor_Side[i] = NULL;
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDE; i++) {
+		if (m_pImageBuffer_Side[i] != NULL)
+			delete m_pImageBuffer_Side[i], m_pImageBuffer_Side[i] = NULL;
+	}
+	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++) {
+		if (m_pImageBuffer_Top[i] != NULL)
+			delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
 	}
 }
 
@@ -32,14 +36,14 @@ BOOL CSealingInspectProcessor::Initialize()
 	SystemMessage(_T("*********** Start Vision Processor ***********"));
 
 	// Create Image Buffer Color..
-	if (CreateBuffer_Color() == FALSE)
+	if (CreateBuffer_SIDE() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
 		return FALSE;
 	}
 
 	// Create Image Buffer Mono..
-	if (CreateBuffer_Mono() == FALSE)
+	if (CreateBuffer_TOP() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
 		return FALSE;
@@ -50,8 +54,11 @@ BOOL CSealingInspectProcessor::Initialize()
 
 BOOL CSealingInspectProcessor::Destroy()
 {
-	for (int i = 0; i < MAX_IMAGE_BUFFER; i++) {
-		delete m_pImageBufferColor_Side[i], m_pImageBufferColor_Side[i] = NULL;
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDE; i++) {
+		delete m_pImageBuffer_Side[i], m_pImageBuffer_Side[i] = NULL;
+	}
+	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++) {
+		delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
 	}
 
 	return TRUE;
@@ -67,17 +74,25 @@ BOOL CSealingInspectProcessor::LoadRecipe()
 	return 0;
 }
 
-LPBYTE CSealingInspectProcessor::GetBufferImage_Color(int nBuff, UINT nY)
+#pragma region Offine Simulation
+LPBYTE CSealingInspectProcessor::GetBufferImage_SIDE(int nBuff, UINT nY)
 {
-	if (m_pImageBufferColor_Side[nBuff] == NULL)
+	if (m_pImageBuffer_Side[nBuff] == NULL)
 		return NULL;
 
-	return m_pImageBufferColor_Side[nBuff]->GetBufferImage(nY);
+	return m_pImageBuffer_Side[nBuff]->GetBufferImage(nY);
+}
+LPBYTE CSealingInspectProcessor::GetBufferImage_TOP(int nBuff, UINT nY)
+{
+	if (m_pImageBuffer_Top[nBuff] == NULL)
+		return NULL;
+
+	return m_pImageBuffer_Top[nBuff]->GetBufferImage(nY);
 }
 
-BOOL CSealingInspectProcessor::LoadImageBuffer_Color(int nBuff, CString strFilePath)
+BOOL CSealingInspectProcessor::LoadImageBuffer_SIDE(int nBuff, CString strFilePath)
 {
-	if (m_pImageBufferColor_Side[nBuff] == NULL)
+	if (m_pImageBuffer_Side[nBuff] == NULL)
 		return FALSE;
 
 	if (strFilePath.IsEmpty() == TRUE)
@@ -92,10 +107,10 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_Color(int nBuff, CString strFileP
 
 	CString strImagePath = strFilePath;
 
-	int nFrameWidth = m_pImageBufferColor_Side[nBuff]->GetFrameWidth();
-	int nFrameHeight = m_pImageBufferColor_Side[nBuff]->GetFrameHeight();
-	int nFrameCount = m_pImageBufferColor_Side[nBuff]->GetFrameCount();
-	int nFrameSize = m_pImageBufferColor_Side[nBuff]->GetFrameSize();
+	int nFrameWidth = m_pImageBuffer_Side[nBuff]->GetFrameWidth();
+	int nFrameHeight = m_pImageBuffer_Side[nBuff]->GetFrameHeight();
+	int nFrameCount = m_pImageBuffer_Side[nBuff]->GetFrameCount();
+	int nFrameSize = m_pImageBuffer_Side[nBuff]->GetFrameSize();
 
 	USES_CONVERSION;
 	char strTemp[1024] = {};
@@ -106,81 +121,26 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_Color(int nBuff, CString strFileP
 	if (pOpenImage.empty())
 		return FALSE;
 
-	m_pImageBufferColor_Side[nBuff]->SetFrameImage(0, pOpenImage.data);
+	/*if (pOpenImage.type() != CV_8UC1)
+		return FALSE;
+
+	LPBYTE pBuffer = m_pImageBuffer[nBuff]->GetSharedBuffer();
+
+	int nCopyHeight = (nFrameHeight * nFrameCount < pOpenImage.rows) ? nFrameHeight * nFrameCount : pOpenImage.rows;
+	int nCopyWidth = (nFrameWidth < pOpenImage.cols) ? nFrameWidth : pOpenImage.cols;
+
+	ZeroMemory(pBuffer, nFrameSize * nFrameCount);
+
+	for (int i = 0; i < nCopyHeight; i++)
+		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
+
+	m_pImageBuffer_Side[nBuff]->SetFrameImage(0, pOpenImage.data);
 
 	return TRUE;
 }
-
-BOOL CSealingInspectProcessor::CreateBuffer_Color()
+BOOL CSealingInspectProcessor::LoadImageBuffer_TOP(int nBuff, CString strFilePath)
 {
-	BOOL bRetValue = FALSE;
-
-	DWORD dwFrameWidth = (DWORD)FRAME_WIDTH_SIDE_CAM;
-	DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT_SIDE_CAM;
-	DWORD dwFrameCount = 0;
-	DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)CHANNEL_COLOR;
-
-	DWORD64 dwTotalFrameCount = 0;
-
-	for (int i = 0; i < MAX_IMAGE_BUFFER; i++)
-	{
-		if (m_pImageBufferColor_Side[i] != NULL)
-		{
-			m_pImageBufferColor_Side[i]->DeleteSharedMemory();
-			delete m_pImageBufferColor_Side[i];
-			m_pImageBufferColor_Side[i] = NULL;
-		}
-
-		m_pImageBufferColor_Side[i] = new CSharedMemoryBuffer;
-
-		dwFrameCount = (DWORD)FRAME_COUNT;
-
-		dwTotalFrameCount += dwFrameCount;
-
-		m_pImageBufferColor_Side[i]->SetFrameWidth(dwFrameWidth);
-		m_pImageBufferColor_Side[i]->SetFrameHeight(dwFrameHeight);
-		m_pImageBufferColor_Side[i]->SetFrameCount(dwFrameCount);
-		m_pImageBufferColor_Side[i]->SetFrameSize(dwFrameSize);
-
-		DWORD64 dw64Size = (DWORD64)dwFrameCount * dwFrameSize;
-
-		CString strMemory;
-		strMemory.Format(_T("%s_%d"), "BufferOffline_Color", i);
-
-		bRetValue = m_pImageBufferColor_Side[i]->CreateSharedMemory(strMemory, dw64Size);
-
-		if (bRetValue == FALSE)
-		{
-			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
-			SystemMessage(strLogMessage);
-			return FALSE;
-		}
-		else
-		{
-			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
-			SystemMessage(strLogMessage);
-		}
-	}
-
-	CString strLogMessage;
-	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize * dwTotalFrameCount)) / 1000000.0));
-	SystemMessage(strLogMessage);
-	return TRUE;
-}
-
-LPBYTE CSealingInspectProcessor::GetBufferImage_Mono(int nBuff, UINT nY)
-{
-	if (m_pImageBufferMono_Side[nBuff] == NULL)
-		return NULL;
-
-	return m_pImageBufferMono_Side[nBuff]->GetBufferImage(nY);
-}
-
-BOOL CSealingInspectProcessor::LoadImageBuffer_Mono(int nBuff, CString strFilePath)
-{
-	if (m_pImageBufferMono_Side[nBuff] == NULL)
+	if (m_pImageBuffer_Top[nBuff] == NULL)
 		return FALSE;
 
 	if (strFilePath.IsEmpty() == TRUE)
@@ -195,24 +155,24 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_Mono(int nBuff, CString strFilePa
 
 	CString strImagePath = strFilePath;
 
-	int nFrameWidth = m_pImageBufferMono_Side[nBuff]->GetFrameWidth();
-	int nFrameHeight = m_pImageBufferMono_Side[nBuff]->GetFrameHeight();
-	int nFrameCount = m_pImageBufferMono_Side[nBuff]->GetFrameCount();
-	int nFrameSize = m_pImageBufferMono_Side[nBuff]->GetFrameSize();
+	int nFrameWidth = m_pImageBuffer_Top[nBuff]->GetFrameWidth();
+	int nFrameHeight = m_pImageBuffer_Top[nBuff]->GetFrameHeight();
+	int nFrameCount = m_pImageBuffer_Top[nBuff]->GetFrameCount();
+	int nFrameSize = m_pImageBuffer_Top[nBuff]->GetFrameSize();
 
 	USES_CONVERSION;
 	char strTemp[1024] = {};
 	sprintf_s(strTemp, "%s", W2A(strImagePath));
 
-	cv::Mat pOpenImage = cv::imread(strTemp, cv::IMREAD_GRAYSCALE);
+	cv::Mat pOpenImage = cv::imread(strTemp, cv::IMREAD_COLOR);
 
 	if (pOpenImage.empty())
 		return FALSE;
 
-	if (pOpenImage.type() != CV_8UC1)
+	/*if (pOpenImage.type() != CV_8UC1)
 		return FALSE;
 
-	LPBYTE pBuffer = m_pImageBufferMono_Side[nBuff]->GetSharedBuffer();
+	LPBYTE pBuffer = m_pImageBuffer[nBuff]->GetSharedBuffer();
 
 	int nCopyHeight = (nFrameHeight * nFrameCount < pOpenImage.rows) ? nFrameHeight * nFrameCount : pOpenImage.rows;
 	int nCopyWidth = (nFrameWidth < pOpenImage.cols) ? nFrameWidth : pOpenImage.cols;
@@ -220,81 +180,151 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_Mono(int nBuff, CString strFilePa
 	ZeroMemory(pBuffer, nFrameSize * nFrameCount);
 
 	for (int i = 0; i < nCopyHeight; i++)
-		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);
+		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
+
+	m_pImageBuffer_Top[nBuff]->SetFrameImage(0, pOpenImage.data);
 
 	return TRUE;
 }
 
-BOOL CSealingInspectProcessor::CreateBuffer_Mono()
+BOOL CSealingInspectProcessor::CreateBuffer_SIDE()
 {
-	BOOL bRetValue = FALSE;
+	BOOL bRetValue_Side = FALSE;
 
-	DWORD dwFrameWidth = (DWORD)FRAME_WIDTH_SIDE_CAM;
-	DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT_SIDE_CAM;
-	DWORD dwFrameCount = 0;
-	DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)CHANNEL_MONO;
+	DWORD dwFrameWidth_Side = (DWORD)FRAME_WIDTH_SIDE_CAM;
+	DWORD dwFrameHeight_Side = (DWORD)FRAME_HEIGHT_SIDE_CAM;
+	DWORD dwFrameCount_Side = 0;
+	DWORD dwFrameSize_Side = dwFrameWidth_Side * dwFrameHeight_Side * (DWORD)CHANNEL;
 
 	DWORD64 dwTotalFrameCount = 0;
 
-	for (int i = 0; i < MAX_IMAGE_BUFFER; i++)
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDE; i++)
 	{
-		if (m_pImageBufferMono_Side[i] != NULL)
+		if (m_pImageBuffer_Side[i] != NULL)
 		{
-			m_pImageBufferMono_Side[i]->DeleteSharedMemory();
-			delete m_pImageBufferMono_Side[i];
-			m_pImageBufferMono_Side[i] = NULL;
+			m_pImageBuffer_Side[i]->DeleteSharedMemory();
+			delete m_pImageBuffer_Side[i];
+			m_pImageBuffer_Side[i] = NULL;
 		}
 
-		m_pImageBufferMono_Side[i] = new CSharedMemoryBuffer;
+		m_pImageBuffer_Side[i] = new CSharedMemoryBuffer;
 
-		dwFrameCount = (DWORD)FRAME_COUNT;
+		dwFrameCount_Side = (DWORD)FRAME_COUNT;
 
-		dwTotalFrameCount += dwFrameCount;
+		dwTotalFrameCount += dwFrameCount_Side;
 
-		m_pImageBufferMono_Side[i]->SetFrameWidth(dwFrameWidth);
-		m_pImageBufferMono_Side[i]->SetFrameHeight(dwFrameHeight);
-		m_pImageBufferMono_Side[i]->SetFrameCount(dwFrameCount);
-		m_pImageBufferMono_Side[i]->SetFrameSize(dwFrameSize);
+		m_pImageBuffer_Side[i]->SetFrameWidth(dwFrameWidth_Side);
+		m_pImageBuffer_Side[i]->SetFrameHeight(dwFrameHeight_Side);
+		m_pImageBuffer_Side[i]->SetFrameCount(dwFrameCount_Side);
+		m_pImageBuffer_Side[i]->SetFrameSize(dwFrameSize_Side);
 
-		DWORD64 dw64Size = (DWORD64)dwFrameCount * dwFrameSize;
+		DWORD64 dw64Size_Side = (DWORD64)dwFrameCount_Side * dwFrameSize_Side;
 
-		CString strMemory;
-		strMemory.Format(_T("%s_%d"), "BufferOffline_Mono", i);
+		CString strMemory_Side;
+		strMemory_Side.Format(_T("%s_%d"), "BufferOffline_Color_Side", i);
 
-		bRetValue = m_pImageBufferMono_Side[i]->CreateSharedMemory(strMemory, dw64Size);
+		bRetValue_Side = m_pImageBuffer_Side[i]->CreateSharedMemory(strMemory_Side, dw64Size_Side);
 
-		if (bRetValue == FALSE)
+		if (bRetValue_Side == FALSE)
 		{
 			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+			strLogMessage.Format(_T("Side [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Side, (int)dwFrameHeight_Side, (int)dwFrameCount_Side, (((double)(dwFrameSize_Side * dwFrameCount_Side)) / 1000000000.0));
 			SystemMessage(strLogMessage);
 			return FALSE;
 		}
 		else
 		{
 			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+			strLogMessage.Format(_T("Side [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Side, (int)dwFrameHeight_Side, (int)dwFrameCount_Side, (((double)(dwFrameSize_Side * dwFrameCount_Side)) / 1000000000.0));
 			SystemMessage(strLogMessage);
 		}
 	}
 
 	CString strLogMessage;
-	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize * dwTotalFrameCount)) / 1000000.0));
+	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize_Side * dwTotalFrameCount)) / 1000000.0));
+	SystemMessage(strLogMessage);
+	return TRUE;
+}
+BOOL CSealingInspectProcessor::CreateBuffer_TOP()
+{
+	BOOL bRetValue_Top = FALSE;
+
+	DWORD dwFrameWidth_Top = (DWORD)FRAME_WIDTH_TOP_CAM;
+	DWORD dwFrameHeight_Top = (DWORD)FRAME_HEIGHT_TOP_CAM;
+	DWORD dwFrameCount_Top = 0;
+	DWORD dwFrameSize_Top = dwFrameWidth_Top * dwFrameHeight_Top * (DWORD)CHANNEL;
+
+	DWORD64 dwTotalFrameCount = 0;
+
+	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++)
+	{
+		if (m_pImageBuffer_Top[i] != NULL)
+		{
+			m_pImageBuffer_Top[i]->DeleteSharedMemory();
+			delete m_pImageBuffer_Top[i];
+			m_pImageBuffer_Top[i] = NULL;
+		}
+
+		m_pImageBuffer_Top[i] = new CSharedMemoryBuffer;
+
+		dwFrameCount_Top = (DWORD)FRAME_COUNT;
+
+		dwTotalFrameCount += dwFrameCount_Top;
+
+		m_pImageBuffer_Top[i]->SetFrameWidth(dwFrameWidth_Top);
+		m_pImageBuffer_Top[i]->SetFrameHeight(dwFrameHeight_Top);
+		m_pImageBuffer_Top[i]->SetFrameCount(dwFrameCount_Top);
+		m_pImageBuffer_Top[i]->SetFrameSize(dwFrameSize_Top);
+
+		DWORD64 dw64Size_Top = (DWORD64)dwFrameCount_Top * dwFrameSize_Top;
+
+		CString strMemory_Top;
+		strMemory_Top.Format(_T("%s_%d"), "BufferOffline_Color_Top", i);
+
+		bRetValue_Top = m_pImageBuffer_Top[i]->CreateSharedMemory(strMemory_Top, dw64Size_Top);
+
+		if (bRetValue_Top == FALSE)
+		{
+			CString strLogMessage;
+			strLogMessage.Format(_T("Top [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Top, (int)dwFrameHeight_Top, (int)dwFrameCount_Top, (((double)(dwFrameSize_Top * dwFrameCount_Top)) / 1000000000.0));
+			SystemMessage(strLogMessage);
+			return FALSE;
+		}
+		else
+		{
+			CString strLogMessage;
+			strLogMessage.Format(_T("Top [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Top, (int)dwFrameHeight_Top, (int)dwFrameCount_Top, (((double)(dwFrameSize_Top * dwFrameCount_Top)) / 1000000000.0));
+			SystemMessage(strLogMessage);
+		}
+	}
+
+	CString strLogMessage;
+	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize_Top * dwTotalFrameCount)) / 1000000.0));
 	SystemMessage(strLogMessage);
 	return TRUE;
 }
 
-BOOL CSealingInspectProcessor::ClearBufferImage(int nBuff)
+BOOL CSealingInspectProcessor::ClearBufferImage_SIDE(int nBuff)
 {
-	if (m_pImageBufferColor_Side[nBuff] == NULL)
+	if (m_pImageBuffer_Side[nBuff] == NULL)
 		return FALSE;
 
 	BOOL nRet = FALSE;
-	nRet = m_pImageBufferColor_Side[nBuff]->ClearBufferImage();
-	nRet &= m_pImageBufferMono_Side[nBuff]->ClearBufferImage();
+	nRet = m_pImageBuffer_Side[nBuff]->ClearBufferImage();
 
 	return nRet;
 }
+BOOL CSealingInspectProcessor::ClearBufferImage_TOP(int nBuff)
+{
+	if (m_pImageBuffer_Top[nBuff] == NULL)
+		return FALSE;
+
+	BOOL nRet = FALSE;
+	nRet = m_pImageBuffer_Top[nBuff]->ClearBufferImage();
+
+	return nRet;
+}
+#pragma endregion
 
 void CSealingInspectProcessor::RegCallbackLogFunc(CallbackLogFunc* pFunc)
 {

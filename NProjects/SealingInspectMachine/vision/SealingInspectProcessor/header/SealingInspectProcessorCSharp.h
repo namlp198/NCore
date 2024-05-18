@@ -10,13 +10,17 @@ extern "C"
 
 	__declspec(dllexport) bool                      Initialize(CSealingInspectProcessor* pProcessor);
 
-	__declspec(dllexport) BYTE*                     GetBufferImage_Color(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
-
-	__declspec(dllexport) BYTE*                     GetBufferImage_Mono(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
+#pragma region Offline simulation
+	__declspec(dllexport) BYTE*                     GetBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
+								                    
+	__declspec(dllexport) BYTE*                     GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
 											        
-	__declspec(dllexport) bool                      LoadImageBuffer_Color(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath);
+	__declspec(dllexport) bool                      LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath);
 
-	__declspec(dllexport) bool                      LoadImageBuffer_Mono(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath);
+	__declspec(dllexport) bool                      LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath);
 											        
-	__declspec(dllexport) bool                      ClearBufferImage(CSealingInspectProcessor* pProcessor, int nBuff);
+	__declspec(dllexport) bool                      ClearBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff);
+
+	__declspec(dllexport) bool                      ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff);
+#pragma endregion
 };

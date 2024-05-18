@@ -25,52 +25,61 @@ bool Initialize(CSealingInspectProcessor* pProcessor)
 	else               return true;
 }
 
-BYTE* GetBufferImage_Color(CSealingInspectProcessor* pProcessor, int nBuff, int nY)
+#pragma region Offline simulation
+BYTE* GetBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nY)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetBufferImage_Color(nBuff, nY);
+	return pProcessor->GetBufferImage_SIDE(nBuff, nY);
 }
-
-BYTE* GetBufferImage_Mono(CSealingInspectProcessor* pProcessor, int nBuff, int nY)
+BYTE* GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nY)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetBufferImage_Mono(nBuff, nY);
+	return pProcessor->GetBufferImage_TOP(nBuff, nY);
 }
 
-bool LoadImageBuffer_Color(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath)
+bool LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath)
 {
 	if (pProcessor == NULL)
 		return false;
 
 	CString strPath = (CString)pFilePath;
-	BOOL bRetValue = pProcessor->LoadImageBuffer_Color(nBuff, strPath);
+	BOOL bRetValue = pProcessor->LoadImageBuffer_SIDE(nBuff, strPath);
 
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }
-
-bool LoadImageBuffer_Mono(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath)
+bool LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath)
 {
 	if (pProcessor == NULL)
 		return false;
 
 	CString strPath = (CString)pFilePath;
-	BOOL bRetValue = pProcessor->LoadImageBuffer_Mono(nBuff, strPath);
+	BOOL bRetValue = pProcessor->LoadImageBuffer_TOP(nBuff, strPath);
 
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }
 
-bool ClearBufferImage(CSealingInspectProcessor* pProcessor, int nBuff)
+bool ClearBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRetValue = pProcessor->ClearBufferImage(nBuff);
+	BOOL bRetValue = pProcessor->ClearBufferImage_SIDE(nBuff);
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }
+bool ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRetValue = pProcessor->ClearBufferImage_TOP(nBuff);
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+#pragma endregion
