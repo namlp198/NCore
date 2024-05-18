@@ -64,6 +64,19 @@ bool LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, char* 
 	else                    return true;
 }
 
+bool LoadAllImageBuffer(CSealingInspectProcessor* pProcessor, char* strDirPath, char* strImageType)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CString strDir = (CString)strDirPath;
+	CString strImgType = (CString)strImageType;
+	BOOL bRetValue = pProcessor->LoadAllImageBuffer(strDir, strImgType);
+
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
 bool ClearBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff)
 {
 	if (pProcessor == NULL)

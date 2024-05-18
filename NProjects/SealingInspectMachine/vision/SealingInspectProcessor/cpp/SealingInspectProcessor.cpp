@@ -187,6 +187,48 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_TOP(int nBuff, CString strFilePat
 	return TRUE;
 }
 
+BOOL CSealingInspectProcessor::LoadAllImageBuffer(CString strDirPath, CString strImageType)
+{
+	if (strDirPath.IsEmpty() == TRUE)
+		return FALSE;
+
+	for (int nSideIdx = 0; nSideIdx < MAX_IMAGE_BUFFER_SIDE; nSideIdx++) {
+
+		CString strExt = strImageType;
+		strExt.MakeUpper();
+
+		if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
+			continue;
+
+		CString strImagePath;
+
+		if (nSideIdx < MAX_IMAGE_BUFFER_SIDE / 2)
+			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("SideCam1"), _T("Frame"), nSideIdx + 1, strImageType);
+		else
+			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("SideCam2"), _T("Frame"), (nSideIdx - MAX_IMAGE_BUFFER_SIDE/2) + 1, strImageType);
+
+		LoadImageBuffer_SIDE(nSideIdx, strImagePath);
+	}
+
+	for (int  nTopIdx = 0; nTopIdx < MAX_IMAGE_BUFFER_TOP; nTopIdx++)
+	{
+		CString strExt = strImageType;
+		strExt.MakeUpper();
+
+		if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
+			continue;
+
+		CString strImagePath;
+
+		if (nTopIdx < MAX_IMAGE_BUFFER_TOP / 2)
+			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("TopCam1"), _T("Frame"), nTopIdx + 1, strImageType);
+		else
+			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("TopCam2"), _T("Frame"), (nTopIdx - MAX_IMAGE_BUFFER_TOP / 2) + 1, strImageType);
+
+		LoadImageBuffer_TOP(nTopIdx, strImagePath);
+	}
+}
+
 BOOL CSealingInspectProcessor::CreateBuffer_SIDE()
 {
 	BOOL bRetValue_Side = FALSE;

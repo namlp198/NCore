@@ -35,6 +35,8 @@ public:
 	virtual LPBYTE                    GetBufferImage_TOP(int nBuff, UINT nY);
 	BOOL                              LoadImageBuffer_TOP(int nBuff, CString strFilePath);
 
+	BOOL                              LoadAllImageBuffer(CString strDirPath, CString strImageType);
+
 	BOOL                              ClearBufferImage_SIDE(int nBuff);
 	BOOL                              ClearBufferImage_TOP(int nBuff);
 
