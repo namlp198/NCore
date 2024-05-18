@@ -90,7 +90,10 @@ namespace NCore.Wpf.BufferViewerSimple
             {
                 if (SetProperty(ref _bufferView, value))
                 {
-
+                    this.Dispatcher.BeginInvoke(new Action(async() =>
+                    {
+                        await UpdateImage();
+                    }));
                 }
             }
         }
@@ -496,6 +499,11 @@ namespace NCore.Wpf.BufferViewerSimple
         private void btnShowDetail_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(ShowDetailEvent, this));
+        }
+
+        private void btnFit_Click(object sender, RoutedEventArgs e)
+        {
+            zoomBorder.Reset();
         }
     }
 }

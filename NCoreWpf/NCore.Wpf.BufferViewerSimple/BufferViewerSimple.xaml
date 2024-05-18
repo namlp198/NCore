@@ -90,6 +90,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0"
                    x:Name="lbInspectResult"
@@ -103,6 +104,17 @@
                    FontWeight="Bold"
                    Opacity="0.9"/>
             <Button Grid.Column="1"
+                    Name="btnFit"
+                    Click="btnFit_Click"
+                    Margin="2">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{DynamicResource IMG_ToolbarZoomToFitO}"
+                               Margin="2" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Grid.Column="2"
                     Name="btnShowDetail"
                     Click="btnShowDetail_Click"
                     Margin="2">
@@ -140,9 +152,11 @@
                        Text="{Binding CameraName}"
                        Foreground="Orange"
                        FontFamily="Segoe UI"
-                       FontSize="12"
+                       FontSize="14"
+                       FontWeight="Bold"
                        TextAlignment="Left"
-                       Margin="3" />
+                       Margin="5 20 5 5"
+                       Width="200"/>
         </Grid>
     </Grid>
 </UserControl>
