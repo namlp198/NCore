@@ -141,7 +141,7 @@
             <Ctrls:ZoomBorder ClipToBounds="True"
                               CornerRadius="3"
                               BorderThickness="1"
-                              Margin="2"
+                              Margin="0"
                               Name="zoomBorder"
                               Visibility="{Binding CameraIndex, Converter={StaticResource HasCameraToVisibilityConverter}, ConverterParameter=imageViewer}">
                 
