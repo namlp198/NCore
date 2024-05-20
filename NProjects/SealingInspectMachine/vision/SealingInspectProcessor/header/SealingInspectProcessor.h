@@ -6,8 +6,9 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
-#include "SealingInspectCore_TopCam.h"
-#include "SealingInspectCore_SideCam.h"
+
+#include "SealingInspectHikCam.h"
+#include "SealingInspectCore.h"
 #include "SealingInspectDefine.h"
 #include "SealingInspectRecipe.h"
 #include "SealingInspectResult.h"
@@ -15,9 +16,15 @@
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
 
-typedef void _stdcall CallbackLogFunc(char* strLogMsg);
+#define TEST_NO_CAMERA
+#undef TEST_NO_CAMERA
 
-class AFX_EXT_CLASS CSealingInspectProcessor 
+typedef void _stdcall CallbackLogFunc(char* strLogMsg);
+typedef void _stdcall CallbackAlarm(emInspectCavity nSetInsp, char* strAlarmMessage);
+typedef void _stdcall CallbackInspectComplete();
+
+class AFX_EXT_CLASS CSealingInspectProcessor : public ISealingInspectHikCamToParent,
+											   public ISealingInspectCoreToParent
 {
 public:
 	CSealingInspectProcessor();
@@ -42,13 +49,23 @@ public:
 
 public:
 	// CallBack
-	void RegCallbackLogFunc(CallbackLogFunc* pFunc);
+	void                              RegCallbackLogFunc(CallbackLogFunc* pFunc);
+	void                              RegCallbackAlarm(CallbackAlarm* pFunc);
+	void                              RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc);
+
+public:
+	// getter
+	CSealingInspectHikCam*            GetHikCamControl() { return m_pSealingInspHikCam; }
+
+public:
+	virtual void							InspectComplete(emInspectCavity nSetInsp);
+	virtual CSealingInspectRecipe*          GetRecipe(int nIdx) { return m_pSealingInspRecipe; }
+	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
 
 public:
 	void						      LogMessage(char* strMessage);
 	void						      LogMessage(CString strMessage);
 	void						      ShowLogView(BOOL bShow);
-
 
 private:
 	void						      SystemMessage(CString strMessage);
@@ -56,13 +73,31 @@ private:
 	BOOL                              CreateBuffer_TOP();
 
 private:
+
 	// Image Buffer
-	CSharedMemoryBuffer*           m_pImageBuffer_Top[MAX_IMAGE_BUFFER_TOP];
+	CSharedMemoryBuffer*              m_pImageBuffer_Top[MAX_IMAGE_BUFFER_TOP];
+								      
+	CSharedMemoryBuffer*              m_pImageBuffer_Side[MAX_IMAGE_BUFFER_SIDE];
+								      
+	CallbackLogFunc*                  m_pCallbackLogFunc;
+	CallbackAlarm*                    m_pCallbackAlarm;
+	CallbackInspectComplete*          m_pCallbackInsCompleteFunc;
+								      
+	// UI						      
+	CLogView*                         m_pLogView;
+								      
+	// Hik cam					      
+	CSealingInspectHikCam*            m_pSealingInspHikCam;
+								      
+	// Inspect Core				      
+	CSealingInspectCore*              m_pSealingInspCore[NUMBER_OF_SET_INSPECT];
+								      
+	// System Setting			      
+	CSealingInspectSystemSetting*     m_pSealingInspSystemSetting;
 
-	CSharedMemoryBuffer*           m_pImageBuffer_Side[MAX_IMAGE_BUFFER_SIDE];
+	// Recipe
+	CSealingInspectRecipe*            m_pSealingInspRecipe;
 
-	CallbackLogFunc*               m_pCallbackLogFunc;
-
-	// UI
-	CLogView*                      m_pLogView;
+	// Result
+	CSealingInspectResult*            m_pSealingInspResult;
 };

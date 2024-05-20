@@ -15,6 +15,7 @@ CSealingInspectProcessor::CSealingInspectProcessor()
 
 CSealingInspectProcessor::~CSealingInspectProcessor()
 {
+	Destroy();
 }
 
 BOOL CSealingInspectProcessor::Initialize()
@@ -35,18 +36,48 @@ BOOL CSealingInspectProcessor::Initialize()
 
 	SystemMessage(_T("*********** Start Vision Processor ***********"));
 
-	// Create Image Buffer Color..
+	// 1. Create Image Buffer Color..
 	if (CreateBuffer_SIDE() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
 		return FALSE;
 	}
 
-	// Create Image Buffer Mono..
+	// 2. Create Image Buffer Mono..
 	if (CreateBuffer_TOP() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
 		return FALSE;
+	}
+
+	// 3. Load System Setting
+	if (m_pSealingInspSystemSetting != NULL)
+		delete m_pSealingInspSystemSetting, m_pSealingInspSystemSetting = NULL;
+	m_pSealingInspSystemSetting = new CSealingInspectSystemSetting;
+
+	// 4. Load Recipe
+	if (m_pSealingInspRecipe != NULL)
+		delete m_pSealingInspRecipe, m_pSealingInspRecipe = NULL;
+	m_pSealingInspRecipe = new CSealingInspectRecipe;
+
+	// 5. Inspect Result Data
+	if (m_pSealingInspResult != NULL)
+		delete m_pSealingInspResult, m_pSealingInspResult = NULL;
+	m_pSealingInspResult = new CSealingInspectResult;
+
+	// 6. Hik Cam
+	if (m_pSealingInspHikCam != NULL)
+		delete m_pSealingInspHikCam, m_pSealingInspHikCam = NULL;
+	m_pSealingInspHikCam = new CSealingInspectHikCam(this);
+#ifndef TEST_NO_CAMERA
+	m_pSealingInspHikCam->Initialize();
+#endif
+
+	// 7. Inspect Core
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pSealingInspCore[i] != NULL)
+			delete m_pSealingInspCore[i], m_pSealingInspCore[i] = NULL;
+		m_pSealingInspCore[i] = new CSealingInspectCore(this);
 	}
 
 	return TRUE;
@@ -60,6 +91,23 @@ BOOL CSealingInspectProcessor::Destroy()
 	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++) {
 		delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
 	}
+
+	if (m_pSealingInspHikCam != NULL)
+		delete m_pSealingInspHikCam, m_pSealingInspHikCam = NULL;
+
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pSealingInspCore[i] != NULL)
+			delete m_pSealingInspCore[i], m_pSealingInspCore[i] = NULL;
+	}
+
+	if (m_pSealingInspSystemSetting != NULL)
+		delete m_pSealingInspSystemSetting, m_pSealingInspSystemSetting = NULL;
+
+	if (m_pSealingInspRecipe != NULL)
+		delete m_pSealingInspRecipe, m_pSealingInspRecipe = NULL;
+
+	if (m_pSealingInspResult != NULL)
+		delete m_pSealingInspResult, m_pSealingInspResult = NULL;
 
 	return TRUE;
 }
@@ -233,10 +281,10 @@ BOOL CSealingInspectProcessor::CreateBuffer_SIDE()
 {
 	BOOL bRetValue_Side = FALSE;
 
-	DWORD dwFrameWidth_Side = (DWORD)FRAME_WIDTH_SIDE_CAM;
-	DWORD dwFrameHeight_Side = (DWORD)FRAME_HEIGHT_SIDE_CAM;
+	DWORD dwFrameWidth_Side = (DWORD)FRAME_WIDTH_SIDECAM;
+	DWORD dwFrameHeight_Side = (DWORD)FRAME_HEIGHT_SIDECAM;
 	DWORD dwFrameCount_Side = 0;
-	DWORD dwFrameSize_Side = dwFrameWidth_Side * dwFrameHeight_Side * (DWORD)CHANNEL;
+	DWORD dwFrameSize_Side = dwFrameWidth_Side * dwFrameHeight_Side * (DWORD)NUMBER_OF_CHANNEL;
 
 	DWORD64 dwTotalFrameCount = 0;
 
@@ -291,10 +339,10 @@ BOOL CSealingInspectProcessor::CreateBuffer_TOP()
 {
 	BOOL bRetValue_Top = FALSE;
 
-	DWORD dwFrameWidth_Top = (DWORD)FRAME_WIDTH_TOP_CAM;
-	DWORD dwFrameHeight_Top = (DWORD)FRAME_HEIGHT_TOP_CAM;
+	DWORD dwFrameWidth_Top = (DWORD)FRAME_WIDTH_TOPCAM;
+	DWORD dwFrameHeight_Top = (DWORD)FRAME_HEIGHT_TOPCAM;
 	DWORD dwFrameCount_Top = 0;
-	DWORD dwFrameSize_Top = dwFrameWidth_Top * dwFrameHeight_Top * (DWORD)CHANNEL;
+	DWORD dwFrameSize_Top = dwFrameWidth_Top * dwFrameHeight_Top * (DWORD)NUMBER_OF_CHANNEL;
 
 	DWORD64 dwTotalFrameCount = 0;
 
@@ -371,6 +419,24 @@ BOOL CSealingInspectProcessor::ClearBufferImage_TOP(int nBuff)
 void CSealingInspectProcessor::RegCallbackLogFunc(CallbackLogFunc* pFunc)
 {
 	m_pCallbackLogFunc = pFunc;
+}
+
+void CSealingInspectProcessor::RegCallbackAlarm(CallbackAlarm* pFunc)
+{
+	m_pCallbackAlarm = pFunc;
+}
+
+void CSealingInspectProcessor::RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc)
+{
+	m_pCallbackInsCompleteFunc = pFunc;
+}
+
+void CSealingInspectProcessor::InspectComplete(emInspectCavity nSetInsp)
+{
+	if (m_pCallbackInsCompleteFunc == NULL)
+		return;
+
+	m_pCallbackInsCompleteFunc();
 }
 
 void CSealingInspectProcessor::LogMessage(char* strMessage)

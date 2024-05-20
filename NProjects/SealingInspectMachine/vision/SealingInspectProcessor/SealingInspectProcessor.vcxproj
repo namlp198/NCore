@@ -148,8 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="header\SealingInspectCore_SideCam.h" />
-    <ClInclude Include="header\SealingInspectCore_TopCam.h" />
+    <ClInclude Include="header\SealingInspectCore.h" />
+    <ClInclude Include="header\SealingInspectHikCam.h" />
     <ClInclude Include="header\SealingInspectDefine.h" />
     <ClInclude Include="header\SealingInspectProcessor.h" />
     <ClInclude Include="header\SealingInspectProcessorCSharp.h" />
@@ -210,8 +210,8 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\SealingInspectCore_SideCam.cpp" />
-    <ClCompile Include="cpp\SealingInspectCore_TopCam.cpp" />
+    <ClCompile Include="cpp\SealingInspectCore.cpp" />
+    <ClCompile Include="cpp\SealingInspectHikCam.cpp" />
     <ClCompile Include="cpp\SealingInspectProcessor.cpp" />
     <ClCompile Include="cpp\SealingInspectProcessorCSharp.cpp" />
     <ClCompile Include="cpp\SealingInspectRecipe.cpp" />

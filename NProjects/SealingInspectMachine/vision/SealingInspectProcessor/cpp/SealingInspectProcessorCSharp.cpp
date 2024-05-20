@@ -95,4 +95,103 @@ bool ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff)
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }
+
+bool ContinuousGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return false;
+
+	int retVal = pHikCam->StartGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool SingleGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return false;
+
+	int retVal = pHikCam->SingleGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool StopGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return false;
+
+	int retVal = pHikCam->StopGrab(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+BYTE* GetBufferImageHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return NULL;
+
+	return pHikCam->GetBufferImage(nCamIdx);
+}
+
+bool SetTriggerModeHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, int nMode)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return false;
+
+	int retVal = pHikCam->SetTriggerMode(nCamIdx, nMode);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
+bool SetTriggerSourceHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, int nSource)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	if (pHikCam == NULL)
+		return false;
+
+	int retVal = pHikCam->SetTriggerSource(nCamIdx, nSource);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
 #pragma endregion
+
+void RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackLogFunc(pFunc);
+}
+
+void RegCallBackInspectCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectComplete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackInscompleteFunc(pFunc);
+}

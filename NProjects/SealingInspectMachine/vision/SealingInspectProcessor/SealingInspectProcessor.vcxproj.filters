@@ -258,10 +258,10 @@
     <ClInclude Include="header\SealingInspectDefine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\SealingInspectCore_TopCam.h">
+    <ClInclude Include="header\SealingInspectHikCam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\SealingInspectCore_SideCam.h">
+    <ClInclude Include="header\SealingInspectCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -422,10 +422,10 @@
     <ClCompile Include="cpp\SealingInspectResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\SealingInspectCore_TopCam.cpp">
+    <ClCompile Include="cpp\SealingInspectHikCam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\SealingInspectCore_SideCam.cpp">
+    <ClCompile Include="cpp\SealingInspectCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
