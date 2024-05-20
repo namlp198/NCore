@@ -2,6 +2,7 @@
 using SealingInspectGUI.Command.Cmd;
 using SealingInspectGUI.Commons;
 using SealingInspectGUI.Manager;
+using SealingInspectGUI.Manager.Class;
 using SealingInspectGUI.Views.UcViews;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,8 @@ namespace SealingInspectGUI.ViewModels
         private ECameraList m_cameraSelected = new ECameraList();
         private int m_nBuffIdx = 0;
 
+        public CameraStreamingController m_cameraStreamingController = null;
+
         #endregion
 
         #region Constructor
@@ -60,7 +63,15 @@ namespace SealingInspectGUI.ViewModels
             _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_HEIGHT_SIDE_CAM, Defines.FRAME_HEIGHT_SIDE_CAM);
 
             this.LoadImageCmd = new LoadImageCmd();
+            this.ContinuousGrabCmd = new ContinuousGrabCmd();
+            this.SingleGrabCmd = new SingleGrabCmd();
+
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
+
+            m_cameraStreamingController = new CameraStreamingController(_settingView.buffVSSettings.FrameWidth,
+                                                                        _settingView.buffVSSettings.FrameHeight,
+                                                                        _settingView.buffVSSettings,
+                                                                        _settingView.buffVSSettings.ModeView);
         }
 
         private void SimulationThread_UpdateUI(int nBuff)
@@ -108,9 +119,12 @@ namespace SealingInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_strCameraSelected, value))
                 {
+                    m_cameraStreamingController.StopSingleGrab(CameraType.Hik);
+
                     if (string.Compare("Top Cam 1", m_strCameraSelected) == 0)
                     {
                         CameraSelected = ECameraList.TopCam1;
+                        _settingView.buffVSSettings.CameraIndex = 0; // 0: Index of Top Cam 1
                         _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOP_CAM, Defines.FRAME_HEIGHT_TOP_CAM);
 
                         List<string> list = new List<string>();
@@ -120,6 +134,7 @@ namespace SealingInspectGUI.ViewModels
                     else if (string.Compare("Side Cam 1", m_strCameraSelected) == 0)
                     {
                         CameraSelected = ECameraList.SideCam1;
+                        _settingView.buffVSSettings.CameraIndex = 2; // 2: Index of Side Cam 1
                         _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_SIDE_CAM, Defines.FRAME_HEIGHT_SIDE_CAM);
 
                         List<string> list = new List<string>();
@@ -129,6 +144,7 @@ namespace SealingInspectGUI.ViewModels
                     else if (string.Compare("Top Cam 2", m_strCameraSelected) == 0)
                     {
                         CameraSelected = ECameraList.TopCam2;
+                        _settingView.buffVSSettings.CameraIndex = 1; // 1: Index of Top Cam 2
                         _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOP_CAM, Defines.FRAME_HEIGHT_TOP_CAM);
 
                         List<string> list = new List<string>();
@@ -138,6 +154,7 @@ namespace SealingInspectGUI.ViewModels
                     else if (string.Compare("Side Cam 2", m_strCameraSelected) == 0)
                     {
                         CameraSelected = ECameraList.SideCam2;
+                        _settingView.buffVSSettings.CameraIndex = 3; // 3: Index of Side Cam 1
                         _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_SIDE_CAM, Defines.FRAME_HEIGHT_SIDE_CAM);
 
                         List<string> list = new List<string>();
@@ -213,10 +230,12 @@ namespace SealingInspectGUI.ViewModels
                     if (_bStreamming)
                     {
                         DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/btn_stop_all_50.png";
+                        _settingView.cbbCameraList.IsEnabled = false;
                     }
                     else
                     {
                         DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
+                        _settingView.cbbCameraList.IsEnabled = true;
                     }
                 }
             }
@@ -259,6 +278,8 @@ namespace SealingInspectGUI.ViewModels
 
         #region Command
         public ICommand LoadImageCmd { get; }
+        public ICommand ContinuousGrabCmd { get; }
+        public ICommand SingleGrabCmd { get; }
         #endregion
     }
 }

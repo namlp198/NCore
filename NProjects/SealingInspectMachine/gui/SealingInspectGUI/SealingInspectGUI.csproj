@@ -62,7 +62,8 @@
     <Reference Include="Npc.Foundation">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Npc.Foundation.dll</HintPath>
     </Reference>
-    <Reference Include="NpcCore.Wpf">
+    <Reference Include="NpcCore.Wpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NpcCore.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Prism">
@@ -94,6 +95,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\SingleGrabCmd.cs" />
+    <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
+    <Compile Include="Manager\Class\CameraStreamingController.cs" />
     <Compile Include="Command\Cmd\LoadAllImageCmd.cs" />
     <Compile Include="Command\Cmd\LoadImageCmd.cs" />
     <Compile Include="Command\Cmd\SelectSettingViewCmd.cs" />

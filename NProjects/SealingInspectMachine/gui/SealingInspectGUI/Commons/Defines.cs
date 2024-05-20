@@ -8,6 +8,20 @@ using System.Threading.Tasks;
 
 namespace SealingInspectGUI.Commons
 {
+    public enum emInspectCavity
+    {
+        emUNKNOWN = 0, emInspectCavity_Cavity1, emInspectCavity_Cavity2
+    }
+    public enum eTriggerMode
+    {
+        TriggerMode_Internal = 0,
+        TriggerMode_External
+    }
+    public enum eTriggerSource
+    {
+        TriggerSource_Software = 0,
+        TriggerSource_Hardware
+    }
     public class Defines
     {
         public static string StartupProgPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
