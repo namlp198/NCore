@@ -3,11 +3,11 @@
 
 CSealingInspectProcessor::CSealingInspectProcessor()
 {
-	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDE; i++) {
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
 		if (m_pImageBuffer_Side[i] != NULL)
 			delete m_pImageBuffer_Side[i], m_pImageBuffer_Side[i] = NULL;
 	}
-	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++) {
+	for (int i = 0; i < MAX_IMAGE_BUFFER_TOPCAM; i++) {
 		if (m_pImageBuffer_Top[i] != NULL)
 			delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
 	}
@@ -85,10 +85,10 @@ BOOL CSealingInspectProcessor::Initialize()
 
 BOOL CSealingInspectProcessor::Destroy()
 {
-	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDE; i++) {
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
 		delete m_pImageBuffer_Side[i], m_pImageBuffer_Side[i] = NULL;
 	}
-	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++) {
+	for (int i = 0; i < MAX_IMAGE_BUFFER_TOPCAM; i++) {
 		delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
 	}
 
@@ -122,23 +122,76 @@ BOOL CSealingInspectProcessor::LoadRecipe()
 	return 0;
 }
 
+BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator)
+{
+	// NUMBER_OF_SET_INSPECT = 2
+	int nCoreIdx = 0;
+	int nTopCamIdx = 0;
+	int nSideCamIdx = 0;
+	emInspectCavity nInspCav = emUNKNOWN;
+
+	switch (nInspCavity)
+	{
+	case emInspectCavity_Cavity1:
+
+		nTopCamIdx = 0;
+		nSideCamIdx = 2;
+		nCoreIdx = 0;
+		nInspCav = emInspectCavity_Cavity1;
+		break;
+	case emInspectCavity_Cavity2:
+		nTopCamIdx = 1;
+		nSideCamIdx = 3;
+		nCoreIdx = 1;
+		nInspCav = emInspectCavity_Cavity2;
+		break;
+	}
+
+	// start grabbing top cam 1 and side cam 1
+	m_pSealingInspHikCam->StartGrab(nTopCamIdx);
+	m_pSealingInspHikCam->StartGrab(nSideCamIdx);
+
+	// create thread inspect cavity 1
+	m_pSealingInspCore[nCoreIdx]->SetSimulatorMode(isSimulator);
+	m_pSealingInspCore[nCoreIdx]->CreateInspectThread(nThreadCount, nInspCav);
+
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::InspectStop(emInspectCavity nInspCavity)
+{
+	int nCoreIdx = 0;
+
+	if (nInspCavity == emInspectCavity_Cavity1)
+		nCoreIdx = 0;
+	else if (nInspCavity == emInspectCavity_Cavity2)
+		nCoreIdx = 1;
+	else {
+		nCoreIdx = -1;
+		return FALSE;
+	}
+
+	m_pSealingInspCore[nCoreIdx]->DeleteInspectThread();
+	return TRUE;
+}
+
 #pragma region Offine Simulation
-LPBYTE CSealingInspectProcessor::GetBufferImage_SIDE(int nBuff, UINT nY)
+LPBYTE CSealingInspectProcessor::GetBufferImage_SIDE(int nBuff, int nFrame)
 {
 	if (m_pImageBuffer_Side[nBuff] == NULL)
 		return NULL;
 
-	return m_pImageBuffer_Side[nBuff]->GetBufferImage(nY);
+	return m_pImageBuffer_Side[nBuff]->GetFrameImage(nFrame);
 }
-LPBYTE CSealingInspectProcessor::GetBufferImage_TOP(int nBuff, UINT nY)
+LPBYTE CSealingInspectProcessor::GetBufferImage_TOP(int nBuff, int nFrame)
 {
 	if (m_pImageBuffer_Top[nBuff] == NULL)
 		return NULL;
 
-	return m_pImageBuffer_Top[nBuff]->GetBufferImage(nY);
+	return m_pImageBuffer_Top[nBuff]->GetFrameImage(nFrame);
 }
 
-BOOL CSealingInspectProcessor::LoadImageBuffer_SIDE(int nBuff, CString strFilePath)
+BOOL CSealingInspectProcessor::LoadImageBuffer_SIDE(int nBuff, int nFrame, CString strFilePath)
 {
 	if (m_pImageBuffer_Side[nBuff] == NULL)
 		return FALSE;
@@ -182,11 +235,11 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_SIDE(int nBuff, CString strFilePa
 	for (int i = 0; i < nCopyHeight; i++)
 		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
 
-	m_pImageBuffer_Side[nBuff]->SetFrameImage(0, pOpenImage.data);
+	m_pImageBuffer_Side[nBuff]->SetFrameImage(nFrame, pOpenImage.data);
 
 	return TRUE;
 }
-BOOL CSealingInspectProcessor::LoadImageBuffer_TOP(int nBuff, CString strFilePath)
+BOOL CSealingInspectProcessor::LoadImageBuffer_TOP(int nBuff, int nFrame, CString strFilePath)
 {
 	if (m_pImageBuffer_Top[nBuff] == NULL)
 		return FALSE;
@@ -230,7 +283,7 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_TOP(int nBuff, CString strFilePat
 	for (int i = 0; i < nCopyHeight; i++)
 		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
 
-	m_pImageBuffer_Top[nBuff]->SetFrameImage(0, pOpenImage.data);
+	m_pImageBuffer_Top[nBuff]->SetFrameImage(nFrame, pOpenImage.data);
 
 	return TRUE;
 }
@@ -240,40 +293,40 @@ BOOL CSealingInspectProcessor::LoadAllImageBuffer(CString strDirPath, CString st
 	if (strDirPath.IsEmpty() == TRUE)
 		return FALSE;
 
-	for (int nSideIdx = 0; nSideIdx < MAX_IMAGE_BUFFER_SIDE; nSideIdx++) {
+	for (int nSideIdx = 0; nSideIdx < MAX_SIDECAM_COUNT; nSideIdx++) {
 
-		CString strExt = strImageType;
-		strExt.MakeUpper();
+		for (int nFrame = 0; nFrame < MAX_IMAGE_BUFFER_SIDECAM; nFrame++)
+		{
+			CString strExt = strImageType;
+			strExt.MakeUpper();
 
-		if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
-			continue;
+			if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
+				continue;
 
-		CString strImagePath;
+			CString strImagePath;
 
-		if (nSideIdx < MAX_IMAGE_BUFFER_SIDE / 2)
-			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("SideCam1"), _T("Frame"), nSideIdx + 1, strImageType);
-		else
-			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("SideCam2"), _T("Frame"), (nSideIdx - MAX_IMAGE_BUFFER_SIDE/2) + 1, strImageType);
+			strImagePath.Format(_T("%s\\%s%d_%s%d.%s"), strDirPath, _T("SideCam"),(nSideIdx + 1), _T("Frame"), (nFrame + 1), strImageType);
 
-		LoadImageBuffer_SIDE(nSideIdx, strImagePath);
+			LoadImageBuffer_SIDE(nSideIdx, nFrame, strImagePath);
+		}
 	}
 
-	for (int  nTopIdx = 0; nTopIdx < MAX_IMAGE_BUFFER_TOP; nTopIdx++)
-	{
-		CString strExt = strImageType;
-		strExt.MakeUpper();
+	for (int nTopIdx = 0; nTopIdx < MAX_TOPCAM_COUNT; nTopIdx++) {
 
-		if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
-			continue;
+		for (int nFrame = 0; nFrame < MAX_IMAGE_BUFFER_TOPCAM; nFrame++)
+		{
+			CString strExt = strImageType;
+			strExt.MakeUpper();
 
-		CString strImagePath;
+			if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")))
+				continue;
 
-		if (nTopIdx < MAX_IMAGE_BUFFER_TOP / 2)
-			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("TopCam1"), _T("Frame"), nTopIdx + 1, strImageType);
-		else
-			strImagePath.Format(_T("%s\\%s_%s%d.%s"), strDirPath, _T("TopCam2"), _T("Frame"), (nTopIdx - MAX_IMAGE_BUFFER_TOP / 2) + 1, strImageType);
+			CString strImagePath;
 
-		LoadImageBuffer_TOP(nTopIdx, strImagePath);
+			strImagePath.Format(_T("%s\\%s%d_%s%d.%s"), strDirPath, _T("TopCam"), (nTopIdx + 1), _T("Frame"), (nFrame + 1), strImageType);
+
+			LoadImageBuffer_TOP(nTopIdx, nFrame, strImagePath);
+		}
 	}
 }
 
@@ -288,7 +341,7 @@ BOOL CSealingInspectProcessor::CreateBuffer_SIDE()
 
 	DWORD64 dwTotalFrameCount = 0;
 
-	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDE; i++)
+	for (int i = 0; i < MAX_SIDECAM_COUNT; i++)
 	{
 		if (m_pImageBuffer_Side[i] != NULL)
 		{
@@ -299,7 +352,7 @@ BOOL CSealingInspectProcessor::CreateBuffer_SIDE()
 
 		m_pImageBuffer_Side[i] = new CSharedMemoryBuffer;
 
-		dwFrameCount_Side = (DWORD)FRAME_COUNT;
+		dwFrameCount_Side = (DWORD)MAX_IMAGE_BUFFER_SIDECAM;
 
 		dwTotalFrameCount += dwFrameCount_Side;
 
@@ -346,7 +399,7 @@ BOOL CSealingInspectProcessor::CreateBuffer_TOP()
 
 	DWORD64 dwTotalFrameCount = 0;
 
-	for (int i = 0; i < MAX_IMAGE_BUFFER_TOP; i++)
+	for (int i = 0; i < MAX_TOPCAM_COUNT; i++)
 	{
 		if (m_pImageBuffer_Top[i] != NULL)
 		{
@@ -357,7 +410,7 @@ BOOL CSealingInspectProcessor::CreateBuffer_TOP()
 
 		m_pImageBuffer_Top[i] = new CSharedMemoryBuffer;
 
-		dwFrameCount_Top = (DWORD)FRAME_COUNT;
+		dwFrameCount_Top = (DWORD)MAX_IMAGE_BUFFER_TOPCAM;
 
 		dwTotalFrameCount += dwFrameCount_Top;
 
@@ -414,6 +467,23 @@ BOOL CSealingInspectProcessor::ClearBufferImage_TOP(int nBuff)
 
 	return nRet;
 }
+
+BOOL CSealingInspectProcessor::SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff)
+{
+	if (m_pImageBuffer_Top[nBuff] == NULL)
+		return FALSE;
+
+	return m_pImageBuffer_Top[nBuff]->SetFrameImage(nFrame, buff);
+}
+
+BOOL CSealingInspectProcessor::SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff)
+{
+	if (m_pImageBuffer_Side[nBuff] == NULL)
+		return FALSE;
+
+	return m_pImageBuffer_Side[nBuff]->SetFrameImage(nFrame, buff);
+}
+
 #pragma endregion
 
 void CSealingInspectProcessor::RegCallbackLogFunc(CallbackLogFunc* pFunc)

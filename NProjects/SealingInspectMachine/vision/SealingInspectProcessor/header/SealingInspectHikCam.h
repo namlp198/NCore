@@ -10,7 +10,7 @@
 
 interface ISealingInspectHikCamToParent
 {
-	virtual CSealingInspectRecipe* GetRecipe(int nIdx) = 0;
+	virtual CSealingInspectRecipe* GetRecipe() = 0;
 	virtual CSealingInspectSystemSetting* GetSystemSetting() = 0;
 };
 
@@ -31,6 +31,13 @@ public:
 	CSharedMemoryBuffer*            GetSharedMemoryBuffer(int nCamIdx);
 	int							    PopInspectWaitFrame(int nGrabberIdx);
 
+	BOOL                            SetFrameWaitProcess_SideCam(int nCamIdx, int nFrame);
+	LPBYTE                          GetFrameWaitProcess_SideCam(int nCamIdx, int nFrame);
+
+public:
+	// getter
+	std::queue<int>                 GetQueueInspectWaitList(int nCamIdx) { return m_queueInspectWaitList[nCamIdx]; }
+
 public:
 	virtual void	DisplayMessage(TCHAR* str, ...) {};
 	virtual void	DisplayMessage(CString strLogMessage) {};
@@ -40,7 +47,7 @@ public:
 public:
 	int     StartGrab(int nCamIdx);
 	int     StopGrab(int nCamIdx);
-	int     SingleGrab(int nCamIdx);
+	int     SoftwareTrigger(int nCamIdx);
 	int		SetTriggerMode(int nCamIdx, int nMode);
 	int		SetTriggerSource(int nCamIdx, int nSource);
 
@@ -48,16 +55,18 @@ private:
 	ISealingInspectHikCamToParent*      m_pInterface;
 
 	// Area Camera
-	BOOL                                m_bCamera_ConnectStatus[MAX_NUMBER_OF_CAMERA_INSPECT];
-	CFrameGrabber_MVS_GigE*             m_pCamera[MAX_NUMBER_OF_CAMERA_INSPECT];
+	BOOL                                m_bCamera_ConnectStatus[MAX_CAMERA_INSPECT_COUNT];
+	CFrameGrabber_MVS_GigE*             m_pCamera[MAX_CAMERA_INSPECT_COUNT];
 
-	CCriticalSection                    m_csCameraFrameIdx[MAX_NUMBER_OF_CAMERA_INSPECT];
+	CCriticalSection                    m_csCameraFrameIdx[MAX_CAMERA_INSPECT_COUNT];
 
-	CSharedMemoryBuffer*                m_pCameraImageBuffer[MAX_NUMBER_OF_CAMERA_INSPECT];
+	CSharedMemoryBuffer*                m_pCameraImageBuffer[MAX_CAMERA_INSPECT_COUNT];
 
-	int                                 m_pCameraCurrentFrameIdx[MAX_NUMBER_OF_CAMERA_INSPECT];
+	int                                 m_pCameraCurrentFrameIdx[MAX_CAMERA_INSPECT_COUNT];
 
 	// Inspect Wait Frame List
-	CCriticalSection					m_csInspectWaitList[MAX_NUMBER_OF_CAMERA_INSPECT];
-	std::queue<int>						m_queueInspectWaitList[MAX_NUMBER_OF_CAMERA_INSPECT];
+	CCriticalSection			        m_csInspectWaitList[MAX_CAMERA_INSPECT_COUNT];
+	std::queue<int>				        m_queueInspectWaitList[MAX_CAMERA_INSPECT_COUNT];
+									    
+	CSharedMemoryBuffer*                m_pFrameWaitProcessList[MAX_CAMERA_INSPECT_COUNT];
 };

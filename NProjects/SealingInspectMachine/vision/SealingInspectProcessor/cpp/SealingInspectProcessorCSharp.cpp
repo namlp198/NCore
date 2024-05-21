@@ -41,24 +41,24 @@ BYTE* GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nY
 	return pProcessor->GetBufferImage_TOP(nBuff, nY);
 }
 
-bool LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath)
+bool LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath)
 {
 	if (pProcessor == NULL)
 		return false;
 
 	CString strPath = (CString)pFilePath;
-	BOOL bRetValue = pProcessor->LoadImageBuffer_SIDE(nBuff, strPath);
+	BOOL bRetValue = pProcessor->LoadImageBuffer_SIDE(nBuff, nFrame, strPath);
 
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }
-bool LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath)
+bool LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath)
 {
 	if (pProcessor == NULL)
 		return false;
 
 	CString strPath = (CString)pFilePath;
-	BOOL bRetValue = pProcessor->LoadImageBuffer_TOP(nBuff, strPath);
+	BOOL bRetValue = pProcessor->LoadImageBuffer_TOP(nBuff, nFrame, strPath);
 
 	if (bRetValue == FALSE) return false;
 	else                    return true;
@@ -110,7 +110,7 @@ bool ContinuousGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
 	else if (retVal == 1) return true;
 }
 
-bool SingleGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
+bool SoftwareTriggerHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return false;
@@ -119,7 +119,7 @@ bool SingleGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
 	if (pHikCam == NULL)
 		return false;
 
-	int retVal = pHikCam->SingleGrab(nCamIdx);
+	int retVal = pHikCam->SoftwareTrigger(nCamIdx);
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }

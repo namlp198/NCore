@@ -1,15 +1,30 @@
 #pragma once
+
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+
 #include "SealingInspectDefine.h"
 #include "SealingInspectRecipe.h"
 #include "SealingInspectSystemSetting.h"
 #include "SealingInspectResult.h"
+#include "SealingInspectHikCam.h"
 #include "WorkThreadArray.h"
+
+#define TEST_INSPECT_CAVITY_1
+//#undef TEST_INSPECT_CAVITY_1
+#define TEST_INSPECT_CAVITY_2
+//#undef TEST_INSPECT_CAVITY_2
 
 interface ISealingInspectCoreToParent
 {
 	virtual void							InspectComplete(emInspectCavity nSetInsp) = 0;
-	virtual CSealingInspectRecipe*          GetRecipe(int nIdx) = 0;
+	virtual CSealingInspectRecipe*          GetRecipe() = 0;
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() = 0;
+	virtual CSealingInspectHikCam*          GetHikCamControl() = 0;
+	virtual BOOL                            SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual BOOL                            SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 };
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
@@ -40,15 +55,26 @@ public:
 	~CSealingInspectCore();
 
 public:
-	void CreateInspectThread(int nThreadCount, emInspectCavity nSetCam);
+	void CreateInspectThread(int nThreadCount, emInspectCavity nInspCavity);
 	void DeleteInspectThread();
 	virtual void WorkThreadProcessArray(PVOID pParameter);
 
 public:
-	void RunningThread_SETINSPECT1(int nThreadIndex);
-	void RunningThread_SETINSPECT2(int nThreadIndex);
+	void RunningThread_INSPECT_CAVITY1(int nThreadIndex);
+	void RunningThread_INSPECT_CAVITY2(int nThreadIndex);
 	void StopThread();
 	void ProcessFrame(CSealingInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex);
+
+	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, cv::Mat& mat);
+	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, cv::Mat& mat);
+	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nFrameIdx);
+
+public:
+
+	// setter
+	void        SetSimulatorMode(BOOL isSimulator) { m_bSimulator = isSimulator; }
+	// getter
+	BOOL        GetSimulatorMode() { return m_bSimulator; }
 
 private:
 
@@ -59,6 +85,12 @@ private:
 
 	BOOL								m_bRunningThread[MAX_THREAD_COUNT];
 
+	BOOL                                m_bSimulator;
+
 	CCriticalSection					m_csWorkThreadArray[MAX_THREAD_COUNT];
 	CWorkThreadArray*                   m_pWorkThreadArray[MAX_THREAD_COUNT];
+
+	std::vector<BOOL>					m_vecProcessedFrame;
+
+	CCriticalSection					m_csPostProcessing;
 };

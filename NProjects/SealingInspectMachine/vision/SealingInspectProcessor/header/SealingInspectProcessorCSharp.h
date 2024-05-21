@@ -17,9 +17,9 @@ extern "C"
 								                    
 	__declspec(dllexport) BYTE*                     GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
 											        
-	__declspec(dllexport) bool                      LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath);
+	__declspec(dllexport) bool                      LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath);
 
-	__declspec(dllexport) bool                      LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, char* pFilePath);
+	__declspec(dllexport) bool                      LoadImageBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath);
 
 	__declspec(dllexport) bool                      LoadAllImageBuffer(CSealingInspectProcessor* pProcessor, char* strDirPath, char* strImageType);
 											        
@@ -31,7 +31,7 @@ extern "C"
 	/************************** Hik Cam **************************/
 	__declspec(dllexport) bool                      ContinuousGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx);
 
-	__declspec(dllexport) bool                      SingleGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx);
+	__declspec(dllexport) bool                      SoftwareTriggerHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx);
 
 	__declspec(dllexport) bool                      StopGrabHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx);
 

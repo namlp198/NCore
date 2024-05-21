@@ -37,15 +37,23 @@ public:
 	BOOL LoadRecipe();
 
 public:
-	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, UINT nY);
-	BOOL                              LoadImageBuffer_SIDE(int nBuff, CString strFilePath);
-	virtual LPBYTE                    GetBufferImage_TOP(int nBuff, UINT nY);
-	BOOL                              LoadImageBuffer_TOP(int nBuff, CString strFilePath);
+	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator);
+	BOOL InspectStop(emInspectCavity nInspCavity);
+
+public:
+	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, int nFrame);
+	BOOL                              LoadImageBuffer_SIDE(int nBuff, int nFrame, CString strFilePath);
+	virtual LPBYTE                    GetBufferImage_TOP(int nBuff, int nFrame);
+	BOOL                              LoadImageBuffer_TOP(int nBuff, int nFrame, CString strFilePath);
 
 	BOOL                              LoadAllImageBuffer(CString strDirPath, CString strImageType);
 
 	BOOL                              ClearBufferImage_SIDE(int nBuff);
 	BOOL                              ClearBufferImage_TOP(int nBuff);
+
+public:
+	virtual BOOL                      SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff);
+	virtual BOOL                      SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff);
 
 public:
 	// CallBack
@@ -59,7 +67,7 @@ public:
 
 public:
 	virtual void							InspectComplete(emInspectCavity nSetInsp);
-	virtual CSealingInspectRecipe*          GetRecipe(int nIdx) { return m_pSealingInspRecipe; }
+	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
 
 public:
@@ -75,9 +83,9 @@ private:
 private:
 
 	// Image Buffer
-	CSharedMemoryBuffer*              m_pImageBuffer_Top[MAX_IMAGE_BUFFER_TOP];
+	CSharedMemoryBuffer*              m_pImageBuffer_Top[MAX_TOPCAM_COUNT];
 								      
-	CSharedMemoryBuffer*              m_pImageBuffer_Side[MAX_IMAGE_BUFFER_SIDE];
+	CSharedMemoryBuffer*              m_pImageBuffer_Side[MAX_SIDECAM_COUNT];
 								      
 	CallbackLogFunc*                  m_pCallbackLogFunc;
 	CallbackAlarm*                    m_pCallbackAlarm;
