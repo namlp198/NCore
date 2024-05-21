@@ -21,20 +21,20 @@ namespace SealingInspectGUI.Command.Cmd
             if (strBtnName != null)
             {
                 int nBuffIdx = 0;
-                string camName = strBtnName.Substring(3, strBtnName.LastIndexOf("_") - 3);
+                int nFrame = 0;
+
+                string strCamName = strBtnName.Substring(3, strBtnName.LastIndexOf("_") - 3);
+                string strBuff = strBtnName.Substring(10, strBtnName.LastIndexOf("_") - 10);
                 string strFrame = strBtnName.Substring(strBtnName.IndexOf("_") + 6, 1);
-                int.TryParse(strFrame, out nBuffIdx);
+                int.TryParse(strBuff, out nBuffIdx);
+                int.TryParse(strFrame, out nFrame);
+                nFrame -= 1;
                 nBuffIdx -= 1;
 
-                if(string.Compare(camName, "SideCam1") == 0)
-                {
-                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, 0);
-                }
-                else if (string.Compare(camName, "SideCam2") == 0)
-                {
-                    nBuffIdx += Defines.MAX_IMAGE_BUFFER_SIDE / 2;
-                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, 0);
-                }
+                if (string.Compare(strCamName, "SideCam1") == 0)
+                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, nFrame);
+                else if (string.Compare(strCamName, "SideCam2") == 0)
+                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, nFrame);
             }
         }
     }

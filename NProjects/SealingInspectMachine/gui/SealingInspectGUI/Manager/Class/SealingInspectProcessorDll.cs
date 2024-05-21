@@ -72,8 +72,8 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static IntPtr GetBufferImage_SIDE(IntPtr sealingInspProcessor, int nBuff, int nY);
-        public IntPtr GetBufferImage_SIDE(int nBuff, int nY) { return GetBufferImage_SIDE(m_sealingInspectProcessor, nBuff, nY); }
+        extern private static IntPtr GetBufferImage_SIDE(IntPtr sealingInspProcessor, int nBuff, int nFrame);
+        public IntPtr GetBufferImage_SIDE(int nBuff, int nFrame) { return GetBufferImage_SIDE(m_sealingInspectProcessor, nBuff, nFrame); }
 
 
 #if DEBUG
@@ -81,8 +81,8 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static IntPtr GetBufferImage_TOP(IntPtr sealingInspProcessor, int nBuff, int nY);
-        public IntPtr GetBufferImage_TOP(int nBuff, int nY) { return GetBufferImage_TOP(m_sealingInspectProcessor, nBuff, nY); }
+        extern private static IntPtr GetBufferImage_TOP(IntPtr sealingInspProcessor, int nBuff, int nFrame);
+        public IntPtr GetBufferImage_TOP(int nBuff, int nFrame) { return GetBufferImage_TOP(m_sealingInspectProcessor, nBuff, nFrame); }
 
 
 #if DEBUG
@@ -90,16 +90,16 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool LoadImageBuffer_SIDE(IntPtr sealingInspProcessor, int nBuff, [MarshalAs(UnmanagedType.LPStr)] string filePath);
-        public bool LoadImageBuffer_SIDE(int nBuff, [MarshalAs(UnmanagedType.LPStr)] string filePath) { return LoadImageBuffer_SIDE(m_sealingInspectProcessor, nBuff, filePath); }
+        extern private static bool LoadImageBuffer_SIDE(IntPtr sealingInspProcessor, int nBuff, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath);
+        public bool LoadImageBuffer_SIDE(int nBuff, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath) { return LoadImageBuffer_SIDE(m_sealingInspectProcessor, nBuff, nFrame, filePath); }
 
 #if DEBUG
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool LoadImageBuffer_TOP(IntPtr sealingInspProcessor, int nBuff, [MarshalAs(UnmanagedType.LPStr)] string filePath);
-        public bool LoadImageBuffer_TOP(int nBuff, [MarshalAs(UnmanagedType.LPStr)] string filePath) { return LoadImageBuffer_TOP(m_sealingInspectProcessor, nBuff, filePath); }
+        extern private static bool LoadImageBuffer_TOP(IntPtr sealingInspProcessor, int nBuff, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath);
+        public bool LoadImageBuffer_TOP(int nBuff, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath) { return LoadImageBuffer_TOP(m_sealingInspectProcessor, nBuff, nFrame, filePath); }
 
 
 #if DEBUG
@@ -200,8 +200,8 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SingleGrabHikCam(IntPtr tempInspProcessor, int nCamIdx);
-        public bool SingleGrabHikCam(int nCamIdx) { return SingleGrabHikCam(m_sealingInspectProcessor, nCamIdx); }
+        extern private static bool SoftwareTriggerHikCam(IntPtr tempInspProcessor, int nCamIdx);
+        public bool SoftwareTriggerHikCam(int nCamIdx) { return SoftwareTriggerHikCam(m_sealingInspectProcessor, nCamIdx); }
 
 
 #if DEBUG

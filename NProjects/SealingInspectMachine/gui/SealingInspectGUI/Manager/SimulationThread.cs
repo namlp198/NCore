@@ -18,18 +18,18 @@ namespace SealingInspectGUI.Manager
 
         }
 
-        public delegate void UpdateUIHandler(int nBuffIdx);
+        public delegate void UpdateUIHandler();
         public static event UpdateUIHandler UpdateUI;
-        public delegate void UpdateUIHandler_SumCameraView(int nBuffIdx, string posCam);
+        public delegate void UpdateUIHandler_SumCameraView();
         public static event UpdateUIHandler_SumCameraView UpdateUI_SumCameraView;
 
-        public void LoadImage(int nBuffIdx)
+        public void LoadImage()
         {
             Thread imgLoadThread;
-            imgLoadThread = new Thread(new ParameterizedThreadStart(LoadImageThread));
+            imgLoadThread = new Thread(LoadImageThread);
             imgLoadThread.SetApartmentState(ApartmentState.STA);
             imgLoadThread.IsBackground = true;
-            imgLoadThread.Start(nBuffIdx);
+            imgLoadThread.Start();
         }
         public void LoadAllImage()
         {
@@ -60,19 +60,13 @@ namespace SealingInspectGUI.Manager
 
             InterfaceManager.Instance.m_sealingInspProcessor.LoadAllImageBuffer(strDirPath, strExt);
 
-            for(int topIdx = 0; topIdx < Defines.MAX_IMAGE_BUFFER_TOP; topIdx++)
-            {
-                UpdateUI_SumCameraView?.Invoke(topIdx, "Top");
-            }
-            for (int sideIdx = 0; sideIdx < Defines.MAX_IMAGE_BUFFER_SIDE; sideIdx++)
-            {
-                UpdateUI_SumCameraView?.Invoke(sideIdx, "Side");
-            }
+            Thread.Sleep(100);
+            UpdateUI_SumCameraView?.Invoke();
+
         }
 
-        private void LoadImageThread(object nBuffIdx)
+        private void LoadImageThread()
         {
-            int nBuff = (int)nBuffIdx;
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Image file(*.bmp, *.jpg, *.png, *.tif) | *.BMP;*.JPG;*.PNG;*.TIF;*.bmp;*.jpg;*.png;*.tif; |All Files(*.*)|*.*||";
             ofd.Multiselect = false;
@@ -87,12 +81,15 @@ namespace SealingInspectGUI.Manager
 
             if (MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.TopCam1 ||
                 MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.TopCam2)
-                InterfaceManager.Instance.m_sealingInspProcessor.LoadImageBuffer_TOP(nBuff, filePath);
+                InterfaceManager.Instance.m_sealingInspProcessor.LoadImageBuffer_TOP(MainViewModel.Instance.SettingVM.BuffIdx,
+                                                                                     MainViewModel.Instance.SettingVM.Frame - 1,
+                                                                                     filePath);
             else if (MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.SideCam1 ||
                 MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.SideCam2)
-                InterfaceManager.Instance.m_sealingInspProcessor.LoadImageBuffer_SIDE(nBuff, filePath);
-
-            UpdateUI?.Invoke(nBuff);
+                InterfaceManager.Instance.m_sealingInspProcessor.LoadImageBuffer_SIDE(MainViewModel.Instance.SettingVM.BuffIdx,
+                                                                                      MainViewModel.Instance.SettingVM.Frame - 1,
+                                                                                      filePath);
+            UpdateUI?.Invoke();
         }
     }
 }

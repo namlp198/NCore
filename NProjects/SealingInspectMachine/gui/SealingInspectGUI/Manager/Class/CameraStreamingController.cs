@@ -35,17 +35,13 @@ namespace SealingInspectGUI.Manager.Class
 
         public void SingleGrab()
         {
-            //InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerModeHikCam(m_bufferViewerSimple.CameraIndex,
-            //                                                                      (int)eTriggerMode.TriggerMode_External);
-            //InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerSourceHikCam(m_bufferViewerSimple.CameraIndex,
-            //                                                                      (int)eTriggerSource.TriggerSource_Software);
-
             Task.Factory.StartNew(() =>
             {
                 if (!InterfaceManager.Instance.m_sealingInspProcessor.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
-                //if (!InterfaceManager.Instance.m_sealingInspProcessor.SingleGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
+                if (!InterfaceManager.Instance.m_sealingInspProcessor.SoftwareTriggerHikCam(m_bufferViewerSimple.CameraIndex)) return;
 
                 m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
+                
             });
         }
 
@@ -59,10 +55,6 @@ namespace SealingInspectGUI.Manager.Class
             {
                 case CameraType.Hik:
 
-                    InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerModeHikCam(m_bufferViewerSimple.CameraIndex,
-                                                                                  (int)eTriggerMode.TriggerMode_Internal);
-                    InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerSourceHikCam(m_bufferViewerSimple.CameraIndex,
-                                                                                          (int)eTriggerSource.TriggerSource_Hardware);
                     if (!InterfaceManager.Instance.m_sealingInspProcessor.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
 
                     MainViewModel.Instance.SettingVM.IsStreamming = true;

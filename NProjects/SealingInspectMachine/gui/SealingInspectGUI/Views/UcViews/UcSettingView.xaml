@@ -143,13 +143,13 @@
                            VerticalAlignment="Center"
                            Foreground="White"
                            Margin="5 0 5 0"
-                           FontSize="14"
+                           FontSize="12"
                            FontWeight="Bold" />
                 <ComboBox  Margin="3"
                            x:Name="cbbCameraList"
-                           FontSize="14"
+                           FontSize="12"
                            FontWeight="Bold"
-                           Width="100"
+                           Width="90"
                            ItemsSource="{Binding CameraList}"
                            SelectedItem="{Binding StrCameraSelected, Mode=TwoWay}" />
 
@@ -157,7 +157,7 @@
                            VerticalAlignment="Center"
                            Foreground="White"
                            Margin="5 0 5 0"
-                           FontSize="14"
+                           FontSize="12"
                            FontWeight="Bold" />
                 <ComboBox  Margin="3"
                            x:Name="cbbFrameList"
@@ -165,13 +165,13 @@
                            FontWeight="Bold"
                            ItemsSource="{Binding FrameList}"
                            SelectedItem="{Binding StrFrameSelected, Mode=TwoWay}"
-                           Width="50"/>
+                           Width="35"/>
 
                 <Button Background="WhiteSmoke"
                         Name="btnContinuousGrab"
                         Command="{Binding ContinuousGrabCmd}"
                         Opacity="1"
-                        Margin="15 3 3 3"
+                        Margin="10 3 3 3"
                         Width="45">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
@@ -182,7 +182,7 @@
                 </Button>
                 <Button Background="WhiteSmoke"
                         Name="btnSingleGrab"
-                        Command="{Binding SingleGrabCmd}"
+                        Command="{Binding SoftwareTriggerHikCamCmd}"
                         Opacity="1"
                         Margin="3"
                         Width="45">
@@ -193,6 +193,13 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                <CheckBox Margin="5 2 2 2"
+                          Content="Software Trigger"
+                          Foreground="White"
+                          FontWeight="SemiBold"
+                          VerticalAlignment="Center"
+                          x:Name="chkSoftwareTrigger"
+                          IsChecked="{Binding UseSoftwareTrigger, Mode=TwoWay}"/>
                 <Button Background="WhiteSmoke"
                         Margin="3"
                         x:Name="btnLoadImage"
@@ -207,14 +214,14 @@
                     </Button.Content>
                 </Button>
 
-                <Button Margin="50 2 2 2"
+                <Button Margin="5 2 2 2"
                         Content="Inpsect"
                         Foreground="Black"
                         Background="LightGray"
                         FontWeight="SemiBold"
                         FontSize="12"
-                        Width="80" />
-                <Button Margin="10 2 2 2"
+                        Width="70" />
+                <Button Margin="5 2 2 2"
                         Content="Save Image"
                         Foreground="Black"
                         Background="LightGray"

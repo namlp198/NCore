@@ -8,9 +8,9 @@ using System.Windows;
 
 namespace SealingInspectGUI.Command.Cmd
 {
-    public class SingleGrabCmd : CommandBase
+    public class SoftwareTriggerHikCamCmd : CommandBase
     {
-        public SingleGrabCmd() { }
+        public SoftwareTriggerHikCamCmd() { }
         public override void Execute(object parameter)
         {
             MainViewModel.Instance.SettingVM.SettingView.Dispatcher.BeginInvoke(new Action(() =>

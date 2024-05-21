@@ -65,46 +65,31 @@ namespace SealingInspectGUI.ViewModels
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
         }
 
-        private void SimulationThread_UpdateUI_SumCameraView(int nBuffIdx, string posCam)
+        private void SimulationThread_UpdateUI_SumCameraView()
         {
-            
-                if (string.Compare(posCam, "Top") == 0)
-                {
-                    switch (nBuffIdx)
-                    {
-                        case 0:
-                            _sumCameraView.buffTopCam1_Frame1.CameraIndex = 99;
-                            _sumCameraView.buffTopCam1_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(nBuffIdx, 0);
-                            break;
-                        case 1:
-                            _sumCameraView.buffTopCam1_Frame2.CameraIndex = 99;
-                            _sumCameraView.buffTopCam1_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(nBuffIdx, 0);
-                            break;
-                        case 2:
-                            _sumCameraView.buffTopCam2_Frame1.CameraIndex = 99;
-                            _sumCameraView.buffTopCam2_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(nBuffIdx, 0);
-                            break;
-                        case 3:
-                            _sumCameraView.buffTopCam2_Frame2.CameraIndex = 99;
-                            _sumCameraView.buffTopCam2_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(nBuffIdx, 0);
-                            break;
-                    }
-                }
-                else if (string.Compare(posCam, "Side") == 0)
-                {
-                    switch(nBuffIdx)
-                    {
-                        case 0:
-                            _sumCameraView.buffSideCam1.CameraIndex = 99;
-                            _sumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, 0);
-                            break;
-                        case Defines.MAX_IMAGE_BUFFER_SIDE / 2:
-                            _sumCameraView.buffSideCam2.CameraIndex = 99;
-                            _sumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, 0);
-                            break;
-                    }
-                }
-            
+            _sumCameraView.buffTopCam1_Frame1.CameraIndex = 99;
+            _sumCameraView.buffTopCam1_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(0, 0);
+
+
+            _sumCameraView.buffTopCam1_Frame2.CameraIndex = 99;
+            _sumCameraView.buffTopCam1_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(0, 1);
+
+
+            _sumCameraView.buffTopCam2_Frame1.CameraIndex = 99;
+            _sumCameraView.buffTopCam2_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(1, 0);
+
+
+            _sumCameraView.buffTopCam2_Frame2.CameraIndex = 99;
+            _sumCameraView.buffTopCam2_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(1, 1);
+
+
+            _sumCameraView.buffSideCam1.CameraIndex = 99;
+            _sumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(0, 0);
+
+
+            _sumCameraView.buffSideCam2.CameraIndex = 99;
+            _sumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(1, 0);
+
         }
 
         private void BuffSideCam2_ShowDetail(object sender, System.Windows.RoutedEventArgs e)
@@ -179,7 +164,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam1_Frame1.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
-            if(_sumCameraView.buffTopCam1_Frame1.BufferView != IntPtr.Zero)
+            if (_sumCameraView.buffTopCam1_Frame1.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffTopCam1_Frame1.BufferView;
             }

@@ -34,6 +34,7 @@ namespace SealingInspectGUI.ViewModels
         private UcSettingView _settingView;
 
         private bool _bStreamming = false;
+        private bool m_bUseSoftwareTrigger = false;
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
         private string[] m_arrFrameOfTOP = new string[Defines.MAX_IMAGE_BUFFER_TOP / 2] { "1", "2" };
         private string[] m_arrFrameOfSIDE = new string[Defines.MAX_IMAGE_BUFFER_SIDE / 2] { "1", "2", "3", "4" };
@@ -44,6 +45,7 @@ namespace SealingInspectGUI.ViewModels
         private string m_strFrameSelected = string.Empty;
         private ECameraList m_cameraSelected = new ECameraList();
         private int m_nBuffIdx = 0;
+        private int m_nFrame = 0;
 
         public CameraStreamingController m_cameraStreamingController = null;
 
@@ -64,7 +66,7 @@ namespace SealingInspectGUI.ViewModels
 
             this.LoadImageCmd = new LoadImageCmd();
             this.ContinuousGrabCmd = new ContinuousGrabCmd();
-            this.SingleGrabCmd = new SingleGrabCmd();
+            this.SoftwareTriggerHikCamCmd = new SoftwareTriggerHikCamCmd();
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
 
@@ -74,15 +76,15 @@ namespace SealingInspectGUI.ViewModels
                                                                         _settingView.buffVSSettings.ModeView);
         }
 
-        private void SimulationThread_UpdateUI(int nBuff)
+        private void SimulationThread_UpdateUI()
         {
             if (CameraSelected == ECameraList.TopCam1 ||
                 CameraSelected == ECameraList.TopCam2)
-                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(m_nBuffIdx, 0);
+                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(m_nBuffIdx, m_nFrame - 1);
 
             else if (CameraSelected == ECameraList.SideCam1 ||
-                    CameraSelected == ECameraList.SideCam2)
-                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(m_nBuffIdx, 0);
+                CameraSelected == ECameraList.SideCam2)
+                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(m_nBuffIdx, m_nFrame - 1);
         }
         #endregion
 
@@ -161,6 +163,8 @@ namespace SealingInspectGUI.ViewModels
                         list.AddRange(m_arrFrameOfSIDE);
                         FrameList = list;
                     }
+
+                    UpdateParamSoftwareTrigger();
                 }
             }
         }
@@ -171,18 +175,18 @@ namespace SealingInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_strFrameSelected, value))
                 {
-                    if (m_cameraSelected == ECameraList.TopCam1 ||
-                        m_cameraSelected == ECameraList.SideCam1)
-                    {
-                        int.TryParse(m_strFrameSelected, out m_nBuffIdx);
-                        m_nBuffIdx -= 1;
-                    }
-                    else if (m_cameraSelected == ECameraList.TopCam2 ||
-                           m_cameraSelected == ECameraList.SideCam2)
-                    {
-                        int.TryParse(m_strFrameSelected, out m_nBuffIdx);
-                        m_nBuffIdx = (2 * m_nBuffIdx) - 1;
-                    }
+                    int.TryParse(m_strFrameSelected, out m_nFrame);
+                }
+            }
+        }
+        public int Frame
+        {
+            get => m_nFrame;
+            set
+            {
+                if (SetProperty(ref m_nFrame, value))
+                {
+
                 }
             }
         }
@@ -193,7 +197,17 @@ namespace SealingInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_cameraSelected, value))
                 {
-
+                    switch (m_cameraSelected)
+                    {
+                        case ECameraList.TopCam1:
+                        case ECameraList.SideCam1:
+                            m_nBuffIdx = 0;
+                            break;
+                        case ECameraList.TopCam2:
+                        case ECameraList.SideCam2:
+                            m_nBuffIdx = 1;
+                            break;
+                    }
                 }
             }
         }
@@ -241,9 +255,38 @@ namespace SealingInspectGUI.ViewModels
             }
         }
 
+        public bool UseSoftwareTrigger
+        {
+            get => m_bUseSoftwareTrigger;
+            set
+            {
+                if (SetProperty(ref m_bUseSoftwareTrigger, value))
+                {
+                    UpdateParamSoftwareTrigger();
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
+        private void UpdateParamSoftwareTrigger()
+        {
+            if (m_bUseSoftwareTrigger)
+            {
+                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerModeHikCam(_settingView.buffVSSettings.CameraIndex,
+                                                                                      (int)eTriggerMode.TriggerMode_External);
+                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerSourceHikCam(_settingView.buffVSSettings.CameraIndex,
+                                                                                      (int)eTriggerSource.TriggerSource_Software);
+            }
+            else
+            {
+                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerModeHikCam(_settingView.buffVSSettings.CameraIndex,
+                                                                                      (int)eTriggerMode.TriggerMode_Internal);
+                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerSourceHikCam(_settingView.buffVSSettings.CameraIndex,
+                                                                                      (int)eTriggerSource.TriggerSource_Hardware);
+            }
+        }
         private string GetEnumDescription(Enum enumObj)
         {
             FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
@@ -279,7 +322,7 @@ namespace SealingInspectGUI.ViewModels
         #region Command
         public ICommand LoadImageCmd { get; }
         public ICommand ContinuousGrabCmd { get; }
-        public ICommand SingleGrabCmd { get; }
+        public ICommand SoftwareTriggerHikCamCmd { get; }
         #endregion
     }
 }

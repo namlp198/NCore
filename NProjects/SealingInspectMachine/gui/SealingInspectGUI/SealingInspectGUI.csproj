@@ -95,7 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Command\Cmd\SingleGrabCmd.cs" />
+    <Compile Include="Command\Cmd\SoftwareTriggerHikCamCmd.cs" />
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Manager\Class\CameraStreamingController.cs" />
     <Compile Include="Command\Cmd\LoadAllImageCmd.cs" />
