@@ -37,10 +37,10 @@ namespace SealingInspectGUI.Manager.Class
         {
             Task.Factory.StartNew(() =>
             {
-                if (!InterfaceManager.Instance.m_sealingInspProcessor.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
-                if (!InterfaceManager.Instance.m_sealingInspProcessor.SoftwareTriggerHikCam(m_bufferViewerSimple.CameraIndex)) return;
+                if (!InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
+                if (!InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SoftwareTriggerHikCam(m_bufferViewerSimple.CameraIndex)) return;
 
-                m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
+                m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
                 
             });
         }
@@ -55,7 +55,7 @@ namespace SealingInspectGUI.Manager.Class
             {
                 case CameraType.Hik:
 
-                    if (!InterfaceManager.Instance.m_sealingInspProcessor.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
+                    if (!InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
 
                     MainViewModel.Instance.SettingVM.IsStreamming = true;
 
@@ -68,7 +68,7 @@ namespace SealingInspectGUI.Manager.Class
                         while (!_cancellationTokenSource.IsCancellationRequested)
                         {
                             // read hik camera
-                            m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
+                            m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
 
                             await Task.Delay(33);
                         }
@@ -99,7 +99,7 @@ namespace SealingInspectGUI.Manager.Class
             switch (cameraType)
             {
                 case CameraType.Hik:
-                    InterfaceManager.Instance.m_sealingInspProcessor.StopGrabHikCam(m_bufferViewerSimple.CameraIndex);
+                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.StopGrabHikCam(m_bufferViewerSimple.CameraIndex);
                     break;
                 case CameraType.iRayple:
                     break;
@@ -120,7 +120,7 @@ namespace SealingInspectGUI.Manager.Class
 
                     if (!_previewTask.IsCompleted)
                     {
-                        InterfaceManager.Instance.m_sealingInspProcessor.StopGrabHikCam(m_bufferViewerSimple.CameraIndex);
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.StopGrabHikCam(m_bufferViewerSimple.CameraIndex);
                         _cancellationTokenSource.Cancel();
 
                         MainViewModel.Instance.SettingVM.IsStreamming = false;

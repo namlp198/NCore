@@ -1,4 +1,5 @@
 ﻿using SealingInspectGUI.Commons;
+using SealingInspectGUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,6 +127,77 @@ namespace SealingInspectGUI.Manager.Class
 #endif
         extern private static bool ClearBufferImage_TOP(IntPtr sealingInspProcessor, int nBuff);
         public bool ClearBufferImage_TOP(int nBuff) { return ClearBufferImage_TOP(m_sealingInspectProcessor, nBuff); }
+
+
+        #endregion
+
+        #region Get Result
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool InspectStart(IntPtr pInstance, int nThreadCount, emInspectCavity eInspCav, int isSimulator);
+        public bool InspectStart(int nThreadCount, emInspectCavity eInspCav, int isSimulator) { return InspectStart(m_sealingInspectProcessor, nThreadCount, eInspCav, isSimulator); }
+        /**********************************
+         - Inspection Ready / Start
+         - Parameter : Inspection Cavity
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool InspectStop(IntPtr pInstance, emInspectCavity eInspCav);
+        public bool InspectStop(emInspectCavity eInspCav) { return InspectStop(m_sealingInspectProcessor, eInspCav); }
+        /**********************************
+         - Inspection Ready / Start
+         - Parameter : Inspection Cavity
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetInspectionResult(IntPtr sealingInspProcessor, int nCoreIdx, IntPtr InspResults);
+        public bool GetInspectionResult(int nCoreIdx, ref CSealingInspectResult InspResults)
+        {
+            CSealingInspectResult inspRes = new CSealingInspectResult();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(inspRes));
+            Marshal.StructureToPtr(inspRes, pPointer, false);
+            bool bRet = GetInspectionResult(m_sealingInspectProcessor, nCoreIdx, pPointer);
+            InspResults = (CSealingInspectResult)Marshal.PtrToStructure(pPointer, typeof(CSealingInspectResult));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetSealingInspectSimulationIO(IntPtr sealingInspProcessor, int nCoreIdx, IntPtr simulationIO);
+        public bool SetSealingInspectSimulationIO(int nCoreIdx, ref CSealingInspect_Simulation_IO sealingInspSimulationIO)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sealingInspSimulationIO));
+            Marshal.StructureToPtr(sealingInspSimulationIO, pPointer, false);
+            bool bRet = SetSealingInspectSimulationIO(m_sealingInspectProcessor, nCoreIdx, pPointer);
+
+            return bRet;
+        }
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool TestInspectCavity1(IntPtr sealingInspProcessor);
+        public bool TestInspectCavity1() { return TestInspectCavity1(m_sealingInspectProcessor); }
 
 
         #endregion

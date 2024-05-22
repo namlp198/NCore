@@ -95,8 +95,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\GrabCavity1Cmd.cs" />
     <Compile Include="Command\Cmd\SoftwareTriggerHikCamCmd.cs" />
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
+    <Compile Include="Command\Cmd\TestIOCmd.cs" />
+    <Compile Include="Command\Cmd\TestIOResetAllCmd.cs" />
     <Compile Include="Manager\Class\CameraStreamingController.cs" />
     <Compile Include="Command\Cmd\LoadAllImageCmd.cs" />
     <Compile Include="Command\Cmd\LoadImageCmd.cs" />
@@ -111,17 +114,25 @@
     <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\LightControlManager.cs" />
     <Compile Include="Manager\SumManager\PlcManager.cs" />
+    <Compile Include="Manager\SumManager\SealingInspectProcessorManager.cs" />
     <Compile Include="Manager\SumManager\SequenceManager.cs" />
     <Compile Include="Manager\SumManager\SettingManager.cs" />
-    <Compile Include="Models\model.cs" />
+    <Compile Include="Models\CSealingInspectResult.cs" />
+    <Compile Include="Models\CSealingInspectResult_SideCam.cs" />
+    <Compile Include="Models\CSealingInspectResult_TopCam.cs" />
+    <Compile Include="Models\CSealingInspect_Simulation_IO.cs" />
     <Compile Include="ViewModels\SumCameraViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ResultViewModel.cs" />
     <Compile Include="ViewModels\RunViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\StatisticsViewModel.cs" />
+    <Compile Include="ViewModels\TestIOViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TestIOView.xaml.cs">
+      <DependentUpon>TestIOView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcViews\UcSumCameraView.xaml.cs">
       <DependentUpon>UcSumCameraView.xaml</DependentUpon>
@@ -154,6 +165,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestIOView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

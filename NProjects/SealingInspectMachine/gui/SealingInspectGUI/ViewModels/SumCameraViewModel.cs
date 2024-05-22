@@ -61,6 +61,8 @@ namespace SealingInspectGUI.ViewModels
 
             LoadAllImageCmd = new LoadAllImageCmd();
             SelectSideCamFrameCmd = new SelectSideCamFrameCmd();
+            GrabCavity1Cmd = new GrabCavity1Cmd();
+            TestIOCmd = new TestIOCmd();
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
         }
@@ -68,27 +70,28 @@ namespace SealingInspectGUI.ViewModels
         private void SimulationThread_UpdateUI_SumCameraView()
         {
             _sumCameraView.buffTopCam1_Frame1.CameraIndex = 99;
-            _sumCameraView.buffTopCam1_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(0, 0);
-
+            _sumCameraView.buffTopCam1_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                           m_sealingInspProcessorDll.GetBufferImage_TOP(0, 0);
 
             _sumCameraView.buffTopCam1_Frame2.CameraIndex = 99;
-            _sumCameraView.buffTopCam1_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(0, 1);
-
+            _sumCameraView.buffTopCam1_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                           m_sealingInspProcessorDll.GetBufferImage_TOP(0, 1);
 
             _sumCameraView.buffTopCam2_Frame1.CameraIndex = 99;
-            _sumCameraView.buffTopCam2_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(1, 0);
-
+            _sumCameraView.buffTopCam2_Frame1.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                           m_sealingInspProcessorDll.GetBufferImage_TOP(1, 0);
 
             _sumCameraView.buffTopCam2_Frame2.CameraIndex = 99;
-            _sumCameraView.buffTopCam2_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(1, 1);
-
+            _sumCameraView.buffTopCam2_Frame2.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                           m_sealingInspProcessorDll.GetBufferImage_TOP(1, 1);
 
             _sumCameraView.buffSideCam1.CameraIndex = 99;
-            _sumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(0, 0);
-
+            _sumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                     m_sealingInspProcessorDll.GetBufferImage_SIDE(0, 0);
 
             _sumCameraView.buffSideCam2.CameraIndex = 99;
-            _sumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(1, 0);
+            _sumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                     m_sealingInspProcessorDll.GetBufferImage_SIDE(1, 0);
 
         }
 
@@ -178,6 +181,8 @@ namespace SealingInspectGUI.ViewModels
         #region Commands
         public ICommand LoadAllImageCmd { get; }
         public ICommand SelectSideCamFrameCmd { get; }
+        public ICommand GrabCavity1Cmd { get; }
+        public ICommand TestIOCmd { get; }
         #endregion
     }
 }

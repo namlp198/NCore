@@ -32,9 +32,11 @@ namespace SealingInspectGUI.Command.Cmd
                 nBuffIdx -= 1;
 
                 if (string.Compare(strCamName, "SideCam1") == 0)
-                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, nFrame);
+                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                  m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuffIdx, nFrame);
                 else if (string.Compare(strCamName, "SideCam2") == 0)
-                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(nBuffIdx, nFrame);
+                    MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                  m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuffIdx, nFrame);
             }
         }
     }

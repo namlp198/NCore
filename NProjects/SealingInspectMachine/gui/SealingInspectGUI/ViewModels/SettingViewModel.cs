@@ -36,8 +36,8 @@ namespace SealingInspectGUI.ViewModels
         private bool _bStreamming = false;
         private bool m_bUseSoftwareTrigger = false;
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
-        private string[] m_arrFrameOfTOP = new string[Defines.MAX_IMAGE_BUFFER_TOP / 2] { "1", "2" };
-        private string[] m_arrFrameOfSIDE = new string[Defines.MAX_IMAGE_BUFFER_SIDE / 2] { "1", "2", "3", "4" };
+        private string[] m_arrFrameOfTOP = new string[Defines.MAX_IMAGE_BUFFER_TOPCAM] { "1", "2" };
+        private string[] m_arrFrameOfSIDE = new string[Defines.MAX_IMAGE_BUFFER_SIDECAM] { "1", "2", "3", "4" };
 
         private List<string> m_cameraLst = new List<string>();
         private List<string> m_frameList = new List<string>();
@@ -80,11 +80,11 @@ namespace SealingInspectGUI.ViewModels
         {
             if (CameraSelected == ECameraList.TopCam1 ||
                 CameraSelected == ECameraList.TopCam2)
-                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_TOP(m_nBuffIdx, m_nFrame - 1);
+                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_TOP(m_nBuffIdx, m_nFrame - 1);
 
             else if (CameraSelected == ECameraList.SideCam1 ||
                 CameraSelected == ECameraList.SideCam2)
-                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspProcessor.GetBufferImage_SIDE(m_nBuffIdx, m_nFrame - 1);
+                _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_SIDE(m_nBuffIdx, m_nFrame - 1);
         }
         #endregion
 
@@ -274,16 +274,16 @@ namespace SealingInspectGUI.ViewModels
         {
             if (m_bUseSoftwareTrigger)
             {
-                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerModeHikCam(_settingView.buffVSSettings.CameraIndex,
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerModeHikCam(_settingView.buffVSSettings.CameraIndex,
                                                                                       (int)eTriggerMode.TriggerMode_External);
-                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerSourceHikCam(_settingView.buffVSSettings.CameraIndex,
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSourceHikCam(_settingView.buffVSSettings.CameraIndex,
                                                                                       (int)eTriggerSource.TriggerSource_Software);
             }
             else
             {
-                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerModeHikCam(_settingView.buffVSSettings.CameraIndex,
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerModeHikCam(_settingView.buffVSSettings.CameraIndex,
                                                                                       (int)eTriggerMode.TriggerMode_Internal);
-                InterfaceManager.Instance.m_sealingInspProcessor.SetTriggerSourceHikCam(_settingView.buffVSSettings.CameraIndex,
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSourceHikCam(_settingView.buffVSSettings.CameraIndex,
                                                                                       (int)eTriggerSource.TriggerSource_Hardware);
             }
         }

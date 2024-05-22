@@ -58,7 +58,7 @@ namespace SealingInspectGUI.Manager
             string strFileName = fileOpenDlg.SafeFileName;
             string strExt = strFileName.Substring(strFileName.IndexOf(".") + 1);
 
-            InterfaceManager.Instance.m_sealingInspProcessor.LoadAllImageBuffer(strDirPath, strExt);
+            InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.LoadAllImageBuffer(strDirPath, strExt);
 
             Thread.Sleep(100);
             UpdateUI_SumCameraView?.Invoke();
@@ -81,12 +81,12 @@ namespace SealingInspectGUI.Manager
 
             if (MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.TopCam1 ||
                 MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.TopCam2)
-                InterfaceManager.Instance.m_sealingInspProcessor.LoadImageBuffer_TOP(MainViewModel.Instance.SettingVM.BuffIdx,
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.LoadImageBuffer_TOP(MainViewModel.Instance.SettingVM.BuffIdx,
                                                                                      MainViewModel.Instance.SettingVM.Frame - 1,
                                                                                      filePath);
             else if (MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.SideCam1 ||
                 MainViewModel.Instance.SettingVM.CameraSelected == ECameraList.SideCam2)
-                InterfaceManager.Instance.m_sealingInspProcessor.LoadImageBuffer_SIDE(MainViewModel.Instance.SettingVM.BuffIdx,
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.LoadImageBuffer_SIDE(MainViewModel.Instance.SettingVM.BuffIdx,
                                                                                       MainViewModel.Instance.SettingVM.Frame - 1,
                                                                                       filePath);
             UpdateUI?.Invoke();

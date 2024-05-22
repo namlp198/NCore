@@ -289,6 +289,7 @@
                     Width="100"
                     HorizontalAlignment="Right"
                     Foreground="White"
+                    Command="{Binding GrabCavity1Cmd}"
                     Background="{DynamicResource RGB_Hot_206_59_63}">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
@@ -312,6 +313,13 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
+            <Button Margin="10 5 5 5"
+                    Width="80"
+                    Content="Test"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    VerticalContentAlignment="Center"
+                    Command="{Binding TestIOCmd}"/>
         </StackPanel>
 
         <!--separator-->
