@@ -13,6 +13,7 @@
 #include "SealingInspectRecipe.h"
 #include "SealingInspectResult.h"
 #include "SealingInspectSystemSetting.h"
+#include "SealingInspect_Simulation_IO.h"
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
 
@@ -21,10 +22,10 @@
 
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarm(emInspectCavity nSetInsp, char* strAlarmMessage);
-typedef void _stdcall CallbackInspectComplete();
+typedef void _stdcall CallbackInspectComplete(emInspectCavity emInspCavity);
 
 class AFX_EXT_CLASS CSealingInspectProcessor : public ISealingInspectHikCamToParent,
-											   public ISealingInspectCoreToParent
+	public ISealingInspectCoreToParent
 {
 public:
 	CSealingInspectProcessor();
@@ -39,6 +40,7 @@ public:
 public:
 	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator);
 	BOOL InspectStop(emInspectCavity nInspCavity);
+	BOOL TestInspectCavity1();
 
 public:
 	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, int nFrame);
@@ -63,10 +65,15 @@ public:
 
 public:
 	// getter
-	CSealingInspectHikCam*            GetHikCamControl() { return m_pSealingInspHikCam; }
+	CSealingInspectHikCam*           GetHikCamControl() { return m_pSealingInspHikCam; }
+	CSealingInspectResult*           GetSealingInspectResultControl(int nResIdx) { return m_pSealingInspResult[nResIdx]; }
+	CSealingInspect_Simulation_IO*   GetSealingInspectSimulationIO(int nCoreIdx) { return m_pSealingInspect_Simulation_IO[nCoreIdx]; }
+
+	BOOL                             SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
 
 public:
 	virtual void							InspectComplete(emInspectCavity nSetInsp);
+	BOOL                                    GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes);
 	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
 
@@ -107,5 +114,10 @@ private:
 	CSealingInspectRecipe*            m_pSealingInspRecipe;
 
 	// Result
-	CSealingInspectResult*            m_pSealingInspResult;
+	CCriticalSection                  m_csInspResult[NUMBER_OF_SET_INSPECT];
+	CSealingInspectResult*            m_pSealingInspResult[NUMBER_OF_SET_INSPECT];
+
+	// Simulation IO
+	CCriticalSection                  m_csSimulation_IO[NUMBER_OF_SET_INSPECT];
+	CSealingInspect_Simulation_IO*    m_pSealingInspect_Simulation_IO[NUMBER_OF_SET_INSPECT];
 };

@@ -61,9 +61,18 @@ BOOL CSealingInspectProcessor::Initialize()
 	m_pSealingInspRecipe = new CSealingInspectRecipe;
 
 	// 5. Inspect Result Data
-	if (m_pSealingInspResult != NULL)
-		delete m_pSealingInspResult, m_pSealingInspResult = NULL;
-	m_pSealingInspResult = new CSealingInspectResult;
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pSealingInspResult[i] != NULL)
+			delete m_pSealingInspResult[i], m_pSealingInspResult[i] = NULL;
+		m_pSealingInspResult[i] = new CSealingInspectResult;
+	}
+
+	// simulation IO
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pSealingInspect_Simulation_IO[i] != NULL)
+			delete m_pSealingInspect_Simulation_IO[i], m_pSealingInspect_Simulation_IO[i] = NULL;
+		m_pSealingInspect_Simulation_IO[i] = new CSealingInspect_Simulation_IO;
+	}
 
 	// 6. Hik Cam
 	if (m_pSealingInspHikCam != NULL)
@@ -106,8 +115,16 @@ BOOL CSealingInspectProcessor::Destroy()
 	if (m_pSealingInspRecipe != NULL)
 		delete m_pSealingInspRecipe, m_pSealingInspRecipe = NULL;
 
-	if (m_pSealingInspResult != NULL)
-		delete m_pSealingInspResult, m_pSealingInspResult = NULL;
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pSealingInspResult[i] != NULL)
+			delete m_pSealingInspResult[i], m_pSealingInspResult[i] = NULL;
+	}
+
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pSealingInspect_Simulation_IO[i] != NULL)
+			delete m_pSealingInspect_Simulation_IO[i], m_pSealingInspect_Simulation_IO[i] = NULL;
+		m_pSealingInspect_Simulation_IO[i] = new CSealingInspect_Simulation_IO;
+	}
 
 	return TRUE;
 }
@@ -152,6 +169,7 @@ BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nI
 	m_pSealingInspHikCam->StartGrab(nSideCamIdx);
 
 	// create thread inspect cavity 1
+	m_pSealingInspCore[nCoreIdx]->SetCoreIndex(nCoreIdx);
 	m_pSealingInspCore[nCoreIdx]->SetSimulatorMode(isSimulator);
 	m_pSealingInspCore[nCoreIdx]->CreateInspectThread(nThreadCount, nInspCav);
 
@@ -172,6 +190,23 @@ BOOL CSealingInspectProcessor::InspectStop(emInspectCavity nInspCavity)
 	}
 
 	m_pSealingInspCore[nCoreIdx]->DeleteInspectThread();
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::TestInspectCavity1()
+{
+	int nTopCamIdx = 0;
+	int nSideCamIdx = 2;
+	int nCoreIdx = 0;
+
+	// start grabbing top cam 1 and side cam 1
+	m_pSealingInspHikCam->StartGrab(nTopCamIdx);
+	m_pSealingInspHikCam->StartGrab(nSideCamIdx);
+
+	// create thread inspect cavity 1
+	m_pSealingInspCore[nCoreIdx]->SetCoreIndex(nCoreIdx);
+	m_pSealingInspCore[nCoreIdx]->TestInspectCavity1(nCoreIdx);
+
 	return TRUE;
 }
 
@@ -501,12 +536,34 @@ void CSealingInspectProcessor::RegCallbackInscompleteFunc(CallbackInspectComplet
 	m_pCallbackInsCompleteFunc = pFunc;
 }
 
+BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO)
+{
+	CSingleLock localLock(&m_csSimulation_IO[nCoreIdx]);
+	localLock.Lock();
+
+	*(m_pSealingInspect_Simulation_IO[nCoreIdx]) = *(sealingInspSimulationIO);
+
+	localLock.Unlock();
+
+	return TRUE;
+}
+
 void CSealingInspectProcessor::InspectComplete(emInspectCavity nSetInsp)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
 		return;
 
-	m_pCallbackInsCompleteFunc();
+	(m_pCallbackInsCompleteFunc)(nSetInsp);
+}
+
+BOOL CSealingInspectProcessor::GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes)
+{
+	CSingleLock localLock(&m_csInspResult[nCoreIdx]);
+	localLock.Lock();
+	*(pSealingInspRes) = *(m_pSealingInspResult[nCoreIdx]);
+
+	localLock.Unlock();
+	return TRUE;
 }
 
 void CSealingInspectProcessor::LogMessage(char* strMessage)

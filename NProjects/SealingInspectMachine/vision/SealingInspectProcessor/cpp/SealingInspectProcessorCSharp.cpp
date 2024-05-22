@@ -178,6 +178,56 @@ bool SetTriggerSourceHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, i
 	else if (retVal == 1) return true;
 }
 
+bool InspectStart(CSealingInspectProcessor* pProcessor, int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->InspectStart(nThreadCount, nInspCavity, isSimulator);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool InspectStop(CSealingInspectProcessor* pProcessor, emInspectCavity nInspCavity)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->InspectStop(nInspCavity);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool GetInspectionResult(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspectResult* pSealingInspResult)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetInspectionResult(nCoreIdx, pSealingInspResult);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SetSealingInspectSimulationIO(nCoreIdx, sealingInspSimulationIO);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool TestInspectCavity1(CSealingInspectProcessor* pProcessor)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->TestInspectCavity1();
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 #pragma endregion
 
 void RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc)

@@ -8,7 +8,11 @@ CSealingInspectHikCam::CSealingInspectHikCam(ISealingInspectHikCamToParent* pInt
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
 		m_pCamera[i] = NULL;
 		m_pCameraImageBuffer[i] = NULL;
-		m_pCameraCurrentFrameIdx[i] = 0;
+		m_cameraCurrentFrameIdx[i] = 0;
+	}
+
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
+		m_currentFrameWaitProcessSideCamIdx[i] = 0;
 	}
 
 	std::queue<int> emptyList;
@@ -269,7 +273,7 @@ LPBYTE CSealingInspectHikCam::GetBufferImage(int nCamIdx)
 	CSingleLock localLock(&m_csCameraFrameIdx[nCamIdx]);
 	localLock.Lock();
 
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
+	int nCurrentFrameIdx = m_cameraCurrentFrameIdx[nCamIdx];
 
 	localLock.Unlock();
 
@@ -290,7 +294,7 @@ BOOL CSealingInspectHikCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
 	CSingleLock localLock(&m_csCameraFrameIdx[nCamIdx]);
 	localLock.Lock();
 
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
+	int nCurrentFrameIdx = m_cameraCurrentFrameIdx[nCamIdx];
 
 	int nWidth = m_pCameraImageBuffer[nCamIdx]->GetFrameWidth();
 	int nHeight = m_pCameraImageBuffer[nCamIdx]->GetFrameHeight();
@@ -313,21 +317,21 @@ BOOL CSealingInspectHikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
 	if (m_pCameraImageBuffer[nCamIdx] == NULL)
 		return FALSE;
 
-	int nBeforeFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
+	int nBeforeFrameIdx = m_cameraCurrentFrameIdx[nCamIdx];
 
-	DWORD tickCount = GetTickCount();
+	DWORD tickCount = GetTickCount64();
 
 	BOOL bGrabTimeOver = FALSE;
 
 	while (1)
 	{
-		if (10000 < GetTickCount() - tickCount)
+		if (10000 < GetTickCount64() - tickCount)
 		{
 			bGrabTimeOver = TRUE;
 			break;
 		}
 
-		if (nBeforeFrameIdx != m_pCameraCurrentFrameIdx[nCamIdx])
+		if (nBeforeFrameIdx != m_cameraCurrentFrameIdx[nCamIdx])
 			break;
 
 		Sleep(1);
@@ -339,12 +343,13 @@ BOOL CSealingInspectHikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
 	CSingleLock localLock(&m_csCameraFrameIdx[nCamIdx]);
 	localLock.Lock();
 
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
+	int nCurrentFrameIdx = m_cameraCurrentFrameIdx[nCamIdx];
 
 	int nWidth = m_pCameraImageBuffer[nCamIdx]->GetFrameWidth();
 	int nHeight = m_pCameraImageBuffer[nCamIdx]->GetFrameHeight();
+	int nFrameSize = m_pCameraImageBuffer[nCamIdx]->GetFrameSize();
 
-	memcpy(pBuffer, m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx), nWidth * nHeight);
+	memcpy(pBuffer, m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx), nFrameSize);
 
 	localLock.Unlock();
 
@@ -376,7 +381,7 @@ int CSealingInspectHikCam::PopInspectWaitFrame(int nGrabberIdx)
 	return nProcessFrame;
 }
 
-BOOL CSealingInspectHikCam::SetFrameWaitProcess_SideCam(int nCamIdx, int nFrame)
+BOOL CSealingInspectHikCam::SetFrameWaitProcess_SideCam(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return NULL;
@@ -387,10 +392,20 @@ BOOL CSealingInspectHikCam::SetFrameWaitProcess_SideCam(int nCamIdx, int nFrame)
 	CSingleLock localLock(&m_csInspectWaitList[nCamIdx]);
 	localLock.Lock();
 
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nCamIdx];
-	m_pFrameWaitProcessList[nCamIdx]->SetFrameImage(nFrame, m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx));
+	int nCurrentFrameWaitProcessIdx = m_currentFrameWaitProcessSideCamIdx[nCamIdx];
+	int nNextFrameWaitProcessIdx = nCurrentFrameWaitProcessIdx + 1;
 
-	m_queueInspectWaitList[nCamIdx].push(nFrame);
+	CSingleLock lockCamCurrentFrame(&m_csCameraFrameIdx[nCamIdx]);
+	lockCamCurrentFrame.Lock();
+	int nCurrentFrameIdx = m_cameraCurrentFrameIdx[nCamIdx];
+	lockCamCurrentFrame.Unlock();
+	
+	m_pFrameWaitProcessList[nCamIdx]->SetFrameImage(nCurrentFrameWaitProcessIdx, m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx));
+
+	m_queueInspectWaitList[nCamIdx].push(nCurrentFrameWaitProcessIdx);
+
+	nNextFrameWaitProcessIdx = nNextFrameWaitProcessIdx % MAX_IMAGE_BUFFER_SIDECAM;
+	m_currentFrameWaitProcessSideCamIdx[nCamIdx] = nNextFrameWaitProcessIdx;
 
 	localLock.Unlock();
 
@@ -428,14 +443,14 @@ int CSealingInspectHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex
 	CSingleLock localLock(&m_csCameraFrameIdx[nGrabberIndex]);
 	localLock.Lock();
 
-	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nGrabberIndex];
+	int nCurrentFrameIdx = m_cameraCurrentFrameIdx[nGrabberIndex];
 	int nNextFrameIdx = nCurrentFrameIdx + 1;
 
 	nNextFrameIdx = nNextFrameIdx % MAX_FRAME_COUNT;
 
 	m_pCameraImageBuffer[nGrabberIndex]->SetFrameImage(nNextFrameIdx, (LPBYTE)pBuffer);
 
-	m_pCameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
+	m_cameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
 	localLock.Unlock();
 

@@ -41,6 +41,18 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetTriggerSourceHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, int nSource);
 
+	/************************** Get Result **************************/
+	__declspec(dllexport) bool                      InspectStart(CSealingInspectProcessor* pProcessor, int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator);
+
+	__declspec(dllexport) bool                      InspectStop(CSealingInspectProcessor* pProcessor,emInspectCavity nInspCavity);
+
+	__declspec(dllexport) bool                      GetInspectionResult(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspectResult* pSealingInspResult);
+
+	__declspec(dllexport) bool                      SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
+
+	/************************** Test Inspect **************************/
+	__declspec(dllexport) bool                      TestInspectCavity1(CSealingInspectProcessor* pProcessor);
+
 	/************************** Callback **************************/
 	__declspec(dllexport) void                      RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc);
 

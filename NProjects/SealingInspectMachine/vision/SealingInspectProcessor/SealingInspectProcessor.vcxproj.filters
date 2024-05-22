@@ -264,6 +264,15 @@
     <ClInclude Include="header\SealingInspectCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\SealingInspectResult_TopCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SealingInspectResult_SideCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SealingInspect_Simulation_IO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -426,6 +435,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\SealingInspectCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\SealingInspectResult_TopCam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\SealingInspectResult_SideCam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\SealingInspect_Simulation_IO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

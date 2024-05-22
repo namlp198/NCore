@@ -10,6 +10,7 @@
 #include "SealingInspectSystemSetting.h"
 #include "SealingInspectResult.h"
 #include "SealingInspectHikCam.h"
+#include "SealingInspect_Simulation_IO.h"
 #include "WorkThreadArray.h"
 
 #define TEST_INSPECT_CAVITY_1
@@ -25,6 +26,8 @@ interface ISealingInspectCoreToParent
 	virtual CSealingInspectHikCam*          GetHikCamControl() = 0;
 	virtual BOOL                            SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual BOOL                            SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual CSealingInspectResult*          GetSealingInspectResultControl(int nResIdx) = 0;
+	virtual CSealingInspect_Simulation_IO*  GetSealingInspectSimulationIO(int nCoreIdx) = 0;
 };
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
@@ -65,16 +68,20 @@ public:
 	void StopThread();
 	void ProcessFrame(CSealingInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex);
 
-	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, cv::Mat& mat);
-	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, cv::Mat& mat);
+	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, BYTE* pBuff);
+	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, BYTE* pBuff);
 	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nFrameIdx);
+
+	void TestInspectCavity1(int nCoreIdx);
 
 public:
 
 	// setter
 	void        SetSimulatorMode(BOOL isSimulator) { m_bSimulator = isSimulator; }
+	void        SetCoreIndex(UINT nCoreIdx) { m_nCoreIdx = nCoreIdx; }
 	// getter
 	BOOL        GetSimulatorMode() { return m_bSimulator; }
+	UINT        GetCoreIndex() { return m_nCoreIdx; }
 
 private:
 
@@ -93,4 +100,6 @@ private:
 	std::vector<BOOL>					m_vecProcessedFrame;
 
 	CCriticalSection					m_csPostProcessing;
+
+	UINT                                m_nCoreIdx;
 };

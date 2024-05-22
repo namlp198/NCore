@@ -31,7 +31,7 @@ public:
 	CSharedMemoryBuffer*            GetSharedMemoryBuffer(int nCamIdx);
 	int							    PopInspectWaitFrame(int nGrabberIdx);
 
-	BOOL                            SetFrameWaitProcess_SideCam(int nCamIdx, int nFrame);
+	BOOL                            SetFrameWaitProcess_SideCam(int nCamIdx);
 	LPBYTE                          GetFrameWaitProcess_SideCam(int nCamIdx, int nFrame);
 
 public:
@@ -62,7 +62,8 @@ private:
 
 	CSharedMemoryBuffer*                m_pCameraImageBuffer[MAX_CAMERA_INSPECT_COUNT];
 
-	int                                 m_pCameraCurrentFrameIdx[MAX_CAMERA_INSPECT_COUNT];
+	int                                 m_cameraCurrentFrameIdx[MAX_CAMERA_INSPECT_COUNT];
+	int                                 m_currentFrameWaitProcessSideCamIdx[MAX_IMAGE_BUFFER_SIDECAM];
 
 	// Inspect Wait Frame List
 	CCriticalSection			        m_csInspectWaitList[MAX_CAMERA_INSPECT_COUNT];
