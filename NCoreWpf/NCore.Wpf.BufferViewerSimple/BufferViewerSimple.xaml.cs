@@ -138,18 +138,27 @@ namespace NCore.Wpf.BufferViewerSimple
                 {
                     if(_eInspectResult == EInspectResult.InspectResult_OK)
                     {
-                        lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#00FF00");
-                        lbInspectResult.Content = "OK";
+                        lbInspectResult.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#00FF00");
+                            lbInspectResult.Content = "OK";
+                        }));
                     }
                     else if (_eInspectResult == EInspectResult.InspectResult_NG)
                     {
-                        lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF3333");
-                        lbInspectResult.Content = "NG";
+                        lbInspectResult.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF3333");
+                            lbInspectResult.Content = "NG";
+                        }));
                     }
                     else
                     {
-                        lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
-                        lbInspectResult.Content = "UNKNOWN";
+                        lbInspectResult.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
+                            lbInspectResult.Content = "UNKNOWN";
+                        }));
                     }
                 }
             }
