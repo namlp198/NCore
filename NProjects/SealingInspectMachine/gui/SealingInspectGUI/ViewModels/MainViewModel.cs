@@ -91,12 +91,14 @@ namespace SealingInspectGUI.ViewModels
                     break;
             }
         }
-        private void UpdateResultView(BufferViewerSimple bufferSimple, bool b, int nBuff, int nFrame, string s)
+        private async void UpdateResultView(BufferViewerSimple bufferSimple, bool b, int nBuff, int nFrame, string s)
         {
             if (string.Compare(s.ToUpper(), "TOP") == 0)
                 bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_TOP(nBuff, nFrame);
-            else
+            else if(string.Compare(s.ToUpper(), "SIDE") == 0)
                 bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuff, nFrame);
+            await bufferSimple.UpdateImage();
+
             bufferSimple.InspectResult = (b == true) ? EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
         }
         #endregion

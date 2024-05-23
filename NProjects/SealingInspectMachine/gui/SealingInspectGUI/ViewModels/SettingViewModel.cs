@@ -76,7 +76,7 @@ namespace SealingInspectGUI.ViewModels
                                                                         _settingView.buffVSSettings.ModeView);
         }
 
-        private void SimulationThread_UpdateUI()
+        private async void SimulationThread_UpdateUI()
         {
             if (CameraSelected == ECameraList.TopCam1 ||
                 CameraSelected == ECameraList.TopCam2)
@@ -85,6 +85,8 @@ namespace SealingInspectGUI.ViewModels
             else if (CameraSelected == ECameraList.SideCam1 ||
                 CameraSelected == ECameraList.SideCam2)
                 _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_SIDE(m_nBuffIdx, m_nFrame - 1);
+
+            await _settingView.buffVSSettings.UpdateImage();
         }
         #endregion
 

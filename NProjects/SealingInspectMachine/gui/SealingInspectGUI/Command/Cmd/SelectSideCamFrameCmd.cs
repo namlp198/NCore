@@ -15,7 +15,7 @@ namespace SealingInspectGUI.Command.Cmd
         {
 
         }
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
             string strBtnName = parameter as string;
             if (strBtnName != null)
@@ -32,11 +32,17 @@ namespace SealingInspectGUI.Command.Cmd
                 nBuffIdx -= 1;
 
                 if (string.Compare(strCamName, "SideCam1") == 0)
+                {
                     MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                                                                                   m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuffIdx, nFrame);
+                    await MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.UpdateImage();
+                }
                 else if (string.Compare(strCamName, "SideCam2") == 0)
+                {
                     MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                                                                                   m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuffIdx, nFrame);
+                    await MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.UpdateImage();
+                }
             }
         }
     }
