@@ -90,10 +90,10 @@ namespace NCore.Wpf.BufferViewerSimple
             {
                 if (SetProperty(ref _bufferView, value))
                 {
-                    this.Dispatcher.BeginInvoke(new Action(async() =>
-                    {
-                        await UpdateImage();
-                    }));
+                    //this.Dispatcher.BeginInvoke(new Action(async() =>
+                    //{
+                    //    await UpdateImage();
+                    //}));
                 }
             }
         }
