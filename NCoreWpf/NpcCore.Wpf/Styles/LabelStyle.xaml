@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/NpcCore.Wpf;component/Resources/Styles/Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <ControlTemplate x:Key="lblMainTemp"
+                     TargetType="Label">
+        <Grid>
+            <Border BorderBrush="{DynamicResource RGB_Night_56_59_65}"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    Margin="0.6">
+                <Rectangle Fill="{DynamicResource RGB_Night_39_42_49}"
+                           Height="auto" />
+            </Border>
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Bottom"
+                              TextBlock.Foreground="White"
+                              TextBlock.FontFamily="Open Sans"
+                              TextBlock.FontWeight="SemiBold"
+                              TextBlock.FontSize="12"
+                              Margin="6 6 6 6"
+                              ContentStringFormat="{}{0:0.##}" />
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="lbShowResult"
+                     TargetType="Label">
+        <Grid>
+            <Border BorderBrush="{DynamicResource RGB_Night_56_59_65}"
+                    BorderThickness="0.6"
+                    CornerRadius="2"
+                    Margin="0.6">
+                <Rectangle Fill="{TemplateBinding Background}"
+                           Height="auto" />
+            </Border>
+            <ContentPresenter Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Bottom"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              TextBlock.FontFamily="Open Sans"
+                              TextBlock.FontWeight="SemiBold"
+                              TextBlock.FontSize="16"
+                              Margin="6 6 6 6"
+                              ContentStringFormat="{}{0:0.##}" />
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

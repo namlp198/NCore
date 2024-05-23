@@ -26,5 +26,7 @@
         <ResourceDictionary Source="/NpcCore.Wpf;component/Styles/ComboBoxStyle.xaml" />
         <ResourceDictionary Source="/NpcCore.Wpf;component/Styles/SliderStyle.xaml" />
         <ResourceDictionary Source="/NpcCore.Wpf;component/Styles/BorderStyle.xaml" />
+        <ResourceDictionary Source="/NpcCore.Wpf;component/Styles/TabItemStyle.xaml" />
+        <ResourceDictionary Source="/NpcCore.Wpf;component/Styles/LabelStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
