@@ -73,6 +73,7 @@
     <Compile Include="BufferViewerSimple.xaml.cs">
       <DependentUpon>BufferViewerSimple.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\EnumResultToBackgroundConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

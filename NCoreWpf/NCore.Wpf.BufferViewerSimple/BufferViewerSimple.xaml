@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Ctrls="clr-namespace:NpcCore.Wpf.Controls;assembly=NpcCore.Wpf"
+             xmlns:Converter="clr-namespace:NCore.Wpf.BufferViewerSimple.Converters"
              xmlns:local="clr-namespace:NCore.Wpf.BufferViewerSimple"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600"
@@ -79,11 +80,13 @@
                         Value="Center" />
 
             </Style>
+            <Converter:EnumResultToBackgroundConverter x:Key="EnumResultToBackgroundConverter" />
+            <Converter:EnumResultToTextConverter x:Key="EnumResultToTextConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="38"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -95,8 +98,8 @@
             <Label Grid.Column="0"
                    x:Name="lbInspectResult"
                    Margin="1"
-                   Background="{DynamicResource RGB_Night_33_41_57}"
-                   Content="NONE"
+                   Background="{Binding InspectResult, Converter={StaticResource EnumResultToBackgroundConverter}}"
+                   Content="{Binding InspectResult, Converter={StaticResource EnumResultToTextConverter}}"
                    VerticalContentAlignment="Center"
                    HorizontalContentAlignment="Center"
                    Foreground="White"

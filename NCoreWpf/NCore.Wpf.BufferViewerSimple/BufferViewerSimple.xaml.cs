@@ -136,30 +136,7 @@ namespace NCore.Wpf.BufferViewerSimple
             {
                 if(SetProperty(ref _eInspectResult, value))
                 {
-                    if(_eInspectResult == EInspectResult.InspectResult_OK)
-                    {
-                        lbInspectResult.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#00FF00");
-                            lbInspectResult.Content = "OK";
-                        }));
-                    }
-                    else if (_eInspectResult == EInspectResult.InspectResult_NG)
-                    {
-                        lbInspectResult.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF3333");
-                            lbInspectResult.Content = "NG";
-                        }));
-                    }
-                    else
-                    {
-                        lbInspectResult.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            lbInspectResult.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
-                            lbInspectResult.Content = "UNKNOWN";
-                        }));
-                    }
+                   
                 }
             }
         }
