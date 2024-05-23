@@ -66,18 +66,18 @@ public:
 	void RunningThread_INSPECT_CAVITY1(int nThreadIndex);
 	void RunningThread_INSPECT_CAVITY2(int nThreadIndex);
 	void StopThread();
-	void ProcessFrame(CSealingInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex);
 
-	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, cv::Mat& mat);
-	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, cv::Mat& mat);
-	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, int nFrameIdx);
+	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat);
+	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat);
+	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx);
 
 	void TestInspectCavity1(int nCoreIdx);
+	void TestInspectCavity2(int nCoreIdx);
 
 public:
 
 	// setter
-	void        SetSimulatorMode(BOOL isSimulator) { m_bSimulator = isSimulator; }
+	void        SetSimulatorMode(BOOL bSimu) { m_bSimulator = bSimu; }
 	void        SetCoreIndex(UINT nCoreIdx) { m_nCoreIdx = nCoreIdx; }
 	// getter
 	BOOL        GetSimulatorMode() { return m_bSimulator; }

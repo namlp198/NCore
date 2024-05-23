@@ -139,7 +139,7 @@ BOOL CSealingInspectProcessor::LoadRecipe()
 	return 0;
 }
 
-BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator)
+BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator)
 {
 	// NUMBER_OF_SET_INSPECT = 2
 	int nCoreIdx = 0;
@@ -170,7 +170,7 @@ BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nI
 
 	// create thread inspect cavity 1
 	m_pSealingInspCore[nCoreIdx]->SetCoreIndex(nCoreIdx);
-	m_pSealingInspCore[nCoreIdx]->SetSimulatorMode(isSimulator);
+	m_pSealingInspCore[nCoreIdx]->SetSimulatorMode(bSimulator);
 	m_pSealingInspCore[nCoreIdx]->CreateInspectThread(nThreadCount, nInspCav);
 
 	return TRUE;
@@ -188,8 +188,14 @@ BOOL CSealingInspectProcessor::InspectStop(emInspectCavity nInspCavity)
 		nCoreIdx = -1;
 		return FALSE;
 	}
-
+	m_pSealingInspCore[nCoreIdx]->StopThread();
+	m_pSealingInspect_Simulation_IO[nCoreIdx]->m_bLOCK_PROCESS = TRUE;
 	m_pSealingInspCore[nCoreIdx]->DeleteInspectThread();
+
+	// Stop Grabbing
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
+		m_pSealingInspHikCam->StopGrab(i);
+	}
 	return TRUE;
 }
 
@@ -206,6 +212,23 @@ BOOL CSealingInspectProcessor::TestInspectCavity1()
 	// create thread inspect cavity 1
 	m_pSealingInspCore[nCoreIdx]->SetCoreIndex(nCoreIdx);
 	m_pSealingInspCore[nCoreIdx]->TestInspectCavity1(nCoreIdx);
+
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::TestInspectCavity2()
+{
+	int nTopCamIdx = 1;
+	int nSideCamIdx = 3;
+	int nCoreIdx = 1;
+
+	// start grabbing top cam 2 and side cam 2
+	m_pSealingInspHikCam->StartGrab(nTopCamIdx);
+	m_pSealingInspHikCam->StartGrab(nSideCamIdx);
+
+	// create thread inspect cavity 1
+	m_pSealingInspCore[nCoreIdx]->SetCoreIndex(nCoreIdx);
+	m_pSealingInspCore[nCoreIdx]->TestInspectCavity2(nCoreIdx);
 
 	return TRUE;
 }

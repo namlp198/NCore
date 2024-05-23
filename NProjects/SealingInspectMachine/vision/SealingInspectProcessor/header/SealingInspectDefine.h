@@ -27,5 +27,7 @@
 #define MAX_FRAME_COUNT 15
 #define MAX_CAM_COUNT_1SET 2
 
+#define SAVE_IMAGE_QUALITY_RATIO			100
+
 
 typedef enum { emUNKNOWN = 0, emInspectCavity_Cavity1, emInspectCavity_Cavity2 } emInspectCavity;

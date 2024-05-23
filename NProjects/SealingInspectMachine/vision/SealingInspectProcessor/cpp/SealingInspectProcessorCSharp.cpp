@@ -228,6 +228,16 @@ bool TestInspectCavity1(CSealingInspectProcessor* pProcessor)
 	else               return true;
 }
 
+bool TestInspectCavity2(CSealingInspectProcessor* pProcessor)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->TestInspectCavity2();
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 #pragma endregion
 
 void RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc)

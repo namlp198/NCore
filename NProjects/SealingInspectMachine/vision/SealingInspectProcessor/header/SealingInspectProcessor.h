@@ -38,9 +38,10 @@ public:
 	BOOL LoadRecipe();
 
 public:
-	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator);
+	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator);
 	BOOL InspectStop(emInspectCavity nInspCavity);
 	BOOL TestInspectCavity1();
+	BOOL TestInspectCavity2();
 
 public:
 	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, int nFrame);

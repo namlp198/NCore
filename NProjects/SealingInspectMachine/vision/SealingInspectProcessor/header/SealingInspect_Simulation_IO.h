@@ -7,6 +7,7 @@ public:
 	~CSealingInspect_Simulation_IO();
 
 public:
+	BOOL    m_bLOCK_PROCESS;
 	BOOL    m_bRing;
 	BOOL    m_b4Bar;
 	BOOL    m_bFrame1;
