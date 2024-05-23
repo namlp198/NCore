@@ -23,6 +23,7 @@ namespace SealingInspectGUI.Commons
         TriggerSource_Software = 0,
         TriggerSource_Hardware
     }
+    public enum emMachineMode { MachineMode_Auto, MachineMode_Manual}
     public class Defines
     {
         public static string StartupProgPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));

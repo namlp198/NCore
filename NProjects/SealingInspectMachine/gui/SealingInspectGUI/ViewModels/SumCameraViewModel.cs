@@ -59,10 +59,12 @@ namespace SealingInspectGUI.ViewModels
             _sumCameraView.buffSideCam2.CameraName = "[Side Cam 2]";
             _sumCameraView.buffSideCam2.ShowDetail += BuffSideCam2_ShowDetail;
 
-            LoadAllImageCmd = new LoadAllImageCmd();
-            SelectSideCamFrameCmd = new SelectSideCamFrameCmd();
-            GrabCavity1Cmd = new GrabCavity1Cmd();
-            TestIOCmd = new TestIOCmd();
+            this.LoadAllImageCmd = new LoadAllImageCmd();
+            this.SelectSideCamFrameCmd = new SelectSideCamFrameCmd();
+            this.GrabCavity1Cmd = new GrabCavity1Cmd();
+            this.GrabCavity2Cmd = new GrabCavity2Cmd();
+            this.GrabAllCmd = new GrabAllCmd();
+            this.TestIOCmd = new TestIOCmd();
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
         }
@@ -110,6 +112,7 @@ namespace SealingInspectGUI.ViewModels
             if (_sumCameraView.buffSideCam2.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffSideCam2.BufferView;
+                ucShowDetail.buffVS.InspectResult = _sumCameraView.buffSideCam2.InspectResult;
                 await ucShowDetail.buffVS.UpdateImage();
             }
         }
@@ -124,6 +127,7 @@ namespace SealingInspectGUI.ViewModels
             if (_sumCameraView.buffTopCam2_Frame2.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffTopCam2_Frame2.BufferView;
+                ucShowDetail.buffVS.InspectResult = _sumCameraView.buffTopCam2_Frame2.InspectResult;
                 await ucShowDetail.buffVS.UpdateImage();
             }
         }
@@ -138,6 +142,7 @@ namespace SealingInspectGUI.ViewModels
             if (_sumCameraView.buffTopCam2_Frame1.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffTopCam2_Frame1.BufferView;
+                ucShowDetail.buffVS.InspectResult = _sumCameraView.buffTopCam2_Frame1.InspectResult;
                 await ucShowDetail.buffVS.UpdateImage();
             }
         }
@@ -152,6 +157,7 @@ namespace SealingInspectGUI.ViewModels
             if (_sumCameraView.buffSideCam1.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffSideCam1.BufferView;
+                ucShowDetail.buffVS.InspectResult = _sumCameraView.buffSideCam1.InspectResult;
                 await ucShowDetail.buffVS.UpdateImage();
             }
         }
@@ -166,6 +172,7 @@ namespace SealingInspectGUI.ViewModels
             if (_sumCameraView.buffTopCam1_Frame2.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffTopCam1_Frame2.BufferView;
+                ucShowDetail.buffVS.InspectResult = _sumCameraView.buffTopCam1_Frame2.InspectResult;
                 await ucShowDetail.buffVS.UpdateImage();
             }
         }
@@ -180,6 +187,7 @@ namespace SealingInspectGUI.ViewModels
             if (_sumCameraView.buffTopCam1_Frame1.BufferView != IntPtr.Zero)
             {
                 ucShowDetail.buffVS.BufferView = _sumCameraView.buffTopCam1_Frame1.BufferView;
+                ucShowDetail.buffVS.InspectResult = _sumCameraView.buffTopCam1_Frame1.InspectResult;
                 await ucShowDetail.buffVS.UpdateImage();
             }
         }
@@ -193,6 +201,8 @@ namespace SealingInspectGUI.ViewModels
         public ICommand LoadAllImageCmd { get; }
         public ICommand SelectSideCamFrameCmd { get; }
         public ICommand GrabCavity1Cmd { get; }
+        public ICommand GrabCavity2Cmd { get; }
+        public ICommand GrabAllCmd { get; }
         public ICommand TestIOCmd { get; }
         #endregion
     }

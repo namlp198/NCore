@@ -43,14 +43,17 @@
             <Separator Margin="3" />
             <Button Margin="5"
                     Width="120"
-                    Name="btnRunStop">
+                    Name="btnMachineMode"
+                    Command="{Binding SelectMachineModeCmd}"
+                    CommandParameter="{Binding ElementName=tbMachineMode, Path=Text}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
-                        <Image Source="{DynamicResource IMG_Btn_ChartNext}"
+                        <Image Source="{Binding DisplayImage_MachineModePath}"
                                Margin="8 4 8 0"
                                Width="25"
                                Height="25" />
-                        <TextBlock Text="Stop"
+                        <TextBlock Text="MANUAL"
+                                   Name="tbMachineMode"
                                    VerticalAlignment="Center"
                                    TextAlignment="Center"
                                    FontSize="14"
@@ -148,7 +151,17 @@
 
         <ContentControl Grid.Row="1"
                         Margin="2"
-                        Name="contentMain"/>
-
+                        Name="contentMain" />
+        <StatusBar Grid.Row="2"
+                   Background="{DynamicResource RGB_Night_46_61_90}">
+            <TextBlock Margin="2"
+                       Name="tbShowMachineMode"
+                       Text="[AUTO MODE]"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       FontWeight="SemiBold"
+                       Foreground="White" />
+        </StatusBar>
     </Grid>
 </Window>

@@ -224,103 +224,125 @@
               Background="White"
               Margin="0 0 0 0"></Grid>
 
-        <StackPanel Grid.Row="6"
-                    Grid.ColumnSpan="3"
-                    Orientation="Horizontal">
-            <Button x:Name="btnLoadAllImage"
-                    Command="{Binding LoadAllImageCmd}"
-                    Margin="10 5 5 5"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Foreground="White"
-                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="12"
-                                   FontWeight="Bold"
-                                   Text="Load All Image" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button x:Name="btnAllInspect"
-                    Margin="5"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Foreground="White"
-                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="12"
-                                   FontWeight="Bold"
-                                   Text="All Inspect" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button x:Name="btnSaveAllImage"
-                    Margin="5"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Foreground="White"
-                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="12"
-                                   FontWeight="Bold"
-                                   Text="Save All Image" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button x:Name="btnGrabAll"
-                    Margin="30 5 5 5"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Foreground="White"
-                    Background="{DynamicResource RGB_Hot_206_59_63}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="12"
-                                   FontWeight="Bold"
-                                   Text="Grab All" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button x:Name="btnGrabCavity1"
-                    Margin="5 5 5 5"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Foreground="White"
-                    Command="{Binding GrabCavity1Cmd}"
-                    Background="{DynamicResource RGB_Hot_206_59_63}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="12"
-                                   FontWeight="Bold"
-                                   Text="Grab Cavity 1" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button x:Name="btnGrabCavity2"
-                    Margin="5 5 5 5"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Foreground="White"
-                    Background="{DynamicResource RGB_Hot_206_59_63}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="12"
-                                   FontWeight="Bold"
-                                   Text="Grab Cavity 2" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button Margin="10 5 5 5"
-                    Width="80"
-                    Content="Test"
-                    FontSize="14"
-                    FontWeight="SemiBold"
-                    VerticalContentAlignment="Center"
-                    Command="{Binding TestIOCmd}"/>
-        </StackPanel>
+        <Grid Grid.Row="6"
+              Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        x:Name="stackManual"
+                        IsEnabled="False">
+                <Button x:Name="btnLoadAllImage"
+                        Command="{Binding LoadAllImageCmd}"
+                        Margin="10 5 5 5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Background="{DynamicResource RGB_Cold_77_136_255}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="Load All Image" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="btnAllInspect"
+                        Margin="5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Background="{DynamicResource RGB_Cold_77_136_255}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="All Inspect" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="btnSaveAllImage"
+                        Margin="5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Background="{DynamicResource RGB_Cold_77_136_255}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="Save All Image" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="btnGrabAll"
+                        Margin="30 5 5 5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Background="{DynamicResource RGB_Hot_206_59_63}"
+                        Command="{Binding GrabAllCmd}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="Grab All" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="btnGrabCavity1"
+                        Margin="5 5 5 5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Command="{Binding GrabCavity1Cmd}"
+                        Background="{DynamicResource RGB_Hot_206_59_63}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="Grab Cavity 1" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button x:Name="btnGrabCavity2"
+                        Margin="5 5 5 5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Background="{DynamicResource RGB_Hot_206_59_63}"
+                        Command="{Binding GrabCavity2Cmd}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="Grab Cavity 2" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Margin="10 5 5 5"
+                        Width="100"
+                        Content="Open TestIO"
+                        Name="btnShowTestIOView"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding TestIOCmd}"
+                        CommandParameter="{Binding ElementName=btnShowTestIOView, Path=Name}" />
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Button Margin="10 5 5 5"
+                        Width="160"
+                        Name="btnInspSimul"
+                        Content="[Inspection Simulation]"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding TestIOCmd}"
+                        CommandParameter="{Binding ElementName=btnInspSimul, Path=Name}" />
+            </Grid>
+        </Grid>
 
         <!--separator-->
         <Grid Grid.Row="7"

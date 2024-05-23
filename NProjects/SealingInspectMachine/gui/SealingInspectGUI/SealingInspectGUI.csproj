@@ -95,7 +95,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\GrabAllCmd.cs" />
+    <Compile Include="Command\Cmd\GrabCavity2Cmd .cs" />
     <Compile Include="Command\Cmd\GrabCavity1Cmd.cs" />
+    <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
     <Compile Include="Command\Cmd\SoftwareTriggerHikCamCmd.cs" />
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\Cmd\TestIOCmd.cs" />

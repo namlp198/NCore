@@ -200,6 +200,15 @@ namespace SealingInspectGUI.Manager.Class
         public bool TestInspectCavity1() { return TestInspectCavity1(m_sealingInspectProcessor); }
 
 
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool TestInspectCavity2(IntPtr sealingInspProcessor);
+        public bool TestInspectCavity2() { return TestInspectCavity2(m_sealingInspectProcessor); }
+
+
         #endregion
 
         #region Callback
