@@ -147,7 +147,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 			// Process Started..
 			m_vecProcessedFrame[nFrameIdx] = TRUE;
 
-			ProcessFrame_SideCam(recipe, nSideCamIdx, nFrameIdx);
+			//ProcessFrame_SideCam(recipe, nSideCamIdx, nFrameIdx);
 		}
 		//m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bRing = FALSE;
 		//m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_b4Bar = FALSE;
@@ -190,40 +190,114 @@ void CSealingInspectCore::StopThread()
 		m_bRunningThread[i] = FALSE;
 }
 
+void CSealingInspectCore::TestInspectCavity1(int nCoreIdx)
+{
+	if (m_pInterface == NULL)
+		return;
+
+	// 1. Load Recipe
+
+	CSealingInspectRecipe* recipe = m_pInterface->GetRecipe();
+
+	/*
+	1. At processor class have 2 pointer for TOP and SIDE
+	2. At HikCam class just have 1 array 4 pointer, order is these pointer with 0, 1 index correspond TOPCAM1, TOPCAM2
+	and 2, 3 index correspond SIDECAM1, SIDECAM2
+	*/
+	int nTopCam1_BufferHikCamIdx = 0;
+	int nSideCam1_BufferHikCamIdx = 2;
+
+	int nTopCam1_BufferProcessor = 0;
+	int nSideCam1_BufferProcessor = 0;
+
+
+	// for avoid UI Freezing
+	Sleep(1);
+
+	// 2. turn on ring light
+
+	// 3. wait for the signal lighting cluster go to the position capture.
+
+	// 4. grab frame
+	CSealingInspectHikCam* hikCamControl = m_pInterface->GetHikCamControl();
+
+	cv::Mat matTopResult = cv::Mat::zeros(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC3);
+	cv::Mat matSideResult = cv::Mat::zeros(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3);
+
+	// 5. grab frame 1
+	if (hikCamControl->GetGrabBufferImage(nTopCam1_BufferHikCamIdx, matTopResult.data) == FALSE)
+		return;
+
+	// 6. process frame 1 (top cam 1)
+	ProcessFrame1_TopCam(recipe, nTopCam1_BufferHikCamIdx, nTopCam1_BufferProcessor, matTopResult);
+
+	// 7. turn on 4 bar light
+
+	Sleep(500);
+
+	// 8. grab frame
+	if (hikCamControl->GetGrabBufferImage(nTopCam1_BufferHikCamIdx, matTopResult.data) == FALSE)
+		return;
+
+	// 9. process frame 2 (top cam 1)
+	ProcessFrame2_TopCam(recipe, nTopCam1_BufferHikCamIdx, nTopCam1_BufferProcessor, matTopResult);
+
+	// 10. Read the PLC signal for grab frame, then store in frame wait process list.
+
+#ifdef TEST_INSPECT_CAVITY_1
+
+	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
+	{
+		hikCamControl->SetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx);
+		Sleep(100);
+	}
+
+#endif // TEST_INSPECT_CAVITY_1
+
+	while (!hikCamControl->GetQueueInspectWaitList(nSideCam1_BufferHikCamIdx).empty())
+	{
+		int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam1_BufferHikCamIdx);
+
+		// Not Grab Image..
+		if (nFrameIdx == -1)
+			continue;
+
+		ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx);
+	}
+
+	m_pInterface->InspectComplete(emInspectCavity_Cavity1);
+}
+
 void CSealingInspectCore::ProcessFrame(CSealingInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex)
 {
 }
 
-void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, BYTE* pBuff)
+void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, cv::Mat& mat)
 {
 	// set buffer
-	m_pInterface->SetTopCamResultBuffer(nCamIdx, 0, pBuff);
+	m_pInterface->SetTopCamResultBuffer(nBufferIdx, 0, mat.data);
 
-	cv::Mat mat(FRAME_WIDTH_TOPCAM, FRAME_HEIGHT_TOPCAM, CV_8UC3, pBuff);
-
-	char ch[100] = {};
-	sprintf_s(ch, "%s%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "TopCam1_Frame1.png");
+	char ch[255] = {};
+	sprintf_s(ch, "%s%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "TopCam1_Frame1.bmp");
 	cv::imwrite(ch, mat);
-	
+
 	m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bStatusFrame1 = FALSE;
 }
 
-void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, BYTE* pBuff)
+void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, cv::Mat& mat)
 {
 	// set buffer
-	m_pInterface->SetTopCamResultBuffer(nCamIdx, 1, pBuff);
+	m_pInterface->SetTopCamResultBuffer(nBufferIdx, 1, mat.data);
 
-	cv::Mat mat(FRAME_WIDTH_TOPCAM, FRAME_HEIGHT_TOPCAM, CV_8UC3, pBuff);
-
-	char ch[100] = {};
-	sprintf_s(ch, "%s%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "TopCam1_Frame2.png");
+	char ch[255] = {};
+	sprintf_s(ch, "%s%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "TopCam1_Frame2.bmp");
 	cv::imwrite(ch, mat);
 
 	m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bStatusFrame2 = TRUE;
 	m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bInspectComplete = TRUE;
 }
 
-void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nFrameIdx)
+void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, int nFrameIdx)
 {
 	// 1. Get Buffer..
 	LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nCamIdx, nFrameIdx);
@@ -235,12 +309,12 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 
 	// 3. Set buff
 
-	m_pInterface->SetSideCamResultBuffer(nCamIdx, nFrameIdx, pImageBuffer);
+	m_pInterface->SetSideCamResultBuffer(nBufferIdx, nFrameIdx, pImageBuffer);
 
-	cv::Mat mat(FRAME_WIDTH_TOPCAM, FRAME_HEIGHT_TOPCAM, CV_8UC3, pImageBuffer);
+	cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
 
 	char ch[100] = {};
-	sprintf_s(ch, "%s%s%d%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "SideCam1_Frame", nFrameIdx + 1, ".png");
+	sprintf_s(ch, "%s%s%d%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "SideCam1_Frame", nFrameIdx + 1, ".bmp");
 	cv::imwrite(ch, mat);
 
 	switch (nFrameIdx)
@@ -258,78 +332,5 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame4 = TRUE;
 		break;
 	}
-}
-
-void CSealingInspectCore::TestInspectCavity1(int nCoreIdx)
-{
-	if (m_pInterface == NULL)
-		return;
-
-	// 1. Load Recipe
-
-	CSealingInspectRecipe* recipe = m_pInterface->GetRecipe();
-
-	int nTopCamIdx = 0;
-	int nSideCamIdx = 2;
-
-
-	// for avoid UI Freezing
-	Sleep(1);
-
-	// 2. turn on ring light
-
-	// 3. wait for the signal lighting cluster go to the position capture.
-
-	// 4. grab frame
-	CSealingInspectHikCam* hikCamControl = m_pInterface->GetHikCamControl();
-
-	cv::Mat matTopResult = cv::Mat::zeros(FRAME_WIDTH_TOPCAM, FRAME_HEIGHT_TOPCAM, CV_8UC3);
-	cv::Mat matSideResult = cv::Mat::zeros(FRAME_WIDTH_SIDECAM, FRAME_HEIGHT_SIDECAM, CV_8UC3);
-
-	LPBYTE pBuff1 = hikCamControl->GetBufferImage(nTopCamIdx);
-
-	// 5. grab frame 1
-	/*if (hikCamControl->GetGrabBufferImage(nTopCamIdx, matTopResult.data) == FALSE)
-		return;*/
-
-	// 6. process frame 1 (top cam 1)
-	ProcessFrame1_TopCam(recipe, nTopCamIdx, pBuff1);
-
-	// 7. turn on 4 bar light
-
-	Sleep(500);
-
-	LPBYTE pBuff2 = hikCamControl->GetBufferImage(nTopCamIdx);
-	// 8. grab frame
-	/*if (hikCamControl->GetGrabBufferImage(nTopCamIdx, matTopResult.data) == FALSE)
-		return;*/
-
-	// 9. process frame 2 (top cam 1)
-	ProcessFrame2_TopCam(recipe, nTopCamIdx, pBuff2);
-
-	// 10. Read the PLC signal for grab frame, then store in frame wait process list.
-
-#ifdef TEST_INSPECT_CAVITY_1
-
-	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
-	{
-		hikCamControl->SetFrameWaitProcess_SideCam(nSideCamIdx);
-		Sleep(100);
-	}
-
-#endif // TEST_INSPECT_CAVITY_1
-
-	while (!hikCamControl->GetQueueInspectWaitList(nSideCamIdx).empty())
-	{
-		int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCamIdx);
-
-		// Not Grab Image..
-		if (nFrameIdx == -1)
-			continue;
-
-		ProcessFrame_SideCam(recipe, nSideCamIdx, nFrameIdx);
-	}
-
-	m_pInterface->InspectComplete(emInspectCavity_Cavity1);
 }
 

@@ -115,7 +115,7 @@ BOOL CSealingInspectHikCam::Initialize()
 
 		CString strMemory_FrameWaitProcess_TopCam;
 		strMemory.Format(_T("%s_%d"), "Buffer_FrameWaitProcessTOPCam", nCamIdx);
-		m_pFrameWaitProcessList[nCamIdx]->CreateSharedMemory(strMemory_FrameWaitProcess_TopCam, dw64Size_TopCam);
+		m_pFrameWaitProcessList[nCamIdx]->CreateSharedMemory(strMemory_FrameWaitProcess_TopCam, dw64Size_FrameWaitProcess_TopCam);
 
 		// Camera
 		m_pCamera[nCamIdx] = new CFrameGrabber_MVS_GigE(nCamIdx, this);
@@ -191,7 +191,7 @@ BOOL CSealingInspectHikCam::Initialize()
 
 		CString strMemory_FrameWaitProcess_SideCam;
 		strMemory.Format(_T("%s_%d"), "Buffer_FrameWaitProcessSIDECam", nCamIdx);
-		m_pFrameWaitProcessList[nCamIdx]->CreateSharedMemory(strMemory_FrameWaitProcess_SideCam, dw64Size_SideCam);
+		m_pFrameWaitProcessList[nCamIdx]->CreateSharedMemory(strMemory_FrameWaitProcess_SideCam, dw64Size_FrameWaitProcess_SideCam);
 
 		// Camera
 		m_pCamera[nCamIdx] = new CFrameGrabber_MVS_GigE(nCamIdx, this);

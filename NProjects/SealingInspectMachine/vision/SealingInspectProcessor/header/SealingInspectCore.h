@@ -68,9 +68,9 @@ public:
 	void StopThread();
 	void ProcessFrame(CSealingInspectRecipe* pRecipe, UINT nThreadIndex, UINT nFrameIndex);
 
-	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, BYTE* pBuff);
-	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, BYTE* pBuff);
-	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nFrameIdx);
+	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, cv::Mat& mat);
+	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, cv::Mat& mat);
+	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferIdx, int nFrameIdx);
 
 	void TestInspectCavity1(int nCoreIdx);
 
