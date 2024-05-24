@@ -3,6 +3,11 @@
 
 CSealingInspectProcessor::CSealingInspectProcessor()
 {
+	m_csSysSettingsPath = GetCurrentPathApp() + _T("Settings\\SystemSettings.config");
+	m_csLightingControllerPath_1 = GetCurrentPathApp() + _T("Settings\\LightingController1.setting");
+	m_csLightingControllerPath_1 = GetCurrentPathApp() + _T("Settings\\LightingController2.setting");
+	m_csRecipePath = GetCurrentPathApp() + _T("Recipe\\model305.recipe");
+
 	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
 		if (m_pImageBuffer_Side[i] != NULL)
 			delete m_pImageBuffer_Side[i], m_pImageBuffer_Side[i] = NULL;
@@ -54,6 +59,7 @@ BOOL CSealingInspectProcessor::Initialize()
 	if (m_pSealingInspSystemSetting != NULL)
 		delete m_pSealingInspSystemSetting, m_pSealingInspSystemSetting = NULL;
 	m_pSealingInspSystemSetting = new CSealingInspectSystemSetting;
+	LoadSystemSetting(m_pSealingInspSystemSetting);
 
 	// 4. Load Recipe
 	if (m_pSealingInspRecipe != NULL)
@@ -129,9 +135,133 @@ BOOL CSealingInspectProcessor::Destroy()
 	return TRUE;
 }
 
-BOOL CSealingInspectProcessor::LoadSystemSetting()
+CString CSealingInspectProcessor::GetCurrentPathApp()
 {
-	return 0;
+	TCHAR buff[MAX_PATH];
+	memset(buff, 0, MAX_PATH);
+	::GetModuleFileName(NULL, buff, sizeof(buff));
+	CString csFolder = buff;
+	csFolder = csFolder.Left(csFolder.ReverseFind(_T('\\')) + 1);
+
+	return csFolder;
+}
+
+BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* pSystemSetting)
+{
+	if (m_csSysSettingsPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Config Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csSysSettingsPath);
+	if (m_csSysSettingsPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Config file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CSealingInspectSystemSetting sysSettings;
+
+	// convert path
+	USES_CONVERSION;
+	char chSysSettingPath[1024] = {};
+	sprintf_s(chSysSettingPath, "%s", W2A(m_csSysSettingsPath));
+
+	// 1. init xml manager
+	XMLFile* m_pXmlFile;
+	XMLDocument_2* m_pXmlDoc;
+	std::string error;
+
+	// 2. Open file
+	m_pXmlFile = ::OpenXMLFile(chSysSettingPath, error);
+	if (!m_pXmlFile)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		return FALSE;
+	}
+
+	// 3. Create xml doc
+	m_pXmlDoc = ::CreateXMLFromFile(m_pXmlFile, error);
+	if (!m_pXmlDoc)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		return FALSE;
+	}
+
+	// 4. Find root: Configurations
+	XMLElement* pRoot = ::FirstOrDefaultElement(m_pXmlDoc, "SystemSettings", error);
+	if (!pRoot)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		::DisposeXMLObject(m_pXmlDoc);
+		return FALSE;
+	}
+
+	// start read
+	CString csIPPLC1 = pRoot->first_node("IPPLC1")->value();
+	ZeroMemory(sysSettings.m_sIPPLC1, sizeof(sysSettings.m_sIPPLC1));
+	wsprintf(sysSettings.m_sIPPLC1, _T("%s"), (TCHAR*)(LPCTSTR)csIPPLC1);
+
+	CString csIPPLC2 = pRoot->first_node("IPPLC2")->value();
+	ZeroMemory(sysSettings.m_sIPPLC2, sizeof(sysSettings.m_sIPPLC2));
+	wsprintf(sysSettings.m_sIPPLC2, _T("%s"), (TCHAR*)(LPCTSTR)csIPPLC2);
+
+	CString csPortPLC1 = pRoot->first_node("PortPLC1")->value();
+	ZeroMemory(sysSettings.m_sPortPLC1, sizeof(sysSettings.m_sPortPLC1));
+	wsprintf(sysSettings.m_sPortPLC1, _T("%s"), (TCHAR*)(LPCTSTR)csPortPLC1);
+
+	CString csPortPLC2 = pRoot->first_node("PortPLC2")->value();
+	ZeroMemory(sysSettings.m_sPortPLC2, sizeof(sysSettings.m_sPortPLC2));
+	wsprintf(sysSettings.m_sPortPLC2, _T("%s"), (TCHAR*)(LPCTSTR)csPortPLC2);
+
+	CString csIPLightController1 = pRoot->first_node("IPLightController1")->value();
+	ZeroMemory(sysSettings.m_sIPLightController1, sizeof(sysSettings.m_sIPLightController1));
+	wsprintf(sysSettings.m_sIPLightController1, _T("%s"), (TCHAR*)(LPCTSTR)csIPLightController1);
+
+	CString csIPLightController2 = pRoot->first_node("IPLightController2")->value();
+	ZeroMemory(sysSettings.m_sIPLightController2, sizeof(sysSettings.m_sIPLightController2));
+	wsprintf(sysSettings.m_sIPLightController2, _T("%s"), (TCHAR*)(LPCTSTR)csIPLightController2);
+
+	CString csPortLightController1 = pRoot->first_node("PortLightController1")->value();
+	ZeroMemory(sysSettings.m_sPortLightController1, sizeof(sysSettings.m_sPortLightController1));
+	wsprintf(sysSettings.m_sPortLightController1, _T("%s"), (TCHAR*)(LPCTSTR)csPortLightController1);
+
+	CString csPortLightController2 = pRoot->first_node("PortLightController2")->value();
+	ZeroMemory(sysSettings.m_sPortLightController2, sizeof(sysSettings.m_sPortLightController2));
+	wsprintf(sysSettings.m_sPortLightController2, _T("%s"), (TCHAR*)(LPCTSTR)csPortLightController2);
+
+	CString csSaveFullImage = pRoot->first_node("SaveFullImage")->value();
+	sysSettings.m_bSaveFullImage = csSaveFullImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csSaveDefectImage = pRoot->first_node("SaveDefectImage")->value();
+	sysSettings.m_bSaveDefectImage = csSaveDefectImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csShowDetailImage = pRoot->first_node("ShowDetailImage")->value();
+	sysSettings.m_bShowDetailImage = csShowDetailImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csFullImagePath = pRoot->first_node("FullImagePath")->value();
+	ZeroMemory(sysSettings.m_sFullImagePath, sizeof(sysSettings.m_sFullImagePath));
+	wsprintf(sysSettings.m_sFullImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csFullImagePath);
+
+	CString csDefectImagePath = pRoot->first_node("DefectImagePath")->value();
+	ZeroMemory(sysSettings.m_sDefectImagePath, sizeof(sysSettings.m_sDefectImagePath));
+	wsprintf(sysSettings.m_sDefectImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csDefectImagePath);
+
+	CString csModelName = pRoot->first_node("ModelName")->value();
+	ZeroMemory(sysSettings.m_sModelName, sizeof(sysSettings.m_sModelName));
+	wsprintf(sysSettings.m_sModelName, _T("%s"), (TCHAR*)(LPCTSTR)csModelName);
+
+	*(pSystemSetting) = sysSettings;
+
+	::DisposeXMLFile(m_pXmlFile);
+	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
 }
 
 BOOL CSealingInspectProcessor::LoadRecipe()

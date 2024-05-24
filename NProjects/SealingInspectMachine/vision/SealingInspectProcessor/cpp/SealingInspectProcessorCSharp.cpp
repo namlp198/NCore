@@ -218,6 +218,15 @@ bool SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCo
 	else               return true;
 }
 
+bool LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	*(pSysSetting) = *(pProcessor->GetSystemSetting());
+	return true;
+}
+
 bool TestInspectCavity1(CSealingInspectProcessor* pProcessor)
 {
 	if (pProcessor == NULL)

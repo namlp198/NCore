@@ -28,6 +28,7 @@
 #define MAX_CAM_COUNT_1SET 2
 
 #define SAVE_IMAGE_QUALITY_RATIO			100
+#define MAX_STRING_SIZE						256
 
 
 typedef enum { emUNKNOWN = 0, emInspectCavity_Cavity1, emInspectCavity_Cavity2 } emInspectCavity;

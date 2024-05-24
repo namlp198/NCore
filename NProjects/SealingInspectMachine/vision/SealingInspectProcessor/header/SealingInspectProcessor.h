@@ -17,6 +17,11 @@
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
 
+#include "rapidxml.hpp"
+#include "RapidXMLSTD.hpp"
+#include "rapidxml_utils.hpp"
+#include "rapidxml_print.hpp"
+
 #define TEST_NO_CAMERA
 #undef TEST_NO_CAMERA
 
@@ -32,10 +37,11 @@ public:
 	~CSealingInspectProcessor();
 
 public:
-	BOOL Initialize();
-	BOOL Destroy();
-	BOOL LoadSystemSetting();
-	BOOL LoadRecipe();
+	BOOL         Initialize();
+	BOOL         Destroy();
+	CString      GetCurrentPathApp();
+	BOOL         LoadSystemSetting(CSealingInspectSystemSetting* pSystemSetting);
+	BOOL         LoadRecipe();
 
 public:
 	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator);
@@ -121,4 +127,10 @@ private:
 	// Simulation IO
 	CCriticalSection                  m_csSimulation_IO[NUMBER_OF_SET_INSPECT];
 	CSealingInspect_Simulation_IO*    m_pSealingInspect_Simulation_IO[NUMBER_OF_SET_INSPECT];
+
+	// system settings file path
+	CString                           m_csSysSettingsPath;
+	CString                           m_csRecipePath;
+	CString                           m_csLightingControllerPath_1;
+	CString                           m_csLightingControllerPath_2;
 };
