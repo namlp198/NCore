@@ -174,10 +174,10 @@ BOOL CJigInspectProcessor::LoadSysConfigurations(CJigInspectSystemConfig* pSysCo
 
 	*(pSysConfig) = sysConfig;
 
-	return TRUE;
-
 	::DisposeXMLFile(m_pXmlFile);
 	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
 }
 
 BOOL CJigInspectProcessor::LoadCamConfigurations(int nCamIdx, CJigInspectCameraConfig* pCamConfig)
@@ -279,10 +279,10 @@ BOOL CJigInspectProcessor::LoadCamConfigurations(int nCamIdx, CJigInspectCameraC
 	// Set Recipe Path at here
 	SetRecipePath(nCamIdx, csRecipeName);
 
-	return TRUE;
-
 	::DisposeXMLFile(m_pXmlFile);
 	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
 }
 
 BOOL CJigInspectProcessor::LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
@@ -386,10 +386,10 @@ BOOL CJigInspectProcessor::LoadRecipe(int nCamIdx, CJigInspectRecipe* pRecipe)
 
 	*(pRecipe) = camRecipe;
 	
-	return TRUE;
-
 	::DisposeXMLFile(m_pXmlFile);
 	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
 }
 
 BOOL CJigInspectProcessor::SaveSysConfigurations(CJigInspectSystemConfig* pSysConfig)
