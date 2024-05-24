@@ -65,4 +65,31 @@ namespace NCore.Wpf.BufferViewerSimple.Converters
             throw new NotImplementedException();
         }
     }
+    public class IntegerToBackgroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                int nInspectResult = (int)value;
+                switch (nInspectResult)
+                {
+                    case -1:
+                        return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
+                    case 0:
+                        return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#CC0000");
+                    case 1:
+                        return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#009900");
+                    default:
+                        return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
+                }
+            }
+            else return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
+
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
