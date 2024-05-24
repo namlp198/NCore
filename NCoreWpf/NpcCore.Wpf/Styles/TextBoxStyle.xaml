@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:Controls="clr-namespace:NpcCore.Wpf.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/NpcCore.Wpf;component/Resources/Styles/Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <ControlTemplate x:Key="ValidatedTextBoxTemplate">
         <DockPanel>
             <StackPanel Orientation="Horizontal"
@@ -26,6 +30,39 @@
 
             </AdornedElementPlaceholder>
         </DockPanel>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="tbTemplate"
+                     TargetType="{x:Type TextBox}">
+        <Border BorderBrush="{DynamicResource RGB_Cold_58_80_68}"
+                BorderThickness="0.6"
+                CornerRadius="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"
+                       VerticalContentAlignment="Center"
+                       Width="20"
+                       Margin="0"
+                       VerticalAlignment="Stretch"
+                       Background="{DynamicResource RGB_Cold_58_80_68}"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="10"
+                       Content=">" />
+                <TextBox Grid.Column="1"
+                         FontSize="12"
+                         FontWeight="Bold"
+                         Foreground="Black"
+                         TextAlignment="Center"
+                         BorderBrush="{x:Null}"
+                         VerticalContentAlignment="Center"
+                         Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                         HorizontalAlignment="Stretch" />
+            </Grid>
+        </Border>
     </ControlTemplate>
 
     <Style x:Key="ToolTipStyle"
