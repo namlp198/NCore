@@ -67,6 +67,25 @@ namespace SealingInspectGUI.Manager.Class
         }
         #endregion
 
+        #region Load Setting and Recipe
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadSystemSettings(IntPtr sealingInspProcessor, IntPtr pSysSetting);
+        public bool LoadSystemSettings(ref CSealingInspectSystemSetting sysSetting)
+        {
+            CSealingInspectSystemSetting settings = new CSealingInspectSystemSetting();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(settings));
+            Marshal.StructureToPtr(settings, pPointer, false);
+            bool bRet = LoadSystemSettings(m_sealingInspectProcessor, pPointer);
+            sysSetting = (CSealingInspectSystemSetting)Marshal.PtrToStructure(pPointer, typeof(CSealingInspectSystemSetting));
+
+            return bRet;
+        }
+        #endregion
+
         #region Simulation
 #if DEBUG
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]

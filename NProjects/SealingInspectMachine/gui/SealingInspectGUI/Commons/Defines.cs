@@ -38,5 +38,7 @@ namespace SealingInspectGUI.Commons
         public const int FRAME_HEIGHT_TOP_CAM = 2048;
         public const int NUMBER_OF_SET_INSPECT = 2;
 
+        public const int MAX_STRING_SIZE = 256;
+
     }
 }

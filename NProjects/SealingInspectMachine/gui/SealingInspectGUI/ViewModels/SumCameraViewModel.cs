@@ -19,6 +19,22 @@ namespace SealingInspectGUI.ViewModels
         #region variables
         private readonly Dispatcher _dispatcher;
         private UcSumCameraView _sumCameraView;
+
+        // status result cavity 1
+        private int m_nTopCamFrame1_Cavity1 = -1;
+        private int m_nTopCamFrame2_Cavity1 = -1;
+        private int m_nSideCamFrame1_Cavity1 = -1;
+        private int m_nSideCamFrame2_Cavity1 = -1;
+        private int m_nSideCamFrame3_Cavity1 = -1;
+        private int m_nSideCamFrame4_Cavity1 = -1;
+
+        // status result cavity 1
+        private int m_nTopCamFrame1_Cavity2 = -1;
+        private int m_nTopCamFrame2_Cavity2 = -1;
+        private int m_nSideCamFrame1_Cavity2 = -1;
+        private int m_nSideCamFrame2_Cavity2 = -1;
+        private int m_nSideCamFrame3_Cavity2 = -1;
+        private int m_nSideCamFrame4_Cavity2 = -1;
         #endregion
 
         #region Constructor
@@ -67,6 +83,7 @@ namespace SealingInspectGUI.ViewModels
             this.TestIOCmd = new TestIOCmd();
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
+            InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
         }
 
         private async void SimulationThread_UpdateUI_SumCameraView()
@@ -193,8 +210,226 @@ namespace SealingInspectGUI.ViewModels
         }
         #endregion
 
+        #region methods
+        private void InspectionComplete(emInspectCavity eInspCav)
+        {
+            int nCoreIdx = 0;
+            switch (eInspCav)
+            {
+                case emInspectCavity.emInspectCavity_Cavity1:
+                    nCoreIdx = 0;
+                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
+                        GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
+
+                    TopCamFrame1_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                              m_sealingInspResult_TopCam.m_bStatusFrame1;
+                    UpdateResultView(SumCameraView.buffTopCam1_Frame1, TopCamFrame1_Cavity1, 0, 0, "TOP");
+
+                    TopCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                              m_sealingInspResult_TopCam.m_bStatusFrame2;
+                    UpdateResultView(SumCameraView.buffTopCam1_Frame2, TopCamFrame2_Cavity1, 0, 1, "TOP");
+
+                    SideCamFrame1_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame1;
+                    UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame1_Cavity1, 0, 0, "SIDE");
+
+                    SideCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame2;
+                    UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame2_Cavity1, 0, 1, "SIDE");
+
+                    SideCamFrame3_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame3;
+                    UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame3_Cavity1, 0, 2, "SIDE");
+
+                    SideCamFrame4_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame4;
+                    UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame4_Cavity1, 0, 3, "SIDE");
+
+                    // check result final
+                    if (CheckStatusFinal(eInspCav) == 1) MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
+                    else if (CheckStatusFinal(eInspCav) == 0) MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
+                    else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
+
+                    break;
+                case emInspectCavity.emInspectCavity_Cavity2:
+                    nCoreIdx = 1;
+                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
+                        GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
+
+                    TopCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                              m_sealingInspResult_TopCam.m_bStatusFrame1;
+                    UpdateResultView(SumCameraView.buffTopCam2_Frame1, TopCamFrame1_Cavity2, 1, 0, "TOP");
+
+                    TopCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                              m_sealingInspResult_TopCam.m_bStatusFrame2;
+                    UpdateResultView(SumCameraView.buffTopCam2_Frame2, TopCamFrame2_Cavity2, 1, 1, "TOP");
+
+                    SideCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                              m_sealingInspResult_SideCam.m_bStatusFrame1;
+                    UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame1_Cavity2, 1, 0, "SIDE");
+
+                    SideCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame2;
+                    UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame2_Cavity2, 1, 1, "SIDE");
+
+                    SideCamFrame3_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame3;
+                    UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame3_Cavity2, 1, 2, "SIDE");
+
+                    SideCamFrame4_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                               m_sealingInspResult_SideCam.m_bStatusFrame4;
+                    UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame4_Cavity2, 1, 3, "SIDE");
+
+                    // check result final
+                    if (CheckStatusFinal(eInspCav) == 1) MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
+                    else if (CheckStatusFinal(eInspCav) == 0) MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
+                    else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
+
+                    break;
+            }
+
+        }
+        private async void UpdateResultView(BufferViewerSimple bufferSimple, int nStatus, int nBuff, int nFrame, string s)
+        {
+            if (string.Compare(s.ToUpper(), "TOP") == 0)
+                bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_TOP(nBuff, nFrame);
+            else if (string.Compare(s.ToUpper(), "SIDE") == 0)
+                bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuff, nFrame);
+            await bufferSimple.UpdateImage();
+
+            if (nStatus == 1) bufferSimple.InspectResult = EInspectResult.InspectResult_OK;
+            else if (nStatus == 0) bufferSimple.InspectResult = EInspectResult.InspectResult_NG;
+            else bufferSimple.InspectResult = EInspectResult.InspectResult_UNKNOWN;
+        }
+        private int CheckStatusFinal(emInspectCavity emInspectCavity)
+        {
+            switch (emInspectCavity)
+            {
+                case emInspectCavity.emInspectCavity_Cavity1:
+                    if (m_nTopCamFrame1_Cavity1 == 1 &&
+                       m_nTopCamFrame2_Cavity1 == 1 &&
+                       m_nSideCamFrame1_Cavity1 == 1 &&
+                       m_nSideCamFrame2_Cavity1 == 1 &&
+                       m_nSideCamFrame3_Cavity1 == 1 &&
+                       m_nSideCamFrame4_Cavity1 == 1) return 1;
+                    else return 0;
+                case emInspectCavity.emInspectCavity_Cavity2:
+                    if (m_nTopCamFrame1_Cavity2 == 1 &&
+                       m_nTopCamFrame2_Cavity2 == 1 &&
+                       m_nSideCamFrame1_Cavity2 == 1 &&
+                       m_nSideCamFrame2_Cavity2 == 1 &&
+                       m_nSideCamFrame3_Cavity2 == 1 &&
+                       m_nSideCamFrame4_Cavity2 == 1) return 1;
+                    else return 0;
+                default: return -1;
+            }
+        }
+        #endregion
+
         #region Properties
         public UcSumCameraView SumCameraView { get { return _sumCameraView; } }
+
+        #region properties Cavity 1
+        public int TopCamFrame1_Cavity1
+        {
+            get => m_nTopCamFrame1_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nTopCamFrame1_Cavity1, value)) { }
+            }
+        }
+        public int TopCamFrame2_Cavity1
+        {
+            get => m_nTopCamFrame2_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nTopCamFrame2_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame1_Cavity1
+        {
+            get => m_nSideCamFrame1_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame1_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame2_Cavity1
+        {
+            get => m_nSideCamFrame2_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame2_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame3_Cavity1
+        {
+            get => m_nSideCamFrame3_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame3_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame4_Cavity1
+        {
+            get => m_nSideCamFrame4_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame4_Cavity1, value)) { }
+            }
+        }
+        #endregion
+
+        #region properties Cavity 2
+        public int TopCamFrame1_Cavity2
+        {
+            get => m_nTopCamFrame1_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nTopCamFrame1_Cavity2, value)) { }
+            }
+        }
+        public int TopCamFrame2_Cavity2
+        {
+            get => m_nTopCamFrame2_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nTopCamFrame2_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame1_Cavity2
+        {
+            get => m_nSideCamFrame1_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame1_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame2_Cavity2
+        {
+            get => m_nSideCamFrame2_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame2_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame3_Cavity2
+        {
+            get => m_nSideCamFrame3_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame3_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame4_Cavity2
+        {
+            get => m_nSideCamFrame4_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame4_Cavity2, value)) { }
+            }
+        }
+        #endregion
         #endregion
 
         #region Commands

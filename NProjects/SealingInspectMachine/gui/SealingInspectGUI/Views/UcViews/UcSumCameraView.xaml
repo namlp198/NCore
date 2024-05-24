@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Cvt="clr-namespace:NCore.Wpf.BufferViewerSimple.Converters;assembly=NCore.Wpf.BufferViewerSimple"
              xmlns:local="clr-namespace:SealingInspectGUI.Views.UcViews"
              xmlns:Ctrls="clr-namespace:NCore.Wpf.BufferViewerSimple;assembly=NCore.Wpf.BufferViewerSimple"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Cvt:IntegerToBackgroundConverter x:Key="IntegerToBackgroundConverter" />
+    </UserControl.Resources>
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="1" />
@@ -59,7 +63,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame1_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam1_Frame1, Path=Name}">
                     <Button.Content>
@@ -75,7 +79,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame2_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam1_Frame2, Path=Name}">
                     <Button.Content>
@@ -91,7 +95,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame3_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam1_Frame3, Path=Name}">
                     <Button.Content>
@@ -107,7 +111,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame4_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
                     <Button.Content>
@@ -156,7 +160,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame1_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam2_Frame1, Path=Name}">
                     <Button.Content>
@@ -172,7 +176,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame2_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam2_Frame2, Path=Name}">
                     <Button.Content>
@@ -188,7 +192,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame3_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam2_Frame3, Path=Name}">
                     <Button.Content>
@@ -204,7 +208,7 @@
                         Height="30"
                         Width="90"
                         Foreground="White"
-                        Background="Gray"
+                        Background="{Binding SideCamFrame4_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
                         CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
                     <Button.Content>

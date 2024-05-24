@@ -173,7 +173,7 @@
 
         <StackPanel Grid.Row="5"
                     Orientation="Horizontal">
-            <Label Margin="0 0 10 0"
+            <Label Margin="0 1 10 0"
                    Content="MACHINE"
                    Foreground="White"
                    Background="{DynamicResource DarkColor_1}"

@@ -18,6 +18,7 @@ namespace SealingInspectGUI.ViewModels
 
         private EInspectResult m_inspResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
         private EInspectResult m_inspResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
+
         #endregion
 
         #region Constructor

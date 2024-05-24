@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NCore.Wpf.BufferViewerSimple;
 
 namespace SealingInspectGUI.Command.Cmd
 {
@@ -36,12 +37,60 @@ namespace SealingInspectGUI.Command.Cmd
                     MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                                                                                   m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuffIdx, nFrame);
                     await MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.UpdateImage();
+
+                    switch (nFrame)
+                    {
+                        case 0:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[0].m_sealingInspResult_SideCam.m_bStatusFrame1 == 1) ? 
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                        case 1:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[0].m_sealingInspResult_SideCam.m_bStatusFrame2 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                        case 2:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[0].m_sealingInspResult_SideCam.m_bStatusFrame3 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                        case 3:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam1.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[0].m_sealingInspResult_SideCam.m_bStatusFrame4 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                    }
                 }
                 else if (string.Compare(strCamName, "SideCam2") == 0)
                 {
                     MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                                                                                   m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuffIdx, nFrame);
                     await MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.UpdateImage();
+
+                    switch (nFrame)
+                    {
+                        case 0:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[1].m_sealingInspResult_SideCam.m_bStatusFrame1 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                        case 1:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[1].m_sealingInspResult_SideCam.m_bStatusFrame2 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                        case 2:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[1].m_sealingInspResult_SideCam.m_bStatusFrame3 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                        case 3:
+                            MainViewModel.Instance.RunVM.SumCamVM.SumCameraView.buffSideCam2.InspectResult = (InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                                                                                             m_sealingInspectResult[1].m_sealingInspResult_SideCam.m_bStatusFrame4 == 1) ?
+                                                                                                             EInspectResult.InspectResult_OK : EInspectResult.InspectResult_NG;
+                            break;
+                    }
                 }
             }
         }

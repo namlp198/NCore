@@ -3,10 +3,12 @@ using SealingInspectGUI.Command.Cmd;
 using SealingInspectGUI.Commons;
 using SealingInspectGUI.Manager;
 using SealingInspectGUI.Manager.Class;
+using SealingInspectGUI.Models;
 using SealingInspectGUI.Views.UcViews;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -46,6 +48,8 @@ namespace SealingInspectGUI.ViewModels
         private ECameraList m_cameraSelected = new ECameraList();
         private int m_nBuffIdx = 0;
         private int m_nFrame = 0;
+
+        private List<SystemSettingsModel> m_systemSettingsModels = new List<SystemSettingsModel>();
 
         public CameraStreamingController m_cameraStreamingController = null;
 
@@ -256,7 +260,6 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
-
         public bool UseSoftwareTrigger
         {
             get => m_bUseSoftwareTrigger;
@@ -268,7 +271,17 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
+        public List<SystemSettingsModel> SystemSettingsModels
+        {
+            get => m_systemSettingsModels;
+            set
+            {
+                if (SetProperty(ref m_systemSettingsModels, value))
+                {
 
+                }
+            }
+        }
         #endregion
 
         #region Methods
@@ -318,6 +331,71 @@ namespace SealingInspectGUI.ViewModels
             }
 
             return modeTestString;
+        }
+
+        public void LoadSystemSettings()
+        {
+            List<SystemSettingsModel> sysSettingLst = new List<SystemSettingsModel>();
+            int nPropertyCount = typeof(CSealingInspectSystemSetting).GetFields().Count();
+            string value = string.Empty;
+            for (int i = 0; i < nPropertyCount; i++)
+            {
+                SystemSettingsModel sysSetting = new SystemSettingsModel();
+                sysSetting.Index = i + 1;
+                sysSetting.Params = GetParamNameAndValue(i,ref value);
+                sysSetting.Value = value;
+                sysSettingLst.Add(sysSetting);
+            }
+            SystemSettingsModels = sysSettingLst;
+        }
+        private string GetParamNameAndValue(int idx,ref string value)
+        {
+            switch (idx)
+            {
+                case 0:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC1;
+                    return "IP PLC1";
+                case 1:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC2;
+                    return "IP PLC2";
+                case 2:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortPLC1;
+                    return "PORT PLC1";
+                case 3:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortPLC2;
+                    return "PORT PLC2";
+                case 4:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController1;
+                    return "IP Light Controller 1";
+                case 5:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController2;
+                    return "IP Light Controller 2";
+                case 6:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController1;
+                    return "PORT Light Controller 1";
+                case 7:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController2;
+                    return "PORT Light Controller 2";
+                case 8:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSaveFullImage + "";
+                    return "Save Full Image (0: No, 1: Yes)";
+                case 9:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSaveDefectImage + "";
+                    return "Save Defect Image (0: No, 1: Yes)";
+                case 10:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bShowDetailImage + "";
+                    return "Show Detail Image (0: No, 1: Yes)";
+                case 11:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sFullImagePath;
+                    return "Full Image Path";
+                case 12:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sDefectImagePath;
+                    return "Defect Image Path";
+                case 13:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sModelName;
+                    return "Model Name";
+            }
+            return "";
         }
         #endregion
 

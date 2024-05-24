@@ -76,7 +76,7 @@
                            FontWeight="Bold"
                            ItemsSource="{Binding FrameList}"
                            SelectedItem="{Binding StrFrameSelected, Mode=TwoWay}"
-                           Width="35"/>
+                           Width="35" />
 
                 <Button Background="WhiteSmoke"
                         Name="btnContinuousGrab"
@@ -110,7 +110,7 @@
                           FontWeight="SemiBold"
                           VerticalAlignment="Center"
                           x:Name="chkSoftwareTrigger"
-                          IsChecked="{Binding UseSoftwareTrigger, Mode=TwoWay}"/>
+                          IsChecked="{Binding UseSoftwareTrigger, Mode=TwoWay}" />
                 <Button Background="WhiteSmoke"
                         Margin="3"
                         x:Name="btnLoadImage"
@@ -169,20 +169,523 @@
 
         <Grid Grid.Column="2">
             <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
-                <TabItem Header="System Settings"
+                <TabItem Header="SYSTEM SETTINGS"
+                         Width="300"
                          Style="{StaticResource TabItemStyle}"
-                         FontSize="14"
+                         FontSize="18"
                          FontFamily="Segoe UI"
                          FontWeight="Bold"
                          Foreground="Black">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition />
+                                <RowDefinition Height="45" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="6 2 2 2"
+                                       Text="System"
+                                       Foreground="White"
+                                       FontSize="14"
+                                       TextAlignment="Left"
+                                       VerticalAlignment="Center"/>
+                            <DataGrid Grid.Row="1"
+                                      FontSize="12"
+                                      Margin="5"
+                                      Name="dtgridSystemSettings"
+                                      AutoGenerateColumns="False"
+                                      ItemsSource="{Binding SystemSettingsModels}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No."
+                                                        Width="50"
+                                                        MinWidth="20"
+                                                        MaxWidth="50" 
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Binding="{Binding Index}"/>
+                                    <DataGridTextColumn Header="Parameters"
+                                                        Width="300"
+                                                        MinWidth="300"
+                                                        MaxWidth="600"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Binding="{Binding Params}"/>
+                                    <DataGridTextColumn Header="Value"
+                                                        Width="300"
+                                                        MinWidth="10"
+                                                        MaxWidth="500"
+                                                        FontSize="12"
+                                                        FontWeight="Normal"
+                                                        Binding="{Binding Value}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            
+                            <!--Button-->
+                            <Button Grid.Row="2"
+                                    x:Name="btnSaveSystemSetting"
+                                    Margin="3"
+                                    Width="130"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Left"
+                                       Foreground="White"
+                                       Margin="6 2 2 2"
+                                       Text="Lighting Controller"/>
+                            <TabControl Grid.Row="1"
+                                        Margin="5">
+                                <TabItem Header="Controller 1"
+                                         Width="100"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="14"
+                                         FontFamily="Segoe UI"
+                                         FontWeight="Bold"
+                                         Foreground="Black">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="45" />
+                                        </Grid.RowDefinitions>
+                                        <DataGrid FontSize="12"
+                                                  Margin="5"
+                                                  AutoGenerateColumns="False"
+                                                  Name="dtgridLightSettings_1">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="No."
+                                                                    Width="50"
+                                                                    MinWidth="30"
+                                                                    MaxWidth="50"
+                                                                    FontSize="12"
+                                                                    FontWeight="Normal" />
+                                                <DataGridTextColumn Header="Parameters"
+                                                                    MinWidth="200"
+                                                                    MaxWidth="500"
+                                                                    FontSize="12"
+                                                                    FontWeight="Normal" />
+                                                <DataGridTextColumn Header="Value"
+                                                                    Width="100"
+                                                                    MinWidth="10"
+                                                                    MaxWidth="100"
+                                                                    FontSize="12"
+                                                                    FontWeight="Normal" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                x:Name="btnSaveLightSetting_1"
+                                                Margin="3"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Controller 2"
+                                         Width="100"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="14"
+                                         FontFamily="Segoe UI"
+                                         FontWeight="Bold"
+                                         Foreground="Black">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="45" />
+                                        </Grid.RowDefinitions>
+                                        <DataGrid Margin="5"
+                                                  FontSize="12"
+                                                  AutoGenerateColumns="False"
+                                                  Name="dtgridLightSettings_2">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="No."
+                                                                    Width="50"
+                                                                    MinWidth="30"
+                                                                    MaxWidth="50"
+                                                                    FontSize="12"
+                                                                    FontWeight="Normal" />
+                                                <DataGridTextColumn Header="Parameters"
+                                                                    MinWidth="200"
+                                                                    MaxWidth="500"
+                                                                    FontSize="12"
+                                                                    FontWeight="Normal" />
+                                                <DataGridTextColumn Header="Value"
+                                                                    Width="100"
+                                                                    MinWidth="10"
+                                                                    MaxWidth="200"
+                                                                    FontSize="12"
+                                                                    FontWeight="Normal" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                x:Name="btnSaveLightSetting_2"
+                                                Margin="3"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </Grid>
+                    </Grid>
                 </TabItem>
-                <TabItem Header="Recipe"
+                <TabItem Header="RECIPE"
                          Style="{StaticResource TabItemStyle}"
-                         FontSize="14"
+                         FontSize="18"
+                         Width="300"
                          FontFamily="Segoe UI"
                          FontWeight="Bold"
                          Foreground="Black">
-
+                    <Grid Margin="5 15 5 5">
+                        <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                            <TabItem Header="TOP CAM"
+                                     Width="120"
+                                     Style="{StaticResource TabItemStyle}"
+                                     FontSize="14"
+                                     FontFamily="Segoe UI"
+                                     FontWeight="Bold"
+                                     Foreground="Black">
+                                <TabControl Margin="5">
+                                    <TabItem Header="Frame 1"
+                                             Style="{StaticResource TabItemStyle}"
+                                             FontSize="14"
+                                             FontFamily="Segoe UI"
+                                             FontWeight="Bold"
+                                             Foreground="Black">
+                                        <Grid Margin="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <DataGrid Name="dtgridFrame1_Top">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="No."
+                                                                        Width="50"
+                                                                        MinWidth="20"
+                                                                        MaxWidth="50" />
+                                                    <DataGridTextColumn Header="Parameters"
+                                                                        MinWidth="350"
+                                                                        MaxWidth="600" />
+                                                    <DataGridTextColumn Header="Top Cam 1"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                    <DataGridTextColumn Header="Top Cam 2"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <!--Button-->
+                                            <Button Grid.Row="1"
+                                                    x:Name="btnSaveFrame1_Top"
+                                                    Margin="3"
+                                                    Width="130"
+                                                    HorizontalAlignment="Right"
+                                                    Foreground="White"
+                                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Text="Save" />
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Frame 2"
+                                             Style="{StaticResource TabItemStyle}"
+                                             FontSize="14"
+                                             FontFamily="Segoe UI"
+                                             FontWeight="Bold"
+                                             Foreground="Black">
+                                        <Grid Margin="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <DataGrid Name="dtgridFrame2_Top">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="No."
+                                                                        Width="50"
+                                                                        MinWidth="20"
+                                                                        MaxWidth="50" />
+                                                    <DataGridTextColumn Header="Parameters"
+                                                                        MinWidth="350"
+                                                                        MaxWidth="600" />
+                                                    <DataGridTextColumn Header="Top Cam 1"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                    <DataGridTextColumn Header="Top Cam 2"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <!--Button-->
+                                            <Button Grid.Row="1"
+                                                    x:Name="btnSaveFrame2_Top"
+                                                    Margin="3"
+                                                    Width="130"
+                                                    HorizontalAlignment="Right"
+                                                    Foreground="White"
+                                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Text="Save" />
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
+                            </TabItem>
+                            <TabItem Header="SIDE CAM"
+                                     Width="120"
+                                     Style="{StaticResource TabItemStyle}"
+                                     FontSize="14"
+                                     FontFamily="Segoe UI"
+                                     FontWeight="Bold"
+                                     Foreground="Black">
+                                <TabControl Margin="5">
+                                    <TabItem Header="Frame 1"
+                                             Style="{StaticResource TabItemStyle}"
+                                             FontSize="14"
+                                             FontFamily="Segoe UI"
+                                             FontWeight="Bold"
+                                             Foreground="Black">
+                                        <Grid Margin="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <DataGrid Name="dtgridFrame1_Side">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="No."
+                                                                        Width="50"
+                                                                        MinWidth="20"
+                                                                        MaxWidth="50" />
+                                                    <DataGridTextColumn Header="Parameters"
+                                                                        MinWidth="350"
+                                                                        MaxWidth="600" />
+                                                    <DataGridTextColumn Header="Side Cam 1"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                    <DataGridTextColumn Header="Side Cam 2"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <!--Button-->
+                                            <Button Grid.Row="1"
+                                                    x:Name="btnSaveFrame1_Side"
+                                                    Margin="3"
+                                                    Width="130"
+                                                    HorizontalAlignment="Right"
+                                                    Foreground="White"
+                                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Text="Save" />
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Frame 2"
+                                             Style="{StaticResource TabItemStyle}"
+                                             FontSize="14"
+                                             FontFamily="Segoe UI"
+                                             FontWeight="Bold"
+                                             Foreground="Black">
+                                        <Grid Margin="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <DataGrid Name="dtgridFrame2_Side">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="No."
+                                                                        Width="50"
+                                                                        MinWidth="20"
+                                                                        MaxWidth="50" />
+                                                    <DataGridTextColumn Header="Parameters"
+                                                                        MinWidth="350"
+                                                                        MaxWidth="600" />
+                                                    <DataGridTextColumn Header="Side Cam 1"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                    <DataGridTextColumn Header="Side Cam 2"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <!--Button-->
+                                            <Button Grid.Row="1"
+                                                    x:Name="btnSaveFrame2_Side"
+                                                    Margin="3"
+                                                    Width="130"
+                                                    HorizontalAlignment="Right"
+                                                    Foreground="White"
+                                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Text="Save" />
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Frame 3"
+                                             Style="{StaticResource TabItemStyle}"
+                                             FontSize="14"
+                                             FontFamily="Segoe UI"
+                                             FontWeight="Bold"
+                                             Foreground="Black">
+                                        <Grid Margin="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <DataGrid Name="dtgridFrame3_Side">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="No."
+                                                                        Width="50"
+                                                                        MinWidth="20"
+                                                                        MaxWidth="50" />
+                                                    <DataGridTextColumn Header="Parameters"
+                                                                        MinWidth="350"
+                                                                        MaxWidth="600" />
+                                                    <DataGridTextColumn Header="Side Cam 1"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                    <DataGridTextColumn Header="Side Cam 2"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <!--Button-->
+                                            <Button Grid.Row="1"
+                                                    x:Name="btnSaveFrame3_Side"
+                                                    Margin="3"
+                                                    Width="130"
+                                                    HorizontalAlignment="Right"
+                                                    Foreground="White"
+                                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Text="Save" />
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Frame 4"
+                                             Style="{StaticResource TabItemStyle}"
+                                             FontSize="14"
+                                             FontFamily="Segoe UI"
+                                             FontWeight="Bold"
+                                             Foreground="Black">
+                                        <Grid Margin="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <DataGrid Name="dtgridFrame4_Side">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="No."
+                                                                        Width="50"
+                                                                        MinWidth="20"
+                                                                        MaxWidth="50" />
+                                                    <DataGridTextColumn Header="Parameters"
+                                                                        MinWidth="350"
+                                                                        MaxWidth="600" />
+                                                    <DataGridTextColumn Header="Side Cam 1"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                    <DataGridTextColumn Header="Side Cam 2"
+                                                                        Width="160"
+                                                                        MinWidth="10"
+                                                                        MaxWidth="200" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                            <!--Button-->
+                                            <Button Grid.Row="1"
+                                                    x:Name="btnSaveFrame4_Side"
+                                                    Margin="3"
+                                                    Width="130"
+                                                    HorizontalAlignment="Right"
+                                                    Foreground="White"
+                                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Text="Save" />
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </Grid>
