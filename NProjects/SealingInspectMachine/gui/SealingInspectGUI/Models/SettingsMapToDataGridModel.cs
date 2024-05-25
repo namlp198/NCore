@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SealingInspectGUI.Models
 {
-    public class SystemSettingsModel : ModelBase
+    public class SettingsMapToDataGridModel : ModelBase
     {
         private int m_nIdx;
         private string m_sParams;

@@ -198,7 +198,7 @@
                                       Margin="5"
                                       Name="dtgridSystemSettings"
                                       AutoGenerateColumns="False"
-                                      ItemsSource="{Binding SystemSettingsModels}">
+                                      ItemsSource="{Binding SystemSettingsModels, Mode=TwoWay}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="No."
                                                         Width="50"
@@ -213,20 +213,22 @@
                                                         MaxWidth="600"
                                                         FontSize="12"
                                                         FontWeight="Bold"
-                                                        Binding="{Binding Params}"/>
+                                                        Binding="{Binding Params, Mode=TwoWay}"/>
                                     <DataGridTextColumn Header="Value"
                                                         Width="300"
                                                         MinWidth="10"
                                                         MaxWidth="500"
                                                         FontSize="12"
                                                         FontWeight="Normal"
-                                                        Binding="{Binding Value}"/>
+                                                        Binding="{Binding Value, Mode=TwoWay}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             
                             <!--Button-->
                             <Button Grid.Row="2"
                                     x:Name="btnSaveSystemSetting"
+                                    Command="{Binding SaveSettingCmd}"
+                                    CommandParameter="{Binding ElementName=btnSaveSystemSetting, Path=Name}"
                                     Margin="3"
                                     Width="130"
                                     HorizontalAlignment="Right"
@@ -270,6 +272,7 @@
                                         <DataGrid FontSize="12"
                                                   Margin="5"
                                                   AutoGenerateColumns="False"
+                                                  ItemsSource="{Binding LightSettingModel1, Mode=TwoWay}"
                                                   Name="dtgridLightSettings_1">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="No."
@@ -277,23 +280,28 @@
                                                                     MinWidth="30"
                                                                     MaxWidth="50"
                                                                     FontSize="12"
-                                                                    FontWeight="Normal" />
+                                                                    FontWeight="Bold"
+                                                                    Binding="{Binding Index}" />
                                                 <DataGridTextColumn Header="Parameters"
                                                                     MinWidth="200"
                                                                     MaxWidth="500"
                                                                     FontSize="12"
-                                                                    FontWeight="Normal" />
+                                                                    FontWeight="Bold"
+                                                                    Binding="{Binding Params, Mode=TwoWay}" />
                                                 <DataGridTextColumn Header="Value"
                                                                     Width="100"
                                                                     MinWidth="10"
                                                                     MaxWidth="100"
                                                                     FontSize="12"
-                                                                    FontWeight="Normal" />
+                                                                    FontWeight="Normal"
+                                                                    Binding="{Binding Value, Mode=TwoWay}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <!--Button-->
                                         <Button Grid.Row="1"
                                                 x:Name="btnSaveLightSetting_1"
+                                                Command="{Binding SaveSettingCmd}"
+                                                CommandParameter="{Binding ElementName=btnSaveLightSetting_1, Path=Name}"
                                                 Margin="3"
                                                 Width="130"
                                                 HorizontalAlignment="Right"
@@ -324,6 +332,7 @@
                                         <DataGrid Margin="5"
                                                   FontSize="12"
                                                   AutoGenerateColumns="False"
+                                                  ItemsSource="{Binding LightSettingModel2}"
                                                   Name="dtgridLightSettings_2">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="No."
@@ -331,23 +340,28 @@
                                                                     MinWidth="30"
                                                                     MaxWidth="50"
                                                                     FontSize="12"
-                                                                    FontWeight="Normal" />
+                                                                    FontWeight="Bold"
+                                                                    Binding="{Binding Index}" />
                                                 <DataGridTextColumn Header="Parameters"
                                                                     MinWidth="200"
                                                                     MaxWidth="500"
                                                                     FontSize="12"
-                                                                    FontWeight="Normal" />
+                                                                    FontWeight="Bold"
+                                                                    Binding="{Binding Params, Mode=TwoWay}" />
                                                 <DataGridTextColumn Header="Value"
                                                                     Width="100"
                                                                     MinWidth="10"
                                                                     MaxWidth="200"
                                                                     FontSize="12"
-                                                                    FontWeight="Normal" />
+                                                                    FontWeight="Normal"
+                                                                    Binding="{Binding Value, Mode=TwoWay}" />
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <!--Button-->
                                         <Button Grid.Row="1"
                                                 x:Name="btnSaveLightSetting_2"
+                                                Command="{Binding SaveSettingCmd}"
+                                                CommandParameter="{Binding ElementName=btnSaveLightSetting_2, Path=Name}"
                                                 Margin="3"
                                                 Width="130"
                                                 HorizontalAlignment="Right"

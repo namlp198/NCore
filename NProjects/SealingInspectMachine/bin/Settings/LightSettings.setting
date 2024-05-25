@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LightController1>
+	<CH1>12</CH1>
+	<CH2>32</CH2>
+	<CH3>7</CH3>
+	<CH4>11</CH4>
+	<CH5>15</CH5>
+	<CH6>7</CH6>
+</LightController1>
+<LightController2>
+	<CH1>30</CH1>
+	<CH2>22</CH2>
+	<CH3>24</CH3>
+	<CH4>56</CH4>
+	<CH5>78</CH5>
+	<CH6>12</CH6>
+</LightController2>
+

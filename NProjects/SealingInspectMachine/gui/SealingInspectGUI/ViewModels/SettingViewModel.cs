@@ -49,7 +49,9 @@ namespace SealingInspectGUI.ViewModels
         private int m_nBuffIdx = 0;
         private int m_nFrame = 0;
 
-        private List<SystemSettingsModel> m_systemSettingsModels = new List<SystemSettingsModel>();
+        private List<SettingsMapToDataGridModel> m_systemSettingsModels = new List<SettingsMapToDataGridModel>();
+        private List<SettingsMapToDataGridModel> m_lightSettingModel1 = new List<SettingsMapToDataGridModel>();
+        private List<SettingsMapToDataGridModel> m_lightSettingModel2 = new List<SettingsMapToDataGridModel>();
 
         public CameraStreamingController m_cameraStreamingController = null;
 
@@ -71,6 +73,7 @@ namespace SealingInspectGUI.ViewModels
             this.LoadImageCmd = new LoadImageCmd();
             this.ContinuousGrabCmd = new ContinuousGrabCmd();
             this.SoftwareTriggerHikCamCmd = new SoftwareTriggerHikCamCmd();
+            this.SaveSettingCmd = new SaveSettingCmd();
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
 
@@ -271,12 +274,34 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
-        public List<SystemSettingsModel> SystemSettingsModels
+        public List<SettingsMapToDataGridModel> SystemSettingsModels
         {
             get => m_systemSettingsModels;
             set
             {
                 if (SetProperty(ref m_systemSettingsModels, value))
+                {
+
+                }
+            }
+        }
+        public List<SettingsMapToDataGridModel> LightSettingModel1
+        {
+            get => m_lightSettingModel1;
+            set
+            {
+                if (SetProperty(ref m_lightSettingModel1, value))
+                {
+
+                }
+            }
+        }
+        public List<SettingsMapToDataGridModel> LightSettingModel2
+        {
+            get => m_lightSettingModel2;
+            set
+            {
+                if (SetProperty(ref m_lightSettingModel2, value))
                 {
 
                 }
@@ -335,67 +360,295 @@ namespace SealingInspectGUI.ViewModels
 
         public void LoadSystemSettings()
         {
-            List<SystemSettingsModel> sysSettingLst = new List<SystemSettingsModel>();
+            List<SettingsMapToDataGridModel> sysSettingLst = new List<SettingsMapToDataGridModel>();
             int nPropertyCount = typeof(CSealingInspectSystemSetting).GetFields().Count();
             string value = string.Empty;
-            for (int i = 0; i < nPropertyCount; i++)
+            // Don't care to CSealingInspectLightSetting: nPropertyCount - 1
+            for (int i = 0; i < nPropertyCount - 1; i++)
             {
-                SystemSettingsModel sysSetting = new SystemSettingsModel();
+                SettingsMapToDataGridModel sysSetting = new SettingsMapToDataGridModel();
                 sysSetting.Index = i + 1;
-                sysSetting.Params = GetParamNameAndValue(i,ref value);
+                sysSetting.Params = GetParamNameAndValue_SystemSetting(i, ref value);
                 sysSetting.Value = value;
                 sysSettingLst.Add(sysSetting);
             }
             SystemSettingsModels = sysSettingLst;
+
+            LoadLightSettings();
         }
-        private string GetParamNameAndValue(int idx,ref string value)
+        private void LoadLightSettings()
+        {
+            int nPropertyCount = typeof(CSealingInspectLightSetting).GetFields().Count();
+            string value = string.Empty;
+            for (int lightSettingIdx = 0; lightSettingIdx < Defines.NUMBER_OF_LIGHT_CONTROLLER; lightSettingIdx++)
+            {
+                List<SettingsMapToDataGridModel> lightSettingLst = new List<SettingsMapToDataGridModel>();
+                for (int i = 1; i <= nPropertyCount; i++)
+                {
+                    SettingsMapToDataGridModel lightSetting = new SettingsMapToDataGridModel();
+                    lightSetting.Index = i;
+                    lightSetting.Params = GetParamNameAndValue_LightSetting(i, ref value, lightSettingIdx);
+                    lightSetting.Value = value;
+                    lightSettingLst.Add(lightSetting);
+                }
+                if (lightSettingIdx == 0)
+                    LightSettingModel1 = lightSettingLst;
+                else if (lightSettingIdx == 1)
+                    LightSettingModel2 = lightSettingLst;
+            }
+        }
+        private string GetParamNameAndValue_SystemSetting(int idx, ref string value)
         {
             switch (idx)
             {
                 case 0:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC1;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPPLC1;
                     return "IP PLC1";
                 case 1:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC2;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPPLC2;
                     return "IP PLC2";
                 case 2:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortPLC1;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortPLC1;
                     return "PORT PLC1";
                 case 3:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortPLC2;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortPLC2;
                     return "PORT PLC2";
                 case 4:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController1;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPLightController1;
                     return "IP Light Controller 1";
                 case 5:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController2;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPLightController2;
                     return "IP Light Controller 2";
                 case 6:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController1;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortLightController1;
                     return "PORT Light Controller 1";
                 case 7:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController2;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortLightController2;
                     return "PORT Light Controller 2";
                 case 8:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSaveFullImage + "";
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_bSaveFullImage + "";
                     return "Save Full Image (0: No, 1: Yes)";
                 case 9:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSaveDefectImage + "";
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_bSaveDefectImage + "";
                     return "Save Defect Image (0: No, 1: Yes)";
+
                 case 10:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bShowDetailImage + "";
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_bShowDetailImage + "";
                     return "Show Detail Image (0: No, 1: Yes)";
+
                 case 11:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sFullImagePath;
-                    return "Full Image Path";
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_bSimulation + "";
+                    return "Simulation (0: No, 1: Yes)";
+
                 case 12:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sDefectImagePath;
-                    return "Defect Image Path";
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_bByPass + "";
+                    return "By Pass (0: No, 1: Yes)";
+
                 case 13:
-                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sModelName;
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sFullImagePath;
+                    return "Full Image Path";
+
+                case 14:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sDefectImagePath;
+                    return "Defect Image Path";
+
+                case 15:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sModelName;
                     return "Model Name";
             }
             return "";
+        }
+        private string GetParamNameAndValue_LightSetting(int idx, ref string value, int lightSettingIdx)
+        {
+            switch (idx)
+            {
+                case 1:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_LightSettings[lightSettingIdx].m_sCH1;
+                    return "CH1";
+                case 2:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_LightSettings[lightSettingIdx].m_sCH2;
+                    return "CH2";
+                case 3:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_LightSettings[lightSettingIdx].m_sCH3;
+                    return "CH3";
+                case 4:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_LightSettings[lightSettingIdx].m_sCH4;
+                    return "CH4";
+                case 5:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_LightSettings[lightSettingIdx].m_sCH5;
+                    return "CH5";
+                case 6:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_LightSettings[lightSettingIdx].m_sCH6;
+                    return "CH6";
+            }
+            return value;
+        }
+        public void SetValue_SystemSetting()
+        {
+            for (int i = 0; i < SystemSettingsModels.Count; i++)
+            {
+                string value = SystemSettingsModels[i].Value;
+                switch (i)
+                {
+                    case 0:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPPLC1 = value;
+                        break;
+                    case 1:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPPLC2 = value;
+                        break;
+                    case 2:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortPLC1 = value;
+                        break;
+                    case 3:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortPLC2 = value;
+                        break;
+                    case 4:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPLightController1 = value;
+                        break;
+                    case 5:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sIPLightController2 = value;
+                        break;
+                    case 6:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortLightController1 = value;
+                        break;
+                    case 7:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sPortLightController2 = value;
+                        break;
+                    case 8:
+                        int.TryParse(value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                     m_sealingInspectSysSetting.m_bSaveFullImage);
+                        break;
+                    case 9:
+                        int.TryParse(value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                     m_sealingInspectSysSetting.m_bSaveDefectImage);
+                        break;
+                    case 10:
+                        int.TryParse(value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                     m_sealingInspectSysSetting.m_bShowDetailImage);
+                        break;
+                    case 11:
+                        int.TryParse(value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                     m_sealingInspectSysSetting.m_bSimulation);
+                        break;
+                    case 12:
+                        int.TryParse(value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                     m_sealingInspectSysSetting.m_bByPass);
+                        break;
+                    case 13:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sFullImagePath = value;
+                        break;
+                    case 14:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sDefectImagePath = value;
+                        break;
+                    case 15:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_sModelName = value;
+                        break;
+                }
+            }
+        }
+        public void SetValue_LightSetting(int lightIdx)
+        {
+            if(lightIdx == 0)
+            {
+                for (int i = 0; i < LightSettingModel1.Count; i++)
+                {
+                    string value = LightSettingModel1[i].Value;
+                    switch (i)
+                    {
+                        case 0:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH1 = value;
+                            break;
+                        case 1:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH2 = value;
+                            break;
+                        case 2:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH3 = value;
+                            break;
+                        case 3:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH4 = value;
+                            break;
+                        case 4:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH5 = value;
+                            break;
+                        case 5:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH6 = value;
+                            break;
+                    }
+                }
+            }
+            else if(lightIdx == 1) 
+            {
+                for (int i = 0; i < LightSettingModel2.Count; i++)
+                {
+                    string value = LightSettingModel2[i].Value;
+                    switch (i)
+                    {
+                        case 0:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH1 = value;
+                            break;
+                        case 1:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH2 = value;
+                            break;
+                        case 2:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH3 = value;
+                            break;
+                        case 3:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH4 = value;
+                            break;
+                        case 4:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH5 = value;
+                            break;
+                        case 5:
+                            InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                           m_sealingInspectSysSetting.m_LightSettings[lightIdx].m_sCH6 = value;
+                            break;
+                    }
+                }
+            }
         }
         #endregion
 
@@ -403,6 +656,7 @@ namespace SealingInspectGUI.ViewModels
         public ICommand LoadImageCmd { get; }
         public ICommand ContinuousGrabCmd { get; }
         public ICommand SoftwareTriggerHikCamCmd { get; }
+        public ICommand SaveSettingCmd { get; }
         #endregion
     }
 }

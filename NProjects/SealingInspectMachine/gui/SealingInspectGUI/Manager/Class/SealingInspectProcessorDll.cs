@@ -86,6 +86,39 @@ namespace SealingInspectGUI.Manager.Class
         }
         #endregion
 
+        #region Save Setting and Recipe
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveSystemSetting(IntPtr sealingInspProcessor, IntPtr pSysSetting);
+        public bool SaveSystemSetting(ref CSealingInspectSystemSetting sysSetting)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sysSetting));
+            Marshal.StructureToPtr(sysSetting, pPointer, false);
+            bool bRet = SaveSystemSetting(m_sealingInspectProcessor, pPointer);
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveLightSetting(IntPtr sealingInspProcessor, IntPtr pSysSetting, int nLightIdx);
+        public bool SaveLightSetting(ref CSealingInspectSystemSetting sysSetting, int nLightIdx)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sysSetting));
+            Marshal.StructureToPtr(sysSetting, pPointer, false);
+            bool bRet = SaveLightSetting(m_sealingInspectProcessor, pPointer, nLightIdx);
+
+            return bRet;
+        }
+        #endregion
+
         #region Simulation
 #if DEBUG
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
