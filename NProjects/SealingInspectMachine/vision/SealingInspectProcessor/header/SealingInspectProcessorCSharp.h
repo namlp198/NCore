@@ -54,6 +54,11 @@ extern "C"
 	/************************** Load Setting and Recipe **************************/
 	__declspec(dllexport) bool                      LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
 
+	/************************** Save Setting and Recipe **************************/
+	__declspec(dllexport) bool                      SaveSystemSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
+
+	__declspec(dllexport) bool                      SaveLightSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting, int nLightIdx);
+
 	/************************** Test Inspect **************************/
 	__declspec(dllexport) bool                      TestInspectCavity1(CSealingInspectProcessor* pProcessor);
 	__declspec(dllexport) bool                      TestInspectCavity2(CSealingInspectProcessor* pProcessor);

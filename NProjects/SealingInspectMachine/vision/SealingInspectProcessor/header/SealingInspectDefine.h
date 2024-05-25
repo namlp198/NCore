@@ -29,6 +29,7 @@
 
 #define SAVE_IMAGE_QUALITY_RATIO			100
 #define MAX_STRING_SIZE						256
+#define NUMBER_OF_LIGHT_CONTROLLER          2
 
 
 typedef enum { emUNKNOWN = 0, emInspectCavity_Cavity1, emInspectCavity_Cavity2 } emInspectCavity;

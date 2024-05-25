@@ -227,6 +227,26 @@ bool LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSys
 	return true;
 }
 
+bool SaveSystemSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SaveSystemSetting(pSysSetting);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool SaveLightSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting, int nLightIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SaveLightSetting(pSysSetting, nLightIdx);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 bool TestInspectCavity1(CSealingInspectProcessor* pProcessor)
 {
 	if (pProcessor == NULL)

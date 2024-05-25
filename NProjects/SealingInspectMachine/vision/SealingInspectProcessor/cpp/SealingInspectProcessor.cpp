@@ -4,8 +4,7 @@
 CSealingInspectProcessor::CSealingInspectProcessor()
 {
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("Settings\\SystemSettings.config");
-	m_csLightingControllerPath_1 = GetCurrentPathApp() + _T("Settings\\LightingController1.setting");
-	m_csLightingControllerPath_1 = GetCurrentPathApp() + _T("Settings\\LightingController2.setting");
+	m_csLightSettingPath = GetCurrentPathApp() + _T("Settings\\LightSettings.setting");
 	m_csRecipePath = GetCurrentPathApp() + _T("Recipe\\model305.recipe");
 
 	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
@@ -60,6 +59,7 @@ BOOL CSealingInspectProcessor::Initialize()
 		delete m_pSealingInspSystemSetting, m_pSealingInspSystemSetting = NULL;
 	m_pSealingInspSystemSetting = new CSealingInspectSystemSetting;
 	LoadSystemSetting(m_pSealingInspSystemSetting);
+
 
 	// 4. Load Recipe
 	if (m_pSealingInspRecipe != NULL)
@@ -150,7 +150,7 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 {
 	if (m_csSysSettingsPath.IsEmpty())
 	{
-		AfxMessageBox(_T("Config Path cannot empty!"));
+		AfxMessageBox(_T("System setting Path cannot empty!"));
 		return FALSE;
 	}
 
@@ -158,7 +158,7 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 	BOOL bRecipeExist = finder.FindFile(m_csSysSettingsPath);
 	if (m_csSysSettingsPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
 	{
-		CString msg = _T("Config file no exist, check again");
+		CString msg = _T("System setting file no exist, check again");
 		AfxMessageBox(msg);
 		return FALSE;
 	}
@@ -244,6 +244,12 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 	CString csShowDetailImage = pRoot->first_node("ShowDetailImage")->value();
 	sysSettings.m_bShowDetailImage = csShowDetailImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
+	CString csSimulation = pRoot->first_node("Simulation")->value();
+	sysSettings.m_bSimulation = csSimulation.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csByPass = pRoot->first_node("ByPass")->value();
+	sysSettings.m_bByPass = csByPass.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
 	CString csFullImagePath = pRoot->first_node("FullImagePath")->value();
 	ZeroMemory(sysSettings.m_sFullImagePath, sizeof(sysSettings.m_sFullImagePath));
 	wsprintf(sysSettings.m_sFullImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csFullImagePath);
@@ -258,6 +264,111 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 
 	*(pSystemSetting) = sysSettings;
 
+	LoadLightSetting(pSystemSetting);
+
+	::DisposeXMLFile(m_pXmlFile);
+	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::LoadLightSetting(CSealingInspectSystemSetting* pSystemSetting)
+{
+	if (m_csLightSettingPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Light Setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csLightSettingPath);
+	if (m_csLightSettingPath.Right(7).CompareNoCase(_T("setting")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Light Setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CSealingInspectLightSetting lightSettings[NUMBER_OF_LIGHT_CONTROLLER];
+
+	// convert path
+	USES_CONVERSION;
+	char chLightSettingPath[1024] = {};
+	sprintf_s(chLightSettingPath, "%s", W2A(m_csLightSettingPath));
+
+	// 1. init xml manager
+	XMLFile* m_pXmlFile;
+	XMLDocument_2* m_pXmlDoc;
+	std::string error;
+
+	// 2. Open file
+	m_pXmlFile = ::OpenXMLFile(chLightSettingPath, error);
+	if (!m_pXmlFile)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		return FALSE;
+	}
+
+	// 3. Create xml doc
+	m_pXmlDoc = ::CreateXMLFromFile(m_pXmlFile, error);
+	if (!m_pXmlDoc)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		return FALSE;
+	}
+
+	XMLElement* pRoot = NULL;
+	for (int i = 0; i < NUMBER_OF_LIGHT_CONTROLLER; i++) {
+		if (i == 0) {
+			pRoot = ::FirstOrDefaultElement(m_pXmlDoc, "LightController1", error);
+			if (!pRoot)
+			{
+				AfxMessageBox((CString)(error.c_str()));
+				::DisposeXMLFile(m_pXmlFile);
+				::DisposeXMLObject(m_pXmlDoc);
+				return FALSE;
+			}
+		}
+		else if (i == 1) {
+			pRoot = ::FirstOrDefaultElement(m_pXmlDoc, "LightController2", error);
+			if (!pRoot)
+			{
+				AfxMessageBox((CString)(error.c_str()));
+				::DisposeXMLFile(m_pXmlFile);
+				::DisposeXMLObject(m_pXmlDoc);
+				return FALSE;
+			}
+		}
+
+		// start read
+		CString csCH1 = pRoot->first_node("CH1")->value();
+		ZeroMemory(lightSettings[i].m_sCH1, sizeof(lightSettings[i].m_sCH1));
+		wsprintf(lightSettings[i].m_sCH1, _T("%s"), (TCHAR*)(LPCTSTR)csCH1);
+
+		CString csCH2 = pRoot->first_node("CH2")->value();
+		ZeroMemory(lightSettings[i].m_sCH2, sizeof(lightSettings[i].m_sCH2));
+		wsprintf(lightSettings[i].m_sCH2, _T("%s"), (TCHAR*)(LPCTSTR)csCH2);
+
+		CString csCH3 = pRoot->first_node("CH3")->value();
+		ZeroMemory(lightSettings[i].m_sCH3, sizeof(lightSettings[i].m_sCH3));
+		wsprintf(lightSettings[i].m_sCH3, _T("%s"), (TCHAR*)(LPCTSTR)csCH3);
+
+		CString csCH4 = pRoot->first_node("CH4")->value();
+		ZeroMemory(lightSettings[i].m_sCH4, sizeof(lightSettings[i].m_sCH4));
+		wsprintf(lightSettings[i].m_sCH4, _T("%s"), (TCHAR*)(LPCTSTR)csCH4);
+
+		CString csCH5 = pRoot->first_node("CH5")->value();
+		ZeroMemory(lightSettings[i].m_sCH5, sizeof(lightSettings[i].m_sCH5));
+		wsprintf(lightSettings[i].m_sCH5, _T("%s"), (TCHAR*)(LPCTSTR)csCH5);
+
+		CString csCH6 = pRoot->first_node("CH6")->value();
+		ZeroMemory(lightSettings[i].m_sCH6, sizeof(lightSettings[i].m_sCH6));
+		wsprintf(lightSettings[i].m_sCH6, _T("%s"), (TCHAR*)(LPCTSTR)csCH6);
+
+		pSystemSetting->m_LightSettings[i] = lightSettings[i];
+	}
+
 	::DisposeXMLFile(m_pXmlFile);
 	::DisposeXMLObject(m_pXmlDoc);
 
@@ -267,6 +378,196 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 BOOL CSealingInspectProcessor::LoadRecipe()
 {
 	return 0;
+}
+
+BOOL CSealingInspectProcessor::SaveSystemSetting(CSealingInspectSystemSetting* pSystemSetting)
+{
+	if (m_csSysSettingsPath.IsEmpty())
+	{
+		AfxMessageBox(_T("System setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csSysSettingsPath);
+	if (m_csSysSettingsPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("System setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CSealingInspectSystemSetting sysSetting;
+	sysSetting = *(pSystemSetting);
+	*(m_pSealingInspSystemSetting) = *(pSystemSetting);
+
+	// convert path
+	USES_CONVERSION;
+	char chSysSettingPath[1024] = {};
+	sprintf_s(chSysSettingPath, "%s", W2A(m_csSysSettingsPath));
+
+	XMLDocument_2 xmlDoc;
+	std::string error;
+
+	std::ifstream fs(chSysSettingPath, std::ios::in | std::ios::out);
+	std::string inputXml;
+	std::string line;
+	while (std::getline(fs, line))
+	{
+		inputXml += line;
+	}
+	std::vector<char> buffer(inputXml.begin(), inputXml.end());
+	buffer.push_back('\0');
+	xmlDoc.parse<rapidxml::parse_full | rapidxml::parse_no_data_nodes>(&buffer[0]);
+
+	rapidxml::xml_node<>* pRoot = xmlDoc.first_node("SystemSettings");
+
+	// Write data
+
+#pragma region Write data 
+	const char* sIPPLC1 = W2A(sysSetting.m_sIPPLC1);
+	pRoot->first_node("IPPLC1")->value(sIPPLC1);
+
+	const char* sIPPLC2 = W2A(sysSetting.m_sIPPLC2);
+	pRoot->first_node("IPPLC2")->value(sIPPLC2);
+
+	const char* sPortPLC1 = W2A(sysSetting.m_sPortPLC1);
+	pRoot->first_node("PortPLC1")->value(sPortPLC1);
+
+	const char* sPortPLC2 = W2A(sysSetting.m_sPortPLC2);
+	pRoot->first_node("PortPLC2")->value(sPortPLC2);
+
+	const char* sIPLightController1 = W2A(sysSetting.m_sIPLightController1);
+	pRoot->first_node("IPLightController1")->value(sIPLightController1);
+
+	const char* sIPLightController2 = W2A(sysSetting.m_sIPLightController2);
+	pRoot->first_node("IPLightController2")->value(sIPLightController2);
+
+	const char* sPortLightController1 = W2A(sysSetting.m_sPortLightController1);
+	pRoot->first_node("PortLightController1")->value(sPortLightController1);
+
+	const char* sPortLightController2 = W2A(sysSetting.m_sPortLightController2);
+	pRoot->first_node("PortLightController2")->value(sPortLightController2);
+
+	CString csSaveFullImage = sysSetting.m_bSaveFullImage == TRUE ? _T("true") : _T("false");
+	const char* sSaveFullImage = W2A(csSaveFullImage);
+	pRoot->first_node("SaveFullImage")->value(sSaveFullImage);
+
+	CString csSaveDefectImage = sysSetting.m_bSaveDefectImage == TRUE ? _T("true") : _T("false");
+	const char* sSaveDefectImage = W2A(csSaveDefectImage);
+	pRoot->first_node("SaveDefectImage")->value(sSaveDefectImage);
+
+	CString csShowDetailImage = sysSetting.m_bShowDetailImage == TRUE ? _T("true") : _T("false");
+	const char* sShowDetailImage = W2A(csShowDetailImage);
+	pRoot->first_node("ShowDetailImage")->value(sShowDetailImage);
+
+	CString csSimulation = sysSetting.m_bSimulation == TRUE ? _T("true") : _T("false");
+	const char* sSimulation = W2A(csSimulation);
+	pRoot->first_node("Simulation")->value(sSimulation);
+
+	CString csByPass = sysSetting.m_bByPass == TRUE ? _T("true") : _T("false");
+	const char* sByPass = W2A(csByPass);
+	pRoot->first_node("ByPass")->value(sByPass);
+
+	const char* sFullImagePath = W2A(sysSetting.m_sFullImagePath);
+	pRoot->first_node("FullImagePath")->value(sFullImagePath);
+
+	const char* sDefectImagePath = W2A(sysSetting.m_sDefectImagePath);
+	pRoot->first_node("DefectImagePath")->value(sDefectImagePath);
+
+	const char* sModelName = W2A(sysSetting.m_sModelName);
+	pRoot->first_node("ModelName")->value(sModelName);
+#pragma endregion
+
+	// Convert the modified XML back to a string
+	std::string data;
+	rapidxml::print(std::back_inserter(data), xmlDoc);
+
+	std::ofstream file;
+	file.open(chSysSettingPath);
+	file << data;
+	file.close();
+
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::SaveLightSetting(CSealingInspectSystemSetting* pSystemSetting, int nLightIdx)
+{
+	if (m_csLightSettingPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Light Setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csLightSettingPath);
+	if (m_csLightSettingPath.Right(7).CompareNoCase(_T("setting")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Light Setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CSealingInspectSystemSetting sysSetting;
+	sysSetting = *(pSystemSetting);
+	*(m_pSealingInspSystemSetting) = *(pSystemSetting);
+
+	// convert path
+	USES_CONVERSION;
+	char chLightSettingPath[1024] = {};
+	sprintf_s(chLightSettingPath, "%s", W2A(m_csLightSettingPath));
+
+	XMLDocument_2 xmlDoc;
+	std::string error;
+
+	std::ifstream fs(chLightSettingPath, std::ios::in | std::ios::out);
+	std::string inputXml;
+	std::string line;
+	while (std::getline(fs, line))
+	{
+		inputXml += line;
+	}
+	std::vector<char> buffer(inputXml.begin(), inputXml.end());
+	buffer.push_back('\0');
+	xmlDoc.parse<rapidxml::parse_full | rapidxml::parse_no_data_nodes>(&buffer[0]);
+
+	rapidxml::xml_node<>* pRoot = NULL;
+	if (nLightIdx == 0) {
+		pRoot = xmlDoc.first_node("LightController1");
+	}
+	else {
+		pRoot = xmlDoc.first_node("LightController2");
+	}
+	
+	// Write data
+	const char* sCH1 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH1);
+	pRoot->first_node("CH1")->value(sCH1);
+
+	const char* sCH2 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH2);
+	pRoot->first_node("CH2")->value(sCH2);
+
+	const char* sCH3 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH3);
+	pRoot->first_node("CH3")->value(sCH3);
+
+	const char* sCH4 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH4);
+	pRoot->first_node("CH4")->value(sCH4);
+
+	const char* sCH5 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH5);
+	pRoot->first_node("CH5")->value(sCH5);
+
+	const char* sCH6 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH6);
+	pRoot->first_node("CH6")->value(sCH6);
+
+	// Convert the modified XML back to a string
+	std::string data;
+	rapidxml::print(std::back_inserter(data), xmlDoc);
+
+	std::ofstream file;
+	file.open(chLightSettingPath);
+	file << data;
+	file.close();
+
+	return TRUE;
 }
 
 BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator)

@@ -41,7 +41,10 @@ public:
 	BOOL         Destroy();
 	CString      GetCurrentPathApp();
 	BOOL         LoadSystemSetting(CSealingInspectSystemSetting* pSystemSetting);
+	BOOL         LoadLightSetting(CSealingInspectSystemSetting* pSystemSetting);
 	BOOL         LoadRecipe();
+	BOOL         SaveSystemSetting(CSealingInspectSystemSetting* pSystemSetting);
+	BOOL         SaveLightSetting(CSealingInspectSystemSetting* pSystemSetting, int nLightIdx);
 
 public:
 	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator);
@@ -97,40 +100,39 @@ private:
 private:
 
 	// Image Buffer
-	CSharedMemoryBuffer*              m_pImageBuffer_Top[MAX_TOPCAM_COUNT];
-								      
-	CSharedMemoryBuffer*              m_pImageBuffer_Side[MAX_SIDECAM_COUNT];
-								      
-	CallbackLogFunc*                  m_pCallbackLogFunc;
-	CallbackAlarm*                    m_pCallbackAlarm;
-	CallbackInspectComplete*          m_pCallbackInsCompleteFunc;
-								      
-	// UI						      
-	CLogView*                         m_pLogView;
-								      
-	// Hik cam					      
-	CSealingInspectHikCam*            m_pSealingInspHikCam;
-								      
-	// Inspect Core				      
-	CSealingInspectCore*              m_pSealingInspCore[NUMBER_OF_SET_INSPECT];
+	CSharedMemoryBuffer*                       m_pImageBuffer_Top[MAX_TOPCAM_COUNT];
+								               
+	CSharedMemoryBuffer*                       m_pImageBuffer_Side[MAX_SIDECAM_COUNT];
+								               
+	CallbackLogFunc*                           m_pCallbackLogFunc;
+	CallbackAlarm*                             m_pCallbackAlarm;
+	CallbackInspectComplete*                   m_pCallbackInsCompleteFunc;
+								               
+	// UI						               
+	CLogView*                                  m_pLogView;
+								               
+	// Hik cam					               
+	CSealingInspectHikCam*                     m_pSealingInspHikCam;
+								               
+	// Inspect Core				               
+	CSealingInspectCore*                       m_pSealingInspCore[NUMBER_OF_SET_INSPECT];
 								      
 	// System Setting			      
-	CSealingInspectSystemSetting*     m_pSealingInspSystemSetting;
+	CSealingInspectSystemSetting*              m_pSealingInspSystemSetting;
 
 	// Recipe
-	CSealingInspectRecipe*            m_pSealingInspRecipe;
-
-	// Result
-	CCriticalSection                  m_csInspResult[NUMBER_OF_SET_INSPECT];
-	CSealingInspectResult*            m_pSealingInspResult[NUMBER_OF_SET_INSPECT];
-
-	// Simulation IO
-	CCriticalSection                  m_csSimulation_IO[NUMBER_OF_SET_INSPECT];
-	CSealingInspect_Simulation_IO*    m_pSealingInspect_Simulation_IO[NUMBER_OF_SET_INSPECT];
-
-	// system settings file path
-	CString                           m_csSysSettingsPath;
-	CString                           m_csRecipePath;
-	CString                           m_csLightingControllerPath_1;
-	CString                           m_csLightingControllerPath_2;
+	CSealingInspectRecipe*                     m_pSealingInspRecipe;
+									           
+	// Result						           
+	CCriticalSection                           m_csInspResult[NUMBER_OF_SET_INSPECT];
+	CSealingInspectResult*                     m_pSealingInspResult[NUMBER_OF_SET_INSPECT];
+									           
+	// Simulation IO				           
+	CCriticalSection                           m_csSimulation_IO[NUMBER_OF_SET_INSPECT];
+	CSealingInspect_Simulation_IO*             m_pSealingInspect_Simulation_IO[NUMBER_OF_SET_INSPECT];
+									           
+	// system settings file path	           
+	CString                                    m_csSysSettingsPath;
+	CString                                    m_csRecipePath;
+	CString                                    m_csLightSettingPath;
 };
