@@ -53,6 +53,16 @@ namespace SealingInspectGUI.ViewModels
         private List<SettingsMapToDataGridModel> m_lightSettingModel1 = new List<SettingsMapToDataGridModel>();
         private List<SettingsMapToDataGridModel> m_lightSettingModel2 = new List<SettingsMapToDataGridModel>();
 
+        // Top cam
+        private List<RecipeTopCamMapToDataGridModel> m_recipeFrame1_TopCam = new List<RecipeTopCamMapToDataGridModel>();
+        private List<RecipeTopCamMapToDataGridModel> m_recipeFrame2_TopCam = new List<RecipeTopCamMapToDataGridModel>();
+
+        // Side Cam
+        private List<RecipeSideCamMapToDataGridModel> m_recipeFrame1_SideCam = new List<RecipeSideCamMapToDataGridModel>();
+        private List<RecipeSideCamMapToDataGridModel> m_recipeFrame2_SideCam = new List<RecipeSideCamMapToDataGridModel>();
+        private List<RecipeSideCamMapToDataGridModel> m_recipeFrame3_SideCam = new List<RecipeSideCamMapToDataGridModel>();
+        private List<RecipeSideCamMapToDataGridModel> m_recipeFrame4_SideCam = new List<RecipeSideCamMapToDataGridModel>();
+
         public CameraStreamingController m_cameraStreamingController = null;
 
         #endregion
@@ -74,6 +84,7 @@ namespace SealingInspectGUI.ViewModels
             this.ContinuousGrabCmd = new ContinuousGrabCmd();
             this.SoftwareTriggerHikCamCmd = new SoftwareTriggerHikCamCmd();
             this.SaveSettingCmd = new SaveSettingCmd();
+            this.SaveRecipeCmd = new SaveRecipeCmd();
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
 
@@ -307,6 +318,55 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
+        public List<RecipeTopCamMapToDataGridModel> RecipeFrame1_TopCam
+        {
+            get => m_recipeFrame1_TopCam;
+            set
+            {
+                if (SetProperty(ref m_recipeFrame1_TopCam, value)) { }
+            }
+        }
+        public List<RecipeTopCamMapToDataGridModel> RecipeFrame2_TopCam
+        {
+            get => m_recipeFrame2_TopCam;
+            set
+            {
+                if (SetProperty(ref m_recipeFrame2_TopCam, value)) { }
+            }
+        }
+        public List<RecipeSideCamMapToDataGridModel> RecipeFrame1_SideCam
+        {
+            get => m_recipeFrame1_SideCam;
+            set
+            {
+                if (SetProperty(ref m_recipeFrame1_SideCam, value)) { }
+            }
+        }
+        public List<RecipeSideCamMapToDataGridModel> RecipeFrame2_SideCam
+        {
+            get => m_recipeFrame2_SideCam;
+            set
+            {
+                if (SetProperty(ref m_recipeFrame2_SideCam, value)) { }
+            }
+        }
+        public List<RecipeSideCamMapToDataGridModel> RecipeFrame3_SideCam
+        {
+            get => m_recipeFrame3_SideCam;
+            set
+            {
+                if (SetProperty(ref m_recipeFrame3_SideCam, value)) { }
+            }
+        }
+        public List<RecipeSideCamMapToDataGridModel> RecipeFrame4_SideCam
+        {
+            get => m_recipeFrame4_SideCam;
+            set
+            {
+                if (SetProperty(ref m_recipeFrame4_SideCam, value)) { }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -396,6 +456,254 @@ namespace SealingInspectGUI.ViewModels
                 else if (lightSettingIdx == 1)
                     LightSettingModel2 = lightSettingLst;
             }
+        }
+        public void LoadRecipe()
+        {
+            LoadRecipeTopCam();
+            LoadRecipeSideCam();
+        }
+        private void LoadRecipeTopCam()
+        {
+            LoadRecipeFrame1_TopCam();
+            LoadRecipeFrame2_TopCam();
+        }
+        private void LoadRecipeSideCam()
+        {
+            List<RecipeSideCamMapToDataGridModel> lstRecipeFrame1 = new List<RecipeSideCamMapToDataGridModel>();
+            List<RecipeSideCamMapToDataGridModel> lstRecipeFrame2 = new List<RecipeSideCamMapToDataGridModel>();
+            List<RecipeSideCamMapToDataGridModel> lstRecipeFrame3 = new List<RecipeSideCamMapToDataGridModel>();
+            List<RecipeSideCamMapToDataGridModel> lstRecipeFrame4 = new List<RecipeSideCamMapToDataGridModel>();
+
+            int nPropertyCount_1 = typeof(CRecipe_SideCam_Frame1).GetFields().Count();
+            int nPropertyCount_2 = typeof(CRecipe_SideCam_Frame2).GetFields().Count();
+            int nPropertyCount_3 = typeof(CRecipe_SideCam_Frame3).GetFields().Count();
+            int nPropertyCount_4 = typeof(CRecipe_SideCam_Frame4).GetFields().Count();
+            int nSideCam1 = 0;
+            int nSideCam2 = 1;
+
+            for (int nFrameIdx = 1; nFrameIdx <= Defines.MAX_IMAGE_BUFFER_SIDECAM; nFrameIdx++)
+            {
+                switch (nFrameIdx)
+                {
+                    // frame 1
+                    case 1:
+                        for (int i = 0; i < nPropertyCount_1; i++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
+                            switch (i)
+                            {
+                                case 0:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Min";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                                    break;
+                                case 1:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Max";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                                    break;
+                            }
+                            lstRecipeFrame1.Add(recipe);
+                        }
+                        RecipeFrame1_SideCam = lstRecipeFrame1;
+                    break;
+
+                    // frame 2
+                    case 2:
+                        for (int i = 0; i < nPropertyCount_2; i++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
+                            switch (i)
+                            {
+                                case 0:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Min";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                    break;
+                                case 1:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Max";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                    break;
+                            }
+                            lstRecipeFrame2.Add(recipe);
+                        }
+                        RecipeFrame2_SideCam = lstRecipeFrame2;
+                    break;
+
+                    // frame 3
+                    case 3:
+                        for (int i = 0; i < nPropertyCount_3; i++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
+                            switch (i)
+                            {
+                                case 0:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Min";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min + "";
+                                    break;
+                                case 1:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Max";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max + "";
+                                    break;
+                            }
+                            lstRecipeFrame3.Add(recipe);
+                        }
+                        RecipeFrame3_SideCam = lstRecipeFrame3;
+                    break;
+
+                    // frame 4
+                    case 4:
+                        for (int i = 0; i < nPropertyCount_4; i++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
+                            switch (i)
+                            {
+                                case 0:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Min";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min + "";
+                                    break;
+                                case 1:
+                                    recipe.Index = i + 1;
+                                    recipe.ParamName = "Distance Measurement Tolerance Max";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max + "";
+                                    break;
+                            }
+                            lstRecipeFrame4.Add(recipe);
+                        }
+                        RecipeFrame4_SideCam = lstRecipeFrame4;
+                    break;
+                }
+            }
+        }
+        private void LoadRecipeFrame1_TopCam()
+        {
+            List<RecipeTopCamMapToDataGridModel> lstRecipeFrame1 = new List<RecipeTopCamMapToDataGridModel>();
+
+            int nPropertyCount = typeof(CRecipe_TopCam_Frame1).GetFields().Count();
+            int nTopCam1 = 0;
+            int nTopCam2 = 1;
+
+            for (int i = 0; i < nPropertyCount; i++)
+            {
+                RecipeTopCamMapToDataGridModel recipe = new RecipeTopCamMapToDataGridModel();
+                switch (i)
+                {
+                    case 0:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Distance Measurement Tolerance Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                        break;
+                    case 1:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Distance Measurement Tolerance Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                        break;
+                    case 2:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Radius Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nRadius_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nRadius_Min + "";
+                        break;
+                    case 3:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Radius Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nRadius_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nRadius_Max + "";
+                        break;
+                }
+                lstRecipeFrame1.Add(recipe);
+            }
+            RecipeFrame1_TopCam = lstRecipeFrame1;
+
+        }
+        private void LoadRecipeFrame2_TopCam()
+        {
+            List<RecipeTopCamMapToDataGridModel> lstRecipeFrame2 = new List<RecipeTopCamMapToDataGridModel>();
+
+            int nPropertyCount = typeof(CRecipe_TopCam_Frame2).GetFields().Count();
+            int nTopCam1 = 0;
+            int nTopCam2 = 1;
+
+            for (int i = 0; i < nPropertyCount; i++)
+            {
+                RecipeTopCamMapToDataGridModel recipe = new RecipeTopCamMapToDataGridModel();
+                switch (i)
+                {
+                    case 0:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Distance Measurement Tolerance Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                        break;
+                    case 1:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Distance Measurement Tolerance Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                        break;
+                    case 2:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Radius Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nRadius_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nRadius_Min + "";
+                        break;
+                    case 3:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Radius Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nRadius_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nRadius_Max + "";
+                        break;
+                }
+                lstRecipeFrame2.Add(recipe);
+            }
+            RecipeFrame2_TopCam = lstRecipeFrame2;
+
         }
         private string GetParamNameAndValue_SystemSetting(int idx, ref string value)
         {
@@ -581,7 +889,7 @@ namespace SealingInspectGUI.ViewModels
         }
         public void SetValue_LightSetting(int lightIdx)
         {
-            if(lightIdx == 0)
+            if (lightIdx == 0)
             {
                 for (int i = 0; i < LightSettingModel1.Count; i++)
                 {
@@ -615,7 +923,7 @@ namespace SealingInspectGUI.ViewModels
                     }
                 }
             }
-            else if(lightIdx == 1) 
+            else if (lightIdx == 1)
             {
                 for (int i = 0; i < LightSettingModel2.Count; i++)
                 {
@@ -657,6 +965,7 @@ namespace SealingInspectGUI.ViewModels
         public ICommand ContinuousGrabCmd { get; }
         public ICommand SoftwareTriggerHikCamCmd { get; }
         public ICommand SaveSettingCmd { get; }
+        public ICommand SaveRecipeCmd { get; }
         #endregion
     }
 }

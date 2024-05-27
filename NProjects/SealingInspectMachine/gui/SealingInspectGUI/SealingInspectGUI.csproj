@@ -98,6 +98,7 @@
     <Compile Include="Command\Cmd\GrabAllCmd.cs" />
     <Compile Include="Command\Cmd\GrabCavity2Cmd .cs" />
     <Compile Include="Command\Cmd\GrabCavity1Cmd.cs" />
+    <Compile Include="Command\Cmd\SaveRecipeCmd.cs" />
     <Compile Include="Command\Cmd\SaveSettingCmd.cs" />
     <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
     <Compile Include="Command\Cmd\SoftwareTriggerHikCamCmd.cs" />
@@ -121,11 +122,14 @@
     <Compile Include="Manager\SumManager\SealingInspectProcessorManager.cs" />
     <Compile Include="Manager\SumManager\SequenceManager.cs" />
     <Compile Include="Manager\SumManager\SettingManager.cs" />
+    <Compile Include="Models\CSealingInspectRecipe.cs" />
     <Compile Include="Models\CSealingInspectResult.cs" />
     <Compile Include="Models\CSealingInspectResult_SideCam.cs" />
     <Compile Include="Models\CSealingInspectResult_TopCam.cs" />
     <Compile Include="Models\CSealingInspectSystemSetting.cs" />
     <Compile Include="Models\CSealingInspect_Simulation_IO.cs" />
+    <Compile Include="Models\RecipeSideCamMapToDataGridModel .cs" />
+    <Compile Include="Models\RecipeTopCamMapToDataGridModel.cs" />
     <Compile Include="Models\SettingsMapToDataGridModel.cs" />
     <Compile Include="ViewModels\SumCameraViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

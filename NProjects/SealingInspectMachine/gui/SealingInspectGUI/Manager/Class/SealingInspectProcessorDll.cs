@@ -84,6 +84,24 @@ namespace SealingInspectGUI.Manager.Class
 
             return bRet;
         }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadRecipe(IntPtr sealingInspProcessor, IntPtr pRecipe);
+        public bool LoadRecipe(ref CSealingInspectRecipe pRecipe)
+        {
+            CSealingInspectRecipe recipe = new CSealingInspectRecipe();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipe));
+            Marshal.StructureToPtr(recipe, pPointer, false);
+            bool bRet = LoadRecipe(m_sealingInspectProcessor, pPointer);
+            pRecipe = (CSealingInspectRecipe)Marshal.PtrToStructure(pPointer, typeof(CSealingInspectRecipe));
+
+            return bRet;
+        }
         #endregion
 
         #region Save Setting and Recipe
@@ -114,6 +132,23 @@ namespace SealingInspectGUI.Manager.Class
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sysSetting));
             Marshal.StructureToPtr(sysSetting, pPointer, false);
             bool bRet = SaveLightSetting(m_sealingInspectProcessor, pPointer, nLightIdx);
+
+            return bRet;
+        }
+
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveRecipe(IntPtr sealingInspProcessor, IntPtr pRecipe, [MarshalAs(UnmanagedType.LPStr)] string sPosCam, int nFrameIdx);
+        public bool SaveRecipe(ref CSealingInspectRecipe pRecipe, [MarshalAs(UnmanagedType.LPStr)] string sPosCam, int nFrameIdx)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pRecipe));
+            Marshal.StructureToPtr(pRecipe, pPointer, false);
+            bool bRet = SaveRecipe(m_sealingInspectProcessor, pPointer, sPosCam, nFrameIdx);
 
             return bRet;
         }

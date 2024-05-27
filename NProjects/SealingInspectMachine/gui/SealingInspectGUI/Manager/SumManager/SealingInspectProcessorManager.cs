@@ -16,6 +16,7 @@ namespace SealingInspectGUI.Manager.SumManager
         public CSealingInspectResult[] m_sealingInspectResult = new CSealingInspectResult[Defines.NUMBER_OF_SET_INSPECT];
         public CSealingInspect_Simulation_IO[] m_sealingInspect_Simulation_IO = new CSealingInspect_Simulation_IO[Defines.NUMBER_OF_SET_INSPECT];
         public CSealingInspectSystemSetting m_sealingInspectSysSetting = new CSealingInspectSystemSetting();
+        public CSealingInspectRecipe m_sealingInspectRecipe = new CSealingInspectRecipe();
         public void Initialize()
         {
             m_sealingInspProcessorDll.RegCallBackInspectCompleteFunc(InterfaceManager.Instance.CallbackInsCompleteFunc);

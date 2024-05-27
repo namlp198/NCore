@@ -409,28 +409,45 @@
                                                 <RowDefinition />
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
-                                            <DataGrid Name="dtgridFrame1_Top">
+                                            <DataGrid Name="dtgridFrame1_Top"
+                                                      Margin="2"
+                                                      AutoGenerateColumns="False"
+                                                      ItemsSource="{Binding RecipeFrame1_TopCam, Mode=TwoWay}">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="No."
                                                                         Width="50"
                                                                         MinWidth="20"
-                                                                        MaxWidth="50" />
+                                                                        MaxWidth="50"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding Index}"/>
                                                     <DataGridTextColumn Header="Parameters"
-                                                                        MinWidth="350"
-                                                                        MaxWidth="600" />
+                                                                        MinWidth="500"
+                                                                        MaxWidth="700"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding ParamName}"/>
                                                     <DataGridTextColumn Header="Top Cam 1"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding TopCam1Value, Mode=TwoWay}"/>
                                                     <DataGridTextColumn Header="Top Cam 2"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding TopCam2Value, Mode=TwoWay}"/>
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->
                                             <Button Grid.Row="1"
                                                     x:Name="btnSaveFrame1_Top"
+                                                    Command="{Binding SaveRecipeCmd}"
+                                                    CommandParameter="{Binding ElementName=btnSaveFrame1_Top, Path=Name}"
                                                     Margin="3"
                                                     Width="130"
                                                     HorizontalAlignment="Right"
@@ -457,28 +474,45 @@
                                                 <RowDefinition />
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
-                                            <DataGrid Name="dtgridFrame2_Top">
+                                            <DataGrid Name="dtgridFrame2_Top"
+                                                      Margin="2"
+                                                      AutoGenerateColumns="False"
+                                                      ItemsSource="{Binding RecipeFrame2_TopCam, Mode=TwoWay}">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="No."
                                                                         Width="50"
                                                                         MinWidth="20"
-                                                                        MaxWidth="50" />
+                                                                        MaxWidth="50"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding Index}" />
                                                     <DataGridTextColumn Header="Parameters"
-                                                                        MinWidth="350"
-                                                                        MaxWidth="600" />
+                                                                        MinWidth="500"
+                                                                        MaxWidth="700"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding ParamName}" />
                                                     <DataGridTextColumn Header="Top Cam 1"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding TopCam1Value, Mode=TwoWay}" />
                                                     <DataGridTextColumn Header="Top Cam 2"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding TopCam2Value, Mode=TwoWay}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->
                                             <Button Grid.Row="1"
                                                     x:Name="btnSaveFrame2_Top"
+                                                    Command="{Binding SaveRecipeCmd}"
+                                                    CommandParameter="{Binding ElementName=btnSaveFrame2_Top, Path=Name}"
                                                     Margin="3"
                                                     Width="130"
                                                     HorizontalAlignment="Right"
@@ -515,28 +549,45 @@
                                                 <RowDefinition />
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
-                                            <DataGrid Name="dtgridFrame1_Side">
+                                            <DataGrid Name="dtgridFrame1_Side"
+                                                      Margin="2"
+                                                      AutoGenerateColumns="False"
+                                                      ItemsSource="{Binding RecipeFrame1_SideCam, Mode=TwoWay}">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="No."
                                                                         Width="50"
                                                                         MinWidth="20"
-                                                                        MaxWidth="50" />
+                                                                        MaxWidth="50"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding Index}" />
                                                     <DataGridTextColumn Header="Parameters"
-                                                                        MinWidth="350"
-                                                                        MaxWidth="600" />
+                                                                        MinWidth="500"
+                                                                        MaxWidth="700"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding ParamName}" />
                                                     <DataGridTextColumn Header="Side Cam 1"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam1Value, Mode=TwoWay}" />
                                                     <DataGridTextColumn Header="Side Cam 2"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam2Value, Mode=TwoWay}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->
                                             <Button Grid.Row="1"
                                                     x:Name="btnSaveFrame1_Side"
+                                                    Command="{Binding SaveRecipeCmd}"
+                                                    CommandParameter="{Binding ElementName=btnSaveFrame1_Side, Path=Name}"
                                                     Margin="3"
                                                     Width="130"
                                                     HorizontalAlignment="Right"
@@ -563,28 +614,45 @@
                                                 <RowDefinition />
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
-                                            <DataGrid Name="dtgridFrame2_Side">
+                                            <DataGrid Name="dtgridFrame2_Side"
+                                                      Margin="2"
+                                                      AutoGenerateColumns="False"
+                                                      ItemsSource="{Binding RecipeFrame2_SideCam, Mode=TwoWay}">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="No."
                                                                         Width="50"
                                                                         MinWidth="20"
-                                                                        MaxWidth="50" />
+                                                                        MaxWidth="50"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding Index}" />
                                                     <DataGridTextColumn Header="Parameters"
-                                                                        MinWidth="350"
-                                                                        MaxWidth="600" />
+                                                                        MinWidth="500"
+                                                                        MaxWidth="700"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding ParamName}" />
                                                     <DataGridTextColumn Header="Side Cam 1"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam1Value, Mode=TwoWay}" />
                                                     <DataGridTextColumn Header="Side Cam 2"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam2Value, Mode=TwoWay}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->
                                             <Button Grid.Row="1"
                                                     x:Name="btnSaveFrame2_Side"
+                                                    Command="{Binding SaveRecipeCmd}"
+                                                    CommandParameter="{Binding ElementName=btnSaveFrame2_Side, Path=Name}"
                                                     Margin="3"
                                                     Width="130"
                                                     HorizontalAlignment="Right"
@@ -611,28 +679,45 @@
                                                 <RowDefinition />
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
-                                            <DataGrid Name="dtgridFrame3_Side">
+                                            <DataGrid Name="dtgridFrame3_Side"
+                                                      Margin="2"
+                                                      AutoGenerateColumns="False"
+                                                      ItemsSource="{Binding RecipeFrame3_SideCam, Mode=TwoWay}">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="No."
                                                                         Width="50"
                                                                         MinWidth="20"
-                                                                        MaxWidth="50" />
+                                                                        MaxWidth="50"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding Index}" />
                                                     <DataGridTextColumn Header="Parameters"
-                                                                        MinWidth="350"
-                                                                        MaxWidth="600" />
+                                                                        MinWidth="500"
+                                                                        MaxWidth="700"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding ParamName}" />
                                                     <DataGridTextColumn Header="Side Cam 1"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam1Value, Mode=TwoWay}" />
                                                     <DataGridTextColumn Header="Side Cam 2"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam2Value, Mode=TwoWay}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->
                                             <Button Grid.Row="1"
                                                     x:Name="btnSaveFrame3_Side"
+                                                    Command="{Binding SaveRecipeCmd}"
+                                                    CommandParameter="{Binding ElementName=btnSaveFrame3_Side, Path=Name}"
                                                     Margin="3"
                                                     Width="130"
                                                     HorizontalAlignment="Right"
@@ -659,28 +744,45 @@
                                                 <RowDefinition />
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
-                                            <DataGrid Name="dtgridFrame4_Side">
+                                            <DataGrid Name="dtgridFrame4_Side"
+                                                      Margin="2"
+                                                      AutoGenerateColumns="False"
+                                                      ItemsSource="{Binding RecipeFrame4_SideCam, Mode=TwoWay}">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="No."
                                                                         Width="50"
                                                                         MinWidth="20"
-                                                                        MaxWidth="50" />
+                                                                        MaxWidth="50"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding Index}" />
                                                     <DataGridTextColumn Header="Parameters"
-                                                                        MinWidth="350"
-                                                                        MaxWidth="600" />
+                                                                        MinWidth="500"
+                                                                        MaxWidth="700"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding ParamName}" />
                                                     <DataGridTextColumn Header="Side Cam 1"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam1Value, Mode=TwoWay}" />
                                                     <DataGridTextColumn Header="Side Cam 2"
                                                                         Width="160"
-                                                                        MinWidth="10"
-                                                                        MaxWidth="200" />
+                                                                        MinWidth="100"
+                                                                        MaxWidth="200"
+                                                                        FontWeight="Normal"
+                                                                        FontSize="12"
+                                                                        Binding="{Binding SideCam2Value, Mode=TwoWay}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->
                                             <Button Grid.Row="1"
                                                     x:Name="btnSaveFrame4_Side"
+                                                    Command="{Binding SaveRecipeCmd}"
+                                                    CommandParameter="{Binding ElementName=btnSaveFrame4_Side, Path=Name}"
                                                     Margin="3"
                                                     Width="130"
                                                     HorizontalAlignment="Right"
