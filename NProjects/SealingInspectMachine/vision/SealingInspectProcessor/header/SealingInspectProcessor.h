@@ -16,6 +16,7 @@
 #include "SealingInspect_Simulation_IO.h"
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
+#include "ListBoxLog.h"
 
 #include "rapidxml.hpp"
 #include "RapidXMLSTD.hpp"
@@ -42,9 +43,10 @@ public:
 	CString      GetCurrentPathApp();
 	BOOL         LoadSystemSetting(CSealingInspectSystemSetting* pSystemSetting);
 	BOOL         LoadLightSetting(CSealingInspectSystemSetting* pSystemSetting);
-	BOOL         LoadRecipe();
+	BOOL         LoadRecipe(CSealingInspectRecipe* pRecipe);
 	BOOL         SaveSystemSetting(CSealingInspectSystemSetting* pSystemSetting);
 	BOOL         SaveLightSetting(CSealingInspectSystemSetting* pSystemSetting, int nLightIdx);
+	BOOL         SaveRecipe(CSealingInspectRecipe* pRecipe, CString sPosCam, int nFrameIdx);
 
 public:
 	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator);

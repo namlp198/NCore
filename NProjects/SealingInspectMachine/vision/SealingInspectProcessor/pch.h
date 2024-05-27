@@ -9,13 +9,14 @@
 
 // add headers that you want to pre-compile here
 #include "framework.h"
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS 
 
 #include <afxv_dll.h>
 #include <afxver_.h>
 #include <afxext.h>         // MFC 확장입니다.
 //#include <afxstr.h>
 #include <afxmt.h>
-#include <cstringt.h>
+//#include <cstringt.h>
 #include <afxwin.h>
 #include <afxext.h>
 #include <windef.h>

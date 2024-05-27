@@ -5,7 +5,6 @@ CSealingInspectProcessor::CSealingInspectProcessor()
 {
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("Settings\\SystemSettings.config");
 	m_csLightSettingPath = GetCurrentPathApp() + _T("Settings\\LightSettings.setting");
-	m_csRecipePath = GetCurrentPathApp() + _T("Recipe\\model305.recipe");
 
 	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
 		if (m_pImageBuffer_Side[i] != NULL)
@@ -15,6 +14,8 @@ CSealingInspectProcessor::CSealingInspectProcessor()
 		if (m_pImageBuffer_Top[i] != NULL)
 			delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
 	}
+
+	m_pSealingInspRecipe = NULL;
 }
 
 CSealingInspectProcessor::~CSealingInspectProcessor()
@@ -65,6 +66,7 @@ BOOL CSealingInspectProcessor::Initialize()
 	if (m_pSealingInspRecipe != NULL)
 		delete m_pSealingInspRecipe, m_pSealingInspRecipe = NULL;
 	m_pSealingInspRecipe = new CSealingInspectRecipe;
+	//LoadRecipe(m_pSealingInspRecipe);
 
 	// 5. Inspect Result Data
 	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
@@ -80,13 +82,16 @@ BOOL CSealingInspectProcessor::Initialize()
 		m_pSealingInspect_Simulation_IO[i] = new CSealingInspect_Simulation_IO;
 	}
 
-	// 6. Hik Cam
-	if (m_pSealingInspHikCam != NULL)
-		delete m_pSealingInspHikCam, m_pSealingInspHikCam = NULL;
-	m_pSealingInspHikCam = new CSealingInspectHikCam(this);
+	if (m_pSealingInspSystemSetting->m_bSimulation == FALSE)
+	{
+		// 6. Hik Cam
+		if (m_pSealingInspHikCam != NULL)
+			delete m_pSealingInspHikCam, m_pSealingInspHikCam = NULL;
+		m_pSealingInspHikCam = new CSealingInspectHikCam(this);
 #ifndef TEST_NO_CAMERA
-	m_pSealingInspHikCam->Initialize();
+		m_pSealingInspHikCam->Initialize();
 #endif
+	}
 
 	// 7. Inspect Core
 	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
@@ -203,64 +208,67 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 	}
 
 	// start read
-	CString csIPPLC1 = pRoot->first_node("IPPLC1")->value();
+	CString csIPPLC1 = (CString)pRoot->first_node("IPPLC1")->value();
 	ZeroMemory(sysSettings.m_sIPPLC1, sizeof(sysSettings.m_sIPPLC1));
 	wsprintf(sysSettings.m_sIPPLC1, _T("%s"), (TCHAR*)(LPCTSTR)csIPPLC1);
 
-	CString csIPPLC2 = pRoot->first_node("IPPLC2")->value();
+	CString csIPPLC2 = (CString)pRoot->first_node("IPPLC2")->value();
 	ZeroMemory(sysSettings.m_sIPPLC2, sizeof(sysSettings.m_sIPPLC2));
 	wsprintf(sysSettings.m_sIPPLC2, _T("%s"), (TCHAR*)(LPCTSTR)csIPPLC2);
 
-	CString csPortPLC1 = pRoot->first_node("PortPLC1")->value();
+	CString csPortPLC1 = (CString)pRoot->first_node("PortPLC1")->value();
 	ZeroMemory(sysSettings.m_sPortPLC1, sizeof(sysSettings.m_sPortPLC1));
 	wsprintf(sysSettings.m_sPortPLC1, _T("%s"), (TCHAR*)(LPCTSTR)csPortPLC1);
 
-	CString csPortPLC2 = pRoot->first_node("PortPLC2")->value();
+	CString csPortPLC2 = (CString)pRoot->first_node("PortPLC2")->value();
 	ZeroMemory(sysSettings.m_sPortPLC2, sizeof(sysSettings.m_sPortPLC2));
 	wsprintf(sysSettings.m_sPortPLC2, _T("%s"), (TCHAR*)(LPCTSTR)csPortPLC2);
 
-	CString csIPLightController1 = pRoot->first_node("IPLightController1")->value();
+	CString csIPLightController1 = (CString)pRoot->first_node("IPLightController1")->value();
 	ZeroMemory(sysSettings.m_sIPLightController1, sizeof(sysSettings.m_sIPLightController1));
 	wsprintf(sysSettings.m_sIPLightController1, _T("%s"), (TCHAR*)(LPCTSTR)csIPLightController1);
 
-	CString csIPLightController2 = pRoot->first_node("IPLightController2")->value();
+	CString csIPLightController2 = (CString)pRoot->first_node("IPLightController2")->value();
 	ZeroMemory(sysSettings.m_sIPLightController2, sizeof(sysSettings.m_sIPLightController2));
 	wsprintf(sysSettings.m_sIPLightController2, _T("%s"), (TCHAR*)(LPCTSTR)csIPLightController2);
 
-	CString csPortLightController1 = pRoot->first_node("PortLightController1")->value();
+	CString csPortLightController1 = (CString)pRoot->first_node("PortLightController1")->value();
 	ZeroMemory(sysSettings.m_sPortLightController1, sizeof(sysSettings.m_sPortLightController1));
 	wsprintf(sysSettings.m_sPortLightController1, _T("%s"), (TCHAR*)(LPCTSTR)csPortLightController1);
 
-	CString csPortLightController2 = pRoot->first_node("PortLightController2")->value();
+	CString csPortLightController2 = (CString)pRoot->first_node("PortLightController2")->value();
 	ZeroMemory(sysSettings.m_sPortLightController2, sizeof(sysSettings.m_sPortLightController2));
 	wsprintf(sysSettings.m_sPortLightController2, _T("%s"), (TCHAR*)(LPCTSTR)csPortLightController2);
 
-	CString csSaveFullImage = pRoot->first_node("SaveFullImage")->value();
+	CString csSaveFullImage = (CString)pRoot->first_node("SaveFullImage")->value();
 	sysSettings.m_bSaveFullImage = csSaveFullImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csSaveDefectImage = pRoot->first_node("SaveDefectImage")->value();
+	CString csSaveDefectImage = (CString)pRoot->first_node("SaveDefectImage")->value();
 	sysSettings.m_bSaveDefectImage = csSaveDefectImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csShowDetailImage = pRoot->first_node("ShowDetailImage")->value();
+	CString csShowDetailImage = (CString)pRoot->first_node("ShowDetailImage")->value();
 	sysSettings.m_bShowDetailImage = csShowDetailImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csSimulation = pRoot->first_node("Simulation")->value();
+	CString csSimulation = (CString)pRoot->first_node("Simulation")->value();
 	sysSettings.m_bSimulation = csSimulation.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csByPass = pRoot->first_node("ByPass")->value();
+	CString csByPass = (CString)pRoot->first_node("ByPass")->value();
 	sysSettings.m_bByPass = csByPass.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csFullImagePath = pRoot->first_node("FullImagePath")->value();
+	CString csFullImagePath = (CString)pRoot->first_node("FullImagePath")->value();
 	ZeroMemory(sysSettings.m_sFullImagePath, sizeof(sysSettings.m_sFullImagePath));
 	wsprintf(sysSettings.m_sFullImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csFullImagePath);
 
-	CString csDefectImagePath = pRoot->first_node("DefectImagePath")->value();
+	CString csDefectImagePath = (CString)pRoot->first_node("DefectImagePath")->value();
 	ZeroMemory(sysSettings.m_sDefectImagePath, sizeof(sysSettings.m_sDefectImagePath));
 	wsprintf(sysSettings.m_sDefectImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csDefectImagePath);
 
-	CString csModelName = pRoot->first_node("ModelName")->value();
+	CString csModelName = (CString)pRoot->first_node("ModelName")->value();
 	ZeroMemory(sysSettings.m_sModelName, sizeof(sysSettings.m_sModelName));
 	wsprintf(sysSettings.m_sModelName, _T("%s"), (TCHAR*)(LPCTSTR)csModelName);
+
+	// set recipe path
+	m_csRecipePath.Format(_T("%sRecipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sModelName, _T("cfg"));
 
 	*(pSystemSetting) = sysSettings;
 
@@ -342,27 +350,27 @@ BOOL CSealingInspectProcessor::LoadLightSetting(CSealingInspectSystemSetting* pS
 		}
 
 		// start read
-		CString csCH1 = pRoot->first_node("CH1")->value();
+		CString csCH1 = (CString)pRoot->first_node("CH1")->value();
 		ZeroMemory(lightSettings[i].m_sCH1, sizeof(lightSettings[i].m_sCH1));
 		wsprintf(lightSettings[i].m_sCH1, _T("%s"), (TCHAR*)(LPCTSTR)csCH1);
 
-		CString csCH2 = pRoot->first_node("CH2")->value();
+		CString csCH2 = (CString)pRoot->first_node("CH2")->value();
 		ZeroMemory(lightSettings[i].m_sCH2, sizeof(lightSettings[i].m_sCH2));
 		wsprintf(lightSettings[i].m_sCH2, _T("%s"), (TCHAR*)(LPCTSTR)csCH2);
 
-		CString csCH3 = pRoot->first_node("CH3")->value();
+		CString csCH3 = (CString)pRoot->first_node("CH3")->value();
 		ZeroMemory(lightSettings[i].m_sCH3, sizeof(lightSettings[i].m_sCH3));
 		wsprintf(lightSettings[i].m_sCH3, _T("%s"), (TCHAR*)(LPCTSTR)csCH3);
 
-		CString csCH4 = pRoot->first_node("CH4")->value();
+		CString csCH4 = (CString)pRoot->first_node("CH4")->value();
 		ZeroMemory(lightSettings[i].m_sCH4, sizeof(lightSettings[i].m_sCH4));
 		wsprintf(lightSettings[i].m_sCH4, _T("%s"), (TCHAR*)(LPCTSTR)csCH4);
 
-		CString csCH5 = pRoot->first_node("CH5")->value();
+		CString csCH5 = (CString)pRoot->first_node("CH5")->value();
 		ZeroMemory(lightSettings[i].m_sCH5, sizeof(lightSettings[i].m_sCH5));
 		wsprintf(lightSettings[i].m_sCH5, _T("%s"), (TCHAR*)(LPCTSTR)csCH5);
 
-		CString csCH6 = pRoot->first_node("CH6")->value();
+		CString csCH6 = (CString)pRoot->first_node("CH6")->value();
 		ZeroMemory(lightSettings[i].m_sCH6, sizeof(lightSettings[i].m_sCH6));
 		wsprintf(lightSettings[i].m_sCH6, _T("%s"), (TCHAR*)(LPCTSTR)csCH6);
 
@@ -375,9 +383,58 @@ BOOL CSealingInspectProcessor::LoadLightSetting(CSealingInspectSystemSetting* pS
 	return TRUE;
 }
 
-BOOL CSealingInspectProcessor::LoadRecipe()
+BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 {
-	return 0;
+	if (pRecipe == NULL)
+		return FALSE;
+
+	CConfig recipeFile;
+
+	BOOL bNoFile = FALSE;
+
+	if (recipeFile.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipePath, FileMap_Mode) == FALSE)
+	{
+		CFile pFile;
+		pFile.Open(m_csRecipePath, CFile::modeCreate);
+		pFile.Close();
+
+		bNoFile = TRUE;
+	}
+
+	// Params..
+	CString strParameterKey = _T("");
+
+	CString strValue = _T("");
+	double dValue = 0.0;
+	int nValue = 0;
+
+	CSealingInspectRecipe readRecipe;
+
+	for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME2_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME2_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME2_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME2_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Max, 0);
+	}
+	for (int i = 0; i < MAX_SIDECAM_COUNT; i++)
+	{
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_MIN"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_MAX"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_MIN"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_MAX"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_MIN"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_MAX"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max, 0);
+	}
+
+	*(pRecipe) = readRecipe;
+
+	return TRUE;
 }
 
 BOOL CSealingInspectProcessor::SaveSystemSetting(CSealingInspectSystemSetting* pSystemSetting)
@@ -538,7 +595,7 @@ BOOL CSealingInspectProcessor::SaveLightSetting(CSealingInspectSystemSetting* pS
 	else {
 		pRoot = xmlDoc.first_node("LightController2");
 	}
-	
+
 	// Write data
 	const char* sCH1 = W2A(sysSetting.m_LightSettings[nLightIdx].m_sCH1);
 	pRoot->first_node("CH1")->value(sCH1);
@@ -568,6 +625,11 @@ BOOL CSealingInspectProcessor::SaveLightSetting(CSealingInspectSystemSetting* pS
 	file.close();
 
 	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CString sPosCam, int nFrameIdx)
+{
+	return 0;
 }
 
 BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator)
@@ -794,7 +856,7 @@ BOOL CSealingInspectProcessor::LoadAllImageBuffer(CString strDirPath, CString st
 
 			CString strImagePath;
 
-			strImagePath.Format(_T("%s\\%s%d_%s%d.%s"), strDirPath, _T("SideCam"),(nSideIdx + 1), _T("Frame"), (nFrame + 1), strImageType);
+			strImagePath.Format(_T("%s\\%s%d_%s%d.%s"), strDirPath, _T("SideCam"), (nSideIdx + 1), _T("Frame"), (nFrame + 1), strImageType);
 
 			LoadImageBuffer_SIDE(nSideIdx, nFrame, strImagePath);
 		}

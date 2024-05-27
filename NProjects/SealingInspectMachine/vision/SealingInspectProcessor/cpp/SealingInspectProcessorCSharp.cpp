@@ -227,6 +227,17 @@ bool LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSys
 	return true;
 }
 
+bool LoadRecipe(CSealingInspectProcessor* pProcessor, CSealingInspectRecipe* pRecipe)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	pProcessor->LoadRecipe(pProcessor->GetRecipe());
+
+	*(pRecipe) = *(pProcessor->GetRecipe());
+	return true;
+}
+
 bool SaveSystemSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)
 {
 	if (pProcessor == NULL)
@@ -243,6 +254,16 @@ bool SaveLightSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSyste
 		return false;
 
 	BOOL bRet = pProcessor->SaveLightSetting(pSysSetting, nLightIdx);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool SaveRecipe(CSealingInspectProcessor* pProcessor, CSealingInspectRecipe* pRecipe, char* sPosCam, int nFrameIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SaveRecipe(pRecipe, (CString)sPosCam, nFrameIdx);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
