@@ -60,7 +60,7 @@ BOOL CSealingInspectProcessor::Initialize()
 		delete m_pSealingInspSystemSetting, m_pSealingInspSystemSetting = NULL;
 	m_pSealingInspSystemSetting = new CSealingInspectSystemSetting;
 	LoadSystemSetting(m_pSealingInspSystemSetting);
-
+	//MakeDirectory();
 
 	// 4. Load Recipe
 	if (m_pSealingInspRecipe != NULL)
@@ -629,7 +629,84 @@ BOOL CSealingInspectProcessor::SaveLightSetting(CSealingInspectSystemSetting* pS
 
 BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CString sPosCam, int nFrameIdx)
 {
-	return 0;
+	if (pRecipe == NULL)
+		return FALSE;
+
+	CConfig recipeFile;
+
+	BOOL bNoFile = FALSE;
+
+	if (recipeFile.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipePath, FileMap_Mode) == FALSE)
+	{
+		CFile pFile;
+		pFile.Open(m_csRecipePath, CFile::modeCreate);
+		pFile.Close();
+
+		bNoFile = TRUE;
+	}
+
+	// Params..
+	CString strParameterKey;
+
+	char	strChar[1024] = {};
+	CString strValue = _T("");
+	int		nValue = 0;
+
+	USES_CONVERSION;
+
+	if (sPosCam.CompareNoCase(_T("TOPCAM")) == 0) {
+		if (nFrameIdx == 1) {
+			for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Min);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Max);
+			}
+		}
+		else if (nFrameIdx == 2) {
+			for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Min);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Max);
+			}
+		}
+	}
+
+	else if (sPosCam.CompareNoCase(_T("SIDECAM")) == 0) {
+		switch (nFrameIdx)
+		{
+		case 1:
+			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) {
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max);
+			}
+			break;
+		case 2:
+			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) {
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max);
+			}
+			break;
+		case 3:
+			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) {
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max);
+			}
+			break;
+		case 4:
+			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) {
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max);
+			}
+			break;
+		}
+	}
+
+
+	*(m_pSealingInspRecipe) = *pRecipe;
+
+	recipeFile.WriteToFile();
 }
 
 BOOL CSealingInspectProcessor::InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator)
@@ -996,6 +1073,93 @@ BOOL CSealingInspectProcessor::CreateBuffer_TOP()
 	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize_Top * dwTotalFrameCount)) / 1000000.0));
 	SystemMessage(strLogMessage);
 	return TRUE;
+}
+
+void CSealingInspectProcessor::MakeDirectory()
+{
+	CString strFullImagePath = m_pSealingInspSystemSetting->m_sFullImagePath;
+	CString strDefectImagePath = m_pSealingInspSystemSetting->m_sDefectImagePath;
+
+	CString strSealingId = _T("Sealing");
+
+	m_strFullImagePath.Format(_T("%s\\%04d_%02d_%02d\\%s_%02d%02d%02d\\"),strFullImagePath, m_timeLoadingTime.GetYear(), m_timeLoadingTime.GetMonth(), m_timeLoadingTime.GetDay(), strSealingId, m_timeLoadingTime.GetHour(), m_timeLoadingTime.GetMinute(), m_timeLoadingTime.GetSecond());
+	CheckDirectory(m_strFullImagePath);
+
+	m_strDefectImagePath.Format(_T("%s\\%04d_%02d_%02d\\%s_%02d%02d%02d\\"), strDefectImagePath, m_timeLoadingTime.GetYear(), m_timeLoadingTime.GetMonth(), m_timeLoadingTime.GetDay(), strSealingId, m_timeLoadingTime.GetHour(), m_timeLoadingTime.GetMinute(), m_timeLoadingTime.GetSecond());
+	CheckDirectory(m_strDefectImagePath);
+}
+
+BOOL CSealingInspectProcessor::CheckDirectory(const TCHAR szPathName[], BOOL bDelete)
+{
+	CFileFind finder;
+	CString strTemp;
+	CString strDir = szPathName;
+	int nPos;
+
+	BOOL bExist = finder.FindFile(szPathName);
+
+	if (bDelete == TRUE)
+	{
+		DeleteFolder(szPathName);
+		bExist = FALSE;
+	}
+
+	if (bExist == FALSE)
+	{
+		nPos = strDir.Find(_T("\\"));
+		nPos = strDir.Find(_T("\\"), nPos + 1);
+		while (nPos > 0)
+		{
+			strTemp = strDir.Mid(0, nPos);
+			if (0 < strTemp.GetLength())
+			{
+				if (CString("\\") == strTemp.GetAt(strTemp.GetLength() - 1))
+				{
+					nPos = strDir.Find(_T("\\"), nPos + 1);
+					continue;
+				}
+			}
+			if (finder.FindFile(strTemp) == FALSE)
+			{
+				if (::CreateDirectory(strTemp, NULL) == FALSE)
+				{
+					strTemp.Format(_T("[%s]Folder Create Fail. "), szPathName);
+
+					//LogMessage(strTemp, 2);
+					return FALSE;
+				}
+			}
+			nPos = strDir.Find(_T("\\"), nPos + 1);
+		}
+	}
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::DeleteFolder(const CString strFolder)
+{
+	SHFILEOPSTRUCT FileOp = { 0 };
+	TCHAR szTemp[MAX_PATH];
+
+	wcscpy_s(szTemp, MAX_PATH, strFolder);
+	szTemp[strFolder.GetLength() + 1] = NULL;
+
+	FileOp.hwnd = NULL;
+	FileOp.wFunc = FO_DELETE;
+	FileOp.pFrom = NULL;
+	FileOp.pTo = NULL;
+	FileOp.fFlags = FOF_NOCONFIRMATION | FOF_NOERRORUI;
+	FileOp.fAnyOperationsAborted = false;
+	FileOp.hNameMappings = NULL;
+	FileOp.lpszProgressTitle = NULL;
+	FileOp.pFrom = szTemp;
+
+	SHFileOperation(&FileOp);
+
+	return TRUE;
+}
+
+void CSealingInspectProcessor::SetCavityInfo(CString strLoadingTime)
+{
 }
 
 BOOL CSealingInspectProcessor::ClearBufferImage_SIDE(int nBuff)

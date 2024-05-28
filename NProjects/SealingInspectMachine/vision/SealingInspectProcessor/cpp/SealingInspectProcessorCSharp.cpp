@@ -218,6 +218,16 @@ bool SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCo
 	else               return true;
 }
 
+bool SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	pProcessor->SetCavityInfo((CString)strLoadingTime);
+
+	return true;
+}
+
 bool LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)
 {
 	if (pProcessor == NULL)

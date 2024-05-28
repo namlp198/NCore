@@ -50,6 +50,7 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
 
+	__declspec(dllexport) bool                      SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime);
 
 	/************************** Load Setting and Recipe **************************/
 	__declspec(dllexport) bool                      LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
@@ -65,6 +66,7 @@ extern "C"
 
 	/************************** Test Inspect **************************/
 	__declspec(dllexport) bool                      TestInspectCavity1(CSealingInspectProcessor* pProcessor);
+
 	__declspec(dllexport) bool                      TestInspectCavity2(CSealingInspectProcessor* pProcessor);
 
 	/************************** Callback **************************/

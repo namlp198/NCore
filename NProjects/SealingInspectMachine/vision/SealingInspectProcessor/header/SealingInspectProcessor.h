@@ -94,10 +94,15 @@ public:
 	void						      LogMessage(CString strMessage);
 	void						      ShowLogView(BOOL bShow);
 
+	void                              SetCavityInfo(CString strLoadingTime);
+
 private:
 	void						      SystemMessage(CString strMessage);
 	BOOL                              CreateBuffer_SIDE();
 	BOOL                              CreateBuffer_TOP();
+	void                              MakeDirectory();
+	virtual BOOL				      CheckDirectory(const TCHAR szPathName[], BOOL bDelete = FALSE);
+	BOOL						      DeleteFolder(const CString strFolder);
 
 private:
 
@@ -137,4 +142,7 @@ private:
 	CString                                    m_csSysSettingsPath;
 	CString                                    m_csRecipePath;
 	CString                                    m_csLightSettingPath;
+	CTime                                      m_timeLoadingTime;
+	CString                                    m_strFullImagePath;
+	CString                                    m_strDefectImagePath;
 };
