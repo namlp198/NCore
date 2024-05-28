@@ -278,6 +278,19 @@ namespace SealingInspectGUI.Manager.Class
             return bRet;
         }
 
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetCavityInfo(IntPtr sealingInspProcessor, [MarshalAs(UnmanagedType.LPStr)] string strLoadingTime);
+        public bool SetCavityInfo([MarshalAs(UnmanagedType.LPStr)] string strLoadingTime)
+        {
+            return SetCavityInfo(strLoadingTime);
+        }
+
+
 #if DEBUG
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #else

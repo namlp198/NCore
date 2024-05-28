@@ -11,42 +11,42 @@ namespace SealingInspectGUI.Models
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame1
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 0.
-        public int m_nDistanceMeasurementTolerance_Max;                // 1.
-        public int m_nRadius_Min;                                      // 2.
-        public int m_nRadius_Max;                                      // 3.
+        public int m_nDistanceMeasurementTolerance_Min;                // 1.
+        public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nRadius_Min;                                      // 3.
+        public int m_nRadius_Max;                                      // 4.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 0.            
-        public int m_nDistanceMeasurementTolerance_Max;                // 1.
-        public int m_nRadius_Min;                                      // 2.
-        public int m_nRadius_Max;                                      // 3.
+        public int m_nDistanceMeasurementTolerance_Min;                // 1.            
+        public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nRadius_Min;                                      // 3.
+        public int m_nRadius_Max;                                      // 4.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 0.
-        public int m_nDistanceMeasurementTolerance_Max;                // 1.
+        public int m_nDistanceMeasurementTolerance_Min;                // 1.
+        public int m_nDistanceMeasurementTolerance_Max;                // 2.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 0.
-        public int m_nDistanceMeasurementTolerance_Max;                // 1.
+        public int m_nDistanceMeasurementTolerance_Min;                // 1.
+        public int m_nDistanceMeasurementTolerance_Max;                // 2.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 0.
-        public int m_nDistanceMeasurementTolerance_Max;                // 1.
+        public int m_nDistanceMeasurementTolerance_Min;                // 1.
+        public int m_nDistanceMeasurementTolerance_Max;                // 2.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 0.
-        public int m_nDistanceMeasurementTolerance_Max;                // 1.
+        public int m_nDistanceMeasurementTolerance_Min;                // 1.
+        public int m_nDistanceMeasurementTolerance_Max;                // 2.
     }
 
 
