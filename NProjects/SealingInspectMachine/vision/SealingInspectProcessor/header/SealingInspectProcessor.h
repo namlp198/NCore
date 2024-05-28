@@ -17,6 +17,7 @@
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
 #include "ListBoxLog.h"
+#include "TCPSocket.h"
 
 #include "rapidxml.hpp"
 #include "RapidXMLSTD.hpp"
@@ -51,8 +52,13 @@ public:
 public:
 	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator);
 	BOOL InspectStop(emInspectCavity nInspCavity);
+
 	BOOL TestInspectCavity1();
 	BOOL TestInspectCavity2();
+
+	BOOL           TestTCPSocket();
+	static void    TestTcpSocketCallback(char* pMsg, int nMsglen, void* param);
+	void           TestTcpSocketCallbackEx(char* pMsg, int nMsglen);
 
 public:
 	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, int nFrame);
@@ -145,4 +151,6 @@ private:
 	CTime                                      m_timeLoadingTime;
 	CString                                    m_strFullImagePath;
 	CString                                    m_strDefectImagePath;
+
+	CTCPSocket*                                m_pTcpSocket;
 };

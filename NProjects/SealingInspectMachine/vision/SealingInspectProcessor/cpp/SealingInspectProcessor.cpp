@@ -16,6 +16,7 @@ CSealingInspectProcessor::CSealingInspectProcessor()
 	}
 
 	m_pSealingInspRecipe = NULL;
+	m_pTcpSocket = NULL;
 }
 
 CSealingInspectProcessor::~CSealingInspectProcessor()
@@ -81,6 +82,13 @@ BOOL CSealingInspectProcessor::Initialize()
 			delete m_pSealingInspect_Simulation_IO[i], m_pSealingInspect_Simulation_IO[i] = NULL;
 		m_pSealingInspect_Simulation_IO[i] = new CSealingInspect_Simulation_IO;
 	}
+
+	// TCP Socket
+	if (m_pTcpSocket != NULL)
+		delete m_pTcpSocket, m_pTcpSocket = NULL;
+	m_pTcpSocket = new CTCPSocket;
+	m_pTcpSocket->SetRecvMessageCallback(TestTcpSocketCallback, this);
+
 
 	if (m_pSealingInspSystemSetting->m_bSimulation == FALSE)
 	{
@@ -801,6 +809,38 @@ BOOL CSealingInspectProcessor::TestInspectCavity2()
 	m_pSealingInspCore[nCoreIdx]->TestInspectCavity2(nCoreIdx);
 
 	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::TestTCPSocket()
+{
+	char strIP[15] = { "127.0.0.1" };
+	int nPort = 9000;
+
+	char strSendTo[10] = {"Hello"};
+
+	CTCPSocket::CONNECTRESULT connResult = m_pTcpSocket->Connect(strIP, nPort);
+	if (connResult == CTCPSocket::CONNECTRESULT_CONNECT_SUCCESS) {
+		AfxMessageBox(_T("Connect success"));
+	}
+	else
+	{
+		AfxMessageBox(_T("connect fail"));
+	}
+
+	m_pTcpSocket->Send(strSendTo, 5);
+
+	return TRUE;
+}
+
+void CSealingInspectProcessor::TestTcpSocketCallback(char* pMsg, int nMsglen, void* param)
+{
+	CSealingInspectProcessor* pThis = (CSealingInspectProcessor*)param;
+	pThis->TestTcpSocketCallbackEx(pMsg, nMsglen);
+}
+
+void CSealingInspectProcessor::TestTcpSocketCallbackEx(char* pMsg, int nMsglen)
+{
+	AfxMessageBox((CString)pMsg);
 }
 
 #pragma region Offine Simulation

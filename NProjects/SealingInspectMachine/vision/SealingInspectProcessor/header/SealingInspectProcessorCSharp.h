@@ -69,6 +69,8 @@ extern "C"
 
 	__declspec(dllexport) bool                      TestInspectCavity2(CSealingInspectProcessor* pProcessor);
 
+	__declspec(dllexport) bool                      TestTCPSocket(CSealingInspectProcessor* pProcessor);
+
 	/************************** Callback **************************/
 	__declspec(dllexport) void                      RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc);
 
