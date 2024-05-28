@@ -16,7 +16,6 @@
             <RowDefinition Height="1" />
             <RowDefinition />
             <RowDefinition Height="1" />
-            <RowDefinition Height="1" />
             <RowDefinition />
             <RowDefinition Height="1" />
             <RowDefinition Height="35" />
@@ -24,13 +23,17 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
+            <ColumnDefinition Width="1" />
             <ColumnDefinition />
-            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="1" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <!--separator-->
         <Grid Grid.Row="0"
-              Grid.ColumnSpan="3"
+              Grid.ColumnSpan="7"
               Margin="0 0 0 0"
               Background="White"></Grid>
 
@@ -41,19 +44,31 @@
 
         </Border>
 
-        <Border Grid.Column="1"
+        <!--separator-->
+        <Grid Grid.Column="1"
+              Grid.RowSpan="4"
+              Margin="0 0 0 0"
+              Background="White"></Grid>
+
+        <Border Grid.Column="2"
                 Grid.Row="1"
                 Margin="2">
             <Ctrls:BufferViewerSimple Name="buffTopCam1_Frame2"/>
 
         </Border>
 
-        <Grid Grid.Column="2"
-              Grid.Row="1"
+        <!--separator-->
+        <Grid Grid.Column="3"
+              Grid.RowSpan="4"
+              Margin="0 0 0 0"
+              Background="White"></Grid>
+
+        <Grid Grid.Column="0"
+              Grid.Row="3"
               Margin="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <Ctrls:BufferViewerSimple Name="buffSideCam1" />
             <StackPanel Grid.Column="1"
@@ -125,28 +140,127 @@
             </StackPanel>
         </Grid>
 
-        <!--separator-->
-        <Grid Grid.Row="3"
-              Grid.ColumnSpan="3"
-              Background="White"
-              Margin="0 0 0 0"></Grid>
+        <Grid Grid.Column="2"
+              Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="0.6*"/>
+            </Grid.RowDefinitions>
+            
+            <!--separator-->
+            <!--<Grid Grid.Row="1"
+                  Margin="0 0 0 0"
+                  Background="White"></Grid>-->
 
-        <Border Grid.Column="0"
-                Grid.Row="4"
+            <Grid Grid.Row="2">
+                
+            </Grid>
+            
+            <!--separator-->
+            <Grid Grid.Row="3"
+                  Margin="0 0 0 0"
+                  Background="White"></Grid>
+            
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal">
+                <Label Margin="0 0 10 0"
+                       Content="CAVITY 1"
+                       Foreground="White"
+                       Background="{DynamicResource DarkColor_1}"
+                       VerticalContentAlignment="Center"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Width="80" />
+                <TextBlock Margin="10 2 2 2"
+                           Text="TOTAL"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="50 2 2 2"
+                           Text="OK"
+                           Foreground="{DynamicResource ColdColor_3}"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="50 2 2 2"
+                           Text="NG"
+                           Foreground="{DynamicResource HotColor_1}"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="50 2 2 2"
+                           Text="YIELD"
+                           Foreground="{DynamicResource HotColor_3}"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Column="4"
+                Grid.Row="1"
                 Margin="2">
-            <Ctrls:BufferViewerSimple Name="buffTopCam2_Frame1"/>
+            <Ctrls:BufferViewerSimple Name="buffTopCam2_Frame1" />
 
         </Border>
 
-        <Border Grid.Column="1"
-                Grid.Row="4"
+        <!--separator-->
+        <Grid Grid.Column="5"
+              Grid.RowSpan="4"
+              Margin="0 0 0 0"
+              Background="White"></Grid>
+
+        <!--separator-->
+        <Grid Grid.Row="2"
+              Grid.ColumnSpan="7"
+              Margin="0 0 0 0"
+              Background="White"></Grid>
+
+        <Border Grid.Column="6"
+                Grid.Row="1"
                 Margin="2">
             <Ctrls:BufferViewerSimple Name="buffTopCam2_Frame2"/>
 
         </Border>
 
-        <Grid Grid.Column="2"
-              Grid.Row="4"
+        <Grid Grid.Column="4"
+              Grid.Row="3"
               Margin="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -222,14 +336,107 @@
             </StackPanel>
         </Grid>
 
+        <Grid Grid.Column="6"
+              Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="0.6*" />
+            </Grid.RowDefinitions>
+
+            <!--separator-->
+            <!--<Grid Grid.Row="1"
+           Margin="0 0 0 0"
+           Background="White"></Grid>-->
+
+            <Grid Grid.Row="2">
+
+            </Grid>
+
+            <!--separator-->
+            <Grid Grid.Row="3"
+                  Margin="0 0 0 0"
+                  Background="White"></Grid>
+
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal">
+                <Label Margin="0 0 10 0"
+                       Content="CAVITY 2"
+                       Foreground="White"
+                       Background="{DynamicResource DarkColor_1}"
+                       VerticalContentAlignment="Center"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Width="80" />
+                <TextBlock Margin="10 2 2 2"
+                           Text="TOTAL"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="50 2 2 2"
+                           Text="OK"
+                           Foreground="{DynamicResource ColdColor_3}"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="50 2 2 2"
+                           Text="NG"
+                           Foreground="{DynamicResource HotColor_1}"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="50 2 2 2"
+                           Text="YIELD"
+                           Foreground="{DynamicResource HotColor_3}"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+                <TextBlock Margin="5 2 2 2"
+                           Text="0"
+                           Foreground="White"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           FontWeight="SemiBold" />
+            </StackPanel>
+        </Grid>
+
         <!--separator-->
-        <Grid Grid.Row="5"
-              Grid.ColumnSpan="3"
+        <Grid Grid.Row="4"
+              Grid.ColumnSpan="7"
               Background="White"
               Margin="0 0 0 0"></Grid>
 
-        <Grid Grid.Row="6"
-              Grid.ColumnSpan="3">
+        <Grid Grid.Row="5"
+              Grid.ColumnSpan="7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="*"/>
@@ -325,6 +532,21 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                <Button x:Name="btnTestTcpSocket"
+                        Margin="5 5 5 5"
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Foreground="White"
+                        Background="{DynamicResource RGB_Hot_206_59_63}"
+                        Click="btnTestTcpSocket_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="12"
+                                       FontWeight="Bold"
+                                       Text="Test TcpSocket" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Button Margin="10 5 5 5"
                         Width="100"
                         Content="Open TestIO"
@@ -350,7 +572,7 @@
 
         <!--separator-->
         <Grid Grid.Row="7"
-              Grid.ColumnSpan="3"
+              Grid.ColumnSpan="7"
               Background="White"
               Margin="0 0 0 0"></Grid>
 

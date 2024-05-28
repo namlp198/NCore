@@ -36,8 +36,8 @@ namespace SealingInspectGUI
 
             UcRunView runView = new UcRunView();
             runView.contentCamView.Content = ucSumCameraView;
-            runView.contentResult.Content = resultView;
-            runView.contentStatistics.Content = statisticsView;
+            //runView.contentResult.Content = resultView;
+            //runView.contentStatistics.Content = statisticsView;
             RunViewModel runVM = new RunViewModel(runView.Dispatcher, runView, sumCamVM, resultVM, statisticsVM);
             runView.DataContext = runVM;
 

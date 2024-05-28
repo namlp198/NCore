@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SealingInspectGUI.Manager;
+using SealingInspectGUI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,11 @@ namespace SealingInspectGUI.Views.UcViews
         public UcSumCameraView()
         {
             InitializeComponent();
+        }
+
+        private void btnTestTcpSocket_Click(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.TestTCPSocket();
         }
     }
 }
