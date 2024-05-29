@@ -26,19 +26,35 @@ bool Initialize(CSealingInspectProcessor* pProcessor)
 }
 
 #pragma region Offline simulation
-BYTE* GetBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nY)
+BYTE* GetBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetBufferImage_SIDE(nBuff, nY);
+	return pProcessor->GetBufferImage_SIDE(nBuff, nFrame);
 }
-BYTE* GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nY)
+BYTE* GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetBufferImage_TOP(nBuff, nY);
+	return pProcessor->GetBufferImage_TOP(nBuff, nFrame);
+}
+
+BYTE* GetResultBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetResultBuffer_SIDE(nBuff, nFrame);
+}
+
+BYTE* GetResultBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetResultBuffer_TOP(nBuff, nFrame);
 }
 
 bool LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath)
@@ -92,6 +108,16 @@ bool ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff)
 		return false;
 
 	BOOL bRetValue = pProcessor->ClearBufferImage_TOP(nBuff);
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
+bool Inspect_TopCam_Simulation(CSealingInspectProcessor* pProcessor, int nCamIdx, int nFrame)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRetValue = pProcessor->Inspect_TopCam_Simulation(nCamIdx, nFrame);
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }

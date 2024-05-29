@@ -42,15 +42,27 @@ BOOL CSealingInspectProcessor::Initialize()
 
 	SystemMessage(_T("*********** Start Vision Processor ***********"));
 
-	// 1. Create Image Buffer Color..
+	// 1. Create Image Buffer SIDE
 	if (CreateBuffer_SIDE() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
 		return FALSE;
 	}
-
-	// 2. Create Image Buffer Mono..
+	// 2. Create Image Buffer TOP
 	if (CreateBuffer_TOP() == FALSE)
+	{
+		SystemMessage(_T("Create Memory Fail!"));
+		return FALSE;
+	}
+
+	// 3. Create Result Buffer SIDE
+	if (CreateResultBuffer_SIDE() == FALSE)
+	{
+		SystemMessage(_T("Create Memory Fail!"));
+		return FALSE;
+	}
+	// 4. Create Result Buffer TOP
+	if (CreateResultBuffer_TOP() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
 		return FALSE;
@@ -113,11 +125,13 @@ BOOL CSealingInspectProcessor::Initialize()
 
 BOOL CSealingInspectProcessor::Destroy()
 {
-	for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++) {
+	for (int i = 0; i < MAX_SIDECAM_COUNT; i++) {
 		delete m_pImageBuffer_Side[i], m_pImageBuffer_Side[i] = NULL;
+		delete m_pResultBuffer_Side[i], m_pResultBuffer_Side[i] = NULL;
 	}
-	for (int i = 0; i < MAX_IMAGE_BUFFER_TOPCAM; i++) {
+	for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
 		delete m_pImageBuffer_Top[i], m_pImageBuffer_Top[i] = NULL;
+		delete m_pResultBuffer_Top[i], m_pResultBuffer_Top[i] = NULL;
 	}
 
 	if (m_pSealingInspHikCam != NULL)
@@ -423,10 +437,25 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max, 0);
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME2_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min, 0);
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME2_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max, 0);
-		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Min, 0);
-		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Max, 0);
-		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME2_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Min, 0);
-		recipeFile.GetItemValue(i + 1, _T("RADIUS_FRAME2_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_INNER_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusInner_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_INNER_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusInner_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_OUTER_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusOuter_Min, 0);
+		recipeFile.GetItemValue(i + 1, _T("RADIUS_OUTER_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusOuter_Max, 0);
+		recipeFile.GetItemValue(i + 1, _T("USE_ADVANCED_ALGORITHMS_INSPECTION_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_bUseAdvancedAlgorithms, 0);
+		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_BINARY_MINENCLOSING_CIRCLE_ALGORITHMS_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdBinaryMinEnclosing, 0);
+		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_BINARY_CANNY_HOUGHCIRCLE_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdBinaryCannyHoughCircle, 0);
+		recipeFile.GetItemValue(i + 1, _T("DISTANCE_RADIUS_DIFFERENCE_MIN_HOUGHCIRCLE_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceRadiusDiffMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("DELTA_RADIUS_OUTER_INNER_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDeltaRadiusOuterInner, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_WIDTH_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROIWidth, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_HEIGHT_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROIHeight, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_12H_OFFSET_X_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI12H_OffsetX, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_12H_OFFSET_Y_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI12H_OffsetY, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_3H_OFFSET_X_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI3H_OffsetX, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_3H_OFFSET_Y_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI3H_OffsetY, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_6H_OFFSET_X_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI6H_OffsetX, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_6H_OFFSET_Y_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI6H_OffsetY, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_9H_OFFSET_X_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI9H_OffsetX, 0);
+		recipeFile.GetItemValue(i + 1, _T("ROI_9H_OFFSET_Y_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI9H_OffsetY, 0);
 	}
 	for (int i = 0; i < MAX_SIDECAM_COUNT; i++)
 	{
@@ -667,16 +696,32 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 			for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max);
-				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Min);
-				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadius_Max);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_INNER_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusInner_Min);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_INNER_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusInner_Max);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_OUTER_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusOuter_Min);
+				recipeFile.SetItemValue(i + 1, _T("RADIUS_OUTER_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nRadiusOuter_Max);
+				recipeFile.SetItemValue(i + 1, _T("USE_ADVANCED_ALGORITHMS_INSPECTION_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_bUseAdvancedAlgorithms);
+				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_BINARY_MINENCLOSING_CIRCLE_ALGORITHMS_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdBinaryMinEnclosing);
+				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_BINARY_CANNY_HOUGHCIRCLE_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdBinaryCannyHoughCircle);
+				recipeFile.SetItemValue(i + 1, _T("DISTANCE_RADIUS_DIFFERENCE_MIN_HOUGHCIRCLE_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDistanceRadiusDiffMin);
+				recipeFile.SetItemValue(i + 1, _T("DELTA_RADIUS_OUTER_INNER_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDeltaRadiusOuterInner);
+				recipeFile.SetItemValue(i + 1, _T("ROI_WIDTH_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROIWidth);
+				recipeFile.SetItemValue(i + 1, _T("ROI_HEIGHT_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROIHeight);
+				recipeFile.SetItemValue(i + 1, _T("ROI_12H_OFFSET_X_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI12H_OffsetX);
+				recipeFile.SetItemValue(i + 1, _T("ROI_12H_OFFSET_Y_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI12H_OffsetY);
+				recipeFile.SetItemValue(i + 1, _T("ROI_3H_OFFSET_X_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI3H_OffsetX);
+				recipeFile.SetItemValue(i + 1, _T("ROI_3H_OFFSET_Y_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI3H_OffsetY);
+				recipeFile.SetItemValue(i + 1, _T("ROI_6H_OFFSET_X_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI6H_OffsetX);
+				recipeFile.SetItemValue(i + 1, _T("ROI_6H_OFFSET_Y_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI6H_OffsetY);
+				recipeFile.SetItemValue(i + 1, _T("ROI_9H_OFFSET_X_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI9H_OffsetX);
+				recipeFile.SetItemValue(i + 1, _T("ROI_9H_OFFSET_Y_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nROI9H_OffsetY);
 			}
 		}
 		else if (nFrameIdx == 2) {
 			for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max);
-				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Min);
-				recipeFile.SetItemValue(i + 1, _T("RADIUS_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nRadius_Max);
+				
 			}
 		}
 	}
@@ -807,6 +852,16 @@ BOOL CSealingInspectProcessor::TestInspectCavity2()
 	// create thread inspect cavity 1
 	m_pSealingInspCore[nCoreIdx]->SetCoreIndex(nCoreIdx);
 	m_pSealingInspCore[nCoreIdx]->TestInspectCavity2(nCoreIdx);
+
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::Inspect_TopCam_Simulation(int nCamIdx, int nFrame)
+{
+	if (m_pSealingInspCore[nCamIdx] == NULL)
+		return FALSE;
+
+	m_pSealingInspCore[nCamIdx]->Inspect_TopCam_Simulation(nCamIdx, nFrame);
 
 	return TRUE;
 }
@@ -954,6 +1009,22 @@ BOOL CSealingInspectProcessor::LoadImageBuffer_TOP(int nBuff, int nFrame, CStrin
 	m_pImageBuffer_Top[nBuff]->SetFrameImage(nFrame, pOpenImage.data);
 
 	return TRUE;
+}
+
+LPBYTE CSealingInspectProcessor::GetResultBuffer_SIDE(int nBuff, int nFrame)
+{
+	if (m_pResultBuffer_Side[nBuff] == NULL)
+		return NULL;
+
+	return m_pResultBuffer_Side[nBuff]->GetFrameImage(nFrame);
+}
+
+LPBYTE CSealingInspectProcessor::GetResultBuffer_TOP(int nBuff, int nFrame)
+{
+	if (m_pResultBuffer_Top[nBuff] == NULL)
+		return NULL;
+
+	return m_pResultBuffer_Top[nBuff]->GetFrameImage(nFrame);
 }
 
 BOOL CSealingInspectProcessor::LoadAllImageBuffer(CString strDirPath, CString strImageType)
@@ -1115,6 +1186,124 @@ BOOL CSealingInspectProcessor::CreateBuffer_TOP()
 	return TRUE;
 }
 
+BOOL CSealingInspectProcessor::CreateResultBuffer_SIDE()
+{
+	BOOL bRetValue_Side = FALSE;
+
+	DWORD dwFrameWidth_Side = (DWORD)FRAME_WIDTH_SIDECAM;
+	DWORD dwFrameHeight_Side = (DWORD)FRAME_HEIGHT_SIDECAM;
+	DWORD dwFrameCount_Side = 0;
+	DWORD dwFrameSize_Side = dwFrameWidth_Side * dwFrameHeight_Side * (DWORD)NUMBER_OF_CHANNEL;
+
+	DWORD64 dwTotalFrameCount = 0;
+
+	for (int i = 0; i < MAX_SIDECAM_COUNT; i++)
+	{
+		if (m_pResultBuffer_Side[i] != NULL)
+		{
+			m_pResultBuffer_Side[i]->DeleteSharedMemory();
+			delete m_pResultBuffer_Side[i];
+			m_pResultBuffer_Side[i] = NULL;
+		}
+
+		m_pResultBuffer_Side[i] = new CSharedMemoryBuffer;
+
+		dwFrameCount_Side = (DWORD)MAX_IMAGE_BUFFER_SIDECAM;
+
+		dwTotalFrameCount += dwFrameCount_Side;
+
+		m_pResultBuffer_Side[i]->SetFrameWidth(dwFrameWidth_Side);
+		m_pResultBuffer_Side[i]->SetFrameHeight(dwFrameHeight_Side);
+		m_pResultBuffer_Side[i]->SetFrameCount(dwFrameCount_Side);
+		m_pResultBuffer_Side[i]->SetFrameSize(dwFrameSize_Side);
+
+		DWORD64 dw64Size_Side = (DWORD64)dwFrameCount_Side * dwFrameSize_Side;
+
+		CString strMemory_Side;
+		strMemory_Side.Format(_T("%s_%d"), "BufferOffline_Color_Side", i);
+
+		bRetValue_Side = m_pResultBuffer_Side[i]->CreateSharedMemory(strMemory_Side, dw64Size_Side);
+
+		if (bRetValue_Side == FALSE)
+		{
+			CString strLogMessage;
+			strLogMessage.Format(_T("Side [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Side, (int)dwFrameHeight_Side, (int)dwFrameCount_Side, (((double)(dwFrameSize_Side * dwFrameCount_Side)) / 1000000000.0));
+			SystemMessage(strLogMessage);
+			return FALSE;
+		}
+		else
+		{
+			CString strLogMessage;
+			strLogMessage.Format(_T("Side [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Side, (int)dwFrameHeight_Side, (int)dwFrameCount_Side, (((double)(dwFrameSize_Side * dwFrameCount_Side)) / 1000000000.0));
+			SystemMessage(strLogMessage);
+		}
+	}
+
+	CString strLogMessage;
+	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize_Side * dwTotalFrameCount)) / 1000000.0));
+	SystemMessage(strLogMessage);
+	return TRUE;
+}
+
+BOOL CSealingInspectProcessor::CreateResultBuffer_TOP()
+{
+	BOOL bRetValue_Top = FALSE;
+
+	DWORD dwFrameWidth_Top = (DWORD)FRAME_WIDTH_TOPCAM;
+	DWORD dwFrameHeight_Top = (DWORD)FRAME_HEIGHT_TOPCAM;
+	DWORD dwFrameCount_Top = 0;
+	DWORD dwFrameSize_Top = dwFrameWidth_Top * dwFrameHeight_Top * (DWORD)NUMBER_OF_CHANNEL;
+
+	DWORD64 dwTotalFrameCount = 0;
+
+	for (int i = 0; i < MAX_TOPCAM_COUNT; i++)
+	{
+		if (m_pResultBuffer_Top[i] != NULL)
+		{
+			m_pResultBuffer_Top[i]->DeleteSharedMemory();
+			delete m_pResultBuffer_Top[i];
+			m_pResultBuffer_Top[i] = NULL;
+		}
+
+		m_pResultBuffer_Top[i] = new CSharedMemoryBuffer;
+
+		dwFrameCount_Top = (DWORD)MAX_IMAGE_BUFFER_TOPCAM;
+
+		dwTotalFrameCount += dwFrameCount_Top;
+
+		m_pResultBuffer_Top[i]->SetFrameWidth(dwFrameWidth_Top);
+		m_pResultBuffer_Top[i]->SetFrameHeight(dwFrameHeight_Top);
+		m_pResultBuffer_Top[i]->SetFrameCount(dwFrameCount_Top);
+		m_pResultBuffer_Top[i]->SetFrameSize(dwFrameSize_Top);
+
+		DWORD64 dw64Size_Top = (DWORD64)dwFrameCount_Top * dwFrameSize_Top;
+
+		CString strMemory_Top;
+		strMemory_Top.Format(_T("%s_%d"), "BufferOffline_Color_Top", i);
+
+		bRetValue_Top = m_pResultBuffer_Top[i]->CreateSharedMemory(strMemory_Top, dw64Size_Top);
+
+		if (bRetValue_Top == FALSE)
+		{
+			CString strLogMessage;
+			strLogMessage.Format(_T("Top [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Top, (int)dwFrameHeight_Top, (int)dwFrameCount_Top, (((double)(dwFrameSize_Top * dwFrameCount_Top)) / 1000000000.0));
+			SystemMessage(strLogMessage);
+			return FALSE;
+		}
+		else
+		{
+			CString strLogMessage;
+			strLogMessage.Format(_T("Top [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth_Top, (int)dwFrameHeight_Top, (int)dwFrameCount_Top, (((double)(dwFrameSize_Top * dwFrameCount_Top)) / 1000000000.0));
+			SystemMessage(strLogMessage);
+		}
+	}
+
+	CString strLogMessage;
+	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize_Top * dwTotalFrameCount)) / 1000000.0));
+	SystemMessage(strLogMessage);
+	return TRUE;
+}
+
 void CSealingInspectProcessor::MakeDirectory()
 {
 	CString strFullImagePath = m_pSealingInspSystemSetting->m_sFullImagePath;
@@ -1223,20 +1412,20 @@ BOOL CSealingInspectProcessor::ClearBufferImage_TOP(int nBuff)
 	return nRet;
 }
 
-BOOL CSealingInspectProcessor::SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff)
+BOOL CSealingInspectProcessor::SetResultBuffer_TOP(int nBuff, int nFrame, BYTE* buff)
 {
-	if (m_pImageBuffer_Top[nBuff] == NULL)
+	if (m_pResultBuffer_Top[nBuff] == NULL)
 		return FALSE;
 
-	return m_pImageBuffer_Top[nBuff]->SetFrameImage(nFrame, buff);
+	return m_pResultBuffer_Top[nBuff]->SetFrameImage(nFrame, buff);
 }
 
-BOOL CSealingInspectProcessor::SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff)
+BOOL CSealingInspectProcessor::SetResultBuffer_SIDE(int nBuff, int nFrame, BYTE* buff)
 {
-	if (m_pImageBuffer_Side[nBuff] == NULL)
+	if (m_pResultBuffer_Side[nBuff] == NULL)
 		return FALSE;
 
-	return m_pImageBuffer_Side[nBuff]->SetFrameImage(nFrame, buff);
+	return m_pResultBuffer_Side[nBuff]->SetFrameImage(nFrame, buff);
 }
 
 #pragma endregion
@@ -1268,12 +1457,12 @@ BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSeal
 	return TRUE;
 }
 
-void CSealingInspectProcessor::InspectComplete(emInspectCavity nSetInsp)
+void CSealingInspectProcessor::InspectComplete(emInspectCavity nSetInsp, BOOL bSetting)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
 		return;
 
-	(m_pCallbackInsCompleteFunc)(nSetInsp);
+	(m_pCallbackInsCompleteFunc)(nSetInsp, bSetting);
 }
 
 BOOL CSealingInspectProcessor::GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes)

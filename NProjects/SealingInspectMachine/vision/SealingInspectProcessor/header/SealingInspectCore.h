@@ -20,12 +20,14 @@
 
 interface ISealingInspectCoreToParent
 {
-	virtual void							InspectComplete(emInspectCavity nSetInsp) = 0;
+	virtual void							InspectComplete(emInspectCavity nSetInsp, BOOL bSetting) = 0;
 	virtual CSealingInspectRecipe*          GetRecipe() = 0;
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() = 0;
 	virtual CSealingInspectHikCam*          GetHikCamControl() = 0;
-	virtual BOOL                            SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
-	virtual BOOL                            SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual LPBYTE                          GetBufferImage_SIDE(int nBuff, int nFrame) = 0;
+	virtual LPBYTE                          GetBufferImage_TOP(int nBuff, int nFrame) = 0;
+	virtual BOOL                            SetResultBuffer_SIDE(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual BOOL                            SetResultBuffer_TOP(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual CSealingInspectResult*          GetSealingInspectResultControl(int nResIdx) = 0;
 	virtual CSealingInspect_Simulation_IO*  GetSealingInspectSimulationIO(int nCoreIdx) = 0;
 };
@@ -73,6 +75,16 @@ public:
 
 	void TestInspectCavity1(int nCoreIdx);
 	void TestInspectCavity2(int nCoreIdx);
+
+	void Inspect_TopCam_Simulation(int nCamIdx, int nFrame);
+	void Inspect_SideCam_Simulation(int nCamIdx, int nFrame);
+
+public:
+	void FindCircle_MinEnclosing(cv::Mat& matSrc, cv::Mat& matProcess, int nThresholdBinary, int nRadiusInnerMin, int nRadiusInnerMax,
+		                        std::vector<std::vector<cv::Point>> vecContours, 
+		                        std::vector<cv::Vec4i> vecHierarchy, std::vector<cv::Point2f> vecCenters,
+		                        std::vector<float> vecRadius);
+	BOOL FindCircle_HoughCircle(cv::Mat& matSrc, cv::Mat& matProcess, std::vector<cv::Vec3f> circles, std::vector<cv::Point2i> vecPts);
 
 public:
 

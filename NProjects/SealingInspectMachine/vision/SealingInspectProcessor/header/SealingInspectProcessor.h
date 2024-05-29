@@ -29,7 +29,7 @@
 
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarm(emInspectCavity nSetInsp, char* strAlarmMessage);
-typedef void _stdcall CallbackInspectComplete(emInspectCavity emInspCavity);
+typedef void _stdcall CallbackInspectComplete(emInspectCavity emInspCavity, BOOL bSetting);
 
 class AFX_EXT_CLASS CSealingInspectProcessor : public ISealingInspectHikCamToParent,
 	public ISealingInspectCoreToParent
@@ -56,15 +56,22 @@ public:
 	BOOL TestInspectCavity1();
 	BOOL TestInspectCavity2();
 
+	BOOL Inspect_TopCam_Simulation(int nCamIdx, int nFrame);
+
 	BOOL           TestTCPSocket();
 	static void    TestTcpSocketCallback(char* pMsg, int nMsglen, void* param);
 	void           TestTcpSocketCallbackEx(char* pMsg, int nMsglen);
 
 public:
+	// Image buffer
 	virtual LPBYTE                    GetBufferImage_SIDE(int nBuff, int nFrame);
 	BOOL                              LoadImageBuffer_SIDE(int nBuff, int nFrame, CString strFilePath);
 	virtual LPBYTE                    GetBufferImage_TOP(int nBuff, int nFrame);
 	BOOL                              LoadImageBuffer_TOP(int nBuff, int nFrame, CString strFilePath);
+
+	// Get Result buffer
+	virtual LPBYTE                    GetResultBuffer_SIDE(int nBuff, int nFrame);
+	virtual LPBYTE                    GetResultBuffer_TOP(int nBuff, int nFrame);
 
 	BOOL                              LoadAllImageBuffer(CString strDirPath, CString strImageType);
 
@@ -72,8 +79,8 @@ public:
 	BOOL                              ClearBufferImage_TOP(int nBuff);
 
 public:
-	virtual BOOL                      SetTopCamResultBuffer(int nBuff, int nFrame, BYTE* buff);
-	virtual BOOL                      SetSideCamResultBuffer(int nBuff, int nFrame, BYTE* buff);
+	virtual BOOL                      SetResultBuffer_SIDE(int nBuff, int nFrame, BYTE* buff);
+	virtual BOOL                      SetResultBuffer_TOP(int nBuff, int nFrame, BYTE* buff);
 
 public:
 	// CallBack
@@ -90,7 +97,7 @@ public:
 	BOOL                             SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
 
 public:
-	virtual void							InspectComplete(emInspectCavity nSetInsp);
+	virtual void							InspectComplete(emInspectCavity nSetInsp, BOOL bSetting);
 	BOOL                                    GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes);
 	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
@@ -104,8 +111,12 @@ public:
 
 private:
 	void						      SystemMessage(CString strMessage);
+	// create image buffer
 	BOOL                              CreateBuffer_SIDE();
 	BOOL                              CreateBuffer_TOP();
+	// create result buffer
+	BOOL                              CreateResultBuffer_SIDE();
+	BOOL                              CreateResultBuffer_TOP();
 	void                              MakeDirectory();
 	virtual BOOL				      CheckDirectory(const TCHAR szPathName[], BOOL bDelete = FALSE);
 	BOOL						      DeleteFolder(const CString strFolder);
@@ -116,6 +127,11 @@ private:
 	CSharedMemoryBuffer*                       m_pImageBuffer_Top[MAX_TOPCAM_COUNT];
 								               
 	CSharedMemoryBuffer*                       m_pImageBuffer_Side[MAX_SIDECAM_COUNT];
+
+	// Result Buffer
+	CSharedMemoryBuffer*                       m_pResultBuffer_Top[MAX_TOPCAM_COUNT];
+						                       
+	CSharedMemoryBuffer*                       m_pResultBuffer_Side[MAX_SIDECAM_COUNT];
 								               
 	CallbackLogFunc*                           m_pCallbackLogFunc;
 	CallbackAlarm*                             m_pCallbackAlarm;

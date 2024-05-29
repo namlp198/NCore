@@ -13,9 +13,13 @@ extern "C"
 
 	/************************** Simulator **************************/
 #pragma region Offline simulation
-	__declspec(dllexport) BYTE*                     GetBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
+	__declspec(dllexport) BYTE*                     GetBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame);
 								                    
-	__declspec(dllexport) BYTE*                     GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nY);
+	__declspec(dllexport) BYTE*                     GetBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame);
+
+	__declspec(dllexport) BYTE*                     GetResultBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame);
+								                    
+	__declspec(dllexport) BYTE*                     GetResultBuffer_TOP(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame);
 											        
 	__declspec(dllexport) bool                      LoadImageBuffer_SIDE(CSealingInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath);
 
@@ -26,6 +30,8 @@ extern "C"
 	__declspec(dllexport) bool                      ClearBufferImage_SIDE(CSealingInspectProcessor* pProcessor, int nBuff);
 
 	__declspec(dllexport) bool                      ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff);
+
+	__declspec(dllexport) bool                      Inspect_TopCam_Simulation(CSealingInspectProcessor* pProcessor, int nCamIdx, int nFrame);
 #pragma endregion
 
 	/************************** Hik Cam **************************/
