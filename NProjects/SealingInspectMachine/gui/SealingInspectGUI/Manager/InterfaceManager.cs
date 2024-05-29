@@ -11,7 +11,7 @@ namespace SealingInspectGUI.Manager
 {
     public class InterfaceManager
     {
-        public delegate void InspectionComplete_Handler(emInspectCavity eInspCavity);
+        public delegate void InspectionComplete_Handler(emInspectCavity eInspCavity, int bSetting);
         public static event InspectionComplete_Handler InspectionComplete;
 
         public SimulationThread m_simulationThread = new SimulationThread();
@@ -31,9 +31,9 @@ namespace SealingInspectGUI.Manager
         }
         #endregion
 
-        public void CallbackInsCompleteFunc(emInspectCavity eInspCavity)
+        public void CallbackInsCompleteFunc(emInspectCavity eInspCavity, int bSetting)
         {
-            InspectionComplete(eInspCavity);
+            InspectionComplete(eInspCavity, bSetting);
 
             InspectionComplete_All_Check(eInspCavity);
         }

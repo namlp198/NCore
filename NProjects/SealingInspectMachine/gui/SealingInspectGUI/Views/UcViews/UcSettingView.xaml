@@ -131,7 +131,9 @@
                         Background="LightGray"
                         FontWeight="SemiBold"
                         FontSize="12"
-                        Width="70" />
+                        Width="70"
+                        Command="{Binding InspectSimulationCmd}"
+                        CommandParameter="{Binding CameraSelected}"/>
                 <Button Margin="5 2 2 2"
                         Content="Save Image"
                         Foreground="Black"

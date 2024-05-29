@@ -211,8 +211,11 @@ namespace SealingInspectGUI.ViewModels
         #endregion
 
         #region methods
-        private void InspectionComplete(emInspectCavity eInspCav)
+        private void InspectionComplete(emInspectCavity eInspCav, int bSetting)
         {
+            if (bSetting == 1)
+                return;
+
             int nCoreIdx = 0;
             switch (eInspCav)
             {
@@ -292,9 +295,9 @@ namespace SealingInspectGUI.ViewModels
         private async void UpdateResultView(BufferViewerSimple bufferSimple, int nStatus, int nBuff, int nFrame, string s)
         {
             if (string.Compare(s.ToUpper(), "TOP") == 0)
-                bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_TOP(nBuff, nFrame);
+                bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetResultBuffer_TOP(nBuff, nFrame);
             else if (string.Compare(s.ToUpper(), "SIDE") == 0)
-                bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImage_SIDE(nBuff, nFrame);
+                bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetResultBuffer_SIDE(nBuff, nFrame);
             await bufferSimple.UpdateImage();
 
             if (nStatus == 1) bufferSimple.InspectResult = EInspectResult.InspectResult_OK;

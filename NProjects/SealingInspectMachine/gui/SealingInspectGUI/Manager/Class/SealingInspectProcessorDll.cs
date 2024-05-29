@@ -31,7 +31,7 @@ namespace SealingInspectGUI.Manager.Class
 
         // Inspection Compete CallBack
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void CallbackInsCompleteFunc(emInspectCavity nInspCavity);
+        public delegate void CallbackInsCompleteFunc(emInspectCavity nInspCavity, int bSetting);
 
         #region Init and delete
         /// <summary>
@@ -169,8 +169,26 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
+        extern private static IntPtr GetResultBuffer_SIDE(IntPtr sealingInspProcessor, int nBuff, int nFrame);
+        public IntPtr GetResultBuffer_SIDE(int nBuff, int nFrame) { return GetResultBuffer_SIDE(m_sealingInspectProcessor, nBuff, nFrame); }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
         extern private static IntPtr GetBufferImage_TOP(IntPtr sealingInspProcessor, int nBuff, int nFrame);
         public IntPtr GetBufferImage_TOP(int nBuff, int nFrame) { return GetBufferImage_TOP(m_sealingInspectProcessor, nBuff, nFrame); }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetResultBuffer_TOP(IntPtr sealingInspProcessor, int nBuff, int nFrame);
+        public IntPtr GetResultBuffer_TOP(int nBuff, int nFrame) { return GetResultBuffer_TOP(m_sealingInspectProcessor, nBuff, nFrame); }
 
 
 #if DEBUG
@@ -307,6 +325,15 @@ namespace SealingInspectGUI.Manager.Class
 #endif
         extern private static bool TestInspectCavity2(IntPtr sealingInspProcessor);
         public bool TestInspectCavity2() { return TestInspectCavity2(m_sealingInspectProcessor); }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool Inspect_TopCam_Simulation(IntPtr sealingInspProcessor, int nCamIdx, int nFrame);
+        public bool Inspect_TopCam_Simulation(int nCamIdx, int nFrame) { return Inspect_TopCam_Simulation(m_sealingInspectProcessor, nCamIdx, nFrame); }
 
 
 #if DEBUG

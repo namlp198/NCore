@@ -98,6 +98,7 @@
     <Compile Include="Command\Cmd\GrabAllCmd.cs" />
     <Compile Include="Command\Cmd\GrabCavity2Cmd .cs" />
     <Compile Include="Command\Cmd\GrabCavity1Cmd.cs" />
+    <Compile Include="Command\Cmd\InspectSimulationCmd.cs" />
     <Compile Include="Command\Cmd\SaveRecipeCmd.cs" />
     <Compile Include="Command\Cmd\SaveSettingCmd.cs" />
     <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
