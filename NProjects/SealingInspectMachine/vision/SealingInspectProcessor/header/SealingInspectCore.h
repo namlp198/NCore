@@ -79,13 +79,41 @@ public:
 	void Inspect_TopCam_Simulation(int nCamIdx, int nFrame);
 	void Inspect_SideCam_Simulation(int nCamIdx, int nFrame);
 
-public:
-	void FindCircle_MinEnclosing(cv::Mat& matSrc, cv::Mat& matProcess, int nThresholdBinary, int nRadiusInnerMin, int nRadiusInnerMax,
-		                        std::vector<std::vector<cv::Point>> vecContours, 
-		                        std::vector<cv::Vec4i> vecHierarchy, std::vector<cv::Point2f> vecCenters,
-		                        std::vector<float> vecRadius);
-	BOOL FindCircle_HoughCircle(cv::Mat& matSrc, cv::Mat& matProcess, std::vector<cv::Vec3f> circles, std::vector<cv::Point2i> vecPts);
+private:
+	BOOL FindCircle_MinEnclosing(cv::Mat& matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
+		                        std::vector<std::vector<cv::Point>>& vecContours, 
+		                        std::vector<cv::Vec4i>& vecHierarchy, std::vector<cv::Point2f>& vecCenters,
+		                        std::vector<float>& vecRadius);
+	BOOL FindCircle_HoughCircle(cv::Mat& matProcess, 
+		                        std::vector<cv::Vec3f>& vecCircles, 
+		                        std::vector<cv::Point2i>& vecPts,
+		                        int minDist, int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle);
 
+	BOOL FindDistanceAll_OuterToInner(std::vector<cv::Point2i>& vecPts,
+		                              std::vector<cv::Point2i>& vecPtsIntersection, 
+		                              std::vector<cv::Point2f>& vecIntsecPtsFound,
+		                              cv::Point2f center, double radius,
+		                              std::vector<double>& vecDistance);
+
+	BOOL JudgementInspectDistanceMeasurement(std::vector<double>& vecDistance, std::vector<int>& vecPosNG, 
+		                                     double nDistanceMin, double nDistanceMax);
+
+	void MakeROIAdvancedAlgorithms(cv::Mat mat, cv::Point centerPt, double dRadius, int nROIWidth_Hor, int nROIHeight_Hor, int nROIWidth_Ver, int nROIHeight_Ver);
+
+private:
+
+	double             CalculateDistancePointToCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius);
+
+	cv::Point2i        CalculateIntersectionPointCoordinate(cv::Point2i pt, cv::Point2f centerPt, double dDist);
+
+	cv::Point2f        FindIntersectionPoint_LineCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius);
+
+	void               Draw_MinEnclosing(cv::Mat& matSrc, int nRadiusInnerMin, int nRadiusInnerMax, 
+		                                 std::vector<std::vector<cv::Point>>& vecContours,
+		                                 std::vector<cv::Point2f>& vecCenters,
+		                                 std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius);
+	void               Draw_HoughCircle(cv::Mat& matSrc, std::vector<cv::Vec3f>& vecCircles, std::vector<cv::Point2i>& vecPts);
+	
 public:
 
 	// setter
