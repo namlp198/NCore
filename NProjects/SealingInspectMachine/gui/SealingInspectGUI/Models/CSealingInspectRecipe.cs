@@ -11,27 +11,32 @@ namespace SealingInspectGUI.Models
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame1
     {
-        public int m_nThresholdBinaryMinEnclosing;              // 0.
-        public int m_nThresholdBinaryCannyHoughCircle;          // 1.
-        public int m_nDistanceRadiusDiffMin;                    // 2.
-        public int m_nDistanceMeasurementTolerance_Min;         // 3.
-        public int m_nDistanceMeasurementTolerance_Max;         // 4.
-        public int m_nRadiusInner_Min;                          // 5.
-        public int m_nRadiusInner_Max;                          // 6.
-        public int m_nRadiusOuter_Min;                          // 7.
-        public int m_nRadiusOuter_Max;                          // 8.
-        public int m_nDeltaRadiusOuterInner;                    // 9.
-        public int m_nROIWidth;                                 // 10.
-        public int m_nROIHeight;                                // 11.
-        public int m_nROI12H_OffsetX;                           // 12.
-        public int m_nROI12H_OffsetY;                           // 13.
-        public int m_nROI3H_OffsetX;                            // 14.
-        public int m_nROI3H_OffsetY;                            // 15.
-        public int m_nROI6H_OffsetX;                            // 16.
-        public int m_nROI6H_OffsetY;                            // 17.
-        public int m_nROI9H_OffsetX;                            // 18.
-        public int m_nROI9H_OffsetY;                            // 19.
-        public int m_bUseAdvancedAlgorithms;                    // 20.
+        public int m_nThresholdBinaryMinEnclosing;                 // 0.
+        public int m_nThresholdBinaryCannyHoughCircle;             // 1.
+        public int m_nDistanceRadiusDiffMin;                       // 2.
+        public double m_dDistanceMeasurementTolerance_Min;         // 3.
+        public double m_dDistanceMeasurementTolerance_Max;         // 4.
+        public int m_nRadiusInner_Min;                             // 5.
+        public int m_nRadiusInner_Max;                             // 6.
+        public int m_nRadiusOuter_Min;                             // 7.
+        public int m_nRadiusOuter_Max;                             // 8.
+        public int m_nDeltaRadiusOuterInner;                       // 9.
+        public int m_nROIWidth_Hor;                                // 10
+        public int m_nROIHeight_Hor;                               // 11
+        public int m_nROIWidth_Ver;                                // 12
+        public int m_nROIHeight_Ver;                               // 13
+        public int m_nROI12H_OffsetX;                              // 14.
+        public int m_nROI12H_OffsetY;                              // 15.
+        public int m_nROI3H_OffsetX;                               // 16.
+        public int m_nROI3H_OffsetY;                               // 17.
+        public int m_nROI6H_OffsetX;                               // 18.
+        public int m_nROI6H_OffsetY;                               // 19.
+        public int m_nROI9H_OffsetX;                               // 20.
+        public int m_nROI9H_OffsetY;                               // 21.
+        public int m_bUseAdvancedAlgorithms;                       // 22.
+        public int m_nContourSizeMinEnclosingCircle_Min;           // 23.
+        public int m_nContourSizeMinEnclosingCircle_Max;           // 24.
+        public double m_dIncrementAngle;                           // 25.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
