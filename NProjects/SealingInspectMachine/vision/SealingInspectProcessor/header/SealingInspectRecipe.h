@@ -30,11 +30,15 @@ struct CRecipe_TopCam_Frame1
 	int m_nContourSizeMinEnclosingCircle_Min;
 	int m_nContourSizeMinEnclosingCircle_Max;
 	double m_dIncrementAngle;
+	int m_nThresholdCanny1_MakeROI;
+	int m_nThresholdCanny2_MakeROI;
+	int m_nDelayTimeGrab;
 };
 struct CRecipe_TopCam_Frame2
 {
 	int m_nDistanceMeasurementTolerance_Min;
 	int m_nDistanceMeasurementTolerance_Max;
+	int m_nDelayTimeGrab;
 };
 struct CRecipe_SideCam_Frame1
 {

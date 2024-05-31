@@ -12,6 +12,10 @@
 #include "SealingInspectHikCam.h"
 #include "SealingInspect_Simulation_IO.h"
 #include "WorkThreadArray.h"
+#include <algorithm>
+#include <vector>
+#include <numeric>
+#include <iostream>
 
 #define TEST_INSPECT_CAVITY_1
 //#undef TEST_INSPECT_CAVITY_1
@@ -80,14 +84,15 @@ public:
 	void Inspect_SideCam_Simulation(int nCamIdx, int nFrame);
 
 private:
-	BOOL FindCircle_MinEnclosing(cv::Mat& matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
+	BOOL FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
+		                        int nRadiusInnerMin, int nRadiusInnerMax,
 		                        std::vector<std::vector<cv::Point>>& vecContours, 
 		                        std::vector<cv::Vec4i>& vecHierarchy, std::vector<cv::Point2f>& vecCenters,
-		                        std::vector<float>& vecRadius);
-	BOOL FindCircle_HoughCircle(cv::Mat& matProcess, 
-		                        std::vector<cv::Vec3f>& vecCircles, 
-		                        std::vector<cv::Point2i>& vecPts,
-		                        int minDist, int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle);
+		                        std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius);
+
+	BOOL FindCircle_HoughCircle(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, 
+		                        std::vector<cv::Point2i>& vecPts, int nThresholdCanny, int minDist, 
+		                        int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle);
 
 	BOOL FindDistanceAll_OuterToInner(std::vector<cv::Point2i>& vecPts,
 		                              std::vector<cv::Point2i>& vecPtsIntersection, 
@@ -98,21 +103,29 @@ private:
 	BOOL JudgementInspectDistanceMeasurement(std::vector<double>& vecDistance, std::vector<int>& vecPosNG, 
 		                                     double nDistanceMin, double nDistanceMax);
 
-	void MakeROIAdvancedAlgorithms(cv::Mat mat, cv::Point centerPt, double dRadius, int nROIWidth_Hor, int nROIHeight_Hor, int nROIWidth_Ver, int nROIHeight_Ver);
+	BOOL FindPointsAtPosMaxOnContour(cv::Mat matROI, cv::Rect rectROI, std::vector<cv::Point>& vecPtsOnContour,
+		                     int nThresholdCanny1, int nThresholdCanny2, 
+		                     int nWidthROI, int nHeightROI, int nIdx);
+
+	void MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipeTopCamFrame1, 
+		                           std::vector<cv::Rect>& vecRectROI, std::vector<cv::Mat>& vecMatROI, 
+		                           cv::Mat* matCpy, cv::Point centerPt, double dRadius);
 
 private:
 
 	double             CalculateDistancePointToCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius);
 
-	cv::Point2i        CalculateIntersectionPointCoordinate(cv::Point2i pt, cv::Point2f centerPt, double dDist);
+	cv::Point2i        CalculateIntersectionPointCoordinate(cv::Point2i pt, cv::Point2f centerPt, double dRadius, double dDist);
 
 	cv::Point2f        FindIntersectionPoint_LineCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius);
 
-	void               Draw_MinEnclosing(cv::Mat& matSrc, int nRadiusInnerMin, int nRadiusInnerMax, 
-		                                 std::vector<std::vector<cv::Point>>& vecContours,
-		                                 std::vector<cv::Point2f>& vecCenters,
-		                                 std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius);
+	void               Draw_MinEnclosing(cv::Mat& matSrc, std::vector<std::vector<cv::Point>>& vecContours,
+		                                 cv::Point2f vecCenters, float vecRadius);
 	void               Draw_HoughCircle(cv::Mat& matSrc, std::vector<cv::Vec3f>& vecCircles, std::vector<cv::Point2i>& vecPts);
+
+	void               DrawDistance(cv::Mat& mat, std::vector<cv::Point> vecPts, std::vector<cv::Point> vecIntsecPts);
+
+	void               DrawPositionNG(cv::Mat& mat, std::vector<int> vecPosNG, std::vector<cv::Point> vecPts);
 	
 public:
 

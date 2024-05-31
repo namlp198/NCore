@@ -461,6 +461,9 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 		recipeFile.GetItemValue(i + 1, _T("CONTOUR_SIZE_MINENCLOSING_CIRCLE_TOPCAM_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nContourSizeMinEnclosingCircle_Min, 0);
 		recipeFile.GetItemValue(i + 1, _T("CONTOUR_SIZE_MINENCLOSING_CIRCLE_TOPCAM_FRAME1_MAX"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nContourSizeMinEnclosingCircle_Max, 0);
 		recipeFile.GetItemValue(i + 1, _T("INCREMENT_ANGLE_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dIncrementAngle, 0);
+		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_CANNY_1_MAKEROI_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdCanny1_MakeROI, 0);
+		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_CANNY_2_MAKEROI_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdCanny2_MakeROI, 0);
+		recipeFile.GetItemValue(i + 1, _T("DELAY_TIME_GRAB_IMAGE_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDelayTimeGrab, 0);
 	}
 	for (int i = 0; i < MAX_SIDECAM_COUNT; i++)
 	{
@@ -725,7 +728,9 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("CONTOUR_SIZE_MINENCLOSING_CIRCLE_TOPCAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nContourSizeMinEnclosingCircle_Min);
 				recipeFile.SetItemValue(i + 1, _T("CONTOUR_SIZE_MINENCLOSING_CIRCLE_TOPCAM_FRAME1_MAX"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nContourSizeMinEnclosingCircle_Max);
 				recipeFile.SetItemValue(i + 1, _T("INCREMENT_ANGLE_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dIncrementAngle);
-				
+				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_CANNY_1_MAKEROI_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdCanny1_MakeROI);
+				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_CANNY_2_MAKEROI_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nThresholdCanny2_MakeROI);
+				recipeFile.SetItemValue(i + 1, _T("DELAY_TIME_GRAB_IMAGE_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDelayTimeGrab);
 			}
 		}
 		else if (nFrameIdx == 2) {
