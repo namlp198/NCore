@@ -37,12 +37,16 @@ namespace SealingInspectGUI.Models
         public int m_nContourSizeMinEnclosingCircle_Min;           // 23.
         public int m_nContourSizeMinEnclosingCircle_Max;           // 24.
         public double m_dIncrementAngle;                           // 25.
+        public int m_nThresholdCanny1_MakeROI;                     // 26.
+        public int m_nThresholdCanny2_MakeROI;                     // 27.
+        public int m_nDelayTimeGrab;                               // 28.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
     {
         public int m_nDistanceMeasurementTolerance_Min;                // 1.            
         public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nDelayTimeGrab;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1

@@ -840,6 +840,30 @@ namespace SealingInspectGUI.ViewModels
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                               m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dIncrementAngle + "";
                         break;
+                    case 26:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold canny 1 make ROI";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny1_MakeROI + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny1_MakeROI + "";
+                        break;
+                    case 27:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold canny 2 make ROI";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny2_MakeROI + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny2_MakeROI + "";
+                        break;
+                    case 28:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Delay Time Grab Image";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nDelayTimeGrab + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nDelayTimeGrab + "";
+                        break;
                 }
                 lstRecipeFrame1.Add(recipe);
             }

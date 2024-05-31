@@ -208,6 +208,24 @@ namespace SealingInspectGUI.Command.Cmd
                         double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                       m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dIncrementAngle);
                         break;
+                    case 27:
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny1_MakeROI);
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny1_MakeROI);
+                        break;
+                    case 28:
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny2_MakeROI);
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny2_MakeROI);
+                        break;
+                    case 29:
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nDelayTimeGrab);
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nDelayTimeGrab);
+                        break;
                 }
             }
         }
