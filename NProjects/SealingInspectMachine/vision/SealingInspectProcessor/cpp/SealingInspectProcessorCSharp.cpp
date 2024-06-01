@@ -112,12 +112,22 @@ bool ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff)
 	else                    return true;
 }
 
-bool Inspect_TopCam_Simulation(CSealingInspectProcessor* pProcessor, int nCamIdx, int nFrame)
+bool Inspect_TopCam_Simulation(CSealingInspectProcessor* pProcessor, int nCoreIdx, int nCamIdx, int nFrame)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRetValue = pProcessor->Inspect_TopCam_Simulation(nCamIdx, nFrame);
+	BOOL bRetValue = pProcessor->Inspect_TopCam_Simulation(nCoreIdx, nCamIdx, nFrame);
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
+bool Inspect_SideCam_Simulation(CSealingInspectProcessor* pProcessor, int nCoreIdx, int nCamIdx, int nFrame)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRetValue = pProcessor->Inspect_SideCam_Simulation(nCoreIdx, nCamIdx, nFrame);
 	if (bRetValue == FALSE) return false;
 	else                    return true;
 }

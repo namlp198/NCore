@@ -42,23 +42,47 @@ struct CRecipe_TopCam_Frame2
 };
 struct CRecipe_SideCam_Frame1
 {
+	int m_nROI_Top[ROI_PARAMETER_COUNT];
+	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
 	int m_nDistanceMeasurementTolerance_Min;
 	int m_nDistanceMeasurementTolerance_Max;
+	int m_nDelayTimeGrab;
+	int m_nFindStartEndX;
+	int m_nFindStartEndSearchRangeX;
+	int m_nFindStartEndXThresholdGray;
 };
 struct CRecipe_SideCam_Frame2
 {
+	int m_nROI_Top[ROI_PARAMETER_COUNT];
+	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
 	int m_nDistanceMeasurementTolerance_Min;
 	int m_nDistanceMeasurementTolerance_Max;
+	int m_nDelayTimeGrab;
+	int m_nFindStartEndX;
+	int m_nFindStartEndSearchRangeX;
+	int m_nFindStartEndXThresholdGray;
 };
 struct CRecipe_SideCam_Frame3
 {
+	int m_nROI_Top[ROI_PARAMETER_COUNT];
+	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
 	int m_nDistanceMeasurementTolerance_Min;
 	int m_nDistanceMeasurementTolerance_Max;
+	int m_nDelayTimeGrab;
+	int m_nFindStartEndX;
+	int m_nFindStartEndSearchRangeX;
+	int m_nFindStartEndXThresholdGray;
 };
 struct CRecipe_SideCam_Frame4
 {
+	int m_nROI_Top[ROI_PARAMETER_COUNT];
+	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
 	int m_nDistanceMeasurementTolerance_Min;
 	int m_nDistanceMeasurementTolerance_Max;
+	int m_nDelayTimeGrab;
+	int m_nFindStartEndX;
+	int m_nFindStartEndSearchRangeX;
+	int m_nFindStartEndXThresholdGray;
 };
 
 class AFX_EXT_CLASS CSealingInspectRecipe_TopCam

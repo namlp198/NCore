@@ -31,7 +31,9 @@ extern "C"
 
 	__declspec(dllexport) bool                      ClearBufferImage_TOP(CSealingInspectProcessor* pProcessor, int nBuff);
 
-	__declspec(dllexport) bool                      Inspect_TopCam_Simulation(CSealingInspectProcessor* pProcessor, int nCamIdx, int nFrame);
+	__declspec(dllexport) bool                      Inspect_TopCam_Simulation(CSealingInspectProcessor* pProcessor,int nCoreIdx, int nCamIdx, int nFrame);
+
+	__declspec(dllexport) bool                      Inspect_SideCam_Simulation(CSealingInspectProcessor* pProcessor, int nCoreIdx, int nCamIdx, int nFrame);
 #pragma endregion
 
 	/************************** Hik Cam **************************/

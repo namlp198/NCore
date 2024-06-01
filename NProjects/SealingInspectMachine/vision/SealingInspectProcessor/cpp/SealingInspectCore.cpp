@@ -184,7 +184,15 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 			if (nFrameIdx == -1)
 				continue;
 
-			ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx);
+			// 1. Get Buffer..
+			LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx, nFrameIdx);
+
+			if (pImageBuffer == NULL)
+				return;
+
+			cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+			ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
 		}
 
 		m_pInterface->InspectComplete(emInspectCavity_Cavity1, FALSE);
@@ -292,7 +300,15 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 			if (nFrameIdx == -1)
 				continue;
 
-			ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx);
+			// 1. Get Buffer..
+			LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
+
+			if (pImageBuffer == NULL)
+				return;
+
+			cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+			ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
 		}
 
 		m_pInterface->InspectComplete(emInspectCavity_Cavity2, FALSE);
@@ -400,7 +416,15 @@ void CSealingInspectCore::TestInspectCavity1(int nCoreIdx)
 		if (nFrameIdx == -1)
 			continue;
 
-		ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx);
+		// 1. Get Buffer..
+		LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx, nFrameIdx);
+
+		if (pImageBuffer == NULL)
+			return;
+
+		cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+		ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
 	}
 
 	m_pInterface->InspectComplete(emInspectCavity_Cavity1, FALSE);
@@ -478,13 +502,21 @@ void CSealingInspectCore::TestInspectCavity2(int nCoreIdx)
 		if (nFrameIdx == -1)
 			continue;
 
-		ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx);
+		// 1. Get Buffer..
+		LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
+
+		if (pImageBuffer == NULL)
+			return;
+
+		cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+		ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
 	}
 
 	m_pInterface->InspectComplete(emInspectCavity_Cavity2, FALSE);
 }
 
-void CSealingInspectCore::Inspect_TopCam_Simulation(int nCamIdx, int nFrame)
+void CSealingInspectCore::Inspect_TopCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame)
 {
 	if (m_pInterface == NULL)
 		return;
@@ -502,7 +534,7 @@ void CSealingInspectCore::Inspect_TopCam_Simulation(int nCamIdx, int nFrame)
 	if (pImageBuffer == NULL)
 		return;
 
-	cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+	cv::Mat mat(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC3, pImageBuffer);
 
 	if (nFrame == 1) {
 		ProcessFrame1_TopCam(recipe, nCamIdx, nTopCam1_ResultBuffer, mat);
@@ -511,14 +543,41 @@ void CSealingInspectCore::Inspect_TopCam_Simulation(int nCamIdx, int nFrame)
 		ProcessFrame2_TopCam(recipe, nCamIdx, nTopCam2_ResultBuffer, mat);
 	}
 
-	if (nCamIdx == 0)
+	if (nCoreIdx == 0)
 		m_pInterface->InspectComplete(emInspectCavity_Cavity1, TRUE);
-	else if (nCamIdx == 1)
+	else if (nCoreIdx == 1)
 		m_pInterface->InspectComplete(emInspectCavity_Cavity2, TRUE);
 }
 
-void CSealingInspectCore::Inspect_SideCam_Simulation(int nCamIdx, int nFrame)
+void CSealingInspectCore::Inspect_SideCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame)
 {
+	if (m_pInterface == NULL)
+		return;
+
+	// 1. Load Recipe
+
+	CSealingInspectRecipe* pRecipe = m_pInterface->GetRecipe();
+
+	int nSideCam1_ResultBuffer = 0;
+	int nSideCam2_ResultBuffer = 1;
+
+	// 1. Get Buffer..
+	LPBYTE pImageBuffer = m_pInterface->GetBufferImage_SIDE(nCamIdx, nFrame - 1);
+
+	if (pImageBuffer == NULL)
+		return;
+
+	cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+	if (nCamIdx == 0)
+		ProcessFrame_SideCam(pRecipe, nCamIdx, nSideCam1_ResultBuffer, nFrame, mat);
+	else if (nCamIdx == 1)
+		ProcessFrame_SideCam(pRecipe, nCamIdx, nSideCam2_ResultBuffer, nFrame, mat);
+
+	if (nCoreIdx == 0)
+		m_pInterface->InspectComplete(emInspectCavity_Cavity1, TRUE);
+	else if (nCoreIdx == 1)
+		m_pInterface->InspectComplete(emInspectCavity_Cavity2, TRUE);
 }
 
 BOOL CSealingInspectCore::FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax, int nRadiusInnerMin, int nRadiusInnerMax, std::vector<std::vector<cv::Point>>& vecContours, std::vector<cv::Vec4i>& vecHierarchy, std::vector<cv::Point2f>& vecCenters, std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius)
@@ -667,7 +726,7 @@ BOOL CSealingInspectCore::FindPointsAtPosMaxOnContour(cv::Mat matROI, cv::Rect r
 		{
 			int maxPts = nWidthROI / 10;
 			std::vector<int> vecY;
-			
+
 			for (int j = 0; j < contours[i].size(); j++) {
 				vecY.push_back(contours[i][j].y);
 			}
@@ -800,6 +859,183 @@ void CSealingInspectCore::MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipe
 	vecMatROI.push_back(matROI3H);
 	vecMatROI.push_back(matROI6H);
 	vecMatROI.push_back(matROI9H);
+}
+
+void CSealingInspectCore::MakeROIFindLine(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Mat& matROIFindLIne)
+{
+	cv::Mat matGray;
+	cv::cvtColor(*pMatProcess, matGray, cv::COLOR_BGR2GRAY);
+
+	int nROI_X = 0;
+	int nROI_Y = 0;
+	int nROIWidth = 0;
+	int nROIHeight = 0;
+
+	switch (nFrame)
+	{
+	case 1:
+		nROI_X = pRecipeSideCam->m_recipeFrame1.m_nROI_Top[0];
+		nROI_Y = pRecipeSideCam->m_recipeFrame1.m_nROI_Top[1];
+		nROIWidth = pRecipeSideCam->m_recipeFrame1.m_nROI_Top[2];
+		nROIHeight = pRecipeSideCam->m_recipeFrame1.m_nROI_Top[3];
+		break;
+	case 2:
+		nROI_X = pRecipeSideCam->m_recipeFrame2.m_nROI_Top[0];
+		nROI_Y = pRecipeSideCam->m_recipeFrame2.m_nROI_Top[1];
+		nROIWidth = pRecipeSideCam->m_recipeFrame2.m_nROI_Top[2];
+		nROIHeight = pRecipeSideCam->m_recipeFrame2.m_nROI_Top[3];
+		break;
+	case 3:
+		nROI_X = pRecipeSideCam->m_recipeFrame3.m_nROI_Top[0];
+		nROI_Y = pRecipeSideCam->m_recipeFrame3.m_nROI_Top[1];
+		nROIWidth = pRecipeSideCam->m_recipeFrame3.m_nROI_Top[2];
+		nROIHeight = pRecipeSideCam->m_recipeFrame3.m_nROI_Top[3];
+		break;
+	case 4:
+		nROI_X = pRecipeSideCam->m_recipeFrame4.m_nROI_Top[0];
+		nROI_Y = pRecipeSideCam->m_recipeFrame4.m_nROI_Top[1];
+		nROIWidth = pRecipeSideCam->m_recipeFrame4.m_nROI_Top[2];
+		nROIHeight = pRecipeSideCam->m_recipeFrame4.m_nROI_Top[3];
+		break;
+	}
+	cv::Rect rectROI(nROI_X, nROI_Y, nROIWidth, nROIHeight);
+
+	cv::Mat matROI(rectROI.height, rectROI.width, CV_8UC1);
+	for (int i = 0; i < matROI.rows; i++)
+		memcpy(&matROI.data[i * matROI.step1()], &matGray.data[(i + rectROI.y) * matGray.step1() + rectROI.x], matROI.cols);
+
+	rectROIFindLIne = rectROI;
+	matROIFindLIne = matROI;
+}
+
+BOOL CSealingInspectCore::FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine)
+{
+	int nFindStartEndLineX = 0;
+	int nFindStartEndLineSearchRangeX = 0;
+	int nThreshold = 0;
+
+	switch (nFrame)
+	{
+	case 1:
+		nFindStartEndLineX = pRecipeSideCam->m_recipeFrame1.m_nFindStartEndX;
+		nFindStartEndLineSearchRangeX = pRecipeSideCam->m_recipeFrame1.m_nFindStartEndSearchRangeX;
+		nThreshold = pRecipeSideCam->m_recipeFrame1.m_nFindStartEndXThresholdGray;
+		break;
+	case 2:
+		nFindStartEndLineX = pRecipeSideCam->m_recipeFrame2.m_nFindStartEndX;
+		nFindStartEndLineSearchRangeX = pRecipeSideCam->m_recipeFrame2.m_nFindStartEndSearchRangeX;
+		nThreshold = pRecipeSideCam->m_recipeFrame2.m_nFindStartEndXThresholdGray;
+		break;
+	case 3:
+		nFindStartEndLineX = pRecipeSideCam->m_recipeFrame3.m_nFindStartEndX;
+		nFindStartEndLineSearchRangeX = pRecipeSideCam->m_recipeFrame3.m_nFindStartEndSearchRangeX;
+		nThreshold = pRecipeSideCam->m_recipeFrame3.m_nFindStartEndXThresholdGray;
+		break;
+	case 4:
+		nFindStartEndLineX = pRecipeSideCam->m_recipeFrame4.m_nFindStartEndX;
+		nFindStartEndLineSearchRangeX = pRecipeSideCam->m_recipeFrame4.m_nFindStartEndSearchRangeX;
+		nThreshold = pRecipeSideCam->m_recipeFrame4.m_nFindStartEndXThresholdGray;
+		break;
+	}
+
+	int nSize = matROI.total() * matROI.elemSize();
+
+	LPBYTE pBuffer = new BYTE[nSize];
+	std::memcpy(pBuffer, matROI.data, nSize * sizeof(BYTE));
+
+	int nFrameWidth = rectROI.width;
+	int nFrameHeight = rectROI.height;
+
+	int nMinSearch = nFindStartEndLineX - (nFindStartEndLineSearchRangeX / 2);
+	int nMaxSearch = nFindStartEndLineX + (nFindStartEndLineSearchRangeX / 2);
+
+	nMinSearch = (nMinSearch < 0) ? 0 : (nFrameWidth < nMinSearch) ? nFrameWidth - (nFindStartEndLineSearchRangeX / 2) : nMinSearch;
+	nMaxSearch = (nMaxSearch < 0) ? nFindStartEndLineSearchRangeX / 2 : (nFrameWidth < nMaxSearch) ? nFrameWidth - 1 : nMaxSearch;
+
+	int nRange = nMaxSearch - nMinSearch;
+	int nFrameY = 0;
+
+	if (nRange == 0)
+		return FALSE;
+
+	// 3. Find Threshold Point
+	std::vector<cv::Point> vecFindLineFitPoints;
+	vecFindLineFitPoints.resize(nFindStartEndLineSearchRangeX, cv::Point(-1, -1));
+
+	const int nConst_Pitch = 5;
+	const int nConst_ContinueCount = 3;
+
+#ifdef USE_TBB
+	tbb::parallel_for(0, nFindStartEndLineSearchRangeX, [&](int nX)
+#else
+	for (int nX = 0; nX < nFindStartEndLineSearchRangeX; nX++)
+#endif
+	{
+		int nContinueCount = 0;
+
+		for (int nY = 0; nY < nFrameHeight - nConst_Pitch; nY++)
+		{
+			int nGrayValue_Current = (int)pBuffer[(nY * nFrameWidth) + (nX + nMinSearch)];
+			int nGrayValue_Compare = (int)pBuffer[((nY + nConst_Pitch) * nFrameWidth) + (nX + nMinSearch)];
+			int nGray_Diff = abs(nGrayValue_Current - nGrayValue_Compare);
+
+			if (nThreshold < nGray_Diff)
+				nContinueCount++;
+			else
+				nContinueCount = 0;
+
+			if (nConst_ContinueCount <= nContinueCount)
+			{
+				vecFindLineFitPoints[nX] = cv::Point(nX + nMinSearch, nY + nConst_Pitch - nContinueCount + nFrameY);
+				break;
+			}
+		}
+#ifdef USE_TBB
+	});
+#else
+}
+#endif
+
+
+	int nSum = 0;
+	int nCount = 0;
+
+	for (int i = 0; i < (int)vecFindLineFitPoints.size(); i++)
+	{
+		if (0 <= vecFindLineFitPoints[i].y)
+		{
+			nSum += vecFindLineFitPoints[i].y;
+			nCount++;
+		}
+	}
+
+	if (nCount == 0)
+		return FALSE;
+
+	// Average..
+	int nFindLine = nSum / nCount;
+
+	// Line Fitting..
+	const int nFindFit = 3;
+	int nStartSum = 0;
+	int nEndSum = 0;
+	for (int i = 0; i < nFindFit; i++)
+	{
+		int nStartIdx = i;
+		int nEndIdx = vecFindLineFitPoints.size() - 1 - i;
+
+		nStartSum += vecFindLineFitPoints[nStartIdx].y;
+		nEndSum += vecFindLineFitPoints[nEndIdx].y;
+	}
+	float fStartAvgr = ((float)nStartSum) / ((float)nFindFit);
+	float fEndAvgr = ((float)nEndSum) / ((float)nFindFit);
+	float fSlope = (fEndAvgr - fStartAvgr) / vecFindLineFitPoints.size();
+
+	cv::Point2f ptFitLinePoint_1 = cv::Point2f(0, (((-vecFindLineFitPoints[0].x) * fSlope + fStartAvgr)));
+	cv::Point2f ptFitLinePoint_2 = cv::Point2f(nFrameWidth - 1, ((((double)(nFrameWidth - 1) - vecFindLineFitPoints[0].x) * fSlope + fStartAvgr)));
+
+	vecPtsLine.push_back(cv::Point2f(ptFitLinePoint_1.x + rectROI.x, ptFitLinePoint_1.y + rectROI.y));
+	vecPtsLine.push_back(cv::Point2f(ptFitLinePoint_2.x + rectROI.x, ptFitLinePoint_2.y + rectROI.y));
 }
 
 cv::Point2f CSealingInspectCore::FindIntersectionPoint_LineCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius)
@@ -945,10 +1181,10 @@ void CSealingInspectCore::DrawDistance(cv::Mat& mat, std::vector<cv::Point> vecP
 	}
 }
 
-void CSealingInspectCore::DrawPositionNG(cv::Mat& mat, std::vector<int> vecPosNG, std::vector<cv::Point> vecPts)
+void CSealingInspectCore::DrawPositionNG(cv::Mat& mat, std::vector<int>& vecPosNG, std::vector<cv::Point> vecPts)
 {
 	// draw pos NG
-	if (vecPosNG.size() > 0) {
+
 		/*for (auto it = vecPosNG.begin(); it != vecPosNG.end(); ++it) {
 			int x = vecPts[vecPosNG[*it]].x - 15;
 			int y = vecPts[vecPosNG[*it]].y - 15;
@@ -957,20 +1193,30 @@ void CSealingInspectCore::DrawPositionNG(cv::Mat& mat, std::vector<int> vecPosNG
 			cv::Rect rec(x, y, width, height);
 			cv::rectangle(mat, rec, RED_COLOR, 1, cv::LINE_AA);
 		}*/
-		for (int i = 0; i < vecPosNG.size(); i++) {
-			int x = vecPts[vecPosNG[i]].x - 15;
-			int y = vecPts[vecPosNG[i]].y - 15;
-			int width = 30;
-			int height = 30;
-			cv::Rect rec(x, y, width, height);
-			cv::rectangle(mat, rec, RED_COLOR, 1, cv::LINE_AA);
-		}
+	for (int i = 0; i < vecPosNG.size(); i++) {
+		int x = vecPts[vecPosNG[i]].x - 15;
+		int y = vecPts[vecPosNG[i]].y - 15;
+		int width = 30;
+		int height = 30;
+		cv::Rect rec(x, y, width, height);
+		cv::rectangle(mat, rec, RED_COLOR, 1, cv::LINE_AA);
 	}
+
+	vecPosNG.clear();
+}
+
+void CSealingInspectCore::DrawROILine(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point2f> vecPtsLine)
+{
+	cv::rectangle(mat, rectROI, BLUE_COLOR, 2, cv::LINE_AA);
+	if (!vecPtsLine.empty())
+		cv::line(mat, vecPtsLine.at(0), vecPtsLine.at(1), YELLOW_COLOR, 2, cv::LINE_AA);
 }
 
 void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat)
 {
 	CRecipe_TopCam_Frame1 recipeTopCamFrame1 = pRecipe->m_sealingInspRecipe_TopCam[nCamIdx].m_recipeFrame1;
+
+	int nFrame = 0;
 
 	// params minEnclosing
 	int nThresholdBinary = recipeTopCamFrame1.m_nThresholdBinaryMinEnclosing;
@@ -1046,8 +1292,8 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 
 	nRet &= JudgementInspectDistanceMeasurement(vecDist, vecPosNG, nDistanceMeasureToleranceMin, nDistanceMeasureToleranceMax);
 
-	DrawPositionNG(mat, vecPosNG, vecPoints);
-	vecPosNG.clear();
+	if (!vecPosNG.empty())
+		DrawPositionNG(mat, vecPosNG, vecPoints);
 
 	if (bUseAdvancedAlgorithms == TRUE)
 	{
@@ -1060,7 +1306,7 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 		// create ROI from center point of circle Inner
 		MakeROIAdvancedAlgorithms(recipeTopCamFrame1, vecRectROI, vecMatROI, &matProcess, center_Inner, dRadius_Inner);
 
-		if (!vecRectROI.empty() && !vecMatROI.empty()) 
+		if (!vecRectROI.empty() && !vecMatROI.empty())
 		{
 			int nSize = vecMatROI.size();
 			for (int i = 0; i < nSize; i++) {
@@ -1095,12 +1341,13 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 			}
 		}
 		nRet &= JudgementInspectDistanceMeasurement(vecDistPointToCircle, vecPosNG, nDistanceMeasureToleranceMin, nDistanceMeasureToleranceMax);
-		DrawPositionNG(mat, vecPosNG, vecPoints);
-		vecPosNG.clear();
+
+		if (!vecPosNG.empty())
+			DrawPositionNG(mat, vecPosNG, vecPoints);
 	}
 
 	// set buffer
-	m_pInterface->SetResultBuffer_TOP(nBufferProcessorIdx, 0, mat.data);
+	m_pInterface->SetResultBuffer_TOP(nBufferProcessorIdx, nFrame, mat.data);
 
 	m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bStatusFrame1 = nRet;
 }
@@ -1118,21 +1365,28 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 	m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bInspectComplete = TRUE;
 }
 
-void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx)
+void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx, cv::Mat& mat)
 {
-	// 1. Get Buffer..
-	LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nCamIdx, nFrameIdx);
+	// create a clone of 
+	cv::Mat pMatProcess;
+	mat.copyTo(pMatProcess);
 
-	if (pImageBuffer == NULL)
-		return;
+	// recipe side cam
+	CSealingInspectRecipe_SideCam recipeSideCam = pRecipe->m_sealingInspRecipe_SideCam[nCamIdx];
 
 	// 2. Process
+	cv::Rect rectROIFindLine;
+	cv::Mat matROIFindLine;
+	std::vector<cv::Point2f> vecPtsLine;
+	MakeROIFindLine(&recipeSideCam, &pMatProcess, nFrameIdx, rectROIFindLine, matROIFindLine);
+
+	FindLine_Top_Bottom_Average(&recipeSideCam, &pMatProcess, nFrameIdx, rectROIFindLine, matROIFindLine, vecPtsLine);
+
+	DrawROILine(mat, rectROIFindLine, vecPtsLine);
 
 	// 3. Set buff
 
-	m_pInterface->SetResultBuffer_SIDE(nBufferProcessorIdx, nFrameIdx, pImageBuffer);
-
-	cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+	m_pInterface->SetResultBuffer_SIDE(nBufferProcessorIdx, nFrameIdx, mat.data);
 
 	char ch[100] = {};
 	sprintf_s(ch, "%s%s%d%s%d%s", "E:\\SealingImage\\FullImage\\20240522\\SealingAllInspect_12345\\", "SideCam", (nBufferProcessorIdx + 1), "_Frame", nFrameIdx + 1, ".bmp");

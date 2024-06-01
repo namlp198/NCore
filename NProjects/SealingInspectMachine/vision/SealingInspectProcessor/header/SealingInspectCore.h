@@ -16,6 +16,7 @@
 #include <vector>
 #include <numeric>
 #include <iostream>
+#include <tbb/tbb.h>
 
 #define TEST_INSPECT_CAVITY_1
 //#undef TEST_INSPECT_CAVITY_1
@@ -75,13 +76,13 @@ public:
 
 	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat);
 	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat);
-	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx);
+	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx, cv::Mat& mat);
 
 	void TestInspectCavity1(int nCoreIdx);
 	void TestInspectCavity2(int nCoreIdx);
 
-	void Inspect_TopCam_Simulation(int nCamIdx, int nFrame);
-	void Inspect_SideCam_Simulation(int nCamIdx, int nFrame);
+	void Inspect_TopCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame);
+	void Inspect_SideCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame);
 
 private:
 	BOOL FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
@@ -111,6 +112,10 @@ private:
 		                           std::vector<cv::Rect>& vecRectROI, std::vector<cv::Mat>& vecMatROI, 
 		                           cv::Mat* matCpy, cv::Point centerPt, double dRadius);
 
+	void MakeROIFindLine(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Mat& matROIFindLIne);
+
+	BOOL FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine);
+
 private:
 
 	double             CalculateDistancePointToCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius);
@@ -125,7 +130,9 @@ private:
 
 	void               DrawDistance(cv::Mat& mat, std::vector<cv::Point> vecPts, std::vector<cv::Point> vecIntsecPts);
 
-	void               DrawPositionNG(cv::Mat& mat, std::vector<int> vecPosNG, std::vector<cv::Point> vecPts);
+	void               DrawPositionNG(cv::Mat& mat, std::vector<int>& vecPosNG, std::vector<cv::Point> vecPts);
+
+	void               DrawROILine(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point2f> vecPtsLine);
 	
 public:
 

@@ -56,7 +56,8 @@ public:
 	BOOL TestInspectCavity1();
 	BOOL TestInspectCavity2();
 
-	BOOL Inspect_TopCam_Simulation(int nCamIdx, int nFrame);
+	BOOL Inspect_TopCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame);
+	BOOL Inspect_SideCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame);
 
 	BOOL           TestTCPSocket();
 	static void    TestTcpSocketCallback(char* pMsg, int nMsglen, void* param);
