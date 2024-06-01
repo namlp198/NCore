@@ -40,5 +40,6 @@ namespace SealingInspectGUI.Commons
 
         public const int MAX_STRING_SIZE = 256;
         public const int NUMBER_OF_LIGHT_CONTROLLER = 2;
+        public const int ROI_PARAMETER_COUNT = 4;
     }
 }

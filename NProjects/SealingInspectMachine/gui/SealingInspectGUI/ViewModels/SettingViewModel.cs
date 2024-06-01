@@ -50,6 +50,7 @@ namespace SealingInspectGUI.ViewModels
         private EInspectResult m_inspectResult = new EInspectResult();
         private int m_nBuffIdx = 0;
         private int m_nFrame = 0;
+        private int m_nCoreIdx = 0;
 
         private List<SettingsMapToDataGridModel> m_systemSettingsModels = new List<SettingsMapToDataGridModel>();
         private List<SettingsMapToDataGridModel> m_lightSettingModel1 = new List<SettingsMapToDataGridModel>();
@@ -226,10 +227,12 @@ namespace SealingInspectGUI.ViewModels
                         case ECameraList.TopCam1:
                         case ECameraList.SideCam1:
                             m_nBuffIdx = 0;
+                            m_nCoreIdx = 0;
                             break;
                         case ECameraList.TopCam2:
                         case ECameraList.SideCam2:
                             m_nBuffIdx = 1;
+                            m_nCoreIdx = 1;
                             break;
                     }
                 }
@@ -241,6 +244,17 @@ namespace SealingInspectGUI.ViewModels
             set
             {
                 if (SetProperty(ref m_nBuffIdx, value))
+                {
+
+                }
+            }
+        }
+        public int CoreIdx
+        {
+            get => m_nCoreIdx;
+            set
+            {
+                if (!SetProperty(ref m_nCoreIdx, value))
                 {
 
                 }
@@ -502,120 +516,692 @@ namespace SealingInspectGUI.ViewModels
                 {
                     // frame 1
                     case 1:
+                        int k1 = 0;
                         for (int i = 0; i < nPropertyCount_1; i++)
                         {
                             RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
                             switch (i)
                             {
                                 case 0:
-                                    recipe.Index = i + 1;
+                                case 1:
+                                    LoadROI_SideCam(nFrameIdx, i, ref k1, ref lstRecipeFrame1);
+                                    break;
+                                case 2:
+                                    recipe.Index = i + k1 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                                    lstRecipeFrame1.Add(recipe);
                                     break;
-                                case 1:
-                                    recipe.Index = i + 1;
+                                case 3:
+                                    recipe.Index = i + k1 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 4:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Delay Time Grab Image";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDelayTimeGrab + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDelayTimeGrab + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 5:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Find Start/End Line X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nFindStartEndX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nFindStartEndX + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 6:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Find Start/End Line Search Range X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nFindStartEndSearchRangeX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nFindStartEndSearchRangeX + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 7:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Find Start/End Line Threshold Gray";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nFindStartEndXThresholdGray + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nFindStartEndXThresholdGray + "";
+                                    lstRecipeFrame1.Add(recipe);
                                     break;
                             }
-                            lstRecipeFrame1.Add(recipe);
                         }
                         RecipeFrame1_SideCam = lstRecipeFrame1;
                         break;
 
                     // frame 2
                     case 2:
+                        int k2 = 0;
                         for (int i = 0; i < nPropertyCount_2; i++)
                         {
                             RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
                             switch (i)
                             {
                                 case 0:
-                                    recipe.Index = i + 1;
+                                case 1:
+                                    LoadROI_SideCam(nFrameIdx, i, ref k2, ref lstRecipeFrame2);
+                                    break;
+                                case 2:
+                                    recipe.Index = i + k2 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                    lstRecipeFrame2.Add(recipe);
                                     break;
-                                case 1:
-                                    recipe.Index = i + 1;
+                                case 3:
+                                    recipe.Index = i + k2 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 4:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Delay Time Grab Image";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDelayTimeGrab + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDelayTimeGrab + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 5:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Find Start/End Line X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nFindStartEndX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nFindStartEndX + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 6:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Find Start/End Line Search Range X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nFindStartEndSearchRangeX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nFindStartEndSearchRangeX + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 7:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Find Start/End Line Threshold Gray";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nFindStartEndXThresholdGray + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nFindStartEndXThresholdGray + "";
+                                    lstRecipeFrame2.Add(recipe);
                                     break;
                             }
-                            lstRecipeFrame2.Add(recipe);
                         }
                         RecipeFrame2_SideCam = lstRecipeFrame2;
                         break;
 
                     // frame 3
                     case 3:
+                        int k3 = 0;
                         for (int i = 0; i < nPropertyCount_3; i++)
                         {
                             RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
                             switch (i)
                             {
                                 case 0:
-                                    recipe.Index = i + 1;
+                                case 1:
+                                    LoadROI_SideCam(nFrameIdx, i, ref k3, ref lstRecipeFrame3);
+                                    break;
+                                case 2:
+                                    recipe.Index = i + k3 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min + "";
+                                    lstRecipeFrame3.Add(recipe);
                                     break;
-                                case 1:
-                                    recipe.Index = i + 1;
+                                case 3:
+                                    recipe.Index = i + k3 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 4:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Delay Time Grab Image";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDelayTimeGrab + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDelayTimeGrab + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 5:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Find Start/End Line X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nFindStartEndX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nFindStartEndX + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 6:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Find Start/End Line Search Range X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nFindStartEndSearchRangeX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nFindStartEndSearchRangeX + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 7:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Find Start/End Line Threshold Gray";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nFindStartEndXThresholdGray + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nFindStartEndXThresholdGray + "";
+                                    lstRecipeFrame3.Add(recipe);
                                     break;
                             }
-                            lstRecipeFrame3.Add(recipe);
                         }
                         RecipeFrame3_SideCam = lstRecipeFrame3;
                         break;
 
                     // frame 4
                     case 4:
+                        int k4 = 0;
                         for (int i = 0; i < nPropertyCount_4; i++)
                         {
                             RecipeSideCamMapToDataGridModel recipe = new RecipeSideCamMapToDataGridModel();
                             switch (i)
                             {
                                 case 0:
-                                    recipe.Index = i + 1;
+                                case 1:
+                                    LoadROI_SideCam(nFrameIdx, i, ref k4, ref lstRecipeFrame4);
+                                    break;
+                                case 2:
+                                    recipe.Index = i + k4 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min + "";
+                                    lstRecipeFrame4.Add(recipe);
                                     break;
-                                case 1:
-                                    recipe.Index = i + 1;
+                                case 3:
+                                    recipe.Index = i + k4 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 4:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Delay Time Grab Image";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDelayTimeGrab + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDelayTimeGrab + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 5:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Find Start/End Line X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nFindStartEndX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nFindStartEndX + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 6:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Find Start/End Line Search Range X";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nFindStartEndSearchRangeX + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nFindStartEndSearchRangeX + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 7:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Find Start/End Line Threshold Gray";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nFindStartEndXThresholdGray + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nFindStartEndXThresholdGray + "";
+                                    lstRecipeFrame4.Add(recipe);
                                     break;
                             }
-                            lstRecipeFrame4.Add(recipe);
                         }
                         RecipeFrame4_SideCam = lstRecipeFrame4;
                         break;
                 }
+            }
+        }
+        private void LoadROI_SideCam(int nFrame, int nPropertyIdx, ref int k, ref List<RecipeSideCamMapToDataGridModel> lstSideCamMapToDataGrid)
+        {
+            int nSideCam1 = 0;
+            int nSideCam2 = 1;
+
+            switch (nFrame)
+            {
+                // Frame 1
+                case 1:
+                    if (nPropertyIdx == 0)
+                    {
+                        for (k = 0; k < Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe1 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 0:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI X Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 1:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Y Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 2:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Width Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 3:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Height Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+
+                            }
+                        }
+                    }
+                    else if(nPropertyIdx == 1)
+                    {
+                        for (k = Defines.ROI_PARAMETER_COUNT; k < 2 * Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe2 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 4:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI X Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 5:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Y Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 6:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Width Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 7:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Height Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+
+                            }
+                        }
+                        break;
+                    }
+                    break;
+
+                // Fram 2
+                case 2:
+                    if (nPropertyIdx == 0)
+                    {
+                        for (k = 0; k < Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe1 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 0:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI X Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 1:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Y Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 2:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Width Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 3:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Height Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+
+                            }
+                        }
+                    }
+                    else if (nPropertyIdx == 1)
+                    {
+                        for (k = Defines.ROI_PARAMETER_COUNT; k < 2 * Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe2 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 4:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI X Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 5:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Y Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 6:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Width Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 7:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Height Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+
+                            }
+                        }
+                        break;
+                    }
+                    break;
+
+                // Frame 3
+                case 3:
+                    if (nPropertyIdx == 0)
+                    {
+                        for (k = 0; k < Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe1 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 0:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI X Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 1:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Y Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 2:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Width Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 3:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Height Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+
+                            }
+                        }
+                    }
+                    else if (nPropertyIdx == 1)
+                    {
+                        for (k = Defines.ROI_PARAMETER_COUNT; k < 2 * Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe2 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 4:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI X Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 5:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Y Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 6:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Width Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 7:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Height Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+
+                            }
+                        }
+                        break;
+                    }
+                    break;
+
+                // Frame 4
+                case 4:
+                    if (nPropertyIdx == 0)
+                    {
+                        for (k = 0; k < Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe1 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 0:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI X Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 1:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Y Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 2:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Width Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+                                case 3:
+                                    recipe1.Index = nPropertyIdx + k + 1;
+                                    recipe1.ParamName = "ROI Height Top";
+                                    recipe1.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    recipe1.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Top[k] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe1);
+                                    break;
+
+                            }
+                        }
+                    }
+                    else if (nPropertyIdx == 1)
+                    {
+                        for (k = Defines.ROI_PARAMETER_COUNT; k < 2 * Defines.ROI_PARAMETER_COUNT; k++)
+                        {
+                            RecipeSideCamMapToDataGridModel recipe2 = new RecipeSideCamMapToDataGridModel();
+                            switch (k)
+                            {
+                                case 4:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI X Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 5:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Y Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 6:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Width Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+                                case 7:
+                                    recipe2.Index = nPropertyIdx + k;
+                                    recipe2.ParamName = "ROI Height Bottom";
+                                    recipe2.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    recipe2.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nROI_Bottom[k - Defines.ROI_PARAMETER_COUNT] + "";
+                                    lstSideCamMapToDataGrid.Add(recipe2);
+                                    break;
+
+                            }
+                        }
+                        break;
+                    }
+                    break;
             }
         }
         private void LoadRecipeFrame1_TopCam()
@@ -1161,7 +1747,7 @@ namespace SealingInspectGUI.ViewModels
 
         private void InspectionComplete(emInspectCavity eInspCav, int bSetting)
         {
-            if(bSetting == 0) 
+            if (bSetting == 0)
                 return;
 
             int nCoreIdx = 0;
@@ -1186,7 +1772,7 @@ namespace SealingInspectGUI.ViewModels
                     else if (m_nFrame == 2)
                         nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
                                                   m_sealingInspResult_TopCam.m_bStatusFrame2;
-                    
+
                     UpdateResultView(SettingView.buffVSSettings, nStatus, m_nBuffIdx, nFrameIdx, "TOP");
                     break;
                 case ECameraList.SideCam1:

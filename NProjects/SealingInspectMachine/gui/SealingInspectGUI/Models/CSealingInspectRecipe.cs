@@ -51,26 +51,58 @@ namespace SealingInspectGUI.Models
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
     {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Top;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Bottom;
         public int m_nDistanceMeasurementTolerance_Min;                // 1.
         public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nDelayTimeGrab;
+        public int m_nFindStartEndX;
+        public int m_nFindStartEndSearchRangeX;
+        public int m_nFindStartEndXThresholdGray;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
     {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Top;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Bottom;
         public int m_nDistanceMeasurementTolerance_Min;                // 1.
         public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nDelayTimeGrab;
+        public int m_nFindStartEndX;
+        public int m_nFindStartEndSearchRangeX;
+        public int m_nFindStartEndXThresholdGray;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
     {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Top;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Bottom;
         public int m_nDistanceMeasurementTolerance_Min;                // 1.
         public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nDelayTimeGrab;
+        public int m_nFindStartEndX;
+        public int m_nFindStartEndSearchRangeX;
+        public int m_nFindStartEndXThresholdGray;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
     {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Top;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
+        public int[] m_nROI_Bottom;
         public int m_nDistanceMeasurementTolerance_Min;                // 1.
         public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public int m_nDelayTimeGrab;
+        public int m_nFindStartEndX;
+        public int m_nFindStartEndSearchRangeX;
+        public int m_nFindStartEndXThresholdGray;
     }
 
 

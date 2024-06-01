@@ -332,8 +332,17 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool Inspect_TopCam_Simulation(IntPtr sealingInspProcessor, int nCamIdx, int nFrame);
-        public bool Inspect_TopCam_Simulation(int nCamIdx, int nFrame) { return Inspect_TopCam_Simulation(m_sealingInspectProcessor, nCamIdx, nFrame); }
+        extern private static bool Inspect_TopCam_Simulation(IntPtr sealingInspProcessor, int nCoreIdx, int nCamIdx, int nFrame);
+        public bool Inspect_TopCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame) { return Inspect_TopCam_Simulation(m_sealingInspectProcessor, nCoreIdx, nCamIdx, nFrame); }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool Inspect_SideCam_Simulation(IntPtr sealingInspProcessor, int nCoreIdx, int nCamIdx, int nFrame);
+        public bool Inspect_SideCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame) { return Inspect_SideCam_Simulation(m_sealingInspectProcessor, nCoreIdx, nCamIdx, nFrame); }
 
 
 #if DEBUG

@@ -15,6 +15,7 @@ namespace SealingInspectGUI.Command.Cmd
         public override void Execute(object parameter)
         {
             ECameraList cameraSelected  = (ECameraList)parameter;
+            int nCoreIdx = MainViewModel.Instance.SettingVM.CoreIdx;
             int nCamIdx = MainViewModel.Instance.SettingVM.BuffIdx;
             int nFrame = MainViewModel.Instance.SettingVM.Frame;
 
@@ -23,11 +24,12 @@ namespace SealingInspectGUI.Command.Cmd
                 case ECameraList.TopCam1:
                 case ECameraList.TopCam2:
                     InterfaceManager.Instance.m_sealingInspectProcessorManager.
-                        m_sealingInspProcessorDll.Inspect_TopCam_Simulation(nCamIdx, nFrame);
+                        m_sealingInspProcessorDll.Inspect_TopCam_Simulation(nCoreIdx, nCamIdx, nFrame);
                     break;
                 case ECameraList.SideCam1:
                 case ECameraList.SideCam2:
-                   
+                    InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                        m_sealingInspProcessorDll.Inspect_SideCam_Simulation(nCoreIdx, nCamIdx, nFrame);
                     break;
             }
         }
