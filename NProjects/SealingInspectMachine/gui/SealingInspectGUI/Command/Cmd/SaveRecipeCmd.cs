@@ -22,7 +22,7 @@ namespace SealingInspectGUI.Command.Cmd
             if (btnName != null)
             {
                 if (string.Compare(btnName, "btnSaveFrame1_Top") == 0 ||
-                   string.Compare(btnName, "btnSaveFrame2_Top") == 0)
+                    string.Compare(btnName, "btnSaveFrame2_Top") == 0)
                 {
                     if (nFrameIdx == 1)
                         SetValueFrame1_TopCam();
@@ -210,22 +210,28 @@ namespace SealingInspectGUI.Command.Cmd
                                       m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dIncrementAngle);
                         break;
                     case 27:
-                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny1_MakeROI);
-                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny1_MakeROI);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_dThresholdCanny1_MakeROI);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dThresholdCanny1_MakeROI);
                         break;
                     case 28:
-                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny2_MakeROI);
-                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny2_MakeROI);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_dThresholdCanny2_MakeROI);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dThresholdCanny2_MakeROI);
                         break;
                     case 29:
                         int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                       m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nDelayTimeGrab);
                         int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                       m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nDelayTimeGrab);
+                        break;
+                    case 30:
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                        int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
                         break;
                 }
             }
@@ -365,6 +371,50 @@ namespace SealingInspectGUI.Command.Cmd
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame1.m_nFindStartEndXThresholdGray);
                                 break;
+                            // ThresholdCanny1_MakeROI
+                            case 15:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_dThresholdCanny1_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_dThresholdCanny1_MakeROI);
+                                break;
+                            // ThresholdCanny2_MakeROI
+                            case 16:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_dThresholdCanny2_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_dThresholdCanny2_MakeROI);
+                                break;
+                            // UseAdvancedAlgorithms
+                            case 17:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_bUseAdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_bUseAdvancedAlgorithms);
+                                break;
+                            // NumberOfDistanceMaxCount_AdvancedAlgorithms
+                            case 18:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                                break;
                         }
                     }
                     break;
@@ -467,6 +517,50 @@ namespace SealingInspectGUI.Command.Cmd
                                     out InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame2.m_nFindStartEndXThresholdGray);
+                                break;
+                            // ThresholdCanny1_MakeROI
+                            case 15:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_dThresholdCanny1_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_dThresholdCanny1_MakeROI);
+                                break;
+                            // ThresholdCanny2_MakeROI
+                            case 16:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_dThresholdCanny2_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_dThresholdCanny2_MakeROI);
+                                break;
+                            // UseAdvancedAlgorithms
+                            case 17:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_bUseAdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_bUseAdvancedAlgorithms);
+                                break;
+                            // NumberOfDistanceMaxCount_AdvancedAlgorithms
+                            case 18:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
                                 break;
                         }
                     }
@@ -571,6 +665,50 @@ namespace SealingInspectGUI.Command.Cmd
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame3.m_nFindStartEndXThresholdGray);
                                 break;
+                            // ThresholdCanny1_MakeROI
+                            case 15:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_dThresholdCanny1_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_dThresholdCanny1_MakeROI);
+                                break;
+                            // ThresholdCanny2_MakeROI
+                            case 16:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_dThresholdCanny2_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_dThresholdCanny2_MakeROI);
+                                break;
+                            // UseAdvancedAlgorithms
+                            case 17:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_bUseAdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_bUseAdvancedAlgorithms);
+                                break;
+                            // NumberOfDistanceMaxCount_AdvancedAlgorithms
+                            case 18:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                                break;
                         }
                     }
                     break;
@@ -673,6 +811,50 @@ namespace SealingInspectGUI.Command.Cmd
                                     out InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame4.m_nFindStartEndXThresholdGray);
+                                break;
+                            // ThresholdCanny1_MakeROI
+                            case 15:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_dThresholdCanny1_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_dThresholdCanny1_MakeROI);
+                                break;
+                            // ThresholdCanny2_MakeROI
+                            case 16:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_dThresholdCanny2_MakeROI);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_dThresholdCanny2_MakeROI);
+                                break;
+                            // UseAdvancedAlgorithms
+                            case 17:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_bUseAdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_bUseAdvancedAlgorithms);
+                                break;
+                            // NumberOfDistanceMaxCount_AdvancedAlgorithms
+                            case 18:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
                                 break;
                         }
                     }

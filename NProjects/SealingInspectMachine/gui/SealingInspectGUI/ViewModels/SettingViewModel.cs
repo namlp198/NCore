@@ -580,6 +580,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nFindStartEndXThresholdGray + "";
                                     lstRecipeFrame1.Add(recipe);
                                     break;
+                                case 8:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Threshold Canny 1 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_dThresholdCanny1_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_dThresholdCanny1_MakeROI + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 9:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Threshold Canny 2 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_dThresholdCanny2_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_dThresholdCanny2_MakeROI + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 10:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Use Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_bUseAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_bUseAdvancedAlgorithms + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 11:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Number of Distance NG Max Count";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
                             }
                         }
                         RecipeFrame1_SideCam = lstRecipeFrame1;
@@ -649,6 +685,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nFindStartEndXThresholdGray + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nFindStartEndXThresholdGray + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 8:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Threshold Canny 1 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_dThresholdCanny1_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_dThresholdCanny1_MakeROI + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 9:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Threshold Canny 2 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_dThresholdCanny2_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_dThresholdCanny2_MakeROI + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 10:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Use Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_bUseAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_bUseAdvancedAlgorithms + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 11:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Number of Distance NG Max Count";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                                     lstRecipeFrame2.Add(recipe);
                                     break;
                             }
@@ -722,6 +794,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nFindStartEndXThresholdGray + "";
                                     lstRecipeFrame3.Add(recipe);
                                     break;
+                                case 8:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Threshold Canny 1 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_dThresholdCanny1_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_dThresholdCanny1_MakeROI + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 9:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Threshold Canny 2 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_dThresholdCanny2_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_dThresholdCanny2_MakeROI + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 10:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Use Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_bUseAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_bUseAdvancedAlgorithms + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 11:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Number of Distance NG Max Count";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
                             }
                         }
                         RecipeFrame3_SideCam = lstRecipeFrame3;
@@ -791,6 +899,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nFindStartEndXThresholdGray + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nFindStartEndXThresholdGray + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 8:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Threshold Canny 1 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_dThresholdCanny1_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_dThresholdCanny1_MakeROI + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 9:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Threshold Canny 2 Make ROI";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_dThresholdCanny2_MakeROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_dThresholdCanny2_MakeROI + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 10:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Use Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_bUseAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_bUseAdvancedAlgorithms + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 11:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Number of Distance NG Max Count";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                                     lstRecipeFrame4.Add(recipe);
                                     break;
                             }
@@ -1430,17 +1574,17 @@ namespace SealingInspectGUI.ViewModels
                         recipe.Index = i + 1;
                         recipe.ParamName = "Threshold canny 1 make ROI";
                         recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny1_MakeROI + "";
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_dThresholdCanny1_MakeROI + "";
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny1_MakeROI + "";
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dThresholdCanny1_MakeROI + "";
                         break;
                     case 27:
                         recipe.Index = i + 1;
                         recipe.ParamName = "Threshold canny 2 make ROI";
                         recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nThresholdCanny2_MakeROI + "";
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_dThresholdCanny2_MakeROI + "";
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nThresholdCanny2_MakeROI + "";
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dThresholdCanny2_MakeROI + "";
                         break;
                     case 28:
                         recipe.Index = i + 1;
@@ -1449,6 +1593,14 @@ namespace SealingInspectGUI.ViewModels
                                               m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nDelayTimeGrab + "";
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                               m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nDelayTimeGrab + "";
+                        break;
+                    case 29:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Number of Distance NG Max Count";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                         break;
                 }
                 lstRecipeFrame1.Add(recipe);

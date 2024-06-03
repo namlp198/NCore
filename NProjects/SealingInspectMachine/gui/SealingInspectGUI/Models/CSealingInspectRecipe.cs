@@ -37,9 +37,10 @@ namespace SealingInspectGUI.Models
         public int m_nContourSizeMinEnclosingCircle_Min;           // 23.
         public int m_nContourSizeMinEnclosingCircle_Max;           // 24.
         public double m_dIncrementAngle;                           // 25.
-        public int m_nThresholdCanny1_MakeROI;                     // 26.
-        public int m_nThresholdCanny2_MakeROI;                     // 27.
+        public double m_dThresholdCanny1_MakeROI;                     // 26.
+        public double m_dThresholdCanny2_MakeROI;                     // 27.
         public int m_nDelayTimeGrab;                               // 28.
+        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms; // 29.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
@@ -61,6 +62,10 @@ namespace SealingInspectGUI.Models
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
         public int m_nFindStartEndXThresholdGray;
+        public double m_dThresholdCanny1_MakeROI;
+        public double m_dThresholdCanny2_MakeROI;
+        public int m_bUseAdvancedAlgorithms;
+        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
@@ -75,6 +80,10 @@ namespace SealingInspectGUI.Models
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
         public int m_nFindStartEndXThresholdGray;
+        public double m_dThresholdCanny1_MakeROI;
+        public double m_dThresholdCanny2_MakeROI;
+        public int m_bUseAdvancedAlgorithms;
+        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
@@ -89,6 +98,10 @@ namespace SealingInspectGUI.Models
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
         public int m_nFindStartEndXThresholdGray;
+        public double m_dThresholdCanny1_MakeROI;
+        public double m_dThresholdCanny2_MakeROI;
+        public int m_bUseAdvancedAlgorithms;
+        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
@@ -103,6 +116,10 @@ namespace SealingInspectGUI.Models
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
         public int m_nFindStartEndXThresholdGray;
+        public double m_dThresholdCanny1_MakeROI;
+        public double m_dThresholdCanny2_MakeROI;
+        public int m_bUseAdvancedAlgorithms;
+        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
     }
 
 
