@@ -31,6 +31,7 @@
 #define MAX_STRING_SIZE						256
 #define NUMBER_OF_LIGHT_CONTROLLER          2
 #define ROI_PARAMETER_COUNT                 4
+#define MAX_POINTS_ADVANCED_ALGORITHMS_COUNT 10
 
 // Scalar
 #define BLUE_COLOR cv::Scalar(255, 0, 0)

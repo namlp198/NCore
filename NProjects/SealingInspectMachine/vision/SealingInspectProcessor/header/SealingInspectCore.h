@@ -106,13 +106,17 @@ private:
 
 	BOOL FindPointsAtPosMaxOnContour(cv::Mat matROI, cv::Rect rectROI, std::vector<cv::Point>& vecPtsOnContour,
 		                     int nThresholdCanny1, int nThresholdCanny2, 
-		                     int nWidthROI, int nHeightROI, int nIdx);
+		                     int nWidthROI, int nHeightROI, int nROIIdx);
 
 	void MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipeTopCamFrame1, 
 		                           std::vector<cv::Rect>& vecRectROI, std::vector<cv::Mat>& vecMatROI, 
 		                           cv::Mat* matCpy, cv::Point centerPt, double dRadius);
 
 	void MakeROIFindLine(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Mat& matROIFindLIne);
+
+	BOOL FindLagestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex);
+
+	BOOL FindSmallestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex);
 
 	BOOL FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine);
 

@@ -700,7 +700,7 @@ BOOL CSealingInspectCore::JudgementInspectDistanceMeasurement(std::vector<double
 	return nRet;
 }
 
-BOOL CSealingInspectCore::FindPointsAtPosMaxOnContour(cv::Mat matROI, cv::Rect rectROI, std::vector<cv::Point>& vecPtsOnContour, int nThresholdCanny1, int nThresholdCanny2, int nWidthROI, int nHeightROI, int nIdx)
+BOOL CSealingInspectCore::FindPointsAtPosMaxOnContour(cv::Mat matROI, cv::Rect rectROI, std::vector<cv::Point>& vecPtsOnContour, int nThresholdCanny1, int nThresholdCanny2, int nWidthROI, int nHeightROI, int nROIIdx)
 {
 	vecPtsOnContour.clear();
 
@@ -722,31 +722,48 @@ BOOL CSealingInspectCore::FindPointsAtPosMaxOnContour(cv::Mat matROI, cv::Rect r
 		if (contours[i].size() < 20)
 			continue;
 
+		int maxPts = MAX_POINTS_ADVANCED_ALGORITHMS_COUNT;
+
 		if (nWidthROI > nHeightROI)
 		{
-			int maxPts = nWidthROI / 10;
+			//int maxPts = nWidthROI / 10;
+
 			std::vector<int> vecY;
 
 			for (int j = 0; j < contours[i].size(); j++) {
 				vecY.push_back(contours[i][j].y);
 			}
 
-			auto indices = n_largest_indices(vecY.begin(), vecY.end(), maxPts);
+			std::vector<int> indices;
+			if (nROIIdx == 0) // ROI12H
+				FindSmallestElementsInVector(vecY, maxPts, indices);
+			else if (nROIIdx == 2) // ROI6H
+				FindLagestElementsInVector(vecY, maxPts, indices);
+
+			//auto indices = n_largest_indices(vecY.begin(), vecY.end(), maxPts);
 			for (auto k : indices) {
 				cv::Point pt(contours[i].at(k).x + rectROI.x, contours[i].at(k).y + rectROI.y);
 				vecPtsOnContour.push_back(pt);
 			}
+
 		}
 		else
 		{
-			int maxPts = nHeightROI / 10;
+			//int maxPts = nHeightROI / 10;
+
 			std::vector<int> vecX;
 
 			for (int j = 0; j < contours[i].size(); j++) {
 				vecX.push_back(contours[i][j].x);
 			}
 
-			auto indices = n_largest_indices(vecX.begin(), vecX.end(), maxPts);
+			std::vector<int> indices;
+			if (nROIIdx == 1) // ROI3H
+				FindLagestElementsInVector(vecX, maxPts, indices);
+			else if (nROIIdx == 3) // ROI9H
+				FindSmallestElementsInVector(vecX, maxPts, indices);
+
+			//auto indices = n_largest_indices(vecX.begin(), vecX.end(), maxPts);
 			for (auto k : indices) {
 				cv::Point pt(contours[i].at(k).x + rectROI.x, contours[i].at(k).y + rectROI.y);
 				vecPtsOnContour.push_back(pt);
@@ -908,6 +925,48 @@ void CSealingInspectCore::MakeROIFindLine(CSealingInspectRecipe_SideCam* pRecipe
 	matROIFindLIne = matROI;
 }
 
+BOOL CSealingInspectCore::FindLagestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex)
+{
+	std::priority_queue< std::pair<int, int>, std::vector< std::pair<int, int> >, std::greater <std::pair<int, int> > > q;
+
+	for (int i = 0; i < vecNum.size(); ++i) {
+		if (q.size() < k)
+			q.push(std::pair<int, int>(vecNum[i], i));
+		else if (q.top().first < vecNum[i]) {
+			q.pop();
+			q.push(std::pair<int, int>(vecNum[i], i));
+		}
+	}
+	std::vector<int> res(k);
+	for (int j = 0; j < k; ++j) {
+		res[k - j - 1] = q.top().second;
+		q.pop();
+	}
+
+	vecElementIndex = res;
+}
+
+BOOL CSealingInspectCore::FindSmallestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex)
+{
+	std::priority_queue< std::pair<int, int>, std::vector< std::pair<int, int> >, std::less <std::pair<int, int> > > q;
+
+	for (int i = 0; i < vecNum.size(); ++i) {
+		if (q.size() < k)
+			q.push(std::pair<int, int>(vecNum[i], i));
+		else if (q.top().first > vecNum[i]) {
+			q.pop();
+			q.push(std::pair<int, int>(vecNum[i], i));
+		}
+	}
+	std::vector<int> res(k);
+	for (int j = 0; j < k; ++j) {
+		res[k - j - 1] = q.top().second;
+		q.pop();
+	}
+
+	vecElementIndex = res;
+}
+
 BOOL CSealingInspectCore::FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine)
 {
 	int nFindStartEndLineX = 0;
@@ -991,9 +1050,10 @@ BOOL CSealingInspectCore::FindLine_Top_Bottom_Average(CSealingInspectRecipe_Side
 			}
 		}
 #ifdef USE_TBB
-	});
+			});
 #else
-}
+		}
+
 #endif
 
 
@@ -1036,7 +1096,7 @@ BOOL CSealingInspectCore::FindLine_Top_Bottom_Average(CSealingInspectRecipe_Side
 
 	vecPtsLine.push_back(cv::Point2f(ptFitLinePoint_1.x + rectROI.x, ptFitLinePoint_1.y + rectROI.y));
 	vecPtsLine.push_back(cv::Point2f(ptFitLinePoint_2.x + rectROI.x, ptFitLinePoint_2.y + rectROI.y));
-}
+	}
 
 cv::Point2f CSealingInspectCore::FindIntersectionPoint_LineCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius)
 {
