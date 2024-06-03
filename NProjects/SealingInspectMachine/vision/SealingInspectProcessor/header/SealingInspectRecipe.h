@@ -30,9 +30,10 @@ struct CRecipe_TopCam_Frame1
 	int m_nContourSizeMinEnclosingCircle_Min;
 	int m_nContourSizeMinEnclosingCircle_Max;
 	double m_dIncrementAngle;
-	int m_nThresholdCanny1_MakeROI;
-	int m_nThresholdCanny2_MakeROI;
+	double m_dThresholdCanny1_MakeROI;
+	double m_dThresholdCanny2_MakeROI;
 	int m_nDelayTimeGrab;
+	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 };
 struct CRecipe_TopCam_Frame2
 {
@@ -50,6 +51,10 @@ struct CRecipe_SideCam_Frame1
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
 	int m_nFindStartEndXThresholdGray;
+	double m_dThresholdCanny1_MakeROI;
+	double m_dThresholdCanny2_MakeROI;
+	BOOL m_bUseAdvancedAlgorithms;
+	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 };
 struct CRecipe_SideCam_Frame2
 {
@@ -61,6 +66,10 @@ struct CRecipe_SideCam_Frame2
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
 	int m_nFindStartEndXThresholdGray;
+	double m_dThresholdCanny1_MakeROI;
+	double m_dThresholdCanny2_MakeROI;
+	BOOL m_bUseAdvancedAlgorithms;
+	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 };
 struct CRecipe_SideCam_Frame3
 {
@@ -72,6 +81,10 @@ struct CRecipe_SideCam_Frame3
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
 	int m_nFindStartEndXThresholdGray;
+	double m_dThresholdCanny1_MakeROI;
+	double m_dThresholdCanny2_MakeROI;
+	BOOL m_bUseAdvancedAlgorithms;
+	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 };
 struct CRecipe_SideCam_Frame4
 {
@@ -83,6 +96,10 @@ struct CRecipe_SideCam_Frame4
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
 	int m_nFindStartEndXThresholdGray;
+	double m_dThresholdCanny1_MakeROI;
+	double m_dThresholdCanny2_MakeROI;
+	BOOL m_bUseAdvancedAlgorithms;
+	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 };
 
 class AFX_EXT_CLASS CSealingInspectRecipe_TopCam
