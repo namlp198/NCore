@@ -106,15 +106,19 @@ private:
 
 	BOOL JudgementInspectDistanceMeasurement_AdvancedAlgorithms(std::vector<double>& vecDistance, std::vector<int>& vecPosNG, double nDistanceMin, double nDistanceMax, int nNumberOfDistNGMax);
 
-	BOOL FindMeasurePointsAtPosMinMax(CRecipe_TopCam_Frame1* pRecipeTopCamFrame1, cv::Mat* pImageDataROI, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts, int nROIIdx);
+	BOOL FindMeasurePointsAtPosMinMax(CRecipe_TopCam_Frame1* pRecipeTopCamFrame1, cv::Mat* pMatProcess, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts, int nROIIdx);
 
 	BOOL FindMeasurePointsAtPosDistMinMax_SideCam(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pImageData, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
 
 	BOOL FindMeasurePoints_SideCam(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pImageData, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
 
-	void MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipeTopCamFrame1, 
-		                           std::vector<cv::Rect>& vecRectROI, std::vector<cv::Mat>& vecMatROI, 
-		                           cv::Mat* matCpy, cv::Point centerPt, double dRadius);
+	BOOL CalculateDistancePointToLine(cv::Point measurePt, cv::Point2f p1, cv::Point2f p2, cv::Point2f& closesPt, float& fDistance);
+
+	BOOL FindClosesPointAndDistancePointToLine(const std::vector<cv::Point>& vecMeasurePt,const std::vector<cv::Point2f>& vecPtLineTop, std::vector<cv::Point2f>& vecClosesPt, std::vector<double>& vecDist);
+
+	void MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipeTopCamFrame1, std::vector<cv::Rect>& vecRectROI, cv::Mat* pMatProcess, cv::Point centerPt, double dRadius);
+
+	void MakeROITopCamFrame2(const CRecipe_TopCam_Frame2* pRecipeTopCamFrame2, std::vector<cv::Rect>& vecRectROI, cv::Mat* pMatProcess, cv::Point centerPt, double dRadius);
 
 	void MakeROIFindLine(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Mat& matROIFindLIne);
 
@@ -148,7 +152,7 @@ private:
 
 	void               DrawROIFindLine(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point2f> vecPtsLine);
 
-	void               DrawROIFindPoints(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point> vecMeasurementPts);
+	void               DrawROIFindPoints(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point> vecMeasurePt, std::vector<cv::Point2f> vecClosesPt);
 	
 public:
 
@@ -178,4 +182,9 @@ private:
 	CCriticalSection					m_csPostProcessing;
 
 	UINT                                m_nCoreIdx;
+
+	cv::Point2f                         m_ptCenter_Inner;
+	cv::Point2f                         m_ptCenter_Outer;
+	double                              m_dRadius_Inner;
+	double                              m_dRadius_Outer;
 };

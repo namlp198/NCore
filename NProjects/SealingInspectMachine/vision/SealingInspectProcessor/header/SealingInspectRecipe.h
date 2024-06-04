@@ -37,16 +37,27 @@ struct CRecipe_TopCam_Frame1
 };
 struct CRecipe_TopCam_Frame2
 {
-	int m_nDistanceMeasurementTolerance_Min;
-	int m_nDistanceMeasurementTolerance_Max;
+	int m_nROIWidth;
+	int m_nROIHeight;
+	int m_nROI1H_OffsetX;
+	int m_nROI1H_OffsetY;
+	int m_nROI5H_OffsetX;
+	int m_nROI5H_OffsetY;
+	int m_nROI7H_OffsetX;
+	int m_nROI7H_OffsetY;
+	int m_nROI11H_OffsetX;
+	int m_nROI11H_OffsetY;
+	double m_dDistanceMeasurementTolerance_Refer;
+	double m_dDistanceMeasurementTolerance_Min;
+	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
 };
 struct CRecipe_SideCam_Frame1
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
-	int m_nDistanceMeasurementTolerance_Min;
-	int m_nDistanceMeasurementTolerance_Max;
+	double m_dDistanceMeasurementTolerance_Min;
+	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
@@ -60,8 +71,8 @@ struct CRecipe_SideCam_Frame2
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
-	int m_nDistanceMeasurementTolerance_Min;
-	int m_nDistanceMeasurementTolerance_Max;
+	double m_dDistanceMeasurementTolerance_Min;
+	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
@@ -75,8 +86,8 @@ struct CRecipe_SideCam_Frame3
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
-	int m_nDistanceMeasurementTolerance_Min;
-	int m_nDistanceMeasurementTolerance_Max;
+	double m_dDistanceMeasurementTolerance_Min;
+	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
@@ -90,8 +101,8 @@ struct CRecipe_SideCam_Frame4
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
-	int m_nDistanceMeasurementTolerance_Min;
-	int m_nDistanceMeasurementTolerance_Max;
+	double m_dDistanceMeasurementTolerance_Min;
+	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
 	int m_nFindStartEndX;
 	int m_nFindStartEndSearchRangeX;
