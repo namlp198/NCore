@@ -45,9 +45,20 @@ namespace SealingInspectGUI.Models
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
     {
-        public int m_nDistanceMeasurementTolerance_Min;                // 1.            
-        public int m_nDistanceMeasurementTolerance_Max;                // 2.
-        public int m_nDelayTimeGrab;
+        public int m_nROIWidth;                                       // 0. 
+        public int m_nROIHeight;                                      // 1.
+        public int m_nROI1H_OffsetX;                                  // 2.
+        public int m_nROI1H_OffsetY;                                  // 3.
+        public int m_nROI5H_OffsetX;                                  // 4.
+        public int m_nROI5H_OffsetY;                                  // 5.
+        public int m_nROI7H_OffsetX;                                  // 6.
+        public int m_nROI7H_OffsetY;                                  // 7.
+        public int m_nROI11H_OffsetX;                                 // 8.
+        public int m_nROI11H_OffsetY;                                 // 9.
+        public double m_dDistanceMeasurementTolerance_Refer;          // 10.
+        public double m_dDistanceMeasurementTolerance_Min;            // 11.
+        public double m_dDistanceMeasurementTolerance_Max;            // 12.
+        public int m_nDelayTimeGrab;                                  // 13.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
@@ -56,8 +67,8 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
-        public int m_nDistanceMeasurementTolerance_Min;                // 1.
-        public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public double m_dDistanceMeasurementTolerance_Min;                // 1.
+        public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
@@ -74,8 +85,8 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
-        public int m_nDistanceMeasurementTolerance_Min;                // 1.
-        public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public double m_dDistanceMeasurementTolerance_Min;                // 1.
+        public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
@@ -92,8 +103,8 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
-        public int m_nDistanceMeasurementTolerance_Min;                // 1.
-        public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public double m_dDistanceMeasurementTolerance_Min;                // 1.
+        public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;
@@ -110,8 +121,8 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
-        public int m_nDistanceMeasurementTolerance_Min;                // 1.
-        public int m_nDistanceMeasurementTolerance_Max;                // 2.
+        public double m_dDistanceMeasurementTolerance_Min;                // 1.
+        public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
         public int m_nFindStartEndX;
         public int m_nFindStartEndSearchRangeX;

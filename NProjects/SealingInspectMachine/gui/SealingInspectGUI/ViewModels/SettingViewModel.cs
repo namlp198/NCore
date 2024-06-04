@@ -530,18 +530,18 @@ namespace SealingInspectGUI.ViewModels
                                     recipe.Index = i + k1 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min + "";
                                     lstRecipeFrame1.Add(recipe);
                                     break;
                                 case 3:
                                     recipe.Index = i + k1 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_dDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_dDistanceMeasurementTolerance_Max + "";
                                     lstRecipeFrame1.Add(recipe);
                                     break;
                                 case 4:
@@ -637,18 +637,18 @@ namespace SealingInspectGUI.ViewModels
                                     recipe.Index = i + k2 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_dDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_dDistanceMeasurementTolerance_Min + "";
                                     lstRecipeFrame2.Add(recipe);
                                     break;
                                 case 3:
                                     recipe.Index = i + k2 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_dDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_dDistanceMeasurementTolerance_Max + "";
                                     lstRecipeFrame2.Add(recipe);
                                     break;
                                 case 4:
@@ -744,18 +744,18 @@ namespace SealingInspectGUI.ViewModels
                                     recipe.Index = i + k3 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_dDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_dDistanceMeasurementTolerance_Min + "";
                                     lstRecipeFrame3.Add(recipe);
                                     break;
                                 case 3:
                                     recipe.Index = i + k3 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_dDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_dDistanceMeasurementTolerance_Max + "";
                                     lstRecipeFrame3.Add(recipe);
                                     break;
                                 case 4:
@@ -851,18 +851,18 @@ namespace SealingInspectGUI.ViewModels
                                     recipe.Index = i + k4 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Min";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_dDistanceMeasurementTolerance_Min + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDistanceMeasurementTolerance_Min + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_dDistanceMeasurementTolerance_Min + "";
                                     lstRecipeFrame4.Add(recipe);
                                     break;
                                 case 3:
                                     recipe.Index = i + k4 - 1;
                                     recipe.ParamName = "Distance Measurement Tolerance Max";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_dDistanceMeasurementTolerance_Max + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nDistanceMeasurementTolerance_Max + "";
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_dDistanceMeasurementTolerance_Max + "";
                                     lstRecipeFrame4.Add(recipe);
                                     break;
                                 case 4:
@@ -1623,19 +1623,115 @@ namespace SealingInspectGUI.ViewModels
                 {
                     case 0:
                         recipe.Index = i + 1;
-                        recipe.ParamName = "Distance Measurement Tolerance Min";
+                        recipe.ParamName = "ROI Width";
                         recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROIWidth + "";
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Min + "";
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROIWidth + "";
                         break;
                     case 1:
                         recipe.Index = i + 1;
+                        recipe.ParamName = "ROI Height";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROIHeight + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROIHeight + "";
+                        break;
+                    case 2:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI1H Offset X";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI1H_OffsetX + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI1H_OffsetX + "";
+                        break;
+                    case 3:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI1H Offset Y";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI1H_OffsetY + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI1H_OffsetY + "";
+                        break;
+                    case 4:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI5H Offset X";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI5H_OffsetX + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI5H_OffsetX + "";
+                        break;
+                    case 5:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI5H Offset Y";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI5H_OffsetY + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI5H_OffsetY + "";
+                        break;
+                    case 6:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI7H Offset X";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI7H_OffsetX + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI7H_OffsetX + "";
+                        break;
+                    case 7:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI7H Offset Y";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI7H_OffsetY + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI7H_OffsetY + "";
+                        break;
+                    case 8:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI11H Offset X";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI11H_OffsetX + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI11H_OffsetX + "";
+                        break;
+                    case 9:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "ROI11H Offset Y";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nROI11H_OffsetY + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nROI11H_OffsetY + "";
+                        break;
+                    case 10:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Distance Measurement Tolerance Refer";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dDistanceMeasurementTolerance_Refer + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dDistanceMeasurementTolerance_Refer + "";
+                        break;
+                    case 11:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Distance Measurement Tolerance Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dDistanceMeasurementTolerance_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dDistanceMeasurementTolerance_Min + "";
+                        break;
+                    case 12:
+                        recipe.Index = i + 1;
                         recipe.ParamName = "Distance Measurement Tolerance Max";
                         recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dDistanceMeasurementTolerance_Max + "";
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
-                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nDistanceMeasurementTolerance_Max + "";
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dDistanceMeasurementTolerance_Max + "";
+                        break;
+                    case 13:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Delay Time Grab Image";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nDelayTimeGrab + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nDelayTimeGrab + "";
                         break;
                 }
                 lstRecipeFrame2.Add(recipe);
