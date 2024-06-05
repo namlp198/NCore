@@ -465,5 +465,18 @@ namespace SealingInspectGUI.Manager.Class
         extern private static IntPtr GetBufferImageHikCam(IntPtr tempInspProcessor, int nCamIdx);
         public IntPtr GetBufferImageHikCam(int nCamIdx) { return GetBufferImageHikCam(m_sealingInspectProcessor, nCamIdx); }
         #endregion
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveImageHikCam(IntPtr sealingInspProcessor, int nCamIdx, [MarshalAs(UnmanagedType.LPStr)] string strImageSavePath);
+        public bool SaveImageHikCam(int nCamIdx, [MarshalAs(UnmanagedType.LPStr)] string strImageSavePath)
+        {
+            bool bRet = SaveImageHikCam(m_sealingInspectProcessor,nCamIdx, strImageSavePath);
+            return bRet;
+        }
     }
 }

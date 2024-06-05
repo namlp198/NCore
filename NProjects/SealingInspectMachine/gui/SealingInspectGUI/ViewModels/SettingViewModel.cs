@@ -39,6 +39,7 @@ namespace SealingInspectGUI.ViewModels
         private bool _bStreamming = false;
         private bool m_bUseSoftwareTrigger = false;
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
+        private string m_strImageSavePath = string.Empty;
         private string[] m_arrFrameOfTOP = new string[Defines.MAX_IMAGE_BUFFER_TOPCAM] { "1", "2" };
         private string[] m_arrFrameOfSIDE = new string[Defines.MAX_IMAGE_BUFFER_SIDECAM] { "1", "2", "3", "4" };
 
@@ -89,6 +90,7 @@ namespace SealingInspectGUI.ViewModels
             this.SaveSettingCmd = new SaveSettingCmd();
             this.SaveRecipeCmd = new SaveRecipeCmd();
             this.InspectSimulationCmd = new InspectSimulationCmd();
+            this.SaveImageCmd = new SaveImageCmd();
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
             InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
@@ -157,6 +159,8 @@ namespace SealingInspectGUI.ViewModels
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfTOP);
                         FrameList = list;
+
+                        m_strImageSavePath = "D:\\Sealing_Folder\\Cavity1\\ImageSaved\\Cav1_TopCam1_";
                     }
                     else if (string.Compare("Side Cam 1", m_strCameraSelected) == 0)
                     {
@@ -167,6 +171,8 @@ namespace SealingInspectGUI.ViewModels
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfSIDE);
                         FrameList = list;
+
+                        m_strImageSavePath = "D:\\Sealing_Folder\\Cavity1\\ImageSaved\\Cav1_SideCam1_";
                     }
                     else if (string.Compare("Top Cam 2", m_strCameraSelected) == 0)
                     {
@@ -177,6 +183,8 @@ namespace SealingInspectGUI.ViewModels
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfTOP);
                         FrameList = list;
+
+                        m_strImageSavePath = "D:\\Sealing_Folder\\Cavity2\\ImageSaved\\Cav2_TopCam2_";
                     }
                     else if (string.Compare("Side Cam 2", m_strCameraSelected) == 0)
                     {
@@ -187,6 +195,8 @@ namespace SealingInspectGUI.ViewModels
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfSIDE);
                         FrameList = list;
+
+                        m_strImageSavePath = "D:\\Sealing_Folder\\Cavity2\\ImageSaved\\Cav2_SideCam2_";
                     }
 
                     UpdateParamSoftwareTrigger();
@@ -201,6 +211,24 @@ namespace SealingInspectGUI.ViewModels
                 if (SetProperty(ref m_strFrameSelected, value))
                 {
                     int.TryParse(m_strFrameSelected, out m_nFrame);
+                    switch(CameraSelected)
+                    {
+                        case ECameraList.TopCam1:
+                            m_strImageSavePath = "D:\\Sealing_Folder\\Cavity1\\ImageSaved\\Cav1_TopCam1_";
+                            break;
+                        case ECameraList.SideCam1:
+                            m_strImageSavePath = "D:\\Sealing_Folder\\Cavity1\\ImageSaved\\Cav1_SideCam1_";
+                            break;
+                        case ECameraList.TopCam2:
+                            m_strImageSavePath = "D:\\Sealing_Folder\\Cavity2\\ImageSaved\\Cav2_TopCam2_";
+                            break;
+                        case ECameraList.SideCam2:
+                            m_strImageSavePath = "D:\\Sealing_Folder\\Cavity2\\ImageSaved\\Cav2_SideCam2_";
+                            break;
+                    }
+
+                    ImageSavePath = string.Format("{0}{1}{2}{3}", m_strImageSavePath, "Frame", m_nFrame, "_");
+
                 }
             }
         }
@@ -283,6 +311,19 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
+
+        public string ImageSavePath
+        {
+            get => m_strImageSavePath;
+            set
+            {
+                if (SetProperty(ref m_strImageSavePath, value))
+                {
+
+                }
+            }
+        }
+
         public bool IsStreamming
         {
             get => _bStreamming;
@@ -1000,7 +1041,7 @@ namespace SealingInspectGUI.ViewModels
                             }
                         }
                     }
-                    else if(nPropertyIdx == 1)
+                    else if (nPropertyIdx == 1)
                     {
                         for (k = Defines.ROI_PARAMETER_COUNT; k < 2 * Defines.ROI_PARAMETER_COUNT; k++)
                         {
@@ -2069,6 +2110,7 @@ namespace SealingInspectGUI.ViewModels
         public ICommand SaveSettingCmd { get; }
         public ICommand SaveRecipeCmd { get; }
         public ICommand InspectSimulationCmd { get; }
+        public ICommand SaveImageCmd { get; }
         #endregion
     }
 }

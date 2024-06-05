@@ -136,6 +136,8 @@
                         CommandParameter="{Binding CameraSelected}"/>
                 <Button Margin="5 2 2 2"
                         Content="Save Image"
+                        Command="{Binding SaveImageCmd}"
+                        CommandParameter="{Binding ImageSavePath}"
                         Foreground="Black"
                         Background="LightGray"
                         FontWeight="SemiBold"
