@@ -35,13 +35,14 @@ namespace SealingInspectGUI.Manager.Class
 
         public void SingleGrab()
         {
-            Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(async () =>
             {
                 if (!InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.ContinuousGrabHikCam(m_bufferViewerSimple.CameraIndex)) return;
                 if (!InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SoftwareTriggerHikCam(m_bufferViewerSimple.CameraIndex)) return;
 
                 m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
-                
+
+                await m_bufferViewerSimple.UpdateImage();
             });
         }
 
@@ -69,6 +70,7 @@ namespace SealingInspectGUI.Manager.Class
                         {
                             // read hik camera
                             m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetBufferImageHikCam(m_bufferViewerSimple.CameraIndex);
+                            await m_bufferViewerSimple.UpdateImage();
 
                             await Task.Delay(33);
                         }

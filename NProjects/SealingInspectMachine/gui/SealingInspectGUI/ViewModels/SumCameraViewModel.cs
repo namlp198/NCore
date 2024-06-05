@@ -47,11 +47,13 @@ namespace SealingInspectGUI.ViewModels
             _sumCameraView.buffTopCam1_Frame1.CameraIndex = 0;
             _sumCameraView.buffTopCam1_Frame1.ModeView = ModeView.Color;
             _sumCameraView.buffTopCam1_Frame1.CameraName = "[Top Cam 1 - Ring]";
+            _sumCameraView.buffTopCam1_Frame1.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam1_Frame1.ShowDetail += BuffTopCam1_Frame1_ShowDetail;
 
             _sumCameraView.buffTopCam1_Frame2.CameraIndex = 0;
             _sumCameraView.buffTopCam1_Frame2.ModeView = ModeView.Color;
             _sumCameraView.buffTopCam1_Frame2.CameraName = "[Top Cam 1 - 4Bar]";
+            _sumCameraView.buffTopCam1_Frame2.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam1_Frame2.ShowDetail += BuffTopCam1_Frame2_ShowDetail;
 
             _sumCameraView.buffSideCam1.CameraIndex = 2;
@@ -63,11 +65,13 @@ namespace SealingInspectGUI.ViewModels
             _sumCameraView.buffTopCam2_Frame1.CameraIndex = 1;
             _sumCameraView.buffTopCam2_Frame1.ModeView = ModeView.Color;
             _sumCameraView.buffTopCam2_Frame1.CameraName = "[Top Cam 2 - Ring]";
+            _sumCameraView.buffTopCam2_Frame1.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam2_Frame1.ShowDetail += BuffTopCam2_Frame1_ShowDetail;
 
             _sumCameraView.buffTopCam2_Frame2.CameraIndex = 1;
             _sumCameraView.buffTopCam2_Frame2.ModeView = ModeView.Color;
             _sumCameraView.buffTopCam2_Frame2.CameraName = "[Top Cam 2 - 4Bar]";
+            _sumCameraView.buffTopCam2_Frame2.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam2_Frame2.ShowDetail += BuffTopCam2_Frame2_ShowDetail;
 
             _sumCameraView.buffSideCam2.CameraIndex = 3;
@@ -125,6 +129,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffSideCam2.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffSideCam2.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_SIDECAM, Defines.FRAME_HEIGHT_SIDECAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffSideCam2.BufferView != IntPtr.Zero)
             {
@@ -140,6 +145,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam2_Frame2.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam2_Frame2.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam2_Frame2.BufferView != IntPtr.Zero)
             {
@@ -155,6 +161,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam2_Frame1.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam2_Frame1.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam2_Frame1.BufferView != IntPtr.Zero)
             {
@@ -170,6 +177,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffSideCam1.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffSideCam1.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_SIDECAM, Defines.FRAME_HEIGHT_SIDECAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffSideCam1.BufferView != IntPtr.Zero)
             {
@@ -185,6 +193,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam1_Frame2.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam1_Frame2.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam1_Frame2.BufferView != IntPtr.Zero)
             {
@@ -200,6 +209,7 @@ namespace SealingInspectGUI.ViewModels
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam1_Frame1.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam1_Frame1.CameraName;
             ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam1_Frame1.BufferView != IntPtr.Zero)
             {

@@ -32,10 +32,10 @@ namespace SealingInspectGUI.Commons
         public const int MAX_SIDECAM_COUNT = 2;
         public const int MAX_IMAGE_BUFFER_TOPCAM = 2;
         public const int MAX_IMAGE_BUFFER_SIDECAM = 4;
-        public const int FRAME_WIDTH_SIDE_CAM = 2448;
-        public const int FRAME_HEIGHT_SIDE_CAM = 2048;
-        public const int FRAME_WIDTH_TOP_CAM = 2448;
-        public const int FRAME_HEIGHT_TOP_CAM = 2048;
+        public const int FRAME_WIDTH_SIDECAM = 2448;
+        public const int FRAME_HEIGHT_SIDECAM = 2048;
+        public const int FRAME_WIDTH_TOPCAM = 4024;
+        public const int FRAME_HEIGHT_TOPCAM = 3036;
         public const int NUMBER_OF_SET_INSPECT = 2;
 
         public const int MAX_STRING_SIZE = 256;

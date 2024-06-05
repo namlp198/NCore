@@ -81,7 +81,7 @@ namespace SealingInspectGUI.ViewModels
             _settingView.buffVSSettings.CameraIndex = 99;
 
             _settingView.buffVSSettings.ModeView = NCore.Wpf.BufferViewerSimple.ModeView.Color;
-            _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_HEIGHT_SIDE_CAM, Defines.FRAME_HEIGHT_SIDE_CAM);
+            _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
 
             this.LoadImageCmd = new LoadImageCmd();
             this.ContinuousGrabCmd = new ContinuousGrabCmd();
@@ -152,7 +152,7 @@ namespace SealingInspectGUI.ViewModels
                     {
                         CameraSelected = ECameraList.TopCam1;
                         _settingView.buffVSSettings.CameraIndex = 0; // 0: Index of Top Cam 1
-                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOP_CAM, Defines.FRAME_HEIGHT_TOP_CAM);
+                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
 
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfTOP);
@@ -162,7 +162,7 @@ namespace SealingInspectGUI.ViewModels
                     {
                         CameraSelected = ECameraList.SideCam1;
                         _settingView.buffVSSettings.CameraIndex = 2; // 2: Index of Side Cam 1
-                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_SIDE_CAM, Defines.FRAME_HEIGHT_SIDE_CAM);
+                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_SIDECAM, Defines.FRAME_HEIGHT_SIDECAM);
 
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfSIDE);
@@ -172,7 +172,7 @@ namespace SealingInspectGUI.ViewModels
                     {
                         CameraSelected = ECameraList.TopCam2;
                         _settingView.buffVSSettings.CameraIndex = 1; // 1: Index of Top Cam 2
-                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOP_CAM, Defines.FRAME_HEIGHT_TOP_CAM);
+                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
 
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfTOP);
@@ -182,7 +182,7 @@ namespace SealingInspectGUI.ViewModels
                     {
                         CameraSelected = ECameraList.SideCam2;
                         _settingView.buffVSSettings.CameraIndex = 3; // 3: Index of Side Cam 1
-                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_SIDE_CAM, Defines.FRAME_HEIGHT_SIDE_CAM);
+                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_SIDECAM, Defines.FRAME_HEIGHT_SIDECAM);
 
                         List<string> list = new List<string>();
                         list.AddRange(m_arrFrameOfSIDE);
