@@ -214,6 +214,16 @@ bool SetTriggerSourceHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, i
 	else if (retVal == 1) return true;
 }
 
+bool SaveImageHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, char* strImageSavePath)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	int retVal = pProcessor->SaveImageHikCam(nCamIdx, (CString)strImageSavePath);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;
+}
+
 bool InspectStart(CSealingInspectProcessor* pProcessor, int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator)
 {
 	if (pProcessor == NULL)

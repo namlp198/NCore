@@ -49,6 +49,8 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetTriggerSourceHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, int nSource);
 
+	__declspec(dllexport) bool                      SaveImageHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, char* strImageSavePath);
+
 	/************************** Get Result **************************/
 	__declspec(dllexport) bool                      InspectStart(CSealingInspectProcessor* pProcessor, int nThreadCount, emInspectCavity nInspCavity, BOOL isSimulator);
 

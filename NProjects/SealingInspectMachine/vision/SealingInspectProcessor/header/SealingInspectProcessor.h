@@ -74,6 +74,7 @@ public:
 	virtual LPBYTE                    GetResultBuffer_SIDE(int nBuff, int nFrame);
 	virtual LPBYTE                    GetResultBuffer_TOP(int nBuff, int nFrame);
 	LPBYTE                            GetBufferImageHikCam(int nCamIdx);
+	BOOL                              SaveImageHikCam(int nCamIdx, CString strImageSavePath);
 
 	BOOL                              LoadAllImageBuffer(CString strDirPath, CString strImageType);
 
@@ -171,4 +172,5 @@ private:
 	CString                                    m_strDefectImagePath;
 
 	CTCPSocket*                                m_pTcpSocket;
+	cv::Mat                                    m_matBGR;
 };

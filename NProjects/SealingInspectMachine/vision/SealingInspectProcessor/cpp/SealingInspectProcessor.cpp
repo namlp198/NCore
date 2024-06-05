@@ -1302,15 +1302,39 @@ LPBYTE CSealingInspectProcessor::GetBufferImageHikCam(int nCamIdx)
 
 	if (nCamIdx == 0 || nCamIdx == 1)
 	{
-		cv::Mat matBGR(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC3);
 		cv::Mat matBayer(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC1, pImageBuff);
 
-		cv::cvtColor(matBayer, matBGR, cv::COLOR_BayerBG2BGR);
+		cv::cvtColor(matBayer, m_matBGR, cv::COLOR_BayerBG2BGR);
 
-		return matBGR.data;
+		return m_matBGR.data;
 	}
 	
 	return pImageBuff;
+}
+
+BOOL CSealingInspectProcessor::SaveImageHikCam(int nCamIdx, CString strImageSavePath)
+{
+	if (m_pSealingInspHikCam == NULL)
+		return FALSE;
+
+	USES_CONVERSION;
+	char chSavePath[1000] = {};
+	sprintf_s(chSavePath, "%s", W2A(strImageSavePath));
+
+	if (nCamIdx == 0 || nCamIdx == 1)
+	{
+		cv::Mat matBayer(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC1, m_pSealingInspHikCam->GetBufferImage(nCamIdx));
+		cv::Mat matSave(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC3);
+		cv::cvtColor(matBayer, matSave, cv::COLOR_BayerBG2BGR);
+
+		cv::imwrite(chSavePath, matSave);
+		return TRUE;
+	}
+
+	cv::Mat matSave(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, m_pSealingInspHikCam->GetBufferImage(nCamIdx));
+	cv::imwrite(chSavePath, matSave);
+
+	return TRUE;
 }
 
 BOOL CSealingInspectProcessor::LoadAllImageBuffer(CString strDirPath, CString strImageType)
