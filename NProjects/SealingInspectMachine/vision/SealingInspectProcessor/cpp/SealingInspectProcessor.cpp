@@ -1292,6 +1292,27 @@ LPBYTE CSealingInspectProcessor::GetResultBuffer_TOP(int nBuff, int nFrame)
 	return m_pResultBuffer_Top[nBuff]->GetFrameImage(nFrame);
 }
 
+LPBYTE CSealingInspectProcessor::GetBufferImageHikCam(int nCamIdx)
+{
+	if (m_pSealingInspHikCam == NULL)
+		return NULL;
+
+
+	LPBYTE pImageBuff = m_pSealingInspHikCam->GetBufferImage(nCamIdx);
+
+	if (nCamIdx == 0 || nCamIdx == 1)
+	{
+		cv::Mat matBGR(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC3);
+		cv::Mat matBayer(FRAME_HEIGHT_TOPCAM, FRAME_WIDTH_TOPCAM, CV_8UC1, pImageBuff);
+
+		cv::cvtColor(matBayer, matBGR, cv::COLOR_BayerBG2BGR);
+
+		return matBGR.data;
+	}
+	
+	return pImageBuff;
+}
+
 BOOL CSealingInspectProcessor::LoadAllImageBuffer(CString strDirPath, CString strImageType)
 {
 	if (strDirPath.IsEmpty() == TRUE)

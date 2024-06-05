@@ -179,11 +179,11 @@ BYTE* GetBufferImageHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx)
 	if (pProcessor == NULL)
 		return NULL;
 
-	CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
+	/*CSealingInspectHikCam* pHikCam = pProcessor->GetHikCamControl();
 	if (pHikCam == NULL)
-		return NULL;
+		return NULL;*/
 
-	return pHikCam->GetBufferImage(nCamIdx);
+	return pProcessor->GetBufferImageHikCam(nCamIdx);
 }
 
 bool SetTriggerModeHikCam(CSealingInspectProcessor* pProcessor, int nCamIdx, int nMode)

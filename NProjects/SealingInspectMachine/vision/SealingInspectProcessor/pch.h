@@ -68,7 +68,8 @@
 #pragma comment(lib, "opencv_videoio480.lib")
 
 #pragma comment(lib, "MvCameraControl.lib")
-#pragma comment(lib, "RapidXML_Release.lib")
+//#pragma comment(lib, "RapidXML_Release.lib")
+#pragma comment(lib, "RapidXML_Release_New.lib")
 
 #pragma comment(lib, "tbb.lib")
 #pragma comment(lib, "tbbmalloc.lib")

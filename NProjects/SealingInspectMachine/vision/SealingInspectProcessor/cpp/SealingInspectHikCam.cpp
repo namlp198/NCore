@@ -34,7 +34,7 @@ BOOL CSealingInspectHikCam::Initialize()
 	CFrameGrabberParam grabberParam[MAX_CAMERA_INSPECT_COUNT];
 
 	// TOP Cam 1
-	grabberParam[0].SetParam_GrabberPort((CString)_T("DA0069518"));
+	grabberParam[0].SetParam_GrabberPort((CString)_T("DA3494062"));
 	grabberParam[0].SetParam_FrameWidth(FRAME_WIDTH_TOPCAM);
 	grabberParam[0].SetParam_FrameHeight(FRAME_HEIGHT_TOPCAM);
 	grabberParam[0].SetParam_FrameWidthStep(FRAME_WIDTH_TOPCAM);
@@ -43,7 +43,7 @@ BOOL CSealingInspectHikCam::Initialize()
 	grabberParam[0].SetParam_FrameCount(MAX_FRAME_COUNT);
 
 	// TOP Cam 2
-	grabberParam[1].SetParam_GrabberPort((CString)_T("DA0069525"));
+	grabberParam[1].SetParam_GrabberPort((CString)_T("DA3494064"));
 	grabberParam[1].SetParam_FrameWidth(FRAME_WIDTH_TOPCAM);
 	grabberParam[1].SetParam_FrameHeight(FRAME_HEIGHT_TOPCAM);
 	grabberParam[1].SetParam_FrameWidthStep(FRAME_WIDTH_TOPCAM);
@@ -52,7 +52,7 @@ BOOL CSealingInspectHikCam::Initialize()
 	grabberParam[1].SetParam_FrameCount(MAX_FRAME_COUNT);
 
 	// SIDE Cam 1
-	grabberParam[2].SetParam_GrabberPort((CString)_T("DA0069522"));
+	grabberParam[2].SetParam_GrabberPort((CString)_T("DA3491412"));
 	grabberParam[2].SetParam_FrameWidth(FRAME_WIDTH_SIDECAM);
 	grabberParam[2].SetParam_FrameHeight(FRAME_HEIGHT_SIDECAM);
 	grabberParam[2].SetParam_FrameWidthStep(FRAME_WIDTH_SIDECAM);
@@ -61,7 +61,7 @@ BOOL CSealingInspectHikCam::Initialize()
 	grabberParam[2].SetParam_FrameCount(MAX_FRAME_COUNT);
 
 	// SIDE Cam 2
-	grabberParam[3].SetParam_GrabberPort((CString)_T("DA0069524"));
+	grabberParam[3].SetParam_GrabberPort((CString)_T("DA3491407"));
 	grabberParam[3].SetParam_FrameWidth(FRAME_WIDTH_SIDECAM);
 	grabberParam[3].SetParam_FrameHeight(FRAME_HEIGHT_SIDECAM);
 	grabberParam[3].SetParam_FrameWidthStep(FRAME_WIDTH_SIDECAM);
@@ -92,7 +92,7 @@ BOOL CSealingInspectHikCam::Initialize()
 		DWORD dwFrameHeight_TopCam = (DWORD)FRAME_HEIGHT_TOPCAM;
 		DWORD dwFrameCount_TopCam = MAX_FRAME_COUNT;
 		DWORD dwFrameWaitProcessCount_TopCam = MAX_FRAME_WAIT_TOPCAM;
-		DWORD dwFrameSize_TopCam = dwFrameWidth_TopCam * dwFrameHeight_TopCam * NUMBER_OF_CHANNEL;
+		DWORD dwFrameSize_TopCam = dwFrameWidth_TopCam * dwFrameHeight_TopCam * NUMBER_OF_CHANNEL_TOPCAM;
 
 		m_pCameraImageBuffer[nCamIdx] = new CSharedMemoryBuffer;
 		m_pCameraImageBuffer[nCamIdx]->SetFrameWidth(dwFrameWidth_TopCam);

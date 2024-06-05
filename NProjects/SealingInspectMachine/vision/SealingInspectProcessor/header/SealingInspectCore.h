@@ -106,23 +106,23 @@ private:
 
 	BOOL JudgementInspectDistanceMeasurement_AdvancedAlgorithms(std::vector<double>& vecDistance, std::vector<int>& vecPosNG, double nDistanceMin, double nDistanceMax, int nNumberOfDistNGMax);
 
-	BOOL FindMeasurePointsAtPosMinMax(CRecipe_TopCam_Frame1* pRecipeTopCamFrame1, cv::Mat* pMatProcess, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts, int nROIIdx);
+	BOOL FindMeasurePointsAtPosMinMax(CRecipe_TopCam_Frame1* pRecipeTopCamFrame1, cv::Mat* pMatProcess, cv::Rect& rectROI, std::vector<cv::Point>& vecMeaPts, int nROIIdx);
 
 	BOOL FindMeasurePointsAtPosDistMinMax_SideCam(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pImageData, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
 
-	BOOL FindMeasurePoints_SideCam(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pImageData, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
+	BOOL FindMeasurePoints_SideCam(const CSealingInspectRecipe_SideCam pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
 
 	BOOL CalculateDistancePointToLine(cv::Point measurePt, cv::Point2f p1, cv::Point2f p2, cv::Point2f& closesPt, float& fDistance);
 
 	BOOL FindClosesPointAndDistancePointToLine(const std::vector<cv::Point>& vecMeasurePt,const std::vector<cv::Point2f>& vecPtLineTop, std::vector<cv::Point2f>& vecClosesPt, std::vector<double>& vecDist);
 
-	void MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipeTopCamFrame1, std::vector<cv::Rect>& vecRectROI, cv::Mat* pMatProcess, cv::Point centerPt, double dRadius);
+	void MakeROIAdvancedAlgorithms(CRecipe_TopCam_Frame1 recipeTopCamFrame1, std::vector<cv::Rect>& vecRectROI, cv::Point centerPt, double dRadius);
 
 	void MakeROITopCamFrame2(const CRecipe_TopCam_Frame2* pRecipeTopCamFrame2, std::vector<cv::Rect>& vecRectROI, cv::Mat* pMatProcess, cv::Point centerPt, double dRadius);
 
-	void MakeROIFindLine(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Mat& matROIFindLIne);
+	void MakeROIFindLine(CSealingInspectRecipe_SideCam& pRecipeSideCam, int nFrame, cv::Rect& rectROIFindLIne);
 
-	void MakeROIFindPoints(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindPts, cv::Mat& matROIFindPts);
+	void MakeROIFindPoints(CSealingInspectRecipe_SideCam& pRecipeSideCam, int nFrame, cv::Rect& rectROIFindPts);
 
 	BOOL MakeCannyEdgeImage(cv::Mat* pImageData, cv::Mat& pEdgeImageData, double dThreshold1, double dThreshold2, int nGaussianMask = 3);
 
@@ -130,7 +130,7 @@ private:
 
 	BOOL FindSmallestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex);
 
-	BOOL FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine);
+	BOOL FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam& pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, std::vector<cv::Point2f>& vecPtsLine);
 
 	BOOL FindLine_Bottom_Top_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine);
 

@@ -73,6 +73,7 @@ public:
 	// Get Result buffer
 	virtual LPBYTE                    GetResultBuffer_SIDE(int nBuff, int nFrame);
 	virtual LPBYTE                    GetResultBuffer_TOP(int nBuff, int nFrame);
+	LPBYTE                            GetBufferImageHikCam(int nCamIdx);
 
 	BOOL                              LoadAllImageBuffer(CString strDirPath, CString strImageType);
 
