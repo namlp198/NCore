@@ -20,6 +20,7 @@ namespace SealingInspectGUI.Manager.SumManager
         public void Initialize()
         {
             m_sealingInspProcessorDll.RegCallBackInspectCompleteFunc(InterfaceManager.Instance.CallbackInsCompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackInspectTopCamCompleteFunc(InterfaceManager.Instance.CallbackInsTopCamCompleteFunc);
             m_sealingInspProcessorDll.Initialize();
         }
 

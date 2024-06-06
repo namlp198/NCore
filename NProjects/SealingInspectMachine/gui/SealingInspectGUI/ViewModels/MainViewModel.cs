@@ -43,7 +43,7 @@ namespace SealingInspectGUI.ViewModels
             get => m_machineMode;
             set
             {
-                if(SetProperty(ref m_machineMode, value))
+                if (SetProperty(ref m_machineMode, value))
                 {
 
                 }
@@ -92,8 +92,11 @@ namespace SealingInspectGUI.ViewModels
             if (InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation == 0)
             {
                 // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
-                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 1);
-                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 1);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
+
+                RunVM.SumCamVM.PLC_Wecon_1.StartThreadWecon();
+                //RunVM.SumCamVM.PLC_Wecon_2.StartThreadWecon();
             }
         }
 
@@ -113,13 +116,13 @@ namespace SealingInspectGUI.ViewModels
         #endregion
 
         #region Methods
-       
+
         #endregion
 
         #region Command
         public ICommand SelectRunViewCmd { get; }
         public ICommand SelectSettingViewCmd { get; }
-        public ICommand SelectMachineModeCmd {  get; }
+        public ICommand SelectMachineModeCmd { get; }
         #endregion
     }
 }

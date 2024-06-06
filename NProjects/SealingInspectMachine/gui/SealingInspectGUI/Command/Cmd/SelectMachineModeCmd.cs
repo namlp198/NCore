@@ -26,6 +26,7 @@ namespace SealingInspectGUI.Command.Cmd
                         // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
                         InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStop(emInspectCavity.emInspectCavity_Cavity1);
                         InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStop(emInspectCavity.emInspectCavity_Cavity2);
+                        MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.StopThreadWecon();
                     }
 
                     MainViewModel.Instance.MachineMode = Commons.emMachineMode.MachineMode_Manual;
@@ -40,8 +41,9 @@ namespace SealingInspectGUI.Command.Cmd
                 if (InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation == 0)
                 {
                     // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
-                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 1);
-                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 1);
+                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
+                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
+                    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.StartThreadWecon();
                 }
 
                 MainViewModel.Instance.MachineMode = Commons.emMachineMode.MachineMode_Auto;

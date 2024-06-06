@@ -14,6 +14,9 @@ namespace SealingInspectGUI.Manager
         public delegate void InspectionComplete_Handler(emInspectCavity eInspCavity, int bSetting);
         public static event InspectionComplete_Handler InspectionComplete;
 
+        public delegate void InspectionTopCamComplete_Handler(emInspectCavity eInspCavity);
+        public static event InspectionTopCamComplete_Handler InspectionTopCamComplete;
+
         public SimulationThread m_simulationThread = new SimulationThread();
         public SealingInspectProcessorManager m_sealingInspectProcessorManager = new SealingInspectProcessorManager();
 
@@ -36,6 +39,10 @@ namespace SealingInspectGUI.Manager
             InspectionComplete(eInspCavity, bSetting);
 
             InspectionComplete_All_Check(eInspCavity);
+        }
+        public void CallbackInsTopCamCompleteFunc(emInspectCavity nInspCavity)
+        {
+            InspectionTopCamComplete(nInspCavity);
         }
 
         object m_csInspectionComplete = new object();

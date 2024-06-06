@@ -16,6 +16,7 @@ namespace SealingInspectGUI.Manager.Class
         public static CallbackLogFunc m_RegLogCallBack;
         public static CallbackAlarmFunc m_RegAlarmCallBack;
         public static CallbackInsCompleteFunc m_RegInsCompleteCallBack;
+        public static CallbackInsTopCamCompleteFunc m_RegInsTopCamCompleteCallBack;
         public SealingInspectProcessorDll()
         {
             m_sealingInspectProcessor = CreateSealingInspectProcessor();
@@ -32,6 +33,10 @@ namespace SealingInspectGUI.Manager.Class
         // Inspection Compete CallBack
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void CallbackInsCompleteFunc(emInspectCavity nInspCavity, int bSetting);
+
+        // Inspection TopCam Compete CallBack
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void CallbackInsTopCamCompleteFunc(emInspectCavity nInspCavity);
 
         #region Init and delete
         /// <summary>
@@ -268,6 +273,19 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
+        extern private static bool SetProcessStatus(IntPtr pInstance, int nCoreIdx, int nProcessStatus);
+        public bool SetProcessStatus(int nCoreIdx, int nProcessStatus) { return SetProcessStatus(m_sealingInspectProcessor, nCoreIdx, nProcessStatus); }
+        /**********************************
+         - Start Inspection
+         - Parameter : Index Core, Process Status
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
         extern private static bool GetInspectionResult(IntPtr sealingInspProcessor, int nCoreIdx, IntPtr InspResults);
         public bool GetInspectionResult(int nCoreIdx, ref CSealingInspectResult InspResults)
         {
@@ -409,6 +427,24 @@ namespace SealingInspectGUI.Manager.Class
          - Register Inspection Complete CallBack
          - Parameter : CallBack Func Pointer
         **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallBackInspectTopCamCompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCamCompleteFunc callbackPointer);
+        public void RegCallBackInspectTopCamCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCamCompleteFunc callbackPointer)
+        {
+            m_RegInsTopCamCompleteCallBack = callbackPointer;
+
+            RegCallBackInspectTopCamCompleteFunc(m_sealingInspectProcessor, m_RegInsTopCamCompleteCallBack);
+        }
+        /**********************************
+         - Register Inspection TopCam Complete CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
         #endregion
 
         #region Hik Cam
@@ -464,7 +500,6 @@ namespace SealingInspectGUI.Manager.Class
 #endif
         extern private static IntPtr GetBufferImageHikCam(IntPtr tempInspProcessor, int nCamIdx);
         public IntPtr GetBufferImageHikCam(int nCamIdx) { return GetBufferImageHikCam(m_sealingInspectProcessor, nCamIdx); }
-        #endregion
 
 
 #if DEBUG
@@ -475,8 +510,10 @@ namespace SealingInspectGUI.Manager.Class
         extern private static bool SaveImageHikCam(IntPtr sealingInspProcessor, int nCamIdx, [MarshalAs(UnmanagedType.LPStr)] string strImageSavePath);
         public bool SaveImageHikCam(int nCamIdx, [MarshalAs(UnmanagedType.LPStr)] string strImageSavePath)
         {
-            bool bRet = SaveImageHikCam(m_sealingInspectProcessor,nCamIdx, strImageSavePath);
+            bool bRet = SaveImageHikCam(m_sealingInspectProcessor, nCamIdx, strImageSavePath);
             return bRet;
         }
     }
+    #endregion
+
 }
