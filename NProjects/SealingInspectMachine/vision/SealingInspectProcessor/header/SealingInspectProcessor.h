@@ -30,6 +30,7 @@
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarm(emInspectCavity nSetInsp, char* strAlarmMessage);
 typedef void _stdcall CallbackInspectComplete(emInspectCavity emInspCavity, BOOL bSetting);
+typedef void _stdcall CallbackInspectTopCamComplete(emInspectCavity nSetInsp);
 
 class AFX_EXT_CLASS CSealingInspectProcessor : public ISealingInspectHikCamToParent,
 	public ISealingInspectCoreToParent
@@ -90,6 +91,7 @@ public:
 	void                              RegCallbackLogFunc(CallbackLogFunc* pFunc);
 	void                              RegCallbackAlarm(CallbackAlarm* pFunc);
 	void                              RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc);
+	void                              RegCallbackInsTopCamCompleteFunc(CallbackInspectTopCamComplete* pFunc);
 
 public:
 	// getter
@@ -99,8 +101,12 @@ public:
 
 	BOOL                             SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
 
+	void                             SetProcessStatus(int nCoreIdx, BOOL bProcessStatus);
+	BOOL                             GetProcessStatus(int nCoreIdx) { return m_bProcessStatus[nCoreIdx]; }
+
 public:
 	virtual void							InspectComplete(emInspectCavity nSetInsp, BOOL bSetting);
+	virtual void							InspectTopCamComplete(emInspectCavity nSetInsp);
 	BOOL                                    GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes);
 	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
@@ -139,6 +145,7 @@ private:
 	CallbackLogFunc*                           m_pCallbackLogFunc;
 	CallbackAlarm*                             m_pCallbackAlarm;
 	CallbackInspectComplete*                   m_pCallbackInsCompleteFunc;
+	CallbackInspectTopCamComplete*             m_pCallbackInsTopCamCompleteFunc;
 								               
 	// UI						               
 	CLogView*                                  m_pLogView;
@@ -162,6 +169,9 @@ private:
 	// Simulation IO				           
 	CCriticalSection                           m_csSimulation_IO[NUMBER_OF_SET_INSPECT];
 	CSealingInspect_Simulation_IO*             m_pSealingInspect_Simulation_IO[NUMBER_OF_SET_INSPECT];
+
+	// Process Status
+	CCriticalSection                           m_csProcessStatus[NUMBER_OF_SET_INSPECT];
 									           
 	// system settings file path	           
 	CString                                    m_csSysSettingsPath;
@@ -173,4 +183,6 @@ private:
 
 	CTCPSocket*                                m_pTcpSocket;
 	cv::Mat                                    m_matBGR;
+
+	BOOL                                       m_bProcessStatus[NUMBER_OF_SET_INSPECT];
 };

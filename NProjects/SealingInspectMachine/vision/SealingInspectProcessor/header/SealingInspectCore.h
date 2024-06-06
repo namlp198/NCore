@@ -26,6 +26,7 @@
 interface ISealingInspectCoreToParent
 {
 	virtual void							InspectComplete(emInspectCavity nSetInsp, BOOL bSetting) = 0;
+	virtual void							InspectTopCamComplete(emInspectCavity nSetInsp) = 0;
 	virtual CSealingInspectRecipe*          GetRecipe() = 0;
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() = 0;
 	virtual CSealingInspectHikCam*          GetHikCamControl() = 0;
@@ -35,6 +36,8 @@ interface ISealingInspectCoreToParent
 	virtual BOOL                            SetResultBuffer_TOP(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual CSealingInspectResult*          GetSealingInspectResultControl(int nResIdx) = 0;
 	virtual CSealingInspect_Simulation_IO*  GetSealingInspectSimulationIO(int nCoreIdx) = 0;
+	virtual BOOL                            GetProcessStatus(int nCoreIdx) = 0;
+	virtual void                            SetProcessStatus(int nCoreIdx, BOOL bProcessStatus) = 0;
 };
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
@@ -158,9 +161,11 @@ public:
 
 	// setter
 	void        SetSimulatorMode(BOOL bSimu) { m_bSimulator = bSimu; }
+	//void        SetProcessStatus(BOOL bProcessStatus) { m_bProcessStatus = bProcessStatus; }
 	void        SetCoreIndex(UINT nCoreIdx) { m_nCoreIdx = nCoreIdx; }
 	// getter
 	BOOL        GetSimulatorMode() { return m_bSimulator; }
+	//BOOL        GetProcessStatus() { return m_bProcessStatus; }
 	UINT        GetCoreIndex() { return m_nCoreIdx; }
 
 private:
@@ -173,6 +178,8 @@ private:
 	BOOL								m_bRunningThread[MAX_THREAD_COUNT];
 
 	BOOL                                m_bSimulator;
+	
+	//BOOL                                m_bProcessStatus;
 
 	CCriticalSection					m_csWorkThreadArray[MAX_THREAD_COUNT];
 	CWorkThreadArray*                   m_pWorkThreadArray[MAX_THREAD_COUNT];

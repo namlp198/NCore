@@ -29,6 +29,7 @@ std::vector<size_t> n_largest_indices(Iterator it, Iterator end, size_t n) {
 CSealingInspectCore::CSealingInspectCore(ISealingInspectCoreToParent* pInterface)
 {
 	m_pInterface = pInterface;
+	m_bSimulator = FALSE;
 }
 
 CSealingInspectCore::~CSealingInspectCore()
@@ -143,6 +144,14 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 			}
 			m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bLOCK_PROCESS = FALSE;
 		}
+		else if (m_bSimulator == FALSE)
+		{
+			while (m_pInterface->GetProcessStatus(m_nCoreIdx) != TRUE)
+			{
+				Sleep(100);
+			}
+			m_pInterface->SetProcessStatus(m_nCoreIdx, FALSE);
+		}
 
 		// 2. turn on ring light
 
@@ -177,6 +186,8 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 
 		// 9. process frame 2 (top cam 1)
 		ProcessFrame2_TopCam(recipe, nTopCam1_BufferHikCamIdx, nTopCam1_BufferProcessor, matTopResult);
+
+		m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity1);
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
@@ -286,6 +297,14 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 			}
 			m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bLOCK_PROCESS = FALSE;
 		}
+		else if (m_bSimulator == FALSE)
+		{
+			while (m_pInterface->GetProcessStatus(m_nCoreIdx) != TRUE)
+			{
+				Sleep(100);
+			}
+			m_pInterface->SetProcessStatus(m_nCoreIdx, FALSE);
+		}
 
 		// 2. turn on ring light
 
@@ -320,6 +339,8 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 		// 9. process frame 2 (top cam 1)
 		ProcessFrame2_TopCam(recipe, nTopCam2_BufferHikCamIdx, nTopCam2_BufferProcessor, matTopResult);
+
+		m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity2);
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
@@ -463,6 +484,8 @@ void CSealingInspectCore::TestInspectCavity1(int nCoreIdx)
 	// 9. process frame 2 (top cam 1)
 	ProcessFrame2_TopCam(recipe, nTopCam1_BufferHikCamIdx, nTopCam1_BufferProcessor, matTopResult);
 
+	m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity1);
+
 	// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
 #ifdef TEST_INSPECT_CAVITY_1
@@ -575,6 +598,8 @@ void CSealingInspectCore::TestInspectCavity2(int nCoreIdx)
 
 	// 9. process frame 2 (top cam 1)
 	ProcessFrame2_TopCam(recipe, nTopCam2_BufferHikCamIdx, nTopCam2_BufferProcessor, matTopResult);
+
+	m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity2);
 
 	// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 

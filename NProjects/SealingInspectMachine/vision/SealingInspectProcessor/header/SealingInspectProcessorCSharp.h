@@ -62,6 +62,8 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime);
 
+	__declspec(dllexport) bool                      SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bProcessStatus);
+
 	/************************** Load Setting and Recipe **************************/
 	__declspec(dllexport) bool                      LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
 
@@ -85,4 +87,6 @@ extern "C"
 	__declspec(dllexport) void                      RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc);
 
 	__declspec(dllexport) void			            RegCallBackInspectCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectComplete* pFunc);
+
+	__declspec(dllexport) void			            RegCallBackInspectTopCamCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCamComplete* pFunc);
 };

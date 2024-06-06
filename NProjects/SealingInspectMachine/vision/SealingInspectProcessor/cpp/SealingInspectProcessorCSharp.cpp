@@ -274,6 +274,16 @@ bool SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime)
 	return true;
 }
 
+bool SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bProcessStatus)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	pProcessor->SetProcessStatus(nCoreIdx, bProcessStatus);
+	
+	return true;
+}
+
 bool LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)
 {
 	if (pProcessor == NULL)
@@ -370,4 +380,12 @@ void RegCallBackInspectCompleteFunc(CSealingInspectProcessor* pProcessor, Callba
 		return;
 
 	pProcessor->RegCallbackInscompleteFunc(pFunc);
+}
+
+void RegCallBackInspectTopCamCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCamComplete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackInsTopCamCompleteFunc(pFunc);
 }

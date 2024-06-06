@@ -1755,8 +1755,16 @@ void CSealingInspectProcessor::RegCallbackInscompleteFunc(CallbackInspectComplet
 	m_pCallbackInsCompleteFunc = pFunc;
 }
 
+void CSealingInspectProcessor::RegCallbackInsTopCamCompleteFunc(CallbackInspectTopCamComplete* pFunc)
+{
+	m_pCallbackInsTopCamCompleteFunc = pFunc;
+}
+
 BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO)
 {
+	if (m_pSealingInspCore[nCoreIdx] == NULL)
+		return FALSE;
+
 	CSingleLock localLock(&m_csSimulation_IO[nCoreIdx]);
 	localLock.Lock();
 
@@ -1767,12 +1775,35 @@ BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSeal
 	return TRUE;
 }
 
+void CSealingInspectProcessor::SetProcessStatus(int nCoreIdx, BOOL bProcessStatus)
+{
+	if (m_pSealingInspCore[nCoreIdx] == NULL)
+		return;
+
+	CSingleLock localLock(&m_csProcessStatus[nCoreIdx]);
+	localLock.Lock();
+
+	//m_pSealingInspCore[nCoreIdx]->SetProcessStatus(bProcessStatus);
+	m_bProcessStatus[nCoreIdx] = bProcessStatus;
+
+	localLock.Unlock();
+	return;
+}
+
 void CSealingInspectProcessor::InspectComplete(emInspectCavity nSetInsp, BOOL bSetting)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
 		return;
 
 	(m_pCallbackInsCompleteFunc)(nSetInsp, bSetting);
+}
+
+void CSealingInspectProcessor::InspectTopCamComplete(emInspectCavity nSetInsp)
+{
+	if (m_pCallbackInsTopCamCompleteFunc == NULL)
+		return;
+
+	(m_pCallbackInsTopCamCompleteFunc)(nSetInsp);
 }
 
 BOOL CSealingInspectProcessor::GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes)
