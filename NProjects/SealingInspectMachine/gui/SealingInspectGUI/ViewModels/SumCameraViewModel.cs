@@ -96,11 +96,13 @@ namespace SealingInspectGUI.ViewModels
             PLC_Wecon_2 = new IOManager_PLC_Wecon("192.168.0.11", 2);
 
             if (PLC_Wecon_1.ConnectPLC())
-            if (PLC_Wecon_2.ConnectPLC())
+                if (PLC_Wecon_2.ConnectPLC())
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
-            InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
-            InterfaceManager.InspectionTopCamComplete += new InterfaceManager.InspectionTopCamComplete_Handler(InspectTopCamCompleted);
+            InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);
+            InterfaceManager.InspectionCavity2Complete += new InterfaceManager.InspectionCavity2Complete_Handler(InspectionCavity2Complete);
+            InterfaceManager.InspectionTopCam1Complete += new InterfaceManager.InspectionTopCam1Complete_Handler(InspectTopCam1Completed);
+            InterfaceManager.InspectionTopCam2Complete += new InterfaceManager.InspectionTopCam2Complete_Handler(InspectTopCam2Completed);
         }
 
         private async void SimulationThread_UpdateUI_SumCameraView()
@@ -234,135 +236,131 @@ namespace SealingInspectGUI.ViewModels
         #endregion
 
         #region methods
-        private void InspectionComplete(emInspectCavity eInspCav, int bSetting)
+        private void InspectionCavity1Complete(int bSetting)
         {
             if (bSetting == 1)
                 return;
 
             int nCoreIdx = 0;
-            switch (eInspCav)
+
+            InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
+                GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
+
+            TopCamFrame1_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_TopCam.m_bStatusFrame1;
+            UpdateResultView(SumCameraView.buffTopCam1_Frame1, TopCamFrame1_Cavity1, 0, 0, "TOP");
+
+            TopCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_TopCam.m_bStatusFrame2;
+            UpdateResultView(SumCameraView.buffTopCam1_Frame2, TopCamFrame2_Cavity1, 0, 1, "TOP");
+
+            SideCamFrame1_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame1;
+            //UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame1_Cavity1, 0, 0, "SIDE");
+
+            SideCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame2;
+            //UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame2_Cavity1, 0, 1, "SIDE");
+
+            SideCamFrame3_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame3;
+            //UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame3_Cavity1, 0, 2, "SIDE");
+
+            SideCamFrame4_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame4;
+            UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame4_Cavity1, 0, 3, "SIDE");
+
+            // check result final
+            if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity1) == 1)
             {
-                case emInspectCavity.emInspectCavity_Cavity1:
-                    nCoreIdx = 0;
-                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
-                        GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
-
-                    TopCamFrame1_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                              m_sealingInspResult_TopCam.m_bStatusFrame1;
-                    UpdateResultView(SumCameraView.buffTopCam1_Frame1, TopCamFrame1_Cavity1, 0, 0, "TOP");
-
-                    TopCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                              m_sealingInspResult_TopCam.m_bStatusFrame2;
-                    UpdateResultView(SumCameraView.buffTopCam1_Frame2, TopCamFrame2_Cavity1, 0, 1, "TOP");
-
-                    SideCamFrame1_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame1;
-                    //UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame1_Cavity1, 0, 0, "SIDE");
-
-                    SideCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame2;
-                    //UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame2_Cavity1, 0, 1, "SIDE");
-
-                    SideCamFrame3_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame3;
-                    //UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame3_Cavity1, 0, 2, "SIDE");
-
-                    SideCamFrame4_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame4;
-                    UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame4_Cavity1, 0, 3, "SIDE");
-
-                    // check result final
-                    if (CheckStatusFinal(eInspCav) == 1)
-                    {
-                        lock (_lockObj)
-                        {
-                            PLC_Wecon_1.IsJudgementOKNG = true;
-                            PLC_Wecon_1.IsInspectCompleted = true;
-                        }
-                        MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
-                    }
-                    else if (CheckStatusFinal(eInspCav) == 0)
-                    {
-                        lock (_lockObj)
-                        {
-                            PLC_Wecon_1.IsJudgementOKNG = false;
-                            PLC_Wecon_1.IsInspectCompleted = true;
-                        }
-                        MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
-                    }
-                    else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
-
-                    break;
-                case emInspectCavity.emInspectCavity_Cavity2:
-                    nCoreIdx = 1;
-                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
-                        GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
-
-                    TopCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                              m_sealingInspResult_TopCam.m_bStatusFrame1;
-                    UpdateResultView(SumCameraView.buffTopCam2_Frame1, TopCamFrame1_Cavity2, 1, 0, "TOP");
-
-                    TopCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                              m_sealingInspResult_TopCam.m_bStatusFrame2;
-                    UpdateResultView(SumCameraView.buffTopCam2_Frame2, TopCamFrame2_Cavity2, 1, 1, "TOP");
-
-                    SideCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                              m_sealingInspResult_SideCam.m_bStatusFrame1;
-                    //UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame1_Cavity2, 1, 0, "SIDE");
-
-                    SideCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame2;
-                    //UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame2_Cavity2, 1, 1, "SIDE");
-
-                    SideCamFrame3_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame3;
-                    //UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame3_Cavity2, 1, 2, "SIDE");
-
-                    SideCamFrame4_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
-                                               m_sealingInspResult_SideCam.m_bStatusFrame4;
-                    UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame4_Cavity2, 1, 3, "SIDE");
-
-                    // check result final
-                    if (CheckStatusFinal(eInspCav) == 1)
-                    {
-                        lock (_lockObj)
-                        {
-                            PLC_Wecon_2.IsJudgementOKNG = true;
-                            PLC_Wecon_2.IsInspectCompleted = true;
-                        }
-                        MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
-                    }
-                    else if (CheckStatusFinal(eInspCav) == 0)
-                    {
-                        lock (_lockObj)
-                        {
-                            PLC_Wecon_2.IsJudgementOKNG = false;
-                            PLC_Wecon_2.IsInspectCompleted = true;
-                        }
-                        MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
-                    }
-                    else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
-
-                    break;
+                lock (_lockObj)
+                {
+                    PLC_Wecon_1.IsJudgementOKNG = true;
+                    PLC_Wecon_1.IsInspectCompleted = true;
+                }
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
             }
+            else if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity1) == 0)
+            {
+                lock (_lockObj)
+                {
+                    PLC_Wecon_1.IsJudgementOKNG = false;
+                    PLC_Wecon_1.IsInspectCompleted = true;
+                }
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
+            }
+            else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
+        }
+        private void InspectionCavity2Complete(int bSetting)
+        {
+            int nCoreIdx = 1;
+            InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
+                GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
+
+            TopCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_TopCam.m_bStatusFrame1;
+            UpdateResultView(SumCameraView.buffTopCam2_Frame1, TopCamFrame1_Cavity2, 1, 0, "TOP");
+
+            TopCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_TopCam.m_bStatusFrame2;
+            UpdateResultView(SumCameraView.buffTopCam2_Frame2, TopCamFrame2_Cavity2, 1, 1, "TOP");
+
+            SideCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame1;
+            //UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame1_Cavity2, 1, 0, "SIDE");
+
+            SideCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame2;
+            //UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame2_Cavity2, 1, 1, "SIDE");
+
+            SideCamFrame3_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame3;
+            //UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame3_Cavity2, 1, 2, "SIDE");
+
+            SideCamFrame4_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame4;
+            UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame4_Cavity2, 1, 3, "SIDE");
+
+            // check result final
+            if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity2) == 1)
+            {
+                lock (_lockObj)
+                {
+                    PLC_Wecon_2.IsJudgementOKNG = true;
+                    PLC_Wecon_2.IsInspectCompleted = true;
+                }
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
+            }
+            else if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity2) == 0)
+            {
+                lock (_lockObj)
+                {
+                    PLC_Wecon_2.IsJudgementOKNG = false;
+                    PLC_Wecon_2.IsInspectCompleted = true;
+                }
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
+            }
+            else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
 
         }
-        private void InspectTopCamCompleted(emInspectCavity eInspCav)
+        private void InspectTopCam1Completed(int bSetting)
         {
-            switch (eInspCav)
+            if (bSetting == 1)
+                return;
+
+            lock (_lockObj)
             {
-                case emInspectCavity.emInspectCavity_Cavity1:
-                    lock (_lockObj)
-                    {
-                        PLC_Wecon_1.IsInspectTopCamCompleted = true;
-                    }
-                    break;
-                case emInspectCavity.emInspectCavity_Cavity2:
-                    lock (_lockObj)
-                    {
-                        PLC_Wecon_2.IsInspectTopCamCompleted = true;
-                    }
-                    break;
+                PLC_Wecon_1.IsInspectTopCamCompleted = true;
+            }
+        }
+        private void InspectTopCam2Completed(int bSetting)
+        {
+            if (bSetting == 1)
+                return;
+
+            lock (_lockObj)
+            {
+                PLC_Wecon_2.IsInspectTopCamCompleted = true;
             }
         }
         private async void UpdateResultView(BufferViewerSimple bufferSimple, int nStatus, int nBuff, int nFrame, string s)

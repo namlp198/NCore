@@ -93,7 +93,8 @@ namespace SealingInspectGUI.ViewModels
             this.SaveImageCmd = new SaveImageCmd();
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
-            InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
+            InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);
+            InterfaceManager.InspectionCavity2Complete += new InterfaceManager.InspectionCavity2Complete_Handler(InspectionCavity2Complete);
 
             m_cameraStreamingController = new CameraStreamingController(_settingView.buffVSSettings.FrameWidth,
                                                                         _settingView.buffVSSettings.FrameHeight,
@@ -2034,7 +2035,7 @@ namespace SealingInspectGUI.ViewModels
             }
         }
 
-        private void InspectionComplete(emInspectCavity eInspCav, int bSetting)
+        private void InspectionCavity1Complete(int bSetting)
         {
             if (bSetting == 0)
                 return;
@@ -2043,10 +2044,55 @@ namespace SealingInspectGUI.ViewModels
             int nStatus = 0;
             int nFrameIdx = m_nFrame - 1;
 
-            if (eInspCav == emInspectCavity.emInspectCavity_Cavity1)
-                nCoreIdx = 0;
-            else if (eInspCav == emInspectCavity.emInspectCavity_Cavity2)
-                nCoreIdx = 1;
+            InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
+                GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);
+
+            switch (m_cameraSelected)
+            {
+                case ECameraList.TopCam1:
+                case ECameraList.TopCam2:
+                    if (m_nFrame == 1)
+                        nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                                  m_sealingInspResult_TopCam.m_bStatusFrame1;
+                    else if (m_nFrame == 2)
+                        nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                                  m_sealingInspResult_TopCam.m_bStatusFrame2;
+
+                    UpdateResultView(SettingView.buffVSSettings, nStatus, m_nBuffIdx, nFrameIdx, "TOP");
+                    break;
+                case ECameraList.SideCam1:
+                case ECameraList.SideCam2:
+                    switch (m_nFrame)
+                    {
+                        case 1:
+                            nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                                 m_sealingInspResult_SideCam.m_bStatusFrame1;
+                            break;
+                        case 2:
+                            nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                                 m_sealingInspResult_SideCam.m_bStatusFrame2;
+                            break;
+                        case 3:
+                            nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                                 m_sealingInspResult_SideCam.m_bStatusFrame3;
+                            break;
+                        case 4:
+                            nStatus = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                                 m_sealingInspResult_SideCam.m_bStatusFrame4;
+                            break;
+                    }
+                    UpdateResultView(SettingView.buffVSSettings, nStatus, m_nBuffIdx, nFrameIdx, "SIDE");
+                    break;
+            }
+        }
+        private void InspectionCavity2Complete(int bSetting)
+        {
+            if (bSetting == 0)
+                return;
+
+            int nCoreIdx = 1;
+            int nStatus = 0;
+            int nFrameIdx = m_nFrame - 1;
 
             InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
                 GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]);

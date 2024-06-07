@@ -19,8 +19,10 @@ namespace SealingInspectGUI.Manager.SumManager
         public CSealingInspectRecipe m_sealingInspectRecipe = new CSealingInspectRecipe();
         public void Initialize()
         {
-            m_sealingInspProcessorDll.RegCallBackInspectCompleteFunc(InterfaceManager.Instance.CallbackInsCompleteFunc);
-            m_sealingInspProcessorDll.RegCallBackInspectTopCamCompleteFunc(InterfaceManager.Instance.CallbackInsTopCamCompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackInspectCavity1CompleteFunc(InterfaceManager.Instance.CallbackInsCavity1CompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackInspectCavity2CompleteFunc(InterfaceManager.Instance.CallbackInsCavity2CompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackInspectTopCam1CompleteFunc(InterfaceManager.Instance.CallbackInsTopCam1CompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackInspectTopCam2CompleteFunc(InterfaceManager.Instance.CallbackInsTopCam2CompleteFunc);
             m_sealingInspProcessorDll.Initialize();
         }
 

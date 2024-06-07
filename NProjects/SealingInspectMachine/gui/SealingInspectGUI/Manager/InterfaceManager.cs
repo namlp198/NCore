@@ -11,11 +11,17 @@ namespace SealingInspectGUI.Manager
 {
     public class InterfaceManager
     {
-        public delegate void InspectionComplete_Handler(emInspectCavity eInspCavity, int bSetting);
-        public static event InspectionComplete_Handler InspectionComplete;
+        public delegate void InspectionCavity1Complete_Handler(int bSetting);
+        public static event InspectionCavity1Complete_Handler InspectionCavity1Complete;
 
-        public delegate void InspectionTopCamComplete_Handler(emInspectCavity eInspCavity);
-        public static event InspectionTopCamComplete_Handler InspectionTopCamComplete;
+        public delegate void InspectionCavity2Complete_Handler(int bSetting);
+        public static event InspectionCavity2Complete_Handler InspectionCavity2Complete;
+
+        public delegate void InspectionTopCam1Complete_Handler(int bSetting);
+        public static event InspectionTopCam1Complete_Handler InspectionTopCam1Complete;
+
+        public delegate void InspectionTopCam2Complete_Handler(int bSetting);
+        public static event InspectionTopCam2Complete_Handler InspectionTopCam2Complete;
 
         public SimulationThread m_simulationThread = new SimulationThread();
         public SealingInspectProcessorManager m_sealingInspectProcessorManager = new SealingInspectProcessorManager();
@@ -34,21 +40,31 @@ namespace SealingInspectGUI.Manager
         }
         #endregion
 
-        public void CallbackInsCompleteFunc(emInspectCavity eInspCavity, int bSetting)
+        public void CallbackInsCavity1CompleteFunc(int bSetting)
         {
-            InspectionComplete(eInspCavity, bSetting);
+            InspectionCavity1Complete(bSetting);
 
-            InspectionComplete_All_Check(eInspCavity);
+            //InspectionComplete_All_Check();
         }
-        public void CallbackInsTopCamCompleteFunc(emInspectCavity nInspCavity)
+        public void CallbackInsCavity2CompleteFunc(int bSetting)
         {
-            InspectionTopCamComplete(nInspCavity);
+            InspectionCavity2Complete(bSetting);
+
+            //InspectionComplete_All_Check();
+        }
+        public void CallbackInsTopCam1CompleteFunc(int bSetting)
+        {
+            InspectionTopCam1Complete(bSetting);
+        }
+        public void CallbackInsTopCam2CompleteFunc(int bSetting)
+        {
+            InspectionTopCam2Complete(bSetting);
         }
 
         object m_csInspectionComplete = new object();
         public delegate void Inspection_All_Complete_Handler();
         public static event Inspection_All_Complete_Handler Inspection_All_Complete;
-        public void InspectionComplete_All_Check(emInspectCavity eInspCav)
+        public void InspectionComplete_All_Check()
         {
             Inspection_All_Complete?.Invoke();
         }

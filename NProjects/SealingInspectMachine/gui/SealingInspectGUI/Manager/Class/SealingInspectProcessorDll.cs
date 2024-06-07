@@ -15,8 +15,10 @@ namespace SealingInspectGUI.Manager.Class
 
         public static CallbackLogFunc m_RegLogCallBack;
         public static CallbackAlarmFunc m_RegAlarmCallBack;
-        public static CallbackInsCompleteFunc m_RegInsCompleteCallBack;
-        public static CallbackInsTopCamCompleteFunc m_RegInsTopCamCompleteCallBack;
+        public static CallbackInsCavity1CompleteFunc m_RegInsCavity1CompleteCallBack;
+        public static CallbackInsCavity2CompleteFunc m_RegInsCavity2CompleteCallBack;
+        public static CallbackInsTopCam1CompleteFunc m_RegInsTopCam1CompleteCallBack;
+        public static CallbackInsTopCam2CompleteFunc m_RegInsTopCam2CompleteCallBack;
         public SealingInspectProcessorDll()
         {
             m_sealingInspectProcessor = CreateSealingInspectProcessor();
@@ -30,13 +32,21 @@ namespace SealingInspectGUI.Manager.Class
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void CallbackAlarmFunc(emInspectCavity nInspCavity, [MarshalAs(UnmanagedType.LPStr)] string strLogMsg);
 
-        // Inspection Compete CallBack
+        // Inspection Cavity 1 Compete CallBack
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void CallbackInsCompleteFunc(emInspectCavity nInspCavity, int bSetting);
+        public delegate void CallbackInsCavity1CompleteFunc(int bSetting);
 
-        // Inspection TopCam Compete CallBack
+        // Inspection TopCam 1 Compete CallBack
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void CallbackInsTopCamCompleteFunc(emInspectCavity nInspCavity);
+        public delegate void CallbackInsTopCam1CompleteFunc(int bSetting);
+
+        // Inspection Cavity 2 Compete CallBack
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void CallbackInsCavity2CompleteFunc(int bSetting);
+
+        // Inspection TopCam 2 Compete CallBack
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void CallbackInsTopCam2CompleteFunc(int bSetting);
 
         #region Init and delete
         /// <summary>
@@ -416,12 +426,12 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        private static extern void RegCallBackInspectCompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCompleteFunc callbackPointer);
-        public void RegCallBackInspectCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCompleteFunc callbackPointer)
+        private static extern void RegCallBackInspectCavity1CompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCavity1CompleteFunc callbackPointer);
+        public void RegCallBackInspectCavity1CompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCavity1CompleteFunc callbackPointer)
         {
-            m_RegInsCompleteCallBack = callbackPointer;
+            m_RegInsCavity1CompleteCallBack = callbackPointer;
 
-            RegCallBackInspectCompleteFunc(m_sealingInspectProcessor, m_RegInsCompleteCallBack);
+            RegCallBackInspectCavity1CompleteFunc(m_sealingInspectProcessor, m_RegInsCavity1CompleteCallBack);
         }
         /**********************************
          - Register Inspection Complete CallBack
@@ -434,12 +444,48 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        private static extern void RegCallBackInspectTopCamCompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCamCompleteFunc callbackPointer);
-        public void RegCallBackInspectTopCamCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCamCompleteFunc callbackPointer)
+        private static extern void RegCallBackInspectCavity2CompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCavity2CompleteFunc callbackPointer);
+        public void RegCallBackInspectCavity2CompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCavity2CompleteFunc callbackPointer)
         {
-            m_RegInsTopCamCompleteCallBack = callbackPointer;
+            m_RegInsCavity2CompleteCallBack = callbackPointer;
 
-            RegCallBackInspectTopCamCompleteFunc(m_sealingInspectProcessor, m_RegInsTopCamCompleteCallBack);
+            RegCallBackInspectCavity2CompleteFunc(m_sealingInspectProcessor, m_RegInsCavity2CompleteCallBack);
+        }
+        /**********************************
+         - Register Inspection Complete CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallBackInspectTopCam1CompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCam1CompleteFunc callbackPointer);
+        public void RegCallBackInspectTopCam1CompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCam1CompleteFunc callbackPointer)
+        {
+            m_RegInsTopCam1CompleteCallBack = callbackPointer;
+
+            RegCallBackInspectTopCam1CompleteFunc(m_sealingInspectProcessor, m_RegInsTopCam1CompleteCallBack);
+        }
+        /**********************************
+         - Register Inspection TopCam Complete CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallBackInspectTopCam2CompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCam2CompleteFunc callbackPointer);
+        public void RegCallBackInspectTopCam2CompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsTopCam2CompleteFunc callbackPointer)
+        {
+            m_RegInsTopCam2CompleteCallBack = callbackPointer;
+
+            RegCallBackInspectTopCam2CompleteFunc(m_sealingInspectProcessor, m_RegInsTopCam2CompleteCallBack);
         }
         /**********************************
          - Register Inspection TopCam Complete CallBack

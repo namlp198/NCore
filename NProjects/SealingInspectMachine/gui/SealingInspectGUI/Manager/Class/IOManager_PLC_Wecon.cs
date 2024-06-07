@@ -133,6 +133,9 @@ namespace SealingInspectGUI.Manager.Class
         {
             while (m_bIsStartThread) 
             {
+                if (m_bIsConnected == false)
+                    break;
+
                 int nCoreIdx = 0;
                 int nProcessStatus = 1;
                 m_bInspectCompleted = false;
