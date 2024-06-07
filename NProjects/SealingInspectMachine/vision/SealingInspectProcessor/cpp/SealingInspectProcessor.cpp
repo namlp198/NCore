@@ -1770,6 +1770,16 @@ void CSealingInspectProcessor::RegCallbackInsTopCam2CompleteFunc(CallbackInspect
 	m_pCallbackInsTopCam2CompleteFunc = pFunc;
 }
 
+void CSealingInspectProcessor::RegCallbackGrabFrameSideCam1CompleteFunc(CallbackGrabFrameSideCam1Complete* pFunc)
+{
+	m_pCallbackGrabFrameSideCam1CompleteFunc = pFunc;
+}
+
+void CSealingInspectProcessor::RegCallbackGrabFrameSideCam2CompleteFunc(CallbackGrabFrameSideCam2Complete* pFunc)
+{
+	m_pCallbackGrabFrameSideCam2CompleteFunc = pFunc;
+}
+
 BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO)
 {
 	if (m_pSealingInspCore[nCoreIdx] == NULL)
@@ -1800,7 +1810,7 @@ void CSealingInspectProcessor::SetProcessStatus(int nCoreIdx, BOOL bProcessStatu
 	return;
 }
 
-void CSealingInspectProcessor::SetTriggerSideCam(int nCoreIdx, BOOL bTrigger)
+void CSealingInspectProcessor::SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab)
 {
 	if (m_pSealingInspCore[nCoreIdx] == NULL)
 		return;
@@ -1808,7 +1818,7 @@ void CSealingInspectProcessor::SetTriggerSideCam(int nCoreIdx, BOOL bTrigger)
 	CSingleLock localLock(&m_csProcessStatus[nCoreIdx]);
 	localLock.Lock();
 
-	m_bTriggerSideCam[nCoreIdx] = bTrigger;
+	m_bGrabFrameSideCam[nCoreIdx] = bGrab;
 
 	localLock.Unlock();
 	return;
@@ -1844,6 +1854,22 @@ void CSealingInspectProcessor::InspectTopCam2Complete(BOOL bSetting)
 		return;
 
 	(m_pCallbackInsTopCam2CompleteFunc)(bSetting);
+}
+
+void CSealingInspectProcessor::GrabFrameSideCam1Complete(BOOL bSetting)
+{
+	if (m_pCallbackGrabFrameSideCam1CompleteFunc == NULL)
+		return;
+
+	(m_pCallbackGrabFrameSideCam1CompleteFunc)(bSetting);
+}
+
+void CSealingInspectProcessor::GrabFrameSideCam2Complete(BOOL bSetting)
+{
+	if (m_pCallbackGrabFrameSideCam2CompleteFunc == NULL)
+		return;
+
+	(m_pCallbackGrabFrameSideCam2CompleteFunc)(bSetting);
 }
 
 BOOL CSealingInspectProcessor::GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes)

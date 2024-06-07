@@ -284,12 +284,12 @@ bool SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL b
 	return true;
 }
 
-bool SetTriggerSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger)
+bool SetGrabFrameSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	pProcessor->SetTriggerSideCam(nCoreIdx, bTrigger);
+	pProcessor->SetGrabFrameSideCam(nCoreIdx, bTrigger);
 
 	return true;
 }
@@ -414,4 +414,20 @@ void RegCallBackInspectTopCam2CompleteFunc(CSealingInspectProcessor* pProcessor,
 		return;
 
 	pProcessor->RegCallbackInsTopCam2CompleteFunc(pFunc);
+}
+
+void RegCallBackGrabFrameSideCam1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackGrabFrameSideCam1Complete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackGrabFrameSideCam1CompleteFunc(pFunc);
+}
+
+void RegCallBackGrabFrameSideCam2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackGrabFrameSideCam2Complete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackGrabFrameSideCam2CompleteFunc(pFunc);
 }

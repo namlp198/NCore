@@ -191,9 +191,21 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
+		int nCountFrame = 0;
+		while (nCountFrame < 10)
+		{
+			if (m_pInterface->GetGrabFrameSideCam(m_nCoreIdx) == TRUE)
+			{
+				nCountFrame++;
+				hikCamControl->SetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx);
+
+				m_pInterface->GrabFrameSideCam1Complete(FALSE);
+			}
+		}
+
 #ifdef TEST_INSPECT_CAVITY_1
 
-		/*for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
+		for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
 		{
 			switch (i)
 			{
@@ -217,9 +229,8 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 				break;
 			}
 			hikCamControl->SetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx);
-		}*/
+		}
 
-		
 
 #endif // TEST_INSPECT_CAVITY_1
 
@@ -352,7 +363,18 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
-		
+		int nCountFrame = 0;
+		while (nCountFrame < 10)
+		{
+			if (m_pInterface->GetGrabFrameSideCam(m_nCoreIdx) == TRUE)
+			{
+				nCountFrame++;
+				hikCamControl->SetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx);
+
+				m_pInterface->GrabFrameSideCam2Complete(FALSE);
+			}
+		}
+
 #ifdef TEST_INSPECT_CAVITY_1
 
 		for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
@@ -380,50 +402,48 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 				hikCamControl->SetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx);
 			}
-
+		}
 #endif // TEST_INSPECT_CAVITY_1
 
-			while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
-			{
-				int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
-
-				// Not Grab Image..
-				if (nFrameIdx == -1)
-					continue;
-
-				// 1. Get Buffer..
-				LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
-
-				if (pImageBuffer == NULL)
-					return;
-
-				cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
-
-				ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
-			}
-
-			m_pInterface->InspectCavity2Complete(FALSE);
-		}
-
-		CSingleLock localLock(&m_csPostProcessing);
-		m_csPostProcessing.Lock();
-
-		for (int i = 0; i < MAX_THREAD_COUNT; i++)
+		while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
 		{
-			if (nThreadIndex != i && m_bRunningThread[i] == TRUE)
-			{
-				m_bRunningThread[nThreadIndex] = FALSE;
-				m_csPostProcessing.Unlock();
+			int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
+
+			// Not Grab Image..
+			if (nFrameIdx == -1)
+				continue;
+
+			// 1. Get Buffer..
+			LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
+
+			if (pImageBuffer == NULL)
 				return;
-			}
+
+			cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+			ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
 		}
-
-		m_csPostProcessing.Unlock();
-
-		m_bRunningThread[nThreadIndex] = FALSE;
 
 		m_pInterface->InspectCavity2Complete(FALSE);
 	}
+	CSingleLock localLock(&m_csPostProcessing);
+	m_csPostProcessing.Lock();
+
+	for (int i = 0; i < MAX_THREAD_COUNT; i++)
+	{
+		if (nThreadIndex != i && m_bRunningThread[i] == TRUE)
+		{
+			m_bRunningThread[nThreadIndex] = FALSE;
+			m_csPostProcessing.Unlock();
+			return;
+		}
+	}
+
+	m_csPostProcessing.Unlock();
+
+	m_bRunningThread[nThreadIndex] = FALSE;
+
+	m_pInterface->InspectCavity2Complete(FALSE);
 }
 
 void CSealingInspectCore::StopThread()
@@ -2178,7 +2198,7 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 	int nNumberOfNGMax = 0;
 
 	// recipe side cam
-	
+
 	CSealingInspectRecipe_SideCam recipeSideCam = pRecipe->m_sealingInspRecipe_SideCam[nBufferProcessorIdx];
 
 	switch (nFrameIdx)

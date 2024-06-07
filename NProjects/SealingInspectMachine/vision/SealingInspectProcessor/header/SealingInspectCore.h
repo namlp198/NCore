@@ -19,9 +19,9 @@
 #include <tbb/tbb.h>
 
 #define TEST_INSPECT_CAVITY_1
-//#undef TEST_INSPECT_CAVITY_1
+#undef TEST_INSPECT_CAVITY_1
 #define TEST_INSPECT_CAVITY_2
-//#undef TEST_INSPECT_CAVITY_2
+#undef TEST_INSPECT_CAVITY_2
 
 interface ISealingInspectCoreToParent
 {
@@ -29,6 +29,8 @@ interface ISealingInspectCoreToParent
 	virtual void							InspectCavity2Complete(BOOL bSetting) = 0;
 	virtual void							InspectTopCam1Complete(BOOL bSetting) = 0;
 	virtual void							InspectTopCam2Complete(BOOL bSetting) = 0;
+	virtual void                            GrabFrameSideCam1Complete(BOOL bSetting) = 0;
+	virtual void                            GrabFrameSideCam2Complete(BOOL bSetting) = 0;
 	virtual CSealingInspectRecipe*          GetRecipe() = 0;
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() = 0;
 	virtual CSealingInspectHikCam*          GetHikCamControl() = 0;
@@ -40,6 +42,8 @@ interface ISealingInspectCoreToParent
 	virtual CSealingInspect_Simulation_IO*  GetSealingInspectSimulationIO(int nCoreIdx) = 0;
 	virtual BOOL                            GetProcessStatus(int nCoreIdx) = 0;
 	virtual void                            SetProcessStatus(int nCoreIdx, BOOL bProcessStatus) = 0;
+	virtual BOOL                            GetGrabFrameSideCam(int nCoreIdx) = 0;
+	virtual void                            SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab) = 0;
 };
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData

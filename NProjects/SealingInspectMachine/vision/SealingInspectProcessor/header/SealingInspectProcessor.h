@@ -34,6 +34,9 @@ typedef void _stdcall CallbackInspectCavity2Complete(BOOL bSetting);
 typedef void _stdcall CallbackInspectTopCam1Complete(BOOL bSetting);
 typedef void _stdcall CallbackInspectTopCam2Complete(BOOL bSetting);
 
+typedef void _stdcall CallbackGrabFrameSideCam1Complete(BOOL bSetting);
+typedef void _stdcall CallbackGrabFrameSideCam2Complete(BOOL bSetting);
+
 class AFX_EXT_CLASS CSealingInspectProcessor : public ISealingInspectHikCamToParent,
 	public ISealingInspectCoreToParent
 {
@@ -97,6 +100,9 @@ public:
 	void                              RegCallbackInsTopCam1CompleteFunc(CallbackInspectTopCam1Complete* pFunc);
 	void                              RegCallbackInsTopCam2CompleteFunc(CallbackInspectTopCam2Complete* pFunc);
 
+	void                              RegCallbackGrabFrameSideCam1CompleteFunc(CallbackGrabFrameSideCam1Complete* pFunc);
+	void                              RegCallbackGrabFrameSideCam2CompleteFunc(CallbackGrabFrameSideCam2Complete* pFunc);
+
 public:
 	// getter
 	CSealingInspectHikCam*           GetHikCamControl() { return m_pSealingInspHikCam; }
@@ -107,13 +113,15 @@ public:
 
 	void                             SetProcessStatus(int nCoreIdx, BOOL bProcessStatus);
 	BOOL                             GetProcessStatus(int nCoreIdx) { return m_bProcessStatus[nCoreIdx]; }
-	void                             SetTriggerSideCam(int nCoreIdx, BOOL bTrigger);
-	BOOL                             GetTriggerSideCam(int nCoreId) { return m_bTriggerSideCam[nCoreId]; }
+	void                             SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab);
+	BOOL                             GetGrabFrameSideCam(int nCoreId) { return m_bGrabFrameSideCam[nCoreId]; }
 public:
 	virtual void							InspectCavity1Complete(BOOL bSetting);
 	virtual void							InspectCavity2Complete(BOOL bSetting);
 	virtual void							InspectTopCam1Complete(BOOL bSetting);
 	virtual void							InspectTopCam2Complete(BOOL bSetting);
+	virtual void                            GrabFrameSideCam1Complete(BOOL bSetting);
+	virtual void                            GrabFrameSideCam2Complete(BOOL bSetting);
 	BOOL                                    GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes);
 	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
@@ -155,6 +163,9 @@ private:
 	CallbackInspectCavity2Complete*            m_pCallbackInsCavity2CompleteFunc;
 	CallbackInspectTopCam1Complete*            m_pCallbackInsTopCam1CompleteFunc;
 	CallbackInspectTopCam2Complete*            m_pCallbackInsTopCam2CompleteFunc;
+
+	CallbackGrabFrameSideCam1Complete*         m_pCallbackGrabFrameSideCam1CompleteFunc;
+	CallbackGrabFrameSideCam2Complete*         m_pCallbackGrabFrameSideCam2CompleteFunc;
 								               
 	// UI						               
 	CLogView*                                  m_pLogView;
@@ -195,5 +206,5 @@ private:
 
 	BOOL                                       m_bProcessStatus[NUMBER_OF_SET_INSPECT];
 
-	BOOL                                       m_bTriggerSideCam[NUMBER_OF_SET_INSPECT];
+	BOOL                                       m_bGrabFrameSideCam[NUMBER_OF_SET_INSPECT];
 };

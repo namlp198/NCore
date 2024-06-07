@@ -64,7 +64,7 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bProcessStatus);
 
-	__declspec(dllexport) bool                      SetTriggerSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger);
+	__declspec(dllexport) bool                      SetGrabFrameSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger);
 
 	/************************** Load Setting and Recipe **************************/
 	__declspec(dllexport) bool                      LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
@@ -95,4 +95,8 @@ extern "C"
 	__declspec(dllexport) void			            RegCallBackInspectTopCam1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCam1Complete* pFunc);
 
 	__declspec(dllexport) void			            RegCallBackInspectTopCam2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCam2Complete* pFunc);
+
+	__declspec(dllexport) void			            RegCallBackGrabFrameSideCam1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackGrabFrameSideCam1Complete* pFunc);
+
+	__declspec(dllexport) void			            RegCallBackGrabFrameSideCam2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackGrabFrameSideCam2Complete* pFunc);
 };
