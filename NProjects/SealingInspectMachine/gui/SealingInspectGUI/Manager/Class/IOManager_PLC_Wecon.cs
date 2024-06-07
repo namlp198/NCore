@@ -15,20 +15,21 @@ namespace SealingInspectGUI.Manager.Class
     public class IOManager_PLC_Wecon : IDisposable
     {
         // Bit Read
-        private const int TRIGGER_TOPCAM_1 = 4096 + 80; // M80
-        private const int TRIGGER_SIDECAM_1 = 4096 + 81; // M81
-        private const int TRIGGER_TOPCAM_2 = 4096 + 80 + 100; // M80
-        private const int TRIGGER_SIDECAM_2 = 4096 + 81 + 100; // M81
+        public const int TRIGGER_TOPCAM_1 = 4096 + 80; // M80
+        public const int TRIGGER_SIDECAM_1 = 4096 + 81; // M81
+        public const int TRIGGER_TOPCAM_2 = 4096 + 80 + 100; // M80
+        public const int TRIGGER_SIDECAM_2 = 4096 + 81 + 100; // M81
 
         // Bit Write
-        private const int INSPECT_TOPCAM_COMPLETED_1 = 4096 + 86; // M86
-        private const int INSPECT_SIDECAM_COMPLETED_1 = 4096 + 87; // M87
-        private const int INSPECT_OK_1 = 4096 + 88; // M88
-        private const int INSPECT_NG_1 = 4096 + 89; // M89
+        public const int INSPECT_TOPCAM_COMPLETED_1 = 4096 + 86; // M86
+        public const int GRABIMAGE_SIDECAM1_COMPLETED = 4096 + 87; // M87
+        public const int GRABIMAGE_SIDECAM2_COMPLETED = 4096 + 87 + 100; // M87
+        public const int INSPECT_OK_1 = 4096 + 88; // M88
+        public const int INSPECT_NG_1 = 4096 + 89; // M89
 
-        private const int INSPECT_TOPCAM_COMPLETED_2 = 4096 + 86 + 100; // M86
-        private const int INSPECT_OK_2 = 4096 + 88 + 100; // M88
-        private const int INSPECT_NG_2 = 4096 + 89 + 100; // M89
+        public const int INSPECT_TOPCAM_COMPLETED_2 = 4096 + 86 + 100; // M86
+        public const int INSPECT_OK_2 = 4096 + 88 + 100; // M88
+        public const int INSPECT_NG_2 = 4096 + 89 + 100; // M89
 
         private static readonly object _lockObj = new object();
         private CancellationTokenSource _cancellationTokenSource;
@@ -183,8 +184,9 @@ namespace SealingInspectGUI.Manager.Class
                 {
                     if(ReadSingleCoil(LX5V[0], TRIGGER_SIDECAM_1))
                     {
-                        InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSideCam(nCoreIdx, 1);
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetGrabFrameSideCam(nCoreIdx, 1);
                         nTriggerCount++;
+                        Thread.Sleep(DelayTime);
                     }
                 }
 
@@ -365,6 +367,11 @@ namespace SealingInspectGUI.Manager.Class
                 return;
 
             plc.WriteSingleCoilTCPIP(nAddress, bVal);
+        }
+
+        public void WriteSingleCoil(int nIndexPLC, int nAddress, bool bVal)
+        {
+            WriteSingleCoil(LX5V[nIndexPLC], nAddress, bVal);
         }
         #endregion
 

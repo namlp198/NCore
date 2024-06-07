@@ -111,8 +111,12 @@ namespace SealingInspectGUI.ViewModels
             InterfaceManager.InspectionCavity2Complete += new InterfaceManager.InspectionCavity2Complete_Handler(InspectionCavity2Complete);
             InterfaceManager.InspectionTopCam1Complete += new InterfaceManager.InspectionTopCam1Complete_Handler(InspectTopCam1Completed);
             InterfaceManager.InspectionTopCam2Complete += new InterfaceManager.InspectionTopCam2Complete_Handler(InspectTopCam2Completed);
+
+            InterfaceManager.GrabFrameSideCam1Complete += new InterfaceManager.GrabFrameSideCam1Complete_Handler(GrabFrameSideCam1Complete);
+            InterfaceManager.GrabFrameSideCam2Complete += new InterfaceManager.GrabFrameSideCam2Complete_Handler(GrabFrameSideCam2Complete);
         }
 
+       
         private async void SimulationThread_UpdateUI_SumCameraView()
         {
             _sumCameraView.buffTopCam1_Frame1.CameraIndex = 99;
@@ -397,6 +401,22 @@ namespace SealingInspectGUI.ViewModels
                 PLC_Wecon.IsInspectTopCamCompleted[1] = true;
             }
         }
+        private void GrabFrameSideCam2Complete(int bSetting)
+        {
+            if (bSetting == 1)
+                return;
+
+            PLC_Wecon.WriteSingleCoil(0, IOManager_PLC_Wecon.GRABIMAGE_SIDECAM2_COMPLETED, true);
+        }
+
+        private void GrabFrameSideCam1Complete(int bSetting)
+        {
+            if (bSetting == 1)
+                return;
+
+            PLC_Wecon.WriteSingleCoil(0, IOManager_PLC_Wecon.GRABIMAGE_SIDECAM1_COMPLETED, true);
+        }
+
         private async void UpdateResultView(BufferViewerSimple bufferSimple, int nStatus, int nBuff, int nFrame, string s)
         {
             if (string.Compare(s.ToUpper(), "TOP") == 0)

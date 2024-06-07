@@ -23,6 +23,8 @@ namespace SealingInspectGUI.Manager.SumManager
             m_sealingInspProcessorDll.RegCallBackInspectCavity2CompleteFunc(InterfaceManager.Instance.CallbackInsCavity2CompleteFunc);
             m_sealingInspProcessorDll.RegCallBackInspectTopCam1CompleteFunc(InterfaceManager.Instance.CallbackInsTopCam1CompleteFunc);
             m_sealingInspProcessorDll.RegCallBackInspectTopCam2CompleteFunc(InterfaceManager.Instance.CallbackInsTopCam2CompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackGrabFrameSideCam1CompleteFunc(InterfaceManager.Instance.CallbackGrabFrameSideCame1CompleteFunc);
+            m_sealingInspProcessorDll.RegCallBackGrabFrameSideCam2CompleteFunc(InterfaceManager.Instance.CallbackGrabFrameSideCame2CompleteFunc);
             m_sealingInspProcessorDll.Initialize();
         }
 

@@ -23,6 +23,12 @@ namespace SealingInspectGUI.Manager
         public delegate void InspectionTopCam2Complete_Handler(int bSetting);
         public static event InspectionTopCam2Complete_Handler InspectionTopCam2Complete;
 
+        public delegate void GrabFrameSideCam1Complete_Handler(int bSetting);
+        public static event GrabFrameSideCam1Complete_Handler GrabFrameSideCam1Complete;
+
+        public delegate void GrabFrameSideCam2Complete_Handler(int bSetting);
+        public static event GrabFrameSideCam2Complete_Handler GrabFrameSideCam2Complete;
+
         public SimulationThread m_simulationThread = new SimulationThread();
         public SealingInspectProcessorManager m_sealingInspectProcessorManager = new SealingInspectProcessorManager();
 
@@ -59,6 +65,16 @@ namespace SealingInspectGUI.Manager
         public void CallbackInsTopCam2CompleteFunc(int bSetting)
         {
             InspectionTopCam2Complete(bSetting);
+        }
+
+        public void CallbackGrabFrameSideCame1CompleteFunc(int bSetting)
+        {
+            GrabFrameSideCam1Complete(bSetting);
+        }
+
+        public void CallbackGrabFrameSideCame2CompleteFunc(int bSetting)
+        {
+            GrabFrameSideCam2Complete(bSetting);
         }
 
         object m_csInspectionComplete = new object();

@@ -19,6 +19,9 @@ namespace SealingInspectGUI.Manager.Class
         public static CallbackInsCavity2CompleteFunc m_RegInsCavity2CompleteCallBack;
         public static CallbackInsTopCam1CompleteFunc m_RegInsTopCam1CompleteCallBack;
         public static CallbackInsTopCam2CompleteFunc m_RegInsTopCam2CompleteCallBack;
+
+        public static CallbackGrabFrameSideCam1CompleteFunc m_RegGrabFrameSideCam1CompleteCallBack;
+        public static CallbackGrabFrameSideCam2CompleteFunc m_RegGrabFrameSideCam2CompleteCallBack;
         public SealingInspectProcessorDll()
         {
             m_sealingInspectProcessor = CreateSealingInspectProcessor();
@@ -47,6 +50,14 @@ namespace SealingInspectGUI.Manager.Class
         // Inspection TopCam 2 Compete CallBack
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void CallbackInsTopCam2CompleteFunc(int bSetting);
+
+        // Frab Frame Side Cam 1 Compete CallBack
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void CallbackGrabFrameSideCam1CompleteFunc(int bSetting);
+
+        // Frab Frame Side Cam 2 Compete CallBack
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void CallbackGrabFrameSideCam2CompleteFunc(int bSetting);
 
         #region Init and delete
         /// <summary>
@@ -296,8 +307,8 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SetTriggerSideCam(IntPtr pInstance, int nCoreIdx, int nTriggerSideCam);
-        public bool SetTriggerSideCam(int nCoreIdx, int nTriggerSideCam) { return SetTriggerSideCam(m_sealingInspectProcessor, nCoreIdx, nTriggerSideCam); }
+        extern private static bool SetGrabFrameSideCam(IntPtr pInstance, int nCoreIdx, int nTriggerSideCam);
+        public bool SetGrabFrameSideCam(int nCoreIdx, int nTriggerSideCam) { return SetGrabFrameSideCam(m_sealingInspectProcessor, nCoreIdx, nTriggerSideCam); }
         /**********************************
          - SetTriggerSideCam
          - Parameter : Index Core, Process Status
@@ -500,6 +511,42 @@ namespace SealingInspectGUI.Manager.Class
             m_RegInsTopCam2CompleteCallBack = callbackPointer;
 
             RegCallBackInspectTopCam2CompleteFunc(m_sealingInspectProcessor, m_RegInsTopCam2CompleteCallBack);
+        }
+        /**********************************
+         - Register Inspection TopCam Complete CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallBackGrabFrameSideCam1CompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackGrabFrameSideCam1CompleteFunc callbackPointer);
+        public void RegCallBackGrabFrameSideCam1CompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackGrabFrameSideCam1CompleteFunc callbackPointer)
+        {
+            m_RegGrabFrameSideCam1CompleteCallBack = callbackPointer;
+
+            RegCallBackGrabFrameSideCam1CompleteFunc(m_sealingInspectProcessor, m_RegGrabFrameSideCam1CompleteCallBack);
+        }
+        /**********************************
+         - Register Inspection TopCam Complete CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallBackGrabFrameSideCam2CompleteFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackGrabFrameSideCam2CompleteFunc callbackPointer);
+        public void RegCallBackGrabFrameSideCam2CompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackGrabFrameSideCam2CompleteFunc callbackPointer)
+        {
+            m_RegGrabFrameSideCam2CompleteCallBack = callbackPointer;
+
+            RegCallBackGrabFrameSideCam2CompleteFunc(m_sealingInspectProcessor, m_RegGrabFrameSideCam2CompleteCallBack);
         }
         /**********************************
          - Register Inspection TopCam Complete CallBack
