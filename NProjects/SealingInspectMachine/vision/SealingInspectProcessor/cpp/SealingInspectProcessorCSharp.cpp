@@ -284,6 +284,16 @@ bool SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL b
 	return true;
 }
 
+bool SetTriggerSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	pProcessor->SetTriggerSideCam(nCoreIdx, bTrigger);
+
+	return true;
+}
+
 bool LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)
 {
 	if (pProcessor == NULL)

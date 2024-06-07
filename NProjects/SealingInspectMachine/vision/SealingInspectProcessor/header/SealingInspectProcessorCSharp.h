@@ -64,6 +64,8 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bProcessStatus);
 
+	__declspec(dllexport) bool                      SetTriggerSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger);
+
 	/************************** Load Setting and Recipe **************************/
 	__declspec(dllexport) bool                      LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
 

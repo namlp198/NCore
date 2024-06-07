@@ -107,7 +107,8 @@ public:
 
 	void                             SetProcessStatus(int nCoreIdx, BOOL bProcessStatus);
 	BOOL                             GetProcessStatus(int nCoreIdx) { return m_bProcessStatus[nCoreIdx]; }
-
+	void                             SetTriggerSideCam(int nCoreIdx, BOOL bTrigger);
+	BOOL                             GetTriggerSideCam(int nCoreId) { return m_bTriggerSideCam[nCoreId]; }
 public:
 	virtual void							InspectCavity1Complete(BOOL bSetting);
 	virtual void							InspectCavity2Complete(BOOL bSetting);
@@ -193,4 +194,6 @@ private:
 	cv::Mat                                    m_matBGR;
 
 	BOOL                                       m_bProcessStatus[NUMBER_OF_SET_INSPECT];
+
+	BOOL                                       m_bTriggerSideCam[NUMBER_OF_SET_INSPECT];
 };

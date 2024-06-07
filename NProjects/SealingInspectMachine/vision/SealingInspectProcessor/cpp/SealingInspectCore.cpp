@@ -140,7 +140,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 			// LOCK PROCESS
 			while (m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bLOCK_PROCESS != TRUE)
 			{
-				Sleep(100);
+				Sleep(50);
 			}
 			m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bLOCK_PROCESS = FALSE;
 		}
@@ -148,7 +148,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 		{
 			while (m_pInterface->GetProcessStatus(m_nCoreIdx) != TRUE)
 			{
-				Sleep(100);
+				Sleep(50);
 			}
 			m_pInterface->SetProcessStatus(m_nCoreIdx, FALSE);
 		}
@@ -193,25 +193,33 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 
 #ifdef TEST_INSPECT_CAVITY_1
 
-		for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
+		/*for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
 		{
 			switch (i)
 			{
 			case 0:
+			case 1:
+			case 2:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame1);
 				break;
-			case 1:
+			case 3:
+			case 4:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame2);
 				break;
-			case 2:
+			case 5:
+			case 6:
+			case 7:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame3);
 				break;
-			case 3:
+			case 8:
+			case 9:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame4);
 				break;
 			}
 			hikCamControl->SetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx);
-		}
+		}*/
+
+		
 
 #endif // TEST_INSPECT_CAVITY_1
 
@@ -293,7 +301,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 			// LOCK PROCESS
 			while (m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bLOCK_PROCESS != TRUE)
 			{
-				Sleep(100);
+				Sleep(50);
 			}
 			m_pInterface->GetSealingInspectSimulationIO(m_nCoreIdx)->m_bLOCK_PROCESS = FALSE;
 		}
@@ -301,7 +309,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 		{
 			while (m_pInterface->GetProcessStatus(m_nCoreIdx) != TRUE)
 			{
-				Sleep(100);
+				Sleep(50);
 			}
 			m_pInterface->SetProcessStatus(m_nCoreIdx, FALSE);
 		}
@@ -344,6 +352,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
+		
 #ifdef TEST_INSPECT_CAVITY_1
 
 		for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
@@ -351,63 +360,70 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 			switch (i)
 			{
 			case 0:
+			case 1:
+			case 2:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame1);
 				break;
-			case 1:
+			case 3:
+			case 4:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame2);
 				break;
-			case 2:
+			case 5:
+			case 6:
+			case 7:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame3);
 				break;
-			case 3:
+			case 8:
+			case 9:
 				Sleep(nDelayTimeGrabImage_SideCam_Frame4);
 				break;
+
+				hikCamControl->SetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx);
 			}
-			hikCamControl->SetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx);
-		}
 
 #endif // TEST_INSPECT_CAVITY_1
 
-		while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
-		{
-			int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
+			while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
+			{
+				int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
 
-			// Not Grab Image..
-			if (nFrameIdx == -1)
-				continue;
+				// Not Grab Image..
+				if (nFrameIdx == -1)
+					continue;
 
-			// 1. Get Buffer..
-			LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
+				// 1. Get Buffer..
+				LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
 
-			if (pImageBuffer == NULL)
-				return;
+				if (pImageBuffer == NULL)
+					return;
 
-			cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+				cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
 
-			ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
+				ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
+			}
+
+			m_pInterface->InspectCavity2Complete(FALSE);
 		}
+
+		CSingleLock localLock(&m_csPostProcessing);
+		m_csPostProcessing.Lock();
+
+		for (int i = 0; i < MAX_THREAD_COUNT; i++)
+		{
+			if (nThreadIndex != i && m_bRunningThread[i] == TRUE)
+			{
+				m_bRunningThread[nThreadIndex] = FALSE;
+				m_csPostProcessing.Unlock();
+				return;
+			}
+		}
+
+		m_csPostProcessing.Unlock();
+
+		m_bRunningThread[nThreadIndex] = FALSE;
 
 		m_pInterface->InspectCavity2Complete(FALSE);
 	}
-
-	CSingleLock localLock(&m_csPostProcessing);
-	m_csPostProcessing.Lock();
-
-	for (int i = 0; i < MAX_THREAD_COUNT; i++)
-	{
-		if (nThreadIndex != i && m_bRunningThread[i] == TRUE)
-		{
-			m_bRunningThread[nThreadIndex] = FALSE;
-			m_csPostProcessing.Unlock();
-			return;
-		}
-	}
-
-	m_csPostProcessing.Unlock();
-
-	m_bRunningThread[nThreadIndex] = FALSE;
-
-	m_pInterface->InspectCavity2Complete(FALSE);
 }
 
 void CSealingInspectCore::StopThread()
@@ -2231,6 +2247,24 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		case 4:
 			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame4 = nRet;
 			break;
+		case 5:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame5 = nRet;
+			break;
+		case 6:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame6 = nRet;
+			break;
+		case 7:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame7 = nRet;
+			break;
+		case 8:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame8 = nRet;
+			break;
+		case 9:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame9 = nRet;
+			break;
+		case 10:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame10 = nRet;
+			break;
 		}
 
 		return;
@@ -2260,6 +2294,24 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 			break;
 		case 4:
 			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame4 = nRet;
+			break;
+		case 5:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame5 = nRet;
+			break;
+		case 6:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame6 = nRet;
+			break;
+		case 7:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame7 = nRet;
+			break;
+		case 8:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame8 = nRet;
+			break;
+		case 9:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame9 = nRet;
+			break;
+		case 10:
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame10 = nRet;
 			break;
 		}
 
@@ -2300,6 +2352,24 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		break;
 	case 4:
 		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame4 = nRet;
+		break;
+	case 5:
+		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame5 = nRet;
+		break;
+	case 6:
+		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame6 = nRet;
+		break;
+	case 7:
+		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame7 = nRet;
+		break;
+	case 8:
+		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame8 = nRet;
+		break;
+	case 9:
+		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame9 = nRet;
+		break;
+	case 10:
+		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_SideCam.m_bStatusFrame10 = nRet;
 		break;
 	}
 }

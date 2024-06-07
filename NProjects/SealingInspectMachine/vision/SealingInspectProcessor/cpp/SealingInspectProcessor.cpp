@@ -1800,6 +1800,20 @@ void CSealingInspectProcessor::SetProcessStatus(int nCoreIdx, BOOL bProcessStatu
 	return;
 }
 
+void CSealingInspectProcessor::SetTriggerSideCam(int nCoreIdx, BOOL bTrigger)
+{
+	if (m_pSealingInspCore[nCoreIdx] == NULL)
+		return;
+
+	CSingleLock localLock(&m_csProcessStatus[nCoreIdx]);
+	localLock.Lock();
+
+	m_bTriggerSideCam[nCoreIdx] = bTrigger;
+
+	localLock.Unlock();
+	return;
+}
+
 void CSealingInspectProcessor::InspectCavity1Complete(BOOL bSetting)
 {
 	if (m_pCallbackInsCavity1CompleteFunc == NULL)
