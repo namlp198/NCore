@@ -29,8 +29,10 @@
 
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarm(emInspectCavity nSetInsp, char* strAlarmMessage);
-typedef void _stdcall CallbackInspectComplete(emInspectCavity emInspCavity, BOOL bSetting);
-typedef void _stdcall CallbackInspectTopCamComplete(emInspectCavity nSetInsp);
+typedef void _stdcall CallbackInspectCavity1Complete(BOOL bSetting);
+typedef void _stdcall CallbackInspectCavity2Complete(BOOL bSetting);
+typedef void _stdcall CallbackInspectTopCam1Complete(BOOL bSetting);
+typedef void _stdcall CallbackInspectTopCam2Complete(BOOL bSetting);
 
 class AFX_EXT_CLASS CSealingInspectProcessor : public ISealingInspectHikCamToParent,
 	public ISealingInspectCoreToParent
@@ -90,8 +92,10 @@ public:
 	// CallBack
 	void                              RegCallbackLogFunc(CallbackLogFunc* pFunc);
 	void                              RegCallbackAlarm(CallbackAlarm* pFunc);
-	void                              RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc);
-	void                              RegCallbackInsTopCamCompleteFunc(CallbackInspectTopCamComplete* pFunc);
+	void                              RegCallbackInsCavity1completeFunc(CallbackInspectCavity1Complete* pFunc);
+	void                              RegCallbackInsCavity2completeFunc(CallbackInspectCavity2Complete* pFunc);
+	void                              RegCallbackInsTopCam1CompleteFunc(CallbackInspectTopCam1Complete* pFunc);
+	void                              RegCallbackInsTopCam2CompleteFunc(CallbackInspectTopCam2Complete* pFunc);
 
 public:
 	// getter
@@ -105,8 +109,10 @@ public:
 	BOOL                             GetProcessStatus(int nCoreIdx) { return m_bProcessStatus[nCoreIdx]; }
 
 public:
-	virtual void							InspectComplete(emInspectCavity nSetInsp, BOOL bSetting);
-	virtual void							InspectTopCamComplete(emInspectCavity nSetInsp);
+	virtual void							InspectCavity1Complete(BOOL bSetting);
+	virtual void							InspectCavity2Complete(BOOL bSetting);
+	virtual void							InspectTopCam1Complete(BOOL bSetting);
+	virtual void							InspectTopCam2Complete(BOOL bSetting);
 	BOOL                                    GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes);
 	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
@@ -144,8 +150,10 @@ private:
 								               
 	CallbackLogFunc*                           m_pCallbackLogFunc;
 	CallbackAlarm*                             m_pCallbackAlarm;
-	CallbackInspectComplete*                   m_pCallbackInsCompleteFunc;
-	CallbackInspectTopCamComplete*             m_pCallbackInsTopCamCompleteFunc;
+	CallbackInspectCavity1Complete*            m_pCallbackInsCavity1CompleteFunc;
+	CallbackInspectCavity2Complete*            m_pCallbackInsCavity2CompleteFunc;
+	CallbackInspectTopCam1Complete*            m_pCallbackInsTopCam1CompleteFunc;
+	CallbackInspectTopCam2Complete*            m_pCallbackInsTopCam2CompleteFunc;
 								               
 	// UI						               
 	CLogView*                                  m_pLogView;

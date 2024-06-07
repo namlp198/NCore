@@ -25,8 +25,10 @@
 
 interface ISealingInspectCoreToParent
 {
-	virtual void							InspectComplete(emInspectCavity nSetInsp, BOOL bSetting) = 0;
-	virtual void							InspectTopCamComplete(emInspectCavity nSetInsp) = 0;
+	virtual void							InspectCavity1Complete(BOOL bSetting) = 0;
+	virtual void							InspectCavity2Complete(BOOL bSetting) = 0;
+	virtual void							InspectTopCam1Complete(BOOL bSetting) = 0;
+	virtual void							InspectTopCam2Complete(BOOL bSetting) = 0;
 	virtual CSealingInspectRecipe*          GetRecipe() = 0;
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() = 0;
 	virtual CSealingInspectHikCam*          GetHikCamControl() = 0;

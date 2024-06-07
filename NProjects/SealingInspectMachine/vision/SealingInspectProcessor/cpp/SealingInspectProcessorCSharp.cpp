@@ -374,18 +374,34 @@ void RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* p
 	pProcessor->RegCallbackLogFunc(pFunc);
 }
 
-void RegCallBackInspectCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectComplete* pFunc)
+void RegCallBackInspectCavity1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectCavity1Complete* pFunc)
 {
 	if (pProcessor == NULL)
 		return;
 
-	pProcessor->RegCallbackInscompleteFunc(pFunc);
+	pProcessor->RegCallbackInsCavity1completeFunc(pFunc);
 }
 
-void RegCallBackInspectTopCamCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCamComplete* pFunc)
+void RegCallBackInspectCavity2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectCavity2Complete* pFunc)
 {
 	if (pProcessor == NULL)
 		return;
 
-	pProcessor->RegCallbackInsTopCamCompleteFunc(pFunc);
+	pProcessor->RegCallbackInsCavity2completeFunc(pFunc);
+}
+
+void RegCallBackInspectTopCam1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCam1Complete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackInsTopCam1CompleteFunc(pFunc);
+}
+
+void RegCallBackInspectTopCam2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCam2Complete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackInsTopCam2CompleteFunc(pFunc);
 }

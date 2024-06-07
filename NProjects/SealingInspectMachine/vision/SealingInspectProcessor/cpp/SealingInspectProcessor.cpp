@@ -1750,14 +1750,24 @@ void CSealingInspectProcessor::RegCallbackAlarm(CallbackAlarm* pFunc)
 	m_pCallbackAlarm = pFunc;
 }
 
-void CSealingInspectProcessor::RegCallbackInscompleteFunc(CallbackInspectComplete* pFunc)
+void CSealingInspectProcessor::RegCallbackInsCavity1completeFunc(CallbackInspectCavity1Complete* pFunc)
 {
-	m_pCallbackInsCompleteFunc = pFunc;
+	m_pCallbackInsCavity1CompleteFunc = pFunc;
 }
 
-void CSealingInspectProcessor::RegCallbackInsTopCamCompleteFunc(CallbackInspectTopCamComplete* pFunc)
+void CSealingInspectProcessor::RegCallbackInsCavity2completeFunc(CallbackInspectCavity2Complete* pFunc)
 {
-	m_pCallbackInsTopCamCompleteFunc = pFunc;
+	m_pCallbackInsCavity2CompleteFunc = pFunc;
+}
+
+void CSealingInspectProcessor::RegCallbackInsTopCam1CompleteFunc(CallbackInspectTopCam1Complete* pFunc)
+{
+	m_pCallbackInsTopCam1CompleteFunc = pFunc;
+}
+
+void CSealingInspectProcessor::RegCallbackInsTopCam2CompleteFunc(CallbackInspectTopCam2Complete* pFunc)
+{
+	m_pCallbackInsTopCam2CompleteFunc = pFunc;
 }
 
 BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO)
@@ -1790,20 +1800,36 @@ void CSealingInspectProcessor::SetProcessStatus(int nCoreIdx, BOOL bProcessStatu
 	return;
 }
 
-void CSealingInspectProcessor::InspectComplete(emInspectCavity nSetInsp, BOOL bSetting)
+void CSealingInspectProcessor::InspectCavity1Complete(BOOL bSetting)
 {
-	if (m_pCallbackInsCompleteFunc == NULL)
+	if (m_pCallbackInsCavity1CompleteFunc == NULL)
 		return;
 
-	(m_pCallbackInsCompleteFunc)(nSetInsp, bSetting);
+	(m_pCallbackInsCavity1CompleteFunc)(bSetting);
 }
 
-void CSealingInspectProcessor::InspectTopCamComplete(emInspectCavity nSetInsp)
+void CSealingInspectProcessor::InspectCavity2Complete(BOOL bSetting)
 {
-	if (m_pCallbackInsTopCamCompleteFunc == NULL)
+	if (m_pCallbackInsCavity2CompleteFunc == NULL)
 		return;
 
-	(m_pCallbackInsTopCamCompleteFunc)(nSetInsp);
+	(m_pCallbackInsCavity2CompleteFunc)(bSetting);
+}
+
+void CSealingInspectProcessor::InspectTopCam1Complete(BOOL bSetting)
+{
+	if (m_pCallbackInsTopCam1CompleteFunc == NULL)
+		return;
+
+	(m_pCallbackInsTopCam1CompleteFunc)(bSetting);
+}
+
+void CSealingInspectProcessor::InspectTopCam2Complete(BOOL bSetting)
+{
+	if (m_pCallbackInsTopCam2CompleteFunc == NULL)
+		return;
+
+	(m_pCallbackInsTopCam2CompleteFunc)(bSetting);
 }
 
 BOOL CSealingInspectProcessor::GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes)

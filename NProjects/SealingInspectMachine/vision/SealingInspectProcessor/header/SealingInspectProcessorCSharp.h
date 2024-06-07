@@ -86,7 +86,11 @@ extern "C"
 	/************************** Callback **************************/
 	__declspec(dllexport) void                      RegCallbackLogFunc(CSealingInspectProcessor* pProcessor, CallbackLogFunc* pFunc);
 
-	__declspec(dllexport) void			            RegCallBackInspectCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectComplete* pFunc);
+	__declspec(dllexport) void			            RegCallBackInspectCavity1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectCavity1Complete* pFunc);
 
-	__declspec(dllexport) void			            RegCallBackInspectTopCamCompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCamComplete* pFunc);
+	__declspec(dllexport) void			            RegCallBackInspectCavity2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectCavity2Complete* pFunc);
+
+	__declspec(dllexport) void			            RegCallBackInspectTopCam1CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCam1Complete* pFunc);
+
+	__declspec(dllexport) void			            RegCallBackInspectTopCam2CompleteFunc(CSealingInspectProcessor* pProcessor, CallbackInspectTopCam2Complete* pFunc);
 };

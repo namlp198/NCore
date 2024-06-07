@@ -187,7 +187,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 		// 9. process frame 2 (top cam 1)
 		ProcessFrame2_TopCam(recipe, nTopCam1_BufferHikCamIdx, nTopCam1_BufferProcessor, matTopResult);
 
-		m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity1);
+		m_pInterface->InspectTopCam1Complete(FALSE);
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
@@ -234,7 +234,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 			ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
 		}
 
-		m_pInterface->InspectComplete(emInspectCavity_Cavity1, FALSE);
+		m_pInterface->InspectCavity1Complete(FALSE);
 	}
 
 	CSingleLock localLock(&m_csPostProcessing);
@@ -254,7 +254,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 
 	m_bRunningThread[nThreadIndex] = FALSE;
 
-	m_pInterface->InspectComplete(emInspectCavity_Cavity1, FALSE);
+	m_pInterface->InspectCavity1Complete(FALSE);
 }
 
 void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
@@ -340,7 +340,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 		// 9. process frame 2 (top cam 1)
 		ProcessFrame2_TopCam(recipe, nTopCam2_BufferHikCamIdx, nTopCam2_BufferProcessor, matTopResult);
 
-		m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity2);
+		m_pInterface->InspectTopCam2Complete(FALSE);
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
@@ -387,7 +387,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 			ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
 		}
 
-		m_pInterface->InspectComplete(emInspectCavity_Cavity2, FALSE);
+		m_pInterface->InspectCavity2Complete(FALSE);
 	}
 
 	CSingleLock localLock(&m_csPostProcessing);
@@ -407,7 +407,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 	m_bRunningThread[nThreadIndex] = FALSE;
 
-	m_pInterface->InspectComplete(emInspectCavity_Cavity2, FALSE);
+	m_pInterface->InspectCavity2Complete(FALSE);
 }
 
 void CSealingInspectCore::StopThread()
@@ -484,7 +484,7 @@ void CSealingInspectCore::TestInspectCavity1(int nCoreIdx)
 	// 9. process frame 2 (top cam 1)
 	ProcessFrame2_TopCam(recipe, nTopCam1_BufferHikCamIdx, nTopCam1_BufferProcessor, matTopResult);
 
-	m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity1);
+	m_pInterface->InspectTopCam1Complete(FALSE);
 
 	// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
@@ -532,7 +532,7 @@ void CSealingInspectCore::TestInspectCavity1(int nCoreIdx)
 		ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
 	}
 
-	m_pInterface->InspectComplete(emInspectCavity_Cavity1, FALSE);
+	m_pInterface->InspectCavity1Complete(FALSE);
 }
 
 void CSealingInspectCore::TestInspectCavity2(int nCoreIdx)
@@ -599,7 +599,7 @@ void CSealingInspectCore::TestInspectCavity2(int nCoreIdx)
 	// 9. process frame 2 (top cam 1)
 	ProcessFrame2_TopCam(recipe, nTopCam2_BufferHikCamIdx, nTopCam2_BufferProcessor, matTopResult);
 
-	m_pInterface->InspectTopCamComplete(emInspectCavity_Cavity2);
+	m_pInterface->InspectTopCam2Complete(FALSE);
 
 	// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
@@ -646,7 +646,7 @@ void CSealingInspectCore::TestInspectCavity2(int nCoreIdx)
 		ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
 	}
 
-	m_pInterface->InspectComplete(emInspectCavity_Cavity2, FALSE);
+	m_pInterface->InspectCavity2Complete(FALSE);
 }
 
 void CSealingInspectCore::Inspect_TopCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame)
@@ -677,9 +677,9 @@ void CSealingInspectCore::Inspect_TopCam_Simulation(int nCoreIdx, int nCamIdx, i
 	}
 
 	if (nCoreIdx == 0)
-		m_pInterface->InspectComplete(emInspectCavity_Cavity1, TRUE);
+		m_pInterface->InspectCavity1Complete(TRUE);
 	else if (nCoreIdx == 1)
-		m_pInterface->InspectComplete(emInspectCavity_Cavity2, TRUE);
+		m_pInterface->InspectCavity2Complete(TRUE);
 }
 
 void CSealingInspectCore::Inspect_SideCam_Simulation(int nCoreIdx, int nCamIdx, int nFrame)
@@ -708,9 +708,9 @@ void CSealingInspectCore::Inspect_SideCam_Simulation(int nCoreIdx, int nCamIdx, 
 		ProcessFrame_SideCam(pRecipe, nCamIdx, nSideCam2_ResultBuffer, nFrame, mat);
 
 	if (nCoreIdx == 0)
-		m_pInterface->InspectComplete(emInspectCavity_Cavity1, TRUE);
+		m_pInterface->InspectCavity1Complete(TRUE);
 	else if (nCoreIdx == 1)
-		m_pInterface->InspectComplete(emInspectCavity_Cavity2, TRUE);
+		m_pInterface->InspectCavity2Complete(TRUE);
 }
 
 BOOL CSealingInspectCore::FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax, int nRadiusInnerMin, int nRadiusInnerMax, std::vector<std::vector<cv::Point>>& vecContours, std::vector<cv::Vec4i>& vecHierarchy, std::vector<cv::Point2f>& vecCenters, std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius)
