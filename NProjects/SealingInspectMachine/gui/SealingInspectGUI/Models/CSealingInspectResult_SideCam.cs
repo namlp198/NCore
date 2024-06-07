@@ -14,6 +14,12 @@ namespace SealingInspectGUI.Models
         public int m_bStatusFrame2;
         public int m_bStatusFrame3;
         public int m_bStatusFrame4;
+        public int m_bStatusFrame5;
+        public int m_bStatusFrame6;
+        public int m_bStatusFrame7;
+        public int m_bStatusFrame8;
+        public int m_bStatusFrame9;
+        public int m_bStatusFrame10;
         public int m_bInspectComplete;
     }
 }

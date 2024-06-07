@@ -41,7 +41,7 @@ namespace SealingInspectGUI.ViewModels
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
         private string m_strImageSavePath = string.Empty;
         private string[] m_arrFrameOfTOP = new string[Defines.MAX_IMAGE_BUFFER_TOPCAM] { "1", "2" };
-        private string[] m_arrFrameOfSIDE = new string[Defines.MAX_IMAGE_BUFFER_SIDECAM] { "1", "2", "3", "4" };
+        private string[] m_arrFrameOfSIDE = new string[Defines.MAX_IMAGE_BUFFER_SIDECAM] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
 
         private List<string> m_cameraLst = new List<string>();
         private List<string> m_frameList = new List<string>();

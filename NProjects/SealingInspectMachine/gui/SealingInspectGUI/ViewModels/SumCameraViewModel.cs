@@ -23,8 +23,7 @@ namespace SealingInspectGUI.ViewModels
         private static readonly object _lockObj = new object();
         private readonly Dispatcher _dispatcher;
         private UcSumCameraView _sumCameraView;
-        public IOManager_PLC_Wecon PLC_Wecon_1;
-        public IOManager_PLC_Wecon PLC_Wecon_2;
+        public IOManager_PLC_Wecon PLC_Wecon;
 
         // status result cavity 1
         private int m_nTopCamFrame1_Cavity1 = -1;
@@ -33,6 +32,12 @@ namespace SealingInspectGUI.ViewModels
         private int m_nSideCamFrame2_Cavity1 = -1;
         private int m_nSideCamFrame3_Cavity1 = -1;
         private int m_nSideCamFrame4_Cavity1 = -1;
+        private int m_nSideCamFrame5_Cavity1 = -1;
+        private int m_nSideCamFrame6_Cavity1 = -1;
+        private int m_nSideCamFrame7_Cavity1 = -1;
+        private int m_nSideCamFrame8_Cavity1 = -1;
+        private int m_nSideCamFrame9_Cavity1 = -1;
+        private int m_nSideCamFrame10_Cavity1 = -1;
 
         // status result cavity 1
         private int m_nTopCamFrame1_Cavity2 = -1;
@@ -41,6 +46,12 @@ namespace SealingInspectGUI.ViewModels
         private int m_nSideCamFrame2_Cavity2 = -1;
         private int m_nSideCamFrame3_Cavity2 = -1;
         private int m_nSideCamFrame4_Cavity2 = -1;
+        private int m_nSideCamFrame5_Cavity2 = -1;
+        private int m_nSideCamFrame6_Cavity2 = -1;
+        private int m_nSideCamFrame7_Cavity2 = -1;
+        private int m_nSideCamFrame8_Cavity2 = -1;
+        private int m_nSideCamFrame9_Cavity2 = -1;
+        private int m_nSideCamFrame10_Cavity2 = -1;
         #endregion
 
         #region Constructor
@@ -92,11 +103,8 @@ namespace SealingInspectGUI.ViewModels
             this.GrabAllCmd = new GrabAllCmd();
             this.TestIOCmd = new TestIOCmd();
 
-            PLC_Wecon_1 = new IOManager_PLC_Wecon("192.168.0.10", 1);
-            PLC_Wecon_2 = new IOManager_PLC_Wecon("192.168.0.11", 2);
-
-            if (PLC_Wecon_1.ConnectPLC())
-                if (PLC_Wecon_2.ConnectPLC())
+            PLC_Wecon = new IOManager_PLC_Wecon("192.168.0.10", "192.168.0.10");
+            PLC_Wecon.Initialize();
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
             InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);
@@ -268,15 +276,28 @@ namespace SealingInspectGUI.ViewModels
 
             SideCamFrame4_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
                                        m_sealingInspResult_SideCam.m_bStatusFrame4;
-            UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame4_Cavity1, 0, 3, "SIDE");
+            SideCamFrame5_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame5;
+            SideCamFrame6_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame6;
+            SideCamFrame7_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame7;
+            SideCamFrame8_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame8;
+            SideCamFrame9_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame9;
+            SideCamFrame10_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                       m_sealingInspResult_SideCam.m_bStatusFrame10;
+
+            UpdateResultView(SumCameraView.buffSideCam1, SideCamFrame10_Cavity1, 0, 9, "SIDE");
 
             // check result final
             if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity1) == 1)
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_1.IsJudgementOKNG = true;
-                    PLC_Wecon_1.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgementOKNG[0] = true;
+                    PLC_Wecon.IsInspectCompleted[0] = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
             }
@@ -284,8 +305,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_1.IsJudgementOKNG = false;
-                    PLC_Wecon_1.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgementOKNG[0] = false;
+                    PLC_Wecon.IsInspectCompleted[0] = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
             }
@@ -319,15 +340,28 @@ namespace SealingInspectGUI.ViewModels
 
             SideCamFrame4_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
                                        m_sealingInspResult_SideCam.m_bStatusFrame4;
-            UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame4_Cavity2, 1, 3, "SIDE");
+            SideCamFrame5_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame5;
+            SideCamFrame6_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame6;
+            SideCamFrame7_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame7;
+            SideCamFrame8_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame8;
+            SideCamFrame9_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame9;
+            SideCamFrame10_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_SideCam.m_bStatusFrame10;
+
+            UpdateResultView(SumCameraView.buffSideCam2, SideCamFrame4_Cavity2, 1, 9, "SIDE");
 
             // check result final
             if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity2) == 1)
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_2.IsJudgementOKNG = true;
-                    PLC_Wecon_2.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgementOKNG[1] = true;
+                    PLC_Wecon.IsInspectCompleted[1] = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
             }
@@ -335,8 +369,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_2.IsJudgementOKNG = false;
-                    PLC_Wecon_2.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgementOKNG[1] = false;
+                    PLC_Wecon.IsInspectCompleted[1] = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
             }
@@ -350,7 +384,7 @@ namespace SealingInspectGUI.ViewModels
 
             lock (_lockObj)
             {
-                PLC_Wecon_1.IsInspectTopCamCompleted = true;
+                PLC_Wecon.IsInspectTopCamCompleted[0] = true;
             }
         }
         private void InspectTopCam2Completed(int bSetting)
@@ -360,7 +394,7 @@ namespace SealingInspectGUI.ViewModels
 
             lock (_lockObj)
             {
-                PLC_Wecon_2.IsInspectTopCamCompleted = true;
+                PLC_Wecon.IsInspectTopCamCompleted[1] = true;
             }
         }
         private async void UpdateResultView(BufferViewerSimple bufferSimple, int nStatus, int nBuff, int nFrame, string s)
@@ -387,7 +421,13 @@ namespace SealingInspectGUI.ViewModels
                        m_nSideCamFrame1_Cavity1 == 1 &&
                        m_nSideCamFrame2_Cavity1 == 1 &&
                        m_nSideCamFrame3_Cavity1 == 1 &&
-                       m_nSideCamFrame4_Cavity1 == 1) return 1;
+                       m_nSideCamFrame4_Cavity1 == 1 &&
+                       m_nSideCamFrame5_Cavity1 == 1 &&
+                       m_nSideCamFrame6_Cavity1 == 1 &&
+                       m_nSideCamFrame7_Cavity1 == 1 &&
+                       m_nSideCamFrame8_Cavity1 == 1 &&
+                       m_nSideCamFrame9_Cavity1 == 1 &&
+                       m_nSideCamFrame10_Cavity1 == 1 ) return 1;
                     else return 0;
                 case emInspectCavity.emInspectCavity_Cavity2:
                     if (m_nTopCamFrame1_Cavity2 == 1 &&
@@ -395,7 +435,13 @@ namespace SealingInspectGUI.ViewModels
                        m_nSideCamFrame1_Cavity2 == 1 &&
                        m_nSideCamFrame2_Cavity2 == 1 &&
                        m_nSideCamFrame3_Cavity2 == 1 &&
-                       m_nSideCamFrame4_Cavity2 == 1) return 1;
+                       m_nSideCamFrame4_Cavity2 == 1 &&
+                       m_nSideCamFrame5_Cavity2 == 1 &&
+                       m_nSideCamFrame6_Cavity2 == 1 &&
+                       m_nSideCamFrame7_Cavity2 == 1 &&
+                       m_nSideCamFrame8_Cavity2 == 1 &&
+                       m_nSideCamFrame9_Cavity2 == 1 &&
+                       m_nSideCamFrame10_Cavity2 == 1) return 1;
                     else return 0;
                 default: return -1;
             }
@@ -454,6 +500,54 @@ namespace SealingInspectGUI.ViewModels
                 if (SetProperty(ref m_nSideCamFrame4_Cavity1, value)) { }
             }
         }
+        public int SideCamFrame5_Cavity1
+        {
+            get => m_nSideCamFrame5_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame5_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame6_Cavity1
+        {
+            get => m_nSideCamFrame6_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame6_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame7_Cavity1
+        {
+            get => m_nSideCamFrame7_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame7_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame8_Cavity1
+        {
+            get => m_nSideCamFrame8_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame8_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame9_Cavity1
+        {
+            get => m_nSideCamFrame9_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame9_Cavity1, value)) { }
+            }
+        }
+        public int SideCamFrame10_Cavity1
+        {
+            get => m_nSideCamFrame10_Cavity1;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame10_Cavity1, value)) { }
+            }
+        }
         #endregion
 
         #region properties Cavity 2
@@ -503,6 +597,54 @@ namespace SealingInspectGUI.ViewModels
             set
             {
                 if (SetProperty(ref m_nSideCamFrame4_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame5_Cavity2
+        {
+            get => m_nSideCamFrame5_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame5_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame6_Cavity2
+        {
+            get => m_nSideCamFrame6_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame6_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame7_Cavity2
+        {
+            get => m_nSideCamFrame7_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame7_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame8_Cavity2
+        {
+            get => m_nSideCamFrame8_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame8_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame9_Cavity2
+        {
+            get => m_nSideCamFrame9_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame9_Cavity2, value)) { }
+            }
+        }
+        public int SideCamFrame10_Cavity2
+        {
+            get => m_nSideCamFrame10_Cavity2;
+            set
+            {
+                if (SetProperty(ref m_nSideCamFrame10_Cavity2, value)) { }
             }
         }
         #endregion

@@ -296,6 +296,20 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
+        extern private static bool SetTriggerSideCam(IntPtr pInstance, int nCoreIdx, int nTriggerSideCam);
+        public bool SetTriggerSideCam(int nCoreIdx, int nTriggerSideCam) { return SetTriggerSideCam(m_sealingInspectProcessor, nCoreIdx, nTriggerSideCam); }
+        /**********************************
+         - SetTriggerSideCam
+         - Parameter : Index Core, Process Status
+        **********************************/
+
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
         extern private static bool GetInspectionResult(IntPtr sealingInspProcessor, int nCoreIdx, IntPtr InspResults);
         public bool GetInspectionResult(int nCoreIdx, ref CSealingInspectResult InspResults)
         {

@@ -31,7 +31,7 @@ namespace SealingInspectGUI.Commons
         public const int MAX_TOPCAM_COUNT = 2;
         public const int MAX_SIDECAM_COUNT = 2;
         public const int MAX_IMAGE_BUFFER_TOPCAM = 2;
-        public const int MAX_IMAGE_BUFFER_SIDECAM = 4;
+        public const int MAX_IMAGE_BUFFER_SIDECAM = 10;
         public const int FRAME_WIDTH_SIDECAM = 2448;
         public const int FRAME_HEIGHT_SIDECAM = 2048;
         public const int FRAME_WIDTH_TOPCAM = 4024;
@@ -41,5 +41,6 @@ namespace SealingInspectGUI.Commons
         public const int MAX_STRING_SIZE = 256;
         public const int NUMBER_OF_LIGHT_CONTROLLER = 2;
         public const int ROI_PARAMETER_COUNT = 4;
+        public const int MAX_PLC_COUNT = 2;
     }
 }

@@ -95,10 +95,11 @@ namespace SealingInspectGUI.ViewModels
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
 
-                if (RunVM.SumCamVM.PLC_Wecon_1.IsConnected)
-                    RunVM.SumCamVM.PLC_Wecon_1.StartThreadWecon();
-                if (RunVM.SumCamVM.PLC_Wecon_2.IsConnected)
-                    RunVM.SumCamVM.PLC_Wecon_2.StartThreadWecon();
+                if (RunVM.SumCamVM.PLC_Wecon.IsConnected[0])
+                    RunVM.SumCamVM.PLC_Wecon.StartThreadWecon1();
+
+                //if (RunVM.SumCamVM.PLC_Wecon.IsConnected[1])
+                //    RunVM.SumCamVM.PLC_Wecon.StartThreadWecon2();
             }
         }
 
