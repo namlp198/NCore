@@ -145,7 +145,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame5_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam1_Frame5, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -161,7 +161,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame6_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam1_Frame6, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -177,7 +177,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame7_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam1_Frame7, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -193,7 +193,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame8_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam1_Frame8, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -209,7 +209,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame9_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam1_Frame9, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -225,7 +225,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame10_Cavity1, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam1_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam1_Frame10, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -437,7 +437,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame5_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam2_Frame5, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -453,7 +453,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame6_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam2_Frame6, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -469,7 +469,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame7_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam2_Frame7, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -485,7 +485,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame8_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam2_Frame8, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -501,7 +501,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame9_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam2_Frame9, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"
@@ -517,7 +517,7 @@
                         Foreground="White"
                         Background="{Binding SideCamFrame10_Cavity2, Converter={StaticResource IntegerToBackgroundConverter}}"
                         Command="{Binding SelectSideCamFrameCmd}"
-                        CommandParameter="{Binding ElementName=btnSideCam2_Frame4, Path=Name}">
+                        CommandParameter="{Binding ElementName=btnSideCam2_Frame10, Path=Name}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="14"

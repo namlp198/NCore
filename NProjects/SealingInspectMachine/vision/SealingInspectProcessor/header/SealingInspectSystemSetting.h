@@ -39,6 +39,26 @@ public:
 	TCHAR               m_sFullImagePath[MAX_STRING_SIZE];
 	TCHAR               m_sDefectImagePath[MAX_STRING_SIZE];
 	TCHAR               m_sModelName[MAX_STRING_SIZE];
+	int                 m_nGoToPos1Time_Cavity1;
+	int                 m_nGoToPos2Time_Cavity1;
+	int                 m_nGoToPos3Time_Cavity1;
+	int                 m_nGoToPos4Time_Cavity1;
+	int                 m_nGoToPos5Time_Cavity1;
+	int                 m_nGoToPos6Time_Cavity1;
+	int                 m_nGoToPos7Time_Cavity1;
+	int                 m_nGoToPos8Time_Cavity1;
+	int                 m_nGoToPos9Time_Cavity1;
+	int                 m_nGoToPos10Time_Cavity1;
+	int                 m_nOffsetTime_Pos1_Cavity1;
+	int                 m_nOffsetTime_Pos2_Cavity1;
+	int                 m_nOffsetTime_Pos3_Cavity1;
+	int                 m_nOffsetTime_Pos4_Cavity1;
+	int                 m_nOffsetTime_Pos5_Cavity1;
+	int                 m_nOffsetTime_Pos6_Cavity1;
+	int                 m_nOffsetTime_Pos7_Cavity1;
+	int                 m_nOffsetTime_Pos8_Cavity1;
+	int                 m_nOffsetTime_Pos9_Cavity1;
+	int                 m_nOffsetTime_Pos10_Cavity1;
 
 	CSealingInspectLightSetting m_LightSettings[NUMBER_OF_LIGHT_CONTROLLER];
 };

@@ -41,6 +41,8 @@ namespace SealingInspectGUI.Models
         public double m_dThresholdCanny2_MakeROI;                     // 27.
         public int m_nDelayTimeGrab;                               // 28.
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms; // 29.
+        public int m_nHoughCircleParam1;                           // 30.
+        public int m_nHoughCircleParam2;                           // 31.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2

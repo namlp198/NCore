@@ -1644,6 +1644,22 @@ namespace SealingInspectGUI.ViewModels
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                               m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                         break;
+                    case 30:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Hough Circle Param 1";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nHoughCircleParam1 + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nHoughCircleParam1 + "";
+                        break;
+                    case 31:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Hough Circle Param 2";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_nHoughCircleParam2 + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nHoughCircleParam2 + "";
+                        break;
                 }
                 lstRecipeFrame1.Add(recipe);
             }
@@ -1855,6 +1871,89 @@ namespace SealingInspectGUI.ViewModels
                     value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
                             m_sealingInspectSysSetting.m_sModelName;
                     return "Model Name";
+
+                case 16:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos1Time_Cavity1 + "";
+                    return "Go to Pos 1 Time (ms)";
+                case 17:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos2Time_Cavity1 + "";
+                    return "Go to Pos 2 Time (ms)";
+                case 18:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos3Time_Cavity1 + "";
+                    return "Go to Pos 3 Time (ms)";
+                case 19:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos4Time_Cavity1 + "";
+                    return "Go to Pos 4 Time (ms)";
+                case 20:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos5Time_Cavity1 + "";
+                    return "Go to Pos 5 Time (ms)";
+                case 21:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos6Time_Cavity1 + "";
+                    return "Go to Pos 6 Time (ms)";
+                case 22:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos7Time_Cavity1 + "";
+                    return "Go to Pos 7 Time (ms)";
+                case 23:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos8Time_Cavity1 + "";
+                    return "Go to Pos 8 Time (ms)";
+                case 24:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos9Time_Cavity1 + "";
+                    return "Go to Pos 9 Time (ms)";
+                case 25:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos10Time_Cavity1 + "";
+                    return "Go to Pos 10 Time (ms)";
+
+                case 26:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos1_Cavity1 + "";
+                    return "Offset Time Pos 1 (ms)";
+                case 27:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos2_Cavity1 + "";
+                    return "Offset Time Pos 2 (ms)";
+                case 28:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos3_Cavity1 + "";
+                    return "Offset Time Pos 3 (ms)";
+                case 29:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos4_Cavity1 + "";
+                    return "Offset Time Pos 4 (ms)";
+                case 30:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos5_Cavity1 + "";
+                    return "Offset Time Pos 5 (ms)";
+                case 31:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos6_Cavity1 + "";
+                    return "Offset Time Pos 6 (ms)";
+                case 32:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos7_Cavity1 + "";
+                    return "Offset Time Pos 7 (ms)";
+                case 33:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos8_Cavity1 + "";
+                    return "Offset Time Pos 8 (ms)";
+                case 34:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos9_Cavity1 + "";
+                    return "Offset Time Pos 9 (ms)";
+                case 35:
+                    value = InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos10_Cavity1 + "";
+                    return "Offset Time Pos 10 (ms)";
+
             }
             return "";
         }
@@ -1959,6 +2058,88 @@ namespace SealingInspectGUI.ViewModels
                     case 15:
                         InterfaceManager.Instance.m_sealingInspectProcessorManager.
                             m_sealingInspectSysSetting.m_sModelName = value;
+                        break;
+
+                    case 16:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos1Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 17:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos2Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 18:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos3Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 19:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos4Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 20:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos5Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 21:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos6Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 22:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos7Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 23:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos8Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 24:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos9Time_Cavity1 = int.Parse(value);
+                        break;
+                    case 25:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nGoToPos10Time_Cavity1 = int.Parse(value);
+                        break;
+
+                    case 26:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos1_Cavity1 = int.Parse(value);
+                        break;
+                    case 27:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos2_Cavity1 = int.Parse(value);
+                        break;
+                    case 28:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos3_Cavity1 = int.Parse(value);
+                        break;
+                    case 29:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos4_Cavity1 = int.Parse(value);
+                        break;
+                    case 30:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos5_Cavity1 = int.Parse(value);
+                        break;
+                    case 31:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos6_Cavity1 = int.Parse(value);
+                        break;
+                    case 32:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos7_Cavity1 = int.Parse(value);
+                        break;
+                    case 33:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos8_Cavity1 = int.Parse(value);
+                        break;
+                    case 34:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos9_Cavity1 = int.Parse(value);
+                        break;
+                    case 35:
+                        InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                            m_sealingInspectSysSetting.m_nOffsetTime_Pos10_Cavity1 = int.Parse(value);
                         break;
                 }
             }

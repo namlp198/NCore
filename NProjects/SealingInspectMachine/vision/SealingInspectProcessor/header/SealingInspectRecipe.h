@@ -34,6 +34,8 @@ struct CRecipe_TopCam_Frame1
 	double m_dThresholdCanny2_MakeROI;
 	int m_nDelayTimeGrab;
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+	int m_nHoughCircleParam1;
+	int m_nHoughCircleParam2;
 };
 struct CRecipe_TopCam_Frame2
 {

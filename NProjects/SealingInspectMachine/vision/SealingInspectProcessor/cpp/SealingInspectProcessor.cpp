@@ -289,6 +289,28 @@ BOOL CSealingInspectProcessor::LoadSystemSetting(CSealingInspectSystemSetting* p
 	ZeroMemory(sysSettings.m_sModelName, sizeof(sysSettings.m_sModelName));
 	wsprintf(sysSettings.m_sModelName, _T("%s"), (TCHAR*)(LPCTSTR)csModelName);
 
+	sysSettings.m_nGoToPos1Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos1Time_Cavity1")->value());
+	sysSettings.m_nGoToPos2Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos2Time_Cavity1")->value());
+	sysSettings.m_nGoToPos3Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos3Time_Cavity1")->value());
+	sysSettings.m_nGoToPos4Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos4Time_Cavity1")->value());
+	sysSettings.m_nGoToPos5Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos5Time_Cavity1")->value());
+	sysSettings.m_nGoToPos6Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos6Time_Cavity1")->value());
+	sysSettings.m_nGoToPos7Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos7Time_Cavity1")->value());
+	sysSettings.m_nGoToPos8Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos8Time_Cavity1")->value());
+	sysSettings.m_nGoToPos9Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos9Time_Cavity1")->value());
+	sysSettings.m_nGoToPos10Time_Cavity1 = std::atoi(pRoot->first_node("GoToPos10Time_Cavity1")->value());
+
+	sysSettings.m_nOffsetTime_Pos1_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos1_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos2_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos2_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos3_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos3_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos4_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos4_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos5_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos5_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos6_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos6_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos7_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos7_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos8_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos8_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos9_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos9_Cavity1")->value());
+	sysSettings.m_nOffsetTime_Pos10_Cavity1 = std::atoi(pRoot->first_node("OffsetTime_Pos10_Cavity1")->value());
+
 	// set recipe path
 	m_csRecipePath.Format(_T("%sRecipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sModelName, _T("cfg"));
 
@@ -463,6 +485,9 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_CANNY_2_MAKEROI_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dThresholdCanny2_MakeROI, 0);
 		recipeFile.GetItemValue(i + 1, _T("DELAY_TIME_GRAB_IMAGE_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDelayTimeGrab, 0);
 		recipeFile.GetItemValue(i + 1, _T("NUMBER_OF_DISTANCE_NG_MAX_COUNT_ADVANCED_ALGORITHMS_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms, 0);
+		recipeFile.GetItemValue(i + 1, _T("HOUGHCIRLCLE_PARAM1_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nHoughCircleParam1, 0);
+		recipeFile.GetItemValue(i + 1, _T("HOUGHCIRLCLE_PARAM2_TOPCAM_FRAME1"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nHoughCircleParam2, 0);
+
 	}
 
 	for (int i = 0; i < MAX_TOPCAM_COUNT; i++)
@@ -685,6 +710,88 @@ BOOL CSealingInspectProcessor::SaveSystemSetting(CSealingInspectSystemSetting* p
 
 	const char* sModelName = W2A(sysSetting.m_sModelName);
 	pRoot->first_node("ModelName")->value(sModelName);
+
+	// Go to time
+	char sGoToPos1Time_Cavity1[10];
+	sprintf_s(sGoToPos1Time_Cavity1, "%d", sysSetting.m_nGoToPos1Time_Cavity1);
+	pRoot->first_node("GoToPos1Time_Cavity1")->value(sGoToPos1Time_Cavity1);
+
+	char sGoToPos2Time_Cavity1[10];
+	sprintf_s(sGoToPos2Time_Cavity1, "%d", sysSetting.m_nGoToPos2Time_Cavity1);
+	pRoot->first_node("GoToPos2Time_Cavity1")->value(sGoToPos2Time_Cavity1);
+
+	char sGoToPos3Time_Cavity1[10];
+	sprintf_s(sGoToPos3Time_Cavity1, "%d", sysSetting.m_nGoToPos3Time_Cavity1);
+	pRoot->first_node("GoToPos3Time_Cavity1")->value(sGoToPos3Time_Cavity1);
+
+	char sGoToPos4Time_Cavity1[10];
+	sprintf_s(sGoToPos4Time_Cavity1, "%d", sysSetting.m_nGoToPos4Time_Cavity1);
+	pRoot->first_node("GoToPos4Time_Cavity1")->value(sGoToPos4Time_Cavity1);
+
+	char sGoToPos5Time_Cavity1[10];
+	sprintf_s(sGoToPos5Time_Cavity1, "%d", sysSetting.m_nGoToPos5Time_Cavity1);
+	pRoot->first_node("GoToPos5Time_Cavity1")->value(sGoToPos5Time_Cavity1);
+
+	char sGoToPos6Time_Cavity1[10];
+	sprintf_s(sGoToPos6Time_Cavity1, "%d", sysSetting.m_nGoToPos6Time_Cavity1);
+	pRoot->first_node("GoToPos6Time_Cavity1")->value(sGoToPos6Time_Cavity1);
+
+	char sGoToPos7Time_Cavity1[10];
+	sprintf_s(sGoToPos7Time_Cavity1, "%d", sysSetting.m_nGoToPos7Time_Cavity1);
+	pRoot->first_node("GoToPos7Time_Cavity1")->value(sGoToPos7Time_Cavity1);
+
+	char sGoToPos8Time_Cavity1[10];
+	sprintf_s(sGoToPos8Time_Cavity1, "%d", sysSetting.m_nGoToPos8Time_Cavity1);
+	pRoot->first_node("GoToPos8Time_Cavity1")->value(sGoToPos8Time_Cavity1);
+
+	char sGoToPos9Time_Cavity1[10];
+	sprintf_s(sGoToPos9Time_Cavity1, "%d", sysSetting.m_nGoToPos9Time_Cavity1);
+	pRoot->first_node("GoToPos9Time_Cavity1")->value(sGoToPos9Time_Cavity1);
+
+	char sGoToPos10Time_Cavity1[10];
+	sprintf_s(sGoToPos10Time_Cavity1, "%d", sysSetting.m_nGoToPos10Time_Cavity1);
+	pRoot->first_node("GoToPos10Time_Cavity1")->value(sGoToPos10Time_Cavity1);
+
+	// Offset time
+	char sOffsetTime_Pos1_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos1_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos1_Cavity1);
+	pRoot->first_node("OffsetTime_Pos1_Cavity1")->value(sOffsetTime_Pos1_Cavity1);
+
+	char sOffsetTime_Pos2_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos2_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos2_Cavity1);
+	pRoot->first_node("OffsetTime_Pos2_Cavity1")->value(sOffsetTime_Pos2_Cavity1);
+
+	char sOffsetTime_Pos3_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos3_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos3_Cavity1);
+	pRoot->first_node("OffsetTime_Pos3_Cavity1")->value(sOffsetTime_Pos3_Cavity1);
+
+	char sOffsetTime_Pos4_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos4_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos4_Cavity1);
+	pRoot->first_node("OffsetTime_Pos4_Cavity1")->value(sOffsetTime_Pos4_Cavity1);
+
+	char sOffsetTime_Pos5_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos5_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos5_Cavity1);
+	pRoot->first_node("OffsetTime_Pos5_Cavity1")->value(sOffsetTime_Pos5_Cavity1);
+
+	char sOffsetTime_Pos6_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos6_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos6_Cavity1);
+	pRoot->first_node("OffsetTime_Pos6_Cavity1")->value(sOffsetTime_Pos6_Cavity1);
+
+	char sOffsetTime_Pos7_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos7_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos7_Cavity1);
+	pRoot->first_node("OffsetTime_Pos7_Cavity1")->value(sOffsetTime_Pos7_Cavity1);
+
+	char sOffsetTime_Pos8_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos8_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos8_Cavity1);
+	pRoot->first_node("OffsetTime_Pos8_Cavity1")->value(sOffsetTime_Pos8_Cavity1);
+
+	char sOffsetTime_Pos9_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos9_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos9_Cavity1);
+	pRoot->first_node("OffsetTime_Pos9_Cavity1")->value(sOffsetTime_Pos9_Cavity1);
+
+	char sOffsetTime_Pos10_Cavity1[10];
+	sprintf_s(sOffsetTime_Pos10_Cavity1, "%d", sysSetting.m_nOffsetTime_Pos10_Cavity1);
+	pRoot->first_node("OffsetTime_Pos10_Cavity1")->value(sOffsetTime_Pos10_Cavity1);
 #pragma endregion
 
 	// Convert the modified XML back to a string
@@ -838,6 +945,9 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_CANNY_2_MAKEROI_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dThresholdCanny2_MakeROI);
 				recipeFile.SetItemValue(i + 1, _T("DELAY_TIME_GRAB_IMAGE_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nDelayTimeGrab);
 				recipeFile.SetItemValue(i + 1, _T("NUMBER_OF_DISTANCE_NG_MAX_COUNT_ADVANCED_ALGORITHMS_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms);
+				recipeFile.SetItemValue(i + 1, _T("HOUGHCIRLCLE_PARAM1_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nHoughCircleParam1);
+				recipeFile.SetItemValue(i + 1, _T("HOUGHCIRLCLE_PARAM2_TOPCAM_FRAME1"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_nHoughCircleParam2);
+
 			}
 		}
 		else if (nFrameIdx == 2) {

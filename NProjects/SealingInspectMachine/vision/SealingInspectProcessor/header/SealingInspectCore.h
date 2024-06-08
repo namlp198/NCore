@@ -19,9 +19,9 @@
 #include <tbb/tbb.h>
 
 #define TEST_INSPECT_CAVITY_1
-#undef TEST_INSPECT_CAVITY_1
+//#undef TEST_INSPECT_CAVITY_1
 #define TEST_INSPECT_CAVITY_2
-#undef TEST_INSPECT_CAVITY_2
+//#undef TEST_INSPECT_CAVITY_2
 
 interface ISealingInspectCoreToParent
 {
@@ -101,7 +101,7 @@ private:
 		                        std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius);
 
 	BOOL FindCircle_HoughCircle(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, 
-		                        std::vector<cv::Point2i>& vecPts, int nThresholdCanny, int minDist, 
+		                        std::vector<cv::Point2i>& vecPts, int nThresholdCanny, int minDist, int nParam1, int nParam2, 
 		                        int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle);
 
 	BOOL FindDistanceAll_OuterToInner(std::vector<cv::Point2i>& vecPts,
