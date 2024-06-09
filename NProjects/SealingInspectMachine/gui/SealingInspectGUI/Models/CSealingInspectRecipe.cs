@@ -61,6 +61,16 @@ namespace SealingInspectGUI.Models
         public double m_dDistanceMeasurementTolerance_Min;            // 11.
         public double m_dDistanceMeasurementTolerance_Max;            // 12.
         public int m_nDelayTimeGrab;                                  // 13.
+        public int m_nThresholdBinary;                                // 14.
+        public int m_nContourSizeFindBlob_Min;                        // 15.
+        public int m_nContourSizeFindBlob_Max;                        // 16.
+        public int m_nThreshBinary_FindBlobWhite;                     // 17.
+        public int m_nThreshBinary_FindBlobWhite_Max;                 // 18.
+        public int m_nThreshBinary_FindBlobBlack;                     // 19.
+        public int m_nThreshBinary_FindBlobBlack_Max;                 // 20.
+        public int m_nBlobCount_Max;                                  // 21.
+        public double m_dBlobArea_Min;                                // 22.
+        public double m_dBlobArea_Max;                                // 23.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
@@ -79,6 +89,10 @@ namespace SealingInspectGUI.Models
         public double m_dThresholdCanny2_MakeROI;
         public int m_bUseAdvancedAlgorithms;
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+        public int b_bUseFindROIAdvancedAlgorithms;
+        public int m_nOffetY_Top;
+        public int m_nOffetY_Bottom;
+        public int m_nThresholdBinaryFindROI;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
@@ -97,6 +111,10 @@ namespace SealingInspectGUI.Models
         public double m_dThresholdCanny2_MakeROI;
         public int m_bUseAdvancedAlgorithms;
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+        public int b_bUseFindROIAdvancedAlgorithms;
+        public int m_nOffetY_Top;
+        public int m_nOffetY_Bottom;
+        public int m_nThresholdBinaryFindROI;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
@@ -115,6 +133,10 @@ namespace SealingInspectGUI.Models
         public double m_dThresholdCanny2_MakeROI;
         public int m_bUseAdvancedAlgorithms;
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+        public int b_bUseFindROIAdvancedAlgorithms;
+        public int m_nOffetY_Top;
+        public int m_nOffetY_Bottom;
+        public int m_nThresholdBinaryFindROI;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
@@ -133,6 +155,10 @@ namespace SealingInspectGUI.Models
         public double m_dThresholdCanny2_MakeROI;
         public int m_bUseAdvancedAlgorithms;
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+        public int b_bUseFindROIAdvancedAlgorithms;
+        public int m_nOffetY_Top;
+        public int m_nOffetY_Bottom;
+        public int m_nThresholdBinaryFindROI;
     }
 
 

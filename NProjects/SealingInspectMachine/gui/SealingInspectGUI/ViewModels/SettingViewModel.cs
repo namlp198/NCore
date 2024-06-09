@@ -658,6 +658,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                                     lstRecipeFrame1.Add(recipe);
                                     break;
+                                case 12:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Use Find ROI Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.b_bUseFindROIAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.b_bUseFindROIAdvancedAlgorithms + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 13:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Offset Y Top (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nOffetY_Top + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nOffetY_Top + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 14:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Offset Y Bottom (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nOffetY_Bottom + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nOffetY_Bottom + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 15:
+                                    recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Threshold Binary (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_nThresholdBinaryFindROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_nThresholdBinaryFindROI + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
                             }
                         }
                         RecipeFrame1_SideCam = lstRecipeFrame1;
@@ -763,6 +799,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 12:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Use Find ROI Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.b_bUseFindROIAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.b_bUseFindROIAdvancedAlgorithms + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 13:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Offset Y Top (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nOffetY_Top + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nOffetY_Top + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 14:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Offset Y Bottom (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nOffetY_Bottom + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nOffetY_Bottom + "";
+                                    lstRecipeFrame2.Add(recipe);
+                                    break;
+                                case 15:
+                                    recipe.Index = i + k2 - 1;
+                                    recipe.ParamName = "Threshold Binary (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame2.m_nThresholdBinaryFindROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame2.m_nThresholdBinaryFindROI + "";
                                     lstRecipeFrame2.Add(recipe);
                                     break;
                             }
@@ -872,6 +944,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                                     lstRecipeFrame3.Add(recipe);
                                     break;
+                                case 12:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Use Find ROI Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.b_bUseFindROIAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.b_bUseFindROIAdvancedAlgorithms + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 13:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Offset Y Top (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nOffetY_Top + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nOffetY_Top + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 14:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Offset Y Bottom (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nOffetY_Bottom + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nOffetY_Bottom + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
+                                case 15:
+                                    recipe.Index = i + k3 - 1;
+                                    recipe.ParamName = "Threshold Binary (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame3.m_nThresholdBinaryFindROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame3.m_nThresholdBinaryFindROI + "";
+                                    lstRecipeFrame3.Add(recipe);
+                                    break;
                             }
                         }
                         RecipeFrame3_SideCam = lstRecipeFrame3;
@@ -977,6 +1085,42 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
                                     recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 12:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Use Find ROI Advanced Algorithms (0: No, 1: Yes)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.b_bUseFindROIAdvancedAlgorithms + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.b_bUseFindROIAdvancedAlgorithms + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 13:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Offset Y Top (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nOffetY_Top + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nOffetY_Top + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 14:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Offset Y Bottom (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nOffetY_Bottom + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nOffetY_Bottom + "";
+                                    lstRecipeFrame4.Add(recipe);
+                                    break;
+                                case 15:
+                                    recipe.Index = i + k4 - 1;
+                                    recipe.ParamName = "Threshold Binary (Find ROI Advanced)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame4.m_nThresholdBinaryFindROI + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame4.m_nThresholdBinaryFindROI + "";
                                     lstRecipeFrame4.Add(recipe);
                                     break;
                             }
@@ -1790,6 +1934,86 @@ namespace SealingInspectGUI.ViewModels
                                               m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nDelayTimeGrab + "";
                         recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                              m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nDelayTimeGrab + "";
+                        break;
+                    case 14:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold Binary";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nThresholdBinary + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nThresholdBinary + "";
+                        break;
+                    case 15:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Contour Size Find Blob Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nContourSizeFindBlob_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nContourSizeFindBlob_Min + "";
+                        break;
+                    case 16:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Contour Size Find Blob Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nContourSizeFindBlob_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nContourSizeFindBlob_Max + "";
+                        break;
+                    case 17:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold Find Blob White";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nThreshBinary_FindBlobWhite + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nThreshBinary_FindBlobWhite + "";
+                        break;
+                    case 18:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold Find Blob White Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nThreshBinary_FindBlobWhite_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nThreshBinary_FindBlobWhite_Max + "";
+                        break;
+                    case 19:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold Find Blob Black";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nThreshBinary_FindBlobBlack + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nThreshBinary_FindBlobBlack + "";
+                        break;
+                    case 20:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Threshold Find Blob Black Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nThreshBinary_FindBlobBlack_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nThreshBinary_FindBlobBlack_Max + "";
+                        break;
+                    case 21:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Blob Count Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_nBlobCount_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nBlobCount_Max + "";
+                        break;
+                    case 22:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Blob Area Min";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dBlobArea_Min + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dBlobArea_Min + "";
+                        break;
+                    case 23:
+                        recipe.Index = i + 1;
+                        recipe.ParamName = "Blob Area Max";
+                        recipe.TopCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                              m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dBlobArea_Max + "";
+                        recipe.TopCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                             m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dBlobArea_Max + "";
                         break;
                 }
                 lstRecipeFrame2.Add(recipe);

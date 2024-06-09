@@ -76,7 +76,7 @@
                            FontWeight="Bold"
                            ItemsSource="{Binding FrameList}"
                            SelectedItem="{Binding StrFrameSelected, Mode=TwoWay}"
-                           Width="35" />
+                           Width="45" />
 
                 <Button Background="WhiteSmoke"
                         Name="btnContinuousGrab"
