@@ -53,6 +53,16 @@ struct CRecipe_TopCam_Frame2
 	double m_dDistanceMeasurementTolerance_Min;
 	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
+	int m_nThresholdBinary;
+	int m_nContourSizeFindBlob_Min;
+	int m_nContourSizeFindBlob_Max;
+	int m_nThreshBinary_FindBlobWhite;
+	int m_nThreshBinary_FindBlobWhite_Max;
+	int m_nThreshBinary_FindBlobBlack;
+	int m_nThreshBinary_FindBlobBlack_Max;
+	int m_nBlobCount_Max;
+	double m_dBlobArea_Min;
+	double m_dBlobArea_Max;
 };
 struct CRecipe_SideCam_Frame1
 {
@@ -68,6 +78,10 @@ struct CRecipe_SideCam_Frame1
 	double m_dThresholdCanny2_MakeROI;
 	BOOL m_bUseAdvancedAlgorithms;
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+	int b_bUseFindROIAdvancedAlgorithms;
+	int m_nOffetY_Top;
+	int m_nOffetY_Bottom;
+	int m_nThresholdBinaryFindROI;
 };
 struct CRecipe_SideCam_Frame2
 {
@@ -83,6 +97,10 @@ struct CRecipe_SideCam_Frame2
 	double m_dThresholdCanny2_MakeROI;
 	BOOL m_bUseAdvancedAlgorithms;
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+	int b_bUseFindROIAdvancedAlgorithms;
+	int m_nOffetY_Top;
+	int m_nOffetY_Bottom;
+	int m_nThresholdBinaryFindROI;
 };
 struct CRecipe_SideCam_Frame3
 {
@@ -98,6 +116,10 @@ struct CRecipe_SideCam_Frame3
 	double m_dThresholdCanny2_MakeROI;
 	BOOL m_bUseAdvancedAlgorithms;
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+	int b_bUseFindROIAdvancedAlgorithms;
+	int m_nOffetY_Top;
+	int m_nOffetY_Bottom;
+	int m_nThresholdBinaryFindROI;
 };
 struct CRecipe_SideCam_Frame4
 {
@@ -113,6 +135,10 @@ struct CRecipe_SideCam_Frame4
 	double m_dThresholdCanny2_MakeROI;
 	BOOL m_bUseAdvancedAlgorithms;
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
+	int b_bUseFindROIAdvancedAlgorithms;
+	int m_nOffetY_Top;
+	int m_nOffetY_Bottom;
+	int m_nThresholdBinaryFindROI;
 };
 
 class AFX_EXT_CLASS CSealingInspectRecipe_TopCam

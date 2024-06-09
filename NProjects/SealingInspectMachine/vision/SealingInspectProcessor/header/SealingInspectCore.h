@@ -135,6 +135,8 @@ private:
 
 	void MakeROIFindPoints(CSealingInspectRecipe_SideCam& pRecipeSideCam, int nFrame, cv::Rect& rectROIFindPts);
 
+	BOOL MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideCam recipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Rect& rectROIFindPts);
+
 	BOOL MakeCannyEdgeImage(cv::Mat* pImageData, cv::Mat& pEdgeImageData, double dThreshold1, double dThreshold2, int nGaussianMask = 3);
 
 	BOOL FindLagestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex);
