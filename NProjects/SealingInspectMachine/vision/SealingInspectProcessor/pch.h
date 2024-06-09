@@ -66,6 +66,7 @@
 #pragma comment(lib, "opencv_imgcodecs480.lib")
 #pragma comment(lib, "opencv_imgproc480.lib")
 #pragma comment(lib, "opencv_videoio480.lib")
+#pragma comment(lib, "opencv_bgsegm480.lib")
 
 #pragma comment(lib, "MvCameraControl.lib")
 //#pragma comment(lib, "RapidXML_Release.lib")
