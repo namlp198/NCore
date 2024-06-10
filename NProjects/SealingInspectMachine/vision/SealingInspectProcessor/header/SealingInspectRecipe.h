@@ -7,6 +7,7 @@ struct CRecipe_TopCam_Frame1
 	int m_nThresholdBinaryMinEnclosing;
 	int m_nThresholdBinaryCannyHoughCircle;
 	int m_nDistanceRadiusDiffMin;
+	double m_dDistanceMeasurementTolerance_Refer;
 	double m_dDistanceMeasurementTolerance_Min;
 	double m_dDistanceMeasurementTolerance_Max;
 	int m_nRadiusInner_Min;
@@ -36,6 +37,7 @@ struct CRecipe_TopCam_Frame1
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 	int m_nHoughCircleParam1;
 	int m_nHoughCircleParam2;
+	double m_dPixelSize;
 };
 struct CRecipe_TopCam_Frame2
 {
@@ -63,11 +65,33 @@ struct CRecipe_TopCam_Frame2
 	int m_nBlobCount_Max;
 	double m_dBlobArea_Min;
 	double m_dBlobArea_Max;
+	int m_nUseCheckSurface;
+	int m_nSelectMethodFindCircle;
+	int m_nThresholdBinary_FindCircle;
+	int m_nContourSizeMin;
+	int m_nContourSizeMax;
+	int m_nRadiusMin;
+	int m_nRadiusMax;
+	int m_nMinDist_HoughCircle;
+	int m_nParam1_HoughCircle;
+	int m_nParam2_HoughCircle;
+	int m_nThreshold1_Canny;
+	int m_nThreshold2_Canny;
+	int Offset_ROIFindMeasurePoint1H_X;
+	int Offset_ROIFindMeasurePoint1H_Y;
+	int Offset_ROIFindMeasurePoint5H_X;
+	int Offset_ROIFindMeasurePoint5H_Y;
+	int Offset_ROIFindMeasurePoint7H_X;
+	int Offset_ROIFindMeasurePoint7H_Y;
+	int Offset_ROIFindMeasurePoint11H_X;
+	int Offset_ROIFindMeasurePoint11H_Y;
+	double m_dPixelSize;
 };
 struct CRecipe_SideCam_Frame1
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
+	double m_dDistanceMeasurementTolerance_Refer;
 	double m_dDistanceMeasurementTolerance_Min;
 	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
@@ -82,11 +106,13 @@ struct CRecipe_SideCam_Frame1
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	double m_dPixelSize;
 };
 struct CRecipe_SideCam_Frame2
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
+	double m_dDistanceMeasurementTolerance_Refer;
 	double m_dDistanceMeasurementTolerance_Min;
 	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
@@ -101,11 +127,13 @@ struct CRecipe_SideCam_Frame2
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	double m_dPixelSize;
 };
 struct CRecipe_SideCam_Frame3
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
+	double m_dDistanceMeasurementTolerance_Refer;
 	double m_dDistanceMeasurementTolerance_Min;
 	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
@@ -120,11 +148,13 @@ struct CRecipe_SideCam_Frame3
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	double m_dPixelSize;
 };
 struct CRecipe_SideCam_Frame4
 {
 	int m_nROI_Top[ROI_PARAMETER_COUNT];
 	int m_nROI_Bottom[ROI_PARAMETER_COUNT];
+	double m_dDistanceMeasurementTolerance_Refer;
 	double m_dDistanceMeasurementTolerance_Min;
 	double m_dDistanceMeasurementTolerance_Max;
 	int m_nDelayTimeGrab;
@@ -139,6 +169,7 @@ struct CRecipe_SideCam_Frame4
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	double m_dPixelSize;
 };
 
 class AFX_EXT_CLASS CSealingInspectRecipe_TopCam

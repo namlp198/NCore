@@ -94,12 +94,6 @@ namespace SealingInspectGUI.ViewModels
                 // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
-
-                if (RunVM.SumCamVM.PLC_Wecon.IsConnected[0])
-                    RunVM.SumCamVM.PLC_Wecon.StartThreadWecon1();
-
-                //if (RunVM.SumCamVM.PLC_Wecon.IsConnected[1])
-                //    RunVM.SumCamVM.PLC_Wecon.StartThreadWecon2();
             }
         }
 

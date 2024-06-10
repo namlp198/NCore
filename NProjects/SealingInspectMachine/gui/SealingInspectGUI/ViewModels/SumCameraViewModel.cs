@@ -23,7 +23,8 @@ namespace SealingInspectGUI.ViewModels
         private static readonly object _lockObj = new object();
         private readonly Dispatcher _dispatcher;
         private UcSumCameraView _sumCameraView;
-        public IOManager_PLC_Wecon PLC_Wecon;
+        public IOManager_PLC_Wecon PLC_Wecon_1;
+        public IOManager_PLC_Wecon PLC_Wecon_2;
 
         // status result cavity 1
         private int m_nTopCamFrame1_Cavity1 = -1;
@@ -103,8 +104,11 @@ namespace SealingInspectGUI.ViewModels
             this.GrabAllCmd = new GrabAllCmd();
             this.TestIOCmd = new TestIOCmd();
 
-            PLC_Wecon = new IOManager_PLC_Wecon("192.168.0.10", "192.168.0.10");
-            PLC_Wecon.Initialize();
+            PLC_Wecon_1 = new IOManager_PLC_Wecon("192.168.0.10", 0);
+            PLC_Wecon_1.Initialize();
+
+            PLC_Wecon_2 = new IOManager_PLC_Wecon("192.168.0.11", 1);
+            PLC_Wecon_2.Initialize();
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
             InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);
@@ -300,8 +304,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon.IsJudgementOKNG[0] = true;
-                    PLC_Wecon.IsInspectCompleted[0] = true;
+                    PLC_Wecon_1.IsJudgementOKNG = true;
+                    PLC_Wecon_1.IsInspectCompleted = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
             }
@@ -309,8 +313,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon.IsJudgementOKNG[0] = false;
-                    PLC_Wecon.IsInspectCompleted[0] = true;
+                    PLC_Wecon_1.IsJudgementOKNG = false;
+                    PLC_Wecon_1.IsInspectCompleted = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
             }
@@ -364,8 +368,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon.IsJudgementOKNG[1] = true;
-                    PLC_Wecon.IsInspectCompleted[1] = true;
+                    PLC_Wecon_2.IsJudgementOKNG = true;
+                    PLC_Wecon_2.IsInspectCompleted = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
             }
@@ -373,8 +377,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon.IsJudgementOKNG[1] = false;
-                    PLC_Wecon.IsInspectCompleted[1] = true;
+                    PLC_Wecon_2.IsJudgementOKNG = false;
+                    PLC_Wecon_2.IsInspectCompleted = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
             }
@@ -388,7 +392,7 @@ namespace SealingInspectGUI.ViewModels
 
             lock (_lockObj)
             {
-                PLC_Wecon.IsInspectTopCamCompleted[0] = true;
+                PLC_Wecon_1.IsInspectTopCamCompleted = true;
             }
         }
         private void InspectTopCam2Completed(int bSetting)
@@ -398,23 +402,23 @@ namespace SealingInspectGUI.ViewModels
 
             lock (_lockObj)
             {
-                PLC_Wecon.IsInspectTopCamCompleted[1] = true;
+                PLC_Wecon_2.IsInspectTopCamCompleted = true;
             }
         }
         private void GrabFrameSideCam2Complete(int bSetting)
         {
-            if (bSetting == 1)
-                return;
+            //if (bSetting == 1)
+            //    return;
 
-            PLC_Wecon.WriteSingleCoil(0, IOManager_PLC_Wecon.GRABIMAGE_SIDECAM2_COMPLETED, true);
+            //PLC_Wecon.WriteSingleCoil(0, IOManager_PLC_Wecon.GRABIMAGE_SIDECAM2_COMPLETED, true);
         }
 
         private void GrabFrameSideCam1Complete(int bSetting)
         {
-            if (bSetting == 1)
-                return;
+            //if (bSetting == 1)
+            //    return;
 
-            PLC_Wecon.WriteSingleCoil(0, IOManager_PLC_Wecon.GRABIMAGE_SIDECAM1_COMPLETED, true);
+            //PLC_Wecon.WriteSingleCoil(0, IOManager_PLC_Wecon.GRABIMAGE_SIDECAM1_COMPLETED, true);
         }
 
         private async void UpdateResultView(BufferViewerSimple bufferSimple, int nStatus, int nBuff, int nFrame, string s)

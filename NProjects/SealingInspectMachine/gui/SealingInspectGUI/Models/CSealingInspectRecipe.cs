@@ -11,38 +11,40 @@ namespace SealingInspectGUI.Models
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame1
     {
-        public int m_nThresholdBinaryMinEnclosing;                 // 0.
-        public int m_nThresholdBinaryCannyHoughCircle;             // 1.
-        public int m_nDistanceRadiusDiffMin;                       // 2.
-        public double m_dDistanceMeasurementTolerance_Min;         // 3.
-        public double m_dDistanceMeasurementTolerance_Max;         // 4.
-        public int m_nRadiusInner_Min;                             // 5.
-        public int m_nRadiusInner_Max;                             // 6.
-        public int m_nRadiusOuter_Min;                             // 7.
-        public int m_nRadiusOuter_Max;                             // 8.
-        public int m_nDeltaRadiusOuterInner;                       // 9.
-        public int m_nROIWidth_Hor;                                // 10
-        public int m_nROIHeight_Hor;                               // 11
-        public int m_nROIWidth_Ver;                                // 12
-        public int m_nROIHeight_Ver;                               // 13
-        public int m_nROI12H_OffsetX;                              // 14.
-        public int m_nROI12H_OffsetY;                              // 15.
-        public int m_nROI3H_OffsetX;                               // 16.
-        public int m_nROI3H_OffsetY;                               // 17.
-        public int m_nROI6H_OffsetX;                               // 18.
-        public int m_nROI6H_OffsetY;                               // 19.
-        public int m_nROI9H_OffsetX;                               // 20.
-        public int m_nROI9H_OffsetY;                               // 21.
-        public int m_bUseAdvancedAlgorithms;                       // 22.
-        public int m_nContourSizeMinEnclosingCircle_Min;           // 23.
-        public int m_nContourSizeMinEnclosingCircle_Max;           // 24.
-        public double m_dIncrementAngle;                           // 25.
-        public double m_dThresholdCanny1_MakeROI;                     // 26.
-        public double m_dThresholdCanny2_MakeROI;                     // 27.
-        public int m_nDelayTimeGrab;                               // 28.
-        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms; // 29.
-        public int m_nHoughCircleParam1;                           // 30.
-        public int m_nHoughCircleParam2;                           // 31.
+        public int m_nThresholdBinaryMinEnclosing;                    // 0.
+        public int m_nThresholdBinaryCannyHoughCircle;                // 1.
+        public int m_nDistanceRadiusDiffMin;                          // 2.
+        public double m_dDistanceMeasurementTolerance_Refer;          // 3.
+        public double m_dDistanceMeasurementTolerance_Min;            // 4.
+        public double m_dDistanceMeasurementTolerance_Max;            // 5.
+        public int m_nRadiusInner_Min;                                // 6.
+        public int m_nRadiusInner_Max;                                // 7.
+        public int m_nRadiusOuter_Min;                                // 8.
+        public int m_nRadiusOuter_Max;                                // 9.
+        public int m_nDeltaRadiusOuterInner;                          // 10.
+        public int m_nROIWidth_Hor;                                   // 11
+        public int m_nROIHeight_Hor;                                  // 12
+        public int m_nROIWidth_Ver;                                   // 13
+        public int m_nROIHeight_Ver;                                  // 14
+        public int m_nROI12H_OffsetX;                                 // 15.
+        public int m_nROI12H_OffsetY;                                 // 16.
+        public int m_nROI3H_OffsetX;                                  // 17.
+        public int m_nROI3H_OffsetY;                                  // 18.
+        public int m_nROI6H_OffsetX;                                  // 19.
+        public int m_nROI6H_OffsetY;                                  // 20.
+        public int m_nROI9H_OffsetX;                                  // 21.
+        public int m_nROI9H_OffsetY;                                  // 22.
+        public int m_bUseAdvancedAlgorithms;                          // 23.
+        public int m_nContourSizeMinEnclosingCircle_Min;              // 24.
+        public int m_nContourSizeMinEnclosingCircle_Max;              // 25.
+        public double m_dIncrementAngle;                              // 26.
+        public double m_dThresholdCanny1_MakeROI;                     // 27.
+        public double m_dThresholdCanny2_MakeROI;                     // 28.
+        public int m_nDelayTimeGrab;                                  // 29.
+        public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;    // 30.
+        public int m_nHoughCircleParam1;                              // 31.
+        public int m_nHoughCircleParam2;                              // 32.
+        public double m_dPixelSize;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
@@ -71,6 +73,27 @@ namespace SealingInspectGUI.Models
         public int m_nBlobCount_Max;                                  // 21.
         public double m_dBlobArea_Min;                                // 22.
         public double m_dBlobArea_Max;                                // 23.
+        public int m_nUseCheckSurface;                                // 24. 
+        public int m_nSelectMethodFindCircle;                         // 25.
+        public int m_nThresholdBinary_FindCircle;                     // 26.
+        public int m_nContourSizeMin;                                 // 27.
+        public int m_nContourSizeMax;                                 // 28.
+        public int m_nRadiusMin;                                      // 29.
+        public int m_nRadiusMax;                                      // 30.
+        public int m_nMinDist_HoughCircle;                            // 31.
+        public int m_nParam1_HoughCircle;                             // 32.
+        public int m_nParam2_HoughCircle;                             // 33.
+        public int m_nThreshold1_Canny;                               // 34.
+        public int m_nThreshold2_Canny;                               // 35.
+        public int Offset_ROIFindMeasurePoint1H_X;
+        public int Offset_ROIFindMeasurePoint1H_Y;
+        public int Offset_ROIFindMeasurePoint5H_X;
+        public int Offset_ROIFindMeasurePoint5H_Y;
+        public int Offset_ROIFindMeasurePoint7H_X;
+        public int Offset_ROIFindMeasurePoint7H_Y;
+        public int Offset_ROIFindMeasurePoint11H_X;
+        public int Offset_ROIFindMeasurePoint11H_Y;
+        public double m_dPixelSize;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
@@ -79,6 +102,7 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
+        public double m_dDistanceMeasurementTolerance_Refer;
         public double m_dDistanceMeasurementTolerance_Min;                // 1.
         public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
@@ -93,6 +117,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public double m_dPixelSize;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
@@ -101,6 +126,7 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
+        public double m_dDistanceMeasurementTolerance_Refer;
         public double m_dDistanceMeasurementTolerance_Min;                // 1.
         public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
@@ -115,6 +141,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public double m_dPixelSize;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
@@ -123,6 +150,7 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
+        public double m_dDistanceMeasurementTolerance_Refer;
         public double m_dDistanceMeasurementTolerance_Min;                // 1.
         public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
@@ -137,6 +165,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public double m_dPixelSize;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
@@ -145,6 +174,7 @@ namespace SealingInspectGUI.Models
         public int[] m_nROI_Top;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.ROI_PARAMETER_COUNT)]
         public int[] m_nROI_Bottom;
+        public double m_dDistanceMeasurementTolerance_Refer;
         public double m_dDistanceMeasurementTolerance_Min;                // 1.
         public double m_dDistanceMeasurementTolerance_Max;                // 2.
         public int m_nDelayTimeGrab;
@@ -159,6 +189,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public double m_dPixelSize;
     }
 
 

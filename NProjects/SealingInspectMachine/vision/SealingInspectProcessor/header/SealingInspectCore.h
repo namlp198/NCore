@@ -99,8 +99,7 @@ private:
 	BOOL FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
 		                        int nRadiusInnerMin, int nRadiusInnerMax,
 		                        std::vector<std::vector<cv::Point>>& vecContours, 
-		                        std::vector<cv::Vec4i>& vecHierarchy, std::vector<cv::Point2f>& vecCenters,
-		                        std::vector<float>& vecRadius, cv::Point2f& center, double& dRadius);
+		                        std::vector<cv::Vec4i>& vecHierarchy, cv::Point2f& center, double& dRadius);
 
 	BOOL FindCircle_HoughCircle(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, 
 		                        std::vector<cv::Point2i>& vecPts, int nThresholdCanny, int minDist, int nParam1, int nParam2, 
@@ -169,7 +168,11 @@ private:
 	void               DrawROIFindLine(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point2f> vecPtsLine);
 
 	void               DrawROIFindPoints(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point> vecMeasurePt, std::vector<cv::Point2f> vecClosesPt);
-	
+
+private:
+	double             ConvertUmToPixel(double dGap, double dPixSize) { return (dGap * 1000.0) / dPixSize; }
+	double             ConvertPixelToUm(double dPxl, double dPxlSize) { return (dPxl * dPxlSize) / 1000.0; }
+
 public:
 
 	// setter
