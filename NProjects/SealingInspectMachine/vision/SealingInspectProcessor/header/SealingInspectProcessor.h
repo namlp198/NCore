@@ -111,8 +111,10 @@ public:
 
 	BOOL                             SetSealingInspectSimulationIO(int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
 
-	void                             SetProcessStatus(int nCoreIdx, BOOL bProcessStatus);
-	BOOL                             GetProcessStatus(int nCoreIdx) { return m_bProcessStatus[nCoreIdx]; }
+	void                             SetProcessStatus1(BOOL bProcessStatus1);
+	BOOL                             GetProcessStatus1() { return m_bProcessStatus1; }
+	void                             SetProcessStatus2(BOOL bProcessStatus2);
+	BOOL                             GetProcessStatus2() { return m_bProcessStatus2; }
 	void                             SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab);
 	BOOL                             GetGrabFrameSideCam(int nCoreId) { return m_bGrabFrameSideCam[nCoreId]; }
 public:
@@ -191,7 +193,8 @@ private:
 	CSealingInspect_Simulation_IO*             m_pSealingInspect_Simulation_IO[NUMBER_OF_SET_INSPECT];
 
 	// Process Status
-	CCriticalSection                           m_csProcessStatus[NUMBER_OF_SET_INSPECT];
+	CCriticalSection                           m_csProcessStatus1;
+	CCriticalSection                           m_csProcessStatus2;
 									           
 	// system settings file path	           
 	CString                                    m_csSysSettingsPath;
@@ -204,7 +207,8 @@ private:
 	CTCPSocket*                                m_pTcpSocket;
 	cv::Mat                                    m_matBGR;
 
-	BOOL                                       m_bProcessStatus[NUMBER_OF_SET_INSPECT];
+	BOOL                                       m_bProcessStatus1;
+	BOOL                                       m_bProcessStatus2;
 
 	BOOL                                       m_bGrabFrameSideCam[NUMBER_OF_SET_INSPECT];
 };

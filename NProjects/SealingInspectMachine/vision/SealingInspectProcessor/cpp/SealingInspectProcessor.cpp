@@ -2030,27 +2030,27 @@ BOOL CSealingInspectProcessor::SetSealingInspectSimulationIO(int nCoreIdx, CSeal
 	return TRUE;
 }
 
-void CSealingInspectProcessor::SetProcessStatus(int nCoreIdx, BOOL bProcessStatus)
+void CSealingInspectProcessor::SetProcessStatus1(BOOL bProcessStatus1)
 {
-	if (m_pSealingInspCore[nCoreIdx] == NULL)
-		return;
-
-	CSingleLock localLock(&m_csProcessStatus[nCoreIdx]);
+	CSingleLock localLock(&m_csProcessStatus1);
 	localLock.Lock();
+	m_bProcessStatus1 = bProcessStatus1;
+	localLock.Unlock();
+	return;
+}
 
-	//m_pSealingInspCore[nCoreIdx]->SetProcessStatus(bProcessStatus);
-	m_bProcessStatus[nCoreIdx] = bProcessStatus;
-
+void CSealingInspectProcessor::SetProcessStatus2(BOOL bProcessStatus2)
+{
+	CSingleLock localLock(&m_csProcessStatus2);
+	localLock.Lock();
+	m_bProcessStatus2 = bProcessStatus2;
 	localLock.Unlock();
 	return;
 }
 
 void CSealingInspectProcessor::SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab)
 {
-	if (m_pSealingInspCore[nCoreIdx] == NULL)
-		return;
-
-	CSingleLock localLock(&m_csProcessStatus[nCoreIdx]);
+	CSingleLock localLock(&m_csProcessStatus1);
 	localLock.Lock();
 
 	m_bGrabFrameSideCam[nCoreIdx] = bGrab;

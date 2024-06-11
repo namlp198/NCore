@@ -1,4 +1,5 @@
-﻿using SealingInspectGUI.Manager;
+﻿using SealingInspectGUI.Commons;
+using SealingInspectGUI.Manager;
 using SealingInspectGUI.ViewModels;
 using SealingInspectGUI.Views;
 using System;
@@ -33,11 +34,23 @@ namespace SealingInspectGUI.Command.Cmd
                 //InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetSealingInspectSimulationIO(nCavityIdx,
                 //            ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspect_Simulation_IO[nCavityIdx]);
 
-                if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.IsConnected)
-                    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.InspectStart();
+                //if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.IsConnected)
+                //    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.InspectStart();
 
-                if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.IsConnected)
-                    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.InspectStart();
+                //if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.IsConnected)
+                //    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.InspectStart();
+
+
+                //if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.IsConnected)
+                //    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_1.StartThreadPlcWecon1();
+
+                //if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.IsConnected)
+                //    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.StartThreadPlcWecon1();
+
+                
+                MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
+                MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
+
             }
         }
     }

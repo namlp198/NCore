@@ -23,8 +23,7 @@ namespace SealingInspectGUI.ViewModels
         private static readonly object _lockObj = new object();
         private readonly Dispatcher _dispatcher;
         private UcSumCameraView _sumCameraView;
-        public IOManager_PLC_Wecon PLC_Wecon_1;
-        public IOManager_PLC_Wecon PLC_Wecon_2;
+        public IOManager_PLC_Wecon PLC_Wecon;
 
         // status result cavity 1
         private int m_nTopCamFrame1_Cavity1 = -1;
@@ -104,11 +103,14 @@ namespace SealingInspectGUI.ViewModels
             this.GrabAllCmd = new GrabAllCmd();
             this.TestIOCmd = new TestIOCmd();
 
-            PLC_Wecon_1 = new IOManager_PLC_Wecon("192.168.0.10", 0);
-            PLC_Wecon_1.Initialize();
+            //PLC_Wecon_1 = new IOManager_PLC_Wecon("192.168.0.10", 1, 1);
+            //PLC_Wecon_1.Initialize();
 
-            PLC_Wecon_2 = new IOManager_PLC_Wecon("192.168.0.11", 1);
-            PLC_Wecon_2.Initialize();
+            //PLC_Wecon_2 = new IOManager_PLC_Wecon("192.168.0.11", 2, 2);
+            //PLC_Wecon_2.Initialize();
+
+            PLC_Wecon = new IOManager_PLC_Wecon("192.168.0.10", 0);
+            PLC_Wecon.Initialize();
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
             InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);
@@ -304,8 +306,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_1.IsJudgementOKNG = true;
-                    PLC_Wecon_1.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgement_1_OKNG = true;
+                    PLC_Wecon.IsInspect_1_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
             }
@@ -313,8 +315,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_1.IsJudgementOKNG = false;
-                    PLC_Wecon_1.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgement_1_OKNG = false;
+                    PLC_Wecon.IsInspect_1_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
             }
@@ -368,8 +370,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_2.IsJudgementOKNG = true;
-                    PLC_Wecon_2.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgement_2_OKNG = true;
+                    PLC_Wecon.IsInspect_2_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
             }
@@ -377,8 +379,8 @@ namespace SealingInspectGUI.ViewModels
             {
                 lock (_lockObj)
                 {
-                    PLC_Wecon_2.IsJudgementOKNG = false;
-                    PLC_Wecon_2.IsInspectCompleted = true;
+                    PLC_Wecon.IsJudgement_2_OKNG = false;
+                    PLC_Wecon.IsInspect_2_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
             }
@@ -392,7 +394,7 @@ namespace SealingInspectGUI.ViewModels
 
             lock (_lockObj)
             {
-                PLC_Wecon_1.IsInspectTopCamCompleted = true;
+                PLC_Wecon.IsInspectTopCam_1_Completed = true;
             }
         }
         private void InspectTopCam2Completed(int bSetting)
@@ -402,7 +404,7 @@ namespace SealingInspectGUI.ViewModels
 
             lock (_lockObj)
             {
-                PLC_Wecon_2.IsInspectTopCamCompleted = true;
+                PLC_Wecon.IsInspectTopCam_2_Completed = true;
             }
         }
         private void GrabFrameSideCam2Complete(int bSetting)

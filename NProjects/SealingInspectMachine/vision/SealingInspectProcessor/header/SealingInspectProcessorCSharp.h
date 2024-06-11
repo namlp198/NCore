@@ -62,7 +62,9 @@ extern "C"
 
 	__declspec(dllexport) bool                      SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime);
 
-	__declspec(dllexport) bool                      SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bProcessStatus);
+	__declspec(dllexport) bool                      SetProcessStatus1(CSealingInspectProcessor* pProcessor, BOOL bProcessStatus);
+
+	__declspec(dllexport) bool                      SetProcessStatus2(CSealingInspectProcessor* pProcessor, BOOL bProcessStatus);
 
 	__declspec(dllexport) bool                      SetGrabFrameSideCam(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bTrigger);
 

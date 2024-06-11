@@ -274,13 +274,23 @@ bool SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime)
 	return true;
 }
 
-bool SetProcessStatus(CSealingInspectProcessor* pProcessor, int nCoreIdx, BOOL bProcessStatus)
+bool SetProcessStatus1(CSealingInspectProcessor* pProcessor, BOOL bProcessStatus)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	pProcessor->SetProcessStatus(nCoreIdx, bProcessStatus);
+	pProcessor->SetProcessStatus1(bProcessStatus);
 	
+	return true;
+}
+
+bool SetProcessStatus2(CSealingInspectProcessor* pProcessor, BOOL bProcessStatus)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	pProcessor->SetProcessStatus2(bProcessStatus);
+
 	return true;
 }
 

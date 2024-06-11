@@ -42,8 +42,10 @@ interface ISealingInspectCoreToParent
 	virtual BOOL                            SetResultBuffer_TOP(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual CSealingInspectResult*          GetSealingInspectResultControl(int nResIdx) = 0;
 	virtual CSealingInspect_Simulation_IO*  GetSealingInspectSimulationIO(int nCoreIdx) = 0;
-	virtual BOOL                            GetProcessStatus(int nCoreIdx) = 0;
-	virtual void                            SetProcessStatus(int nCoreIdx, BOOL bProcessStatus) = 0;
+	virtual BOOL                            GetProcessStatus1() = 0;
+	virtual void                            SetProcessStatus1(BOOL bProcessStatus) = 0;
+	virtual BOOL                            GetProcessStatus2() = 0;
+	virtual void                            SetProcessStatus2(BOOL bProcessStatus) = 0;
 	virtual BOOL                            GetGrabFrameSideCam(int nCoreIdx) = 0;
 	virtual void                            SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab) = 0;
 };
@@ -99,11 +101,13 @@ private:
 	BOOL FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
 		                        int nRadiusInnerMin, int nRadiusInnerMax,
 		                        std::vector<std::vector<cv::Point>>& vecContours, 
-		                        std::vector<cv::Vec4i>& vecHierarchy, cv::Point2f& center, double& dRadius);
+		                        std::vector<cv::Vec4i>& vecHierarchy, cv::Point2f& center, double& dRadius, int nIdx);
 
 	BOOL FindCircle_HoughCircle(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, 
 		                        std::vector<cv::Point2i>& vecPts, int nThresholdCanny, int minDist, int nParam1, int nParam2, 
 		                        int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle);
+
+	BOOL FindCircle_HoughCircle_2(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, int nThresholdCanny1, int nThresholdCanny2, int minDist, int nParam1, int nParam2, int nRadiusOuterMin, int nRadiusOuterMax);
 
 	BOOL FindDistanceAll_OuterToInner(std::vector<cv::Point2i>& vecPts,
 		                              std::vector<cv::Point2i>& vecPtsIntersection, 

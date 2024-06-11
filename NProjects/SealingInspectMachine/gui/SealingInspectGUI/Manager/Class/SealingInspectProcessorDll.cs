@@ -294,8 +294,21 @@ namespace SealingInspectGUI.Manager.Class
 #else
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SetProcessStatus(IntPtr pInstance, int nCoreIdx, int nProcessStatus);
-        public bool SetProcessStatus(int nCoreIdx, int nProcessStatus) { return SetProcessStatus(m_sealingInspectProcessor, nCoreIdx, nProcessStatus); }
+        extern private static bool SetProcessStatus1(IntPtr pInstance, int nProcessStatus);
+        public bool SetProcessStatus1(int nProcessStatus) { return SetProcessStatus1(m_sealingInspectProcessor, nProcessStatus); }
+        /**********************************
+         - Start Inspection
+         - Parameter : Index Core, Process Status
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetProcessStatus2(IntPtr pInstance, int nProcessStatus);
+        public bool SetProcessStatus2(int nProcessStatus) { return SetProcessStatus2(m_sealingInspectProcessor, nProcessStatus); }
         /**********************************
          - Start Inspection
          - Parameter : Index Core, Process Status
