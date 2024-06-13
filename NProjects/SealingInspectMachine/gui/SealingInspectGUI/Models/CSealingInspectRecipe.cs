@@ -44,7 +44,7 @@ namespace SealingInspectGUI.Models
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;    // 30.
         public int m_nHoughCircleParam1;                              // 31.
         public int m_nHoughCircleParam2;                              // 32.
-        public double m_dPixelSize;
+        public double m_dRatioPxlUm;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
@@ -85,15 +85,43 @@ namespace SealingInspectGUI.Models
         public int m_nParam2_HoughCircle;                             // 33.
         public int m_nThreshold1_Canny;                               // 34.
         public int m_nThreshold2_Canny;                               // 35.
-        public int Offset_ROIFindMeasurePoint1H_X;
-        public int Offset_ROIFindMeasurePoint1H_Y;
-        public int Offset_ROIFindMeasurePoint5H_X;
-        public int Offset_ROIFindMeasurePoint5H_Y;
-        public int Offset_ROIFindMeasurePoint7H_X;
-        public int Offset_ROIFindMeasurePoint7H_Y;
-        public int Offset_ROIFindMeasurePoint11H_X;
-        public int Offset_ROIFindMeasurePoint11H_Y;
-        public double m_dPixelSize;
+        public int Offset_ROIFindMeasurePoint1H_X;                    // 36.
+        public int Offset_ROIFindMeasurePoint1H_Y;                    // 37.
+        public int Offset_ROIFindMeasurePoint5H_X;                    // 38.
+        public int Offset_ROIFindMeasurePoint5H_Y;                    // 39.
+        public int Offset_ROIFindMeasurePoint7H_X;                    // 40.
+        public int Offset_ROIFindMeasurePoint7H_Y;                    // 41.
+        public int Offset_ROIFindMeasurePoint11H_X;                   // 42.
+        public int Offset_ROIFindMeasurePoint11H_Y;                   // 43.
+        public int m_nWidth_ROIFindSealingOverflow;                   // 44.
+        public int m_nHeight_ROIFindSealingOverflow;                  // 45.
+        public int m_nOffset_ROIFindSealingOverflow_X_1H_Hoz;         // 46.
+        public int m_nOffset_ROIFindSealingOverflow_Y_1H_Hoz;         // 47.
+        public int m_nOffset_ROIFindSealingOverflow_X_1H_Ver;         // 48.
+        public int m_nOffset_ROIFindSealingOverflow_Y_1H_Ver;         // 49.
+        public int m_nOffset_ROIFindSealingOverflow_X_5H_Hoz;         // 50.
+        public int m_nOffset_ROIFindSealingOverflow_Y_5H_Hoz;         // 51.
+        public int m_nOffset_ROIFindSealingOverflow_X_5H_Ver;         // 52.
+        public int m_nOffset_ROIFindSealingOverflow_Y_5H_Ver;         // 53.
+        public int m_nOffset_ROIFindSealingOverflow_X_7H_Hoz;         // 54.
+        public int m_nOffset_ROIFindSealingOverflow_Y_7H_Hoz;         // 55.
+        public int m_nOffset_ROIFindSealingOverflow_X_7H_Ver;         // 56.
+        public int m_nOffset_ROIFindSealingOverflow_Y_7H_Ver;         // 57.
+        public int m_nOffset_ROIFindSealingOverflow_X_11H_Hoz;        // 58.
+        public int m_nOffset_ROIFindSealingOverflow_Y_11H_Hoz;        // 59.
+        public int m_nOffset_ROIFindSealingOverflow_X_11H_Ver;        // 60.
+        public int m_nOffset_ROIFindSealingOverflow_Y_11H_Ver;        // 61.
+        public int m_nThresholdBinary_FindSealingOverflow;            // 62.
+        public int m_nContourSize_FindSealingOverflow_Max;            // 63.
+        public double m_dAreaContour_FindSealingOverflow_Max;         // 64.
+        public int m_nThresholdBinary_MeasureWidth;                   // 65.
+        public int m_nHMin;                                           // 66.
+        public int m_nHMax;                                           // 67.
+        public int m_nSMin;                                           // 68.
+        public int m_nSMax;                                           // 69.
+        public int m_nVMin;                                           // 70.
+        public int m_nVMax;                                           // 71.
+        public double m_dRatioPxlUm;                                   // 72.
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
@@ -117,7 +145,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
-        public double m_dPixelSize;
+        public double m_dRatioPxlUm;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
@@ -141,7 +169,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
-        public double m_dPixelSize;
+        public double m_dRatioPxlUm;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
@@ -165,7 +193,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
-        public double m_dPixelSize;
+        public double m_dRatioPxlUm;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
@@ -189,7 +217,7 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
-        public double m_dPixelSize;
+        public double m_dRatioPxlUm;
     }
 
 

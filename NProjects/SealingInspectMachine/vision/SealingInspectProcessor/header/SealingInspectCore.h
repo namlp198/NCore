@@ -25,6 +25,11 @@
 #define TEST_INSPECT_CAVITY_2
 //#undef TEST_INSPECT_CAVITY_2
 
+#define ALGORITHM_1_TOPCAM_FRAME2
+#undef ALGORITHM_1_TOPCAM_FRAME2
+#define ALGORITHM_2_TOPCAM_FRAME2
+//#undef ALGORITHM_2_TOPCAM_FRAME2
+
 interface ISealingInspectCoreToParent
 {
 	virtual void							InspectCavity1Complete(BOOL bSetting) = 0;
@@ -173,6 +178,9 @@ private:
 
 	void               DrawROIFindPoints(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point> vecMeasurePt, std::vector<cv::Point2f> vecClosesPt);
 
+	void               DrawRotateRect(cv::Mat* pMat, std::vector<cv::Point> vertices, BOOL bStatus);
+
+	BOOL               FindSealingOverflow(cv::Mat* pMatProcess, cv::Rect rectROI, cv::Rect rectFindSealingOverflow, std::vector<cv::Point>& vertices_FindSealingOverflow, double angle, int nThreshold, int nContourSizeMax, double dAreaContourMax);
 private:
 	double             ConvertUmToPixel(double dGap, double dPixSize) { return (dGap * 1000.0) / dPixSize; }
 	double             ConvertPixelToUm(double dPxl, double dPxlSize) { return (dPxl * dPxlSize) / 1000.0; }
