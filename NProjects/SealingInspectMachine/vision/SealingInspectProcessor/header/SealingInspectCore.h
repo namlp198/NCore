@@ -143,7 +143,7 @@ private:
 
 	void MakeROIFindPoints(CSealingInspectRecipe_SideCam& pRecipeSideCam, int nFrame, cv::Rect& rectROIFindPts);
 
-	BOOL MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideCam recipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Rect& rectROIFindPts);
+	BOOL MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideCam recipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Rect& rectROIFindPts, BOOL& bJudgeByMinBoudingRect, std::vector<cv::Point>& vecRotateRectPt);
 
 	BOOL MakeCannyEdgeImage(cv::Mat* pImageData, cv::Mat& pEdgeImageData, double dThreshold1, double dThreshold2, int nGaussianMask = 3);
 
@@ -178,7 +178,7 @@ private:
 
 	void               DrawROIFindPoints(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point> vecMeasurePt, std::vector<cv::Point2f> vecClosesPt);
 
-	void               DrawRotateRect(cv::Mat* pMat, std::vector<cv::Point> vertices, BOOL bStatus);
+	void               DrawRotateRect(cv::Mat& pMat, std::vector<cv::Point>& vertices, BOOL& bStatus);
 
 	BOOL               FindSealingOverflow(cv::Mat* pMatProcess, cv::Rect rectROI, cv::Rect rectFindSealingOverflow, std::vector<cv::Point>& vertices_FindSealingOverflow, double angle, int nThreshold, int nContourSizeMax, double dAreaContourMax);
 private:

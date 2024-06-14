@@ -44,6 +44,12 @@ namespace SealingInspectGUI.Models
         public int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;    // 30.
         public int m_nHoughCircleParam1;                              // 31.
         public int m_nHoughCircleParam2;                              // 32.
+        public int m_nHMin;
+        public int m_nHMax;
+        public int m_nSMin;
+        public int m_nSMax;
+        public int m_nVMin;
+        public int m_nVMax;
         public double m_dRatioPxlUm;
         public double m_dRatioUmPxl;
     }
@@ -153,6 +159,7 @@ namespace SealingInspectGUI.Models
         public int m_nSMax;
         public int m_nVMin;
         public int m_nVMax;
+        public int m_bJustJudgeByMinBoundingRect;
         public double m_dRatioPxlUm;
         public double m_dRatioUmPxl;
     }
@@ -184,6 +191,7 @@ namespace SealingInspectGUI.Models
         public int m_nSMax;
         public int m_nVMin;
         public int m_nVMax;
+        public int m_bJustJudgeByMinBoundingRect;
         public double m_dRatioPxlUm;
         public double m_dRatioUmPxl;
     }
@@ -215,6 +223,7 @@ namespace SealingInspectGUI.Models
         public int m_nSMax;
         public int m_nVMin;
         public int m_nVMax;
+        public int m_bJustJudgeByMinBoundingRect;
         public double m_dRatioPxlUm;
         public double m_dRatioUmPxl;
     }
@@ -246,6 +255,7 @@ namespace SealingInspectGUI.Models
         public int m_nSMax;
         public int m_nVMin;
         public int m_nVMax;
+        public int m_bJustJudgeByMinBoundingRect;
         public double m_dRatioPxlUm;
         public double m_dRatioUmPxl;
     }

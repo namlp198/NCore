@@ -192,7 +192,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 
 		// 7. turn on 4 bar light
 
-		Sleep(200);
+		//Sleep(200);
 
 		// 8. grab frame
 		if (hikCamControl->GetGrabBufferImage(nTopCam1_BufferHikCamIdx, matBayerRG.data) == FALSE)
@@ -394,7 +394,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 		// 7. turn on 4 bar light
 
-		Sleep(100);
+		//Sleep(100);
 
 		// 8. grab frame
 		if (hikCamControl->GetGrabBufferImage(nTopCam2_BufferHikCamIdx, matBayerRG.data) == FALSE)
@@ -801,7 +801,7 @@ BOOL CSealingInspectCore::FindCircle_MinEnclosing(cv::Mat* matProcess, int nThre
 	if (matProcess->empty())
 		return FALSE;
 
-	cv::Mat matGray, matBinary, matEle;
+	cv::Mat matGray, matBinary, matEle, matResize;
 	if (matProcess->channels() > 1)
 		cv::cvtColor(*matProcess, matGray, cv::COLOR_BGR2GRAY);
 	else
@@ -811,16 +811,20 @@ BOOL CSealingInspectCore::FindCircle_MinEnclosing(cv::Mat* matProcess, int nThre
 
 	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
 	cv::morphologyEx(matBinary, matBinary, cv::MORPH_OPEN, matEle);
-	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(12, 3));
+	matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
 	cv::morphologyEx(matBinary, matBinary, cv::MORPH_CLOSE, matEle);
 
-	/*char text[100] = {};
+	/*cv::resize(matBinary, matResize, cv::Size(1000, 750));
+	char text[100] = {};
 	sprintf_s(text, "%s_%d", "binary", nIdx);
-	cv::imshow(text, matBinary);*/
+	cv::imshow(text, matResize);*/
 
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
 	findContours(matBinary, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+
+	if (contours.size() == 0)
+		return FALSE;
 
 	// list all polygons found.
 	std::vector<std::vector<cv::Point> > contours_poly(contours.size());
@@ -828,11 +832,14 @@ BOOL CSealingInspectCore::FindCircle_MinEnclosing(cv::Mat* matProcess, int nThre
 	std::vector<cv::Point2f> centers(contours.size());
 	// list all radius of them.
 	std::vector<float> radius(contours.size());
+	int nCheck_NumberOfContour_FitCondition = 0;
 
 	for (size_t i = 0; i < contours.size(); i++)
 	{
 		if (contours[i].size() < nContourSizeMin || contours[i].size() > nContourSizeMax)
 			continue;
+
+		nCheck_NumberOfContour_FitCondition++;
 
 		// approximate contour become the polygon
 		approxPolyDP(contours[i], contours_poly[i], 3, true);
@@ -843,10 +850,13 @@ BOOL CSealingInspectCore::FindCircle_MinEnclosing(cv::Mat* matProcess, int nThre
 			center = centers[i];
 			dRadius = radius[i];
 
-			if (center.x == 0 && center.y == 0 && dRadius == 0)
+			if (center.x == 0 && center.y == 0)
 				return FALSE;
 		}
 	}
+
+	if (nCheck_NumberOfContour_FitCondition == 0)
+		return FALSE;
 
 	vecContours = contours;
 	vecHierarchy = hierarchy;
@@ -1638,7 +1648,7 @@ void CSealingInspectCore::MakeROIFindPoints(CSealingInspectRecipe_SideCam& pReci
 	rectROIFindPts = rectROI;
 }
 
-BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideCam recipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Rect& rectROIFindPts)
+BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideCam recipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROIFindLIne, cv::Rect& rectROIFindPts, BOOL& bJudgeByMinBoudingRect, std::vector<cv::Point>& vecRotateRectPt)
 {
 	if (pMatProcess->empty())
 		return FALSE;
@@ -1651,6 +1661,13 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 	int nROIWidth_Bottom = 0;
 	int nROIHeight_Bottom = 0;
 
+	double dRatio_pxl_to_mm = 0.0;
+	double dRatio_mm_to_pxl = 0.0;
+	double dHeight_Refer = 0.0;
+	double dHeight_Tolerance_Min = 0.0;
+	double dHeight_Tolerance_Max = 0.0;
+	BOOL nJustJugdeByMinBoudingRect = 0;
+
 	switch (nFrame)
 	{
 	case 0:
@@ -1662,6 +1679,16 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 		nROIHeight_Top = recipeSideCam.m_recipeFrame1.m_nROI_Top[3];
 		nROIWidth_Bottom = recipeSideCam.m_recipeFrame1.m_nROI_Bottom[2];
 		nROIHeight_Bottom = recipeSideCam.m_recipeFrame1.m_nROI_Bottom[3];
+
+		nJustJugdeByMinBoudingRect = recipeSideCam.m_recipeFrame1.m_bJustJudgeByMinBoundingRect;
+		if (nJustJugdeByMinBoudingRect == TRUE)
+		{
+			double dRatio_pxl_to_mm = recipeSideCam.m_recipeFrame1.m_dRatioPxlUm;
+			double dRatio_mm_to_pxl = recipeSideCam.m_recipeFrame1.m_dRatioUmPxl;
+			double dHeight_Refer = recipeSideCam.m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer;
+			double dHeight_Tolerance_Min = recipeSideCam.m_recipeFrame1.m_dDistanceMeasurementTolerance_Min;
+			double dHeight_Tolerance_Max = recipeSideCam.m_recipeFrame1.m_dDistanceMeasurementTolerance_Max;
+		}
 		break;
 
 	case 2:
@@ -1674,6 +1701,16 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 		nROIHeight_Top = recipeSideCam.m_recipeFrame2.m_nROI_Top[3];
 		nROIWidth_Bottom = recipeSideCam.m_recipeFrame2.m_nROI_Bottom[2];
 		nROIHeight_Bottom = recipeSideCam.m_recipeFrame2.m_nROI_Bottom[3];
+
+		nJustJugdeByMinBoudingRect = recipeSideCam.m_recipeFrame2.m_bJustJudgeByMinBoundingRect;
+		if (nJustJugdeByMinBoudingRect == TRUE)
+		{
+			double dRatio_pxl_to_mm = recipeSideCam.m_recipeFrame2.m_dRatioPxlUm;
+			double dRatio_mm_to_pxl = recipeSideCam.m_recipeFrame2.m_dRatioUmPxl;
+			double dHeight_Refer = recipeSideCam.m_recipeFrame2.m_dDistanceMeasurementTolerance_Refer;
+			double dHeight_Tolerance_Min = recipeSideCam.m_recipeFrame2.m_dDistanceMeasurementTolerance_Min;
+			double dHeight_Tolerance_Max = recipeSideCam.m_recipeFrame2.m_dDistanceMeasurementTolerance_Max;
+		}
 		break;
 
 	case 5:
@@ -1685,6 +1722,16 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 		nROIHeight_Top = recipeSideCam.m_recipeFrame3.m_nROI_Top[3];
 		nROIWidth_Bottom = recipeSideCam.m_recipeFrame3.m_nROI_Bottom[2];
 		nROIHeight_Bottom = recipeSideCam.m_recipeFrame3.m_nROI_Bottom[3];
+
+		nJustJugdeByMinBoudingRect = recipeSideCam.m_recipeFrame3.m_bJustJudgeByMinBoundingRect;
+		if (nJustJugdeByMinBoudingRect == TRUE)
+		{
+			double dRatio_pxl_to_mm = recipeSideCam.m_recipeFrame3.m_dRatioPxlUm;
+			double dRatio_mm_to_pxl = recipeSideCam.m_recipeFrame3.m_dRatioUmPxl;
+			double dHeight_Refer = recipeSideCam.m_recipeFrame3.m_dDistanceMeasurementTolerance_Refer;
+			double dHeight_Tolerance_Min = recipeSideCam.m_recipeFrame3.m_dDistanceMeasurementTolerance_Min;
+			double dHeight_Tolerance_Max = recipeSideCam.m_recipeFrame3.m_dDistanceMeasurementTolerance_Max;
+		}
 		break;
 
 	case 7:
@@ -1695,6 +1742,16 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 		nROIHeight_Top = recipeSideCam.m_recipeFrame4.m_nROI_Top[3];
 		nROIWidth_Bottom = recipeSideCam.m_recipeFrame4.m_nROI_Bottom[2];
 		nROIHeight_Bottom = recipeSideCam.m_recipeFrame4.m_nROI_Bottom[3];
+
+		nJustJugdeByMinBoudingRect = recipeSideCam.m_recipeFrame4.m_bJustJudgeByMinBoundingRect;
+		if (nJustJugdeByMinBoudingRect == TRUE)
+		{
+			double dRatio_pxl_to_mm = recipeSideCam.m_recipeFrame4.m_dRatioPxlUm;
+			double dRatio_mm_to_pxl = recipeSideCam.m_recipeFrame4.m_dRatioUmPxl;
+			double dHeight_Refer = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Refer;
+			double dHeight_Tolerance_Min = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Min;
+			double dHeight_Tolerance_Max = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Max;
+		}
 		break;
 	case 8:
 		nThresholdBinary = recipeSideCam.m_recipeFrame4.m_nThresholdBinaryFindROI - 20;
@@ -1704,6 +1761,16 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 		nROIHeight_Top = recipeSideCam.m_recipeFrame4.m_nROI_Top[3];
 		nROIWidth_Bottom = recipeSideCam.m_recipeFrame4.m_nROI_Bottom[2];
 		nROIHeight_Bottom = recipeSideCam.m_recipeFrame4.m_nROI_Bottom[3];
+
+		nJustJugdeByMinBoudingRect = recipeSideCam.m_recipeFrame4.m_bJustJudgeByMinBoundingRect;
+		if (nJustJugdeByMinBoudingRect == TRUE)
+		{
+			double dRatio_pxl_to_mm = recipeSideCam.m_recipeFrame4.m_dRatioPxlUm;
+			double dRatio_mm_to_pxl = recipeSideCam.m_recipeFrame4.m_dRatioUmPxl;
+			double dHeight_Refer = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Refer;
+			double dHeight_Tolerance_Min = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Min;
+			double dHeight_Tolerance_Max = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Max;
+		}
 		break;
 	case 9:
 		nThresholdBinary = recipeSideCam.m_recipeFrame4.m_nThresholdBinaryFindROI - 10;
@@ -1713,6 +1780,16 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 		nROIHeight_Top = recipeSideCam.m_recipeFrame4.m_nROI_Top[3];
 		nROIWidth_Bottom = recipeSideCam.m_recipeFrame4.m_nROI_Bottom[2];
 		nROIHeight_Bottom = recipeSideCam.m_recipeFrame4.m_nROI_Bottom[3];
+
+		nJustJugdeByMinBoudingRect = recipeSideCam.m_recipeFrame4.m_bJustJudgeByMinBoundingRect;
+		if (nJustJugdeByMinBoudingRect == TRUE)
+		{
+			double dRatio_pxl_to_mm = recipeSideCam.m_recipeFrame4.m_dRatioPxlUm;
+			double dRatio_mm_to_pxl = recipeSideCam.m_recipeFrame4.m_dRatioUmPxl;
+			double dHeight_Refer = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Refer;
+			double dHeight_Tolerance_Min = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Min;
+			double dHeight_Tolerance_Max = recipeSideCam.m_recipeFrame4.m_dDistanceMeasurementTolerance_Max;
+		}
 		break;
 	}
 
@@ -1736,7 +1813,10 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 	int nLargest_contour_Idx = 0;
 	std::vector<std::vector<cv::Point>> contours;
 	cv::findContours(matBinary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
-	//std::vector<std::vector<cv::Point>> contours_poly(contours.size());
+	std::vector<std::vector<cv::Point>> contours_poly(contours.size());
+
+	if (contours.size() == 0)
+		return FALSE;
 
 	for (int i = 0; i < contours.size(); i++)
 	{
@@ -1750,6 +1830,34 @@ BOOL CSealingInspectCore::MakeROI_AdvancedAlgorithms(CSealingInspectRecipe_SideC
 	cv::Rect boundingRect = cv::boundingRect(contours[nLargest_contour_Idx]);
 	cv::Rect rectFindLine = cv::Rect(boundingRect.x, boundingRect.y - nOffset_Y_Top, nROIWidth_Top, nROIHeight_Top);
 	cv::Rect rectFindPt = cv::Rect(boundingRect.x, boundingRect.y + nOffset_Y_Bottom, nROIWidth_Bottom, nROIHeight_Bottom);
+
+	if (nJustJugdeByMinBoudingRect == 1)
+	{
+		cv::approxPolyDP(cv::Mat(contours[nLargest_contour_Idx]), contours_poly[nLargest_contour_Idx], 3, true);
+		cv::RotatedRect rotatedRect = cv::minAreaRect(cv::Mat(contours_poly[nLargest_contour_Idx]));
+
+		double dPxlMin = Convert_mm_To_Pixel(dHeight_Refer, dRatio_mm_to_pxl) - Convert_mm_To_Pixel(dHeight_Tolerance_Min, dRatio_mm_to_pxl);
+		double dPxlMax = Convert_mm_To_Pixel(dHeight_Refer, dRatio_mm_to_pxl) - Convert_mm_To_Pixel(dHeight_Tolerance_Max, dRatio_mm_to_pxl);
+
+		double dist = 0.0;
+		if (rotatedRect.size.width < rotatedRect.size.height)
+		{
+			dist = rotatedRect.size.width;
+		}
+		else
+			dist = rotatedRect.size.height;
+
+		if (dPxlMin < dist && dist < dPxlMax)
+		{
+			bJudgeByMinBoudingRect = TRUE;
+		}
+
+		cv::Point2f vertices2f[4];
+		rotatedRect.points(vertices2f);
+		for (int i = 0; i < 4; i++) {
+			vecRotateRectPt.push_back(cv::Point(vertices2f[i].x, vertices2f[i].y));
+		}
+	}
 
 	rectROIFindLIne = rectFindLine;
 	rectROIFindPts = rectFindPt;
@@ -2465,7 +2573,7 @@ void CSealingInspectCore::DrawPositionNG(cv::Mat& mat, std::vector<int>& vecPosN
 
 	}
 
-	vecPosNG.clear();
+	//vecPosNG.clear();
 }
 
 void CSealingInspectCore::DrawROIFindLine(cv::Mat& mat, cv::Rect rectROI, std::vector<cv::Point2f> vecPtsLine)
@@ -2486,9 +2594,9 @@ void CSealingInspectCore::DrawROIFindPoints(cv::Mat& mat, cv::Rect rectROI, std:
 	}
 }
 
-void CSealingInspectCore::DrawRotateRect(cv::Mat* pMat, std::vector<cv::Point> vertices, BOOL bStatus)
+void CSealingInspectCore::DrawRotateRect(cv::Mat& pMat, std::vector<cv::Point>& vertices, BOOL& bStatus)
 {
-	if (pMat->empty())
+	if (pMat.empty())
 		return;
 
 	if (vertices.empty())
@@ -2497,13 +2605,13 @@ void CSealingInspectCore::DrawRotateRect(cv::Mat* pMat, std::vector<cv::Point> v
 	if (bStatus == TRUE)
 	{
 		for (int i = 0; i < 4; i++) {
-			cv::line(*pMat, vertices[i], vertices[(i + 1) % 4], GREEN_COLOR, 1, cv::LINE_8);
+			cv::line(pMat, vertices[i], vertices[(i + 1) % 4], GREEN_COLOR, 1, cv::LINE_8);
 		}
 	}
-	else
+	else if (bStatus == FALSE)
 	{
 		for (int i = 0; i < 4; i++) {
-			cv::line(*pMat, vertices[i], vertices[(i + 1) % 4], RED_COLOR, 1, cv::LINE_8);
+			cv::line(pMat, vertices[i], vertices[(i + 1) % 4], RED_COLOR, 1, cv::LINE_8);
 		}
 	}
 
@@ -2600,6 +2708,14 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 	int nNumberOfDistNGMax = recipeTopCamFrame1.m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 	BOOL bUseAdvancedAlgorithms = recipeTopCamFrame1.m_bUseAdvancedAlgorithms;
 
+	// param HSV
+	/*int nHMin = recipeTopCamFrame1.m_nHMin;
+	int nHMax = recipeTopCamFrame1.m_nHMax;
+	int nSMin = recipeTopCamFrame1.m_nSMin;
+	int nSMax = recipeTopCamFrame1.m_nSMin;
+	int nVMin = recipeTopCamFrame1.m_nVMin;
+	int nVMax = recipeTopCamFrame1.m_nVMin;*/
+
 	// MinEnclosingCircle
 	std::vector<std::vector<cv::Point> > vecContours;
 	std::vector<cv::Vec4i> vecHierarchy;
@@ -2617,10 +2733,11 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 	double dRadius_Outer;
 	std::vector<double> vecDist;
 	std::vector<int> vecPosNG;
+	std::vector<int> vecPosNG_AdvancedAlgorithms;
 
 	BOOL bFindCircle_MinEnclosing = FALSE;
 	BOOL bFindCircle_HoughCircle = FALSE;
-	BOOL nRet = FALSE;
+	BOOL nRet = TRUE;
 
 	cv::Mat matProcess, matGray;
 	cv::cvtColor(mat, matGray, cv::COLOR_BGR2GRAY);
@@ -2632,15 +2749,8 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 	cv::cvtColor(matProcess, matHSV, cv::COLOR_BGR2HSV);
 	matResultHSV = cv::Mat::zeros(matProcess.rows, matProcess.cols, CV_8UC3);
 
-	int nHMin = 62;
-	int nHMax = 121;
-	int nSMin = 15;
-	int nSMax = 255;
-	int nVMin = 91;
-	int nVMax = 243;
-
-	minHSV = cv::Scalar(nHMin, nSMin, nVMin);
-	maxHSV = cv::Scalar(nHMax, nSMax, nVMax);
+	minHSV = cv::Scalar(recipeTopCamFrame1.m_nHMin, recipeTopCamFrame1.m_nSMin, recipeTopCamFrame1.m_nVMin);
+	maxHSV = cv::Scalar(recipeTopCamFrame1.m_nHMax, recipeTopCamFrame1.m_nSMax, recipeTopCamFrame1.m_nVMax);
 
 	cv::inRange(matHSV, minHSV, maxHSV, maskHSV);
 	cv::bitwise_and(matProcess, matProcess, matResultHSV, maskHSV);
@@ -2656,6 +2766,10 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 		nRet &= bFindCircle_MinEnclosing;
 		m_pInterface->SetResultBuffer_TOP(nBufferProcessorIdx, nFrame, mat.data);
 		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bStatusFrame1 = nRet;
+		for (int i = 0; i < MAX_MEASURE_DIST_HOUGHCIRCLE_TOPCAM; i++)
+		{
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_nArrPosNG_TopCam[i] = 1;
+		}
 		return;
 	}
 
@@ -2672,6 +2786,10 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 		nRet &= bFindCircle_HoughCircle;
 		m_pInterface->SetResultBuffer_TOP(nBufferProcessorIdx, nFrame, mat.data);
 		m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bStatusFrame1 = nRet;
+		for (int i = 0; i < MAX_MEASURE_DIST_HOUGHCIRCLE_TOPCAM; i++)
+		{
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_nArrPosNG_TopCam[i] = 1;
+		}
 		return;
 	}
 
@@ -2690,9 +2808,9 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 
 	// Judgement
 
-	int nDeltaRadius = (int)(dRadius_Outer - dRadius_Inner);
+	/*int nDeltaRadius = (int)(dRadius_Outer - dRadius_Inner);
 
-	nRet = nDeltaRadius < nDeltaRadiusTolerance ? TRUE : FALSE;
+	nRet = nDeltaRadius < nDeltaRadiusTolerance ? TRUE : FALSE;*/
 
 	double dPxlMin = Convert_mm_To_Pixel(dDistanceMeasureToleranceRefer, dUmToPxl) - Convert_mm_To_Pixel(dDistanceMeasureToleranceMin, dUmToPxl);
 	double dPxlMax = Convert_mm_To_Pixel(dDistanceMeasureToleranceRefer, dUmToPxl) + Convert_mm_To_Pixel(dDistanceMeasureToleranceMax, dUmToPxl);
@@ -2709,7 +2827,7 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 			vecPosNG.push_back(i);
 		}
 
-		sprintf_s(dist_text, "%.3f", dist_mm);
+		sprintf_s(dist_text, "%.2f", dist_mm);
 		cv::putText(mat, dist_text, cv::Point(vecPoints[i].x - 10, vecPoints[i].y - 20), cv::FONT_HERSHEY_SIMPLEX, 0.5, BLACK_COLOR, 1);
 	}
 
@@ -2747,10 +2865,10 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 				cv::rectangle(mat, vecRectROI[i], BLUE_COLOR, 1, cv::LINE_AA);
 			}
 		}
-		nRet &= JudgementInspectDistanceMeasurement_AdvancedAlgorithms(vecDistPointToCircle, vecPosNG, dPxlMin, dPxlMax, nNumberOfDistNGMax);
+		nRet &= JudgementInspectDistanceMeasurement_AdvancedAlgorithms(vecDistPointToCircle, vecPosNG_AdvancedAlgorithms, dPxlMin, dPxlMax, nNumberOfDistNGMax);
 
-		if (!vecPosNG.empty())
-			DrawPositionNG(mat, vecPosNG, vecPoints);
+		if (!vecPosNG_AdvancedAlgorithms.empty())
+			DrawPositionNG(mat, vecPosNG_AdvancedAlgorithms, vecPoints);
 	}
 
 	// save image
@@ -2761,6 +2879,22 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 	// set buffer
 	m_pInterface->SetResultBuffer_TOP(nBufferProcessorIdx, nFrame, mat.data);
 
+	if (!vecDist.empty() && vecDist.size() == MAX_MEASURE_DIST_HOUGHCIRCLE_TOPCAM)
+	{
+		for (int i = 0; i < vecDist.size(); i++)
+		{
+			double dist_mm = Convert_Pixel_To_mm(vecDist.at(i), dPxlToUm);
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_dArrDistResult_TopCam[i] = dist_mm;
+		}
+	}
+	if (!vecPosNG.empty())
+	{
+		for (int i = 0; i < vecPosNG.size(); i++)
+		{
+			// asign all pos NG = 1
+			m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_nArrPosNG_TopCam[vecPosNG[i]] = 1;
+		}
+	}
 	m_pInterface->GetSealingInspectResultControl(m_nCoreIdx)->m_sealingInspResult_TopCam.m_bStatusFrame1 = nRet;
 }
 
@@ -2848,8 +2982,13 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 	double dRadius;
 
 	std::vector<std::vector<cv::Point>> vecContours_FindBlob;
+	cv::Mat matMeasureWidth;
+	cv::Point vertices[4];
+	std::vector<cv::Point> vertices_original;
 
-	int nCounterNG = 0;
+	std::vector<cv::Point> vertices_hoz;
+	std::vector<cv::Point> vertices_ver;
+
 	BOOL bFindCircle = FALSE;
 	BOOL bMeasureWidth = TRUE;
 	BOOL bFindSealingOverflow_Hoz = TRUE;
@@ -2885,6 +3024,8 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 
 	MakeROITopCamFrame2(&recipeTopCamFrame2, vecRectROI, &matProcess, m_ptCenter_Inner, m_dRadius_Inner);
 
+	int nCounterNG = 0;
+
 	for (int nROIIdx = 0; nROIIdx < vecRectROI.size(); nROIIdx++)
 	{
 		int nOffsetX = 0;
@@ -2903,8 +3044,8 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		double dAngle_Ver = 0.0;
 
 		cv::Mat matROI_BGR = matProcess(vecRectROI[nROIIdx]);
-		if (matROI_BGR.empty())
-			return;
+		/*if (matROI_BGR.empty())
+			return;*/
 		//cv::imshow("ROI_BGR", matROI_BGR);
 
 		cv::Mat pImageDataROI(vecRectROI[nROIIdx].height, vecRectROI[nROIIdx].width, CV_8UC1);
@@ -3031,6 +3172,9 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		cv::threshold(matHSV2Gray, matBinary, nThresholdMeasureWidth, 255, cv::THRESH_BINARY);
 		//cv::imshow("Binary", matBinary);
 
+		/*if (matBinary.empty())
+			return;*/
+
 		/*matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7));
 		cv::morphologyEx(matBinary, matBinary, cv::MORPH_CLOSE, matEle);
 
@@ -3055,16 +3199,11 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 
 		// Find rect rotate
 
-		cv::Mat matMeasureWidth, matMeasureWidth_BGR;
-		cv::Point vertices[4];
-		std::vector<cv::Point> vertices_original;
-		int nCounterNG_MeasureWidth = 0;
 		double dMeasureValue = 0.0;
 		double dMeasureValue_mm = 0.0;
+		//int nCounterNG_MeasureWidth = 0;
 
 		matMeasureWidth = matBinary(rectMeasureWidth);
-		if (matMeasureWidth.empty())
-			return;
 
 		matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
 		cv::morphologyEx(matBinary, matBinary, cv::MORPH_DILATE, matEle);
@@ -3077,33 +3216,46 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		cv::findContours(matMeasureWidth, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 		std::vector<std::vector<cv::Point>> contours_poly(contours.size());
 
-		for (int i = 0; i < contours.size(); i++)
+		if (contours.size() == 0)
 		{
-			if (contours[i].size() < 30)
-				continue;
-
-			cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
-
-			cv::RotatedRect rotatedRect = cv::minAreaRect(cv::Mat(contours_poly[i]));
-
-			if (nROIIdx == 0 || nROIIdx == 2)
-				dMeasureValue = rotatedRect.size.height;
-			else if (nROIIdx == 1 || nROIIdx == 3)
-				dMeasureValue = rotatedRect.size.width;
-
-			dMeasureValue_mm = Convert_Pixel_To_mm(dMeasureValue, dPxlToUm);
-
-			// JUDGEMENT
-			if (dMeasureValue < dWidth_Min_Pxl || dMeasureValue > dWidth_Max_Pxl)
+			bMeasureWidth = FALSE;
+			nCounterNG++;
+		}
+		else
+		{
+			for (int i = 0; i < contours.size(); i++)
 			{
-				nCounterNG_MeasureWidth++;
-			}
+				if (contours[i].size() < 35)
+					continue;
 
-			cv::Point2f vertices2f[4];
-			rotatedRect.points(vertices2f);
-			for (int i = 0; i < 4; ++i) {
-				vertices[i] = cv::Point(vertices2f[i].x, vertices2f[i].y);
-				vertices_original.push_back(cv::Point(vertices2f[i].x + rectMeasureWidth.x + vecRectROI[nROIIdx].x, vertices2f[i].y + rectMeasureWidth.y + vecRectROI[nROIIdx].y));
+				cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
+
+				cv::RotatedRect rotatedRect = cv::minAreaRect(cv::Mat(contours_poly[i]));
+
+				if (rotatedRect.size.height > rotatedRect.size.width)
+					dMeasureValue = rotatedRect.size.width;
+				else
+					dMeasureValue = rotatedRect.size.height;
+
+				dMeasureValue_mm = Convert_Pixel_To_mm(dMeasureValue, dPxlToUm);
+
+				// JUDGEMENT
+				if (dMeasureValue < dWidth_Min_Pxl || dMeasureValue > dWidth_Max_Pxl)
+				{
+					bMeasureWidth = FALSE;
+					nCounterNG++;
+				}
+				else if(dMeasureValue > dWidth_Min_Pxl && dMeasureValue < dWidth_Max_Pxl)
+				{
+					bMeasureWidth = TRUE;
+				}
+
+				cv::Point2f vertices2f[4];
+				rotatedRect.points(vertices2f);
+				for (int i = 0; i < 4; ++i) {
+					vertices[i] = cv::Point(vertices2f[i].x, vertices2f[i].y);
+					vertices_original.push_back(cv::Point(vertices2f[i].x + rectMeasureWidth.x + vecRectROI[nROIIdx].x, vertices2f[i].y + rectMeasureWidth.y + vecRectROI[nROIIdx].y));
+				}
 			}
 		}
 
@@ -3112,19 +3264,11 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		}
 		cv::imshow("ROI Measure Width", matMeasureWidth_BGR);*/
 
-		if (nCounterNG_MeasureWidth > 0)
-		{
-			bMeasureWidth = FALSE;
-			nCounterNG++;
-		}
 #pragma endregion
 
 		// 2. PROCESS SEALING OVERFLOW
 
 #pragma region Find Sealing Overflow
-
-		std::vector<cv::Point> vertices_hoz;
-		std::vector<cv::Point> vertices_ver;
 
 		bFindSealingOverflow_Hoz = FindSealingOverflow(&pImageDataROI, vecRectROI[nROIIdx], rectFindSealingOverflow_Hoz, vertices_hoz, dAngle_Hoz, nThreshold_FindSealingOverflow, nContourSizeMax_FindSealingOverflow, dAreaContourMax_FindSealingOverflow);
 		bFindSealingOverflow_Ver = FindSealingOverflow(&pImageDataROI, vecRectROI[nROIIdx], rectFindSealingOverflow_Ver, vertices_ver, dAngle_Ver, nThreshold_FindSealingOverflow, nContourSizeMax_FindSealingOverflow, dAreaContourMax_FindSealingOverflow);
@@ -3141,11 +3285,15 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 #pragma region Draw Result
 
 		char measureValue_mm_Text[20] = {};
-		sprintf_s(measureValue_mm_Text, "%.3f", dMeasureValue_mm);
+		sprintf_s(measureValue_mm_Text, "%.2f", dMeasureValue_mm);
 		cv::putText(mat, measureValue_mm_Text, cv::Point(rectMeasureWidth.x + vecRectROI[nROIIdx].x - 5, rectMeasureWidth.y + vecRectROI[nROIIdx].y - 12), cv::FONT_HERSHEY_SIMPLEX, 0.7, YELLOW_COLOR, 1, cv::LINE_8);
-		DrawRotateRect(&mat, vertices_original, bMeasureWidth);
-		DrawRotateRect(&mat, vertices_hoz, bFindSealingOverflow_Hoz);
-		DrawRotateRect(&mat, vertices_ver, bFindSealingOverflow_Ver);
+		DrawRotateRect(mat, vertices_original, bMeasureWidth);
+		DrawRotateRect(mat, vertices_hoz, bFindSealingOverflow_Hoz);
+		DrawRotateRect(mat, vertices_ver, bFindSealingOverflow_Ver);
+
+		vertices_original.clear();
+		vertices_hoz.clear();
+		vertices_ver.clear();
 
 #pragma endregion
 
@@ -3246,7 +3394,6 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		cv::circle(mat, ptCenterOnOriginal, dRadius, YELLOW_COLOR, 1, cv::LINE_AA);
 		cv::circle(mat, ptCenterOnOriginal, 3, RED_COLOR, cv::FILLED);
 		cv::Rect rectMeasure(rectMeasureWidth.x + vecRectROI[nROIIdx].x, rectMeasureWidth.y + vecRectROI[nROIIdx].y, rectMeasureWidth.width, rectMeasureWidth.height);
-
 		//cv::rectangle(mat, rectMeasure, ORANGE_COLOR, 1, cv::LINE_AA);
 
 		//cv::rectangle(mat, cv::Rect(rectFindPt.x + vecRectROI[nROIIdx].x, rectFindPt.y + vecRectROI[nROIIdx].y, rectFindPt.width, rectFindPt.height), ORANGE_COLOR, 1, cv::LINE_AA);
@@ -3271,7 +3418,7 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		}
 	}*/
 
-	// draw
+	// draw ROI
 	for (auto it = vecRectROI.begin(); it != vecRectROI.end(); ++it)
 	{
 		cv::rectangle(mat, *it, PINK_COLOR, 2, cv::LINE_AA);
@@ -3306,6 +3453,7 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 	double dRatio_pxl_To_mm = 0.0;
 	int nNumberOfNGMax = 0;
 	int nUseFindROIAdvanced = 0;
+	BOOL nJustJudgeByMinBoudingRect = FALSE;
 
 	int nHMin = 0;
 	int nHMax = 0;
@@ -3337,6 +3485,8 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		nSMax = recipeSideCam.m_recipeFrame1.m_nSMax;
 		nVMin = recipeSideCam.m_recipeFrame1.m_nVMin;
 		nVMax = recipeSideCam.m_recipeFrame1.m_nVMax;
+
+		nJustJudgeByMinBoudingRect = recipeSideCam.m_recipeFrame1.m_bJustJudgeByMinBoundingRect;
 		break;
 
 		// use recipe of frame 2
@@ -3356,6 +3506,8 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		nSMax = recipeSideCam.m_recipeFrame2.m_nSMax;
 		nVMin = recipeSideCam.m_recipeFrame2.m_nVMin;
 		nVMax = recipeSideCam.m_recipeFrame2.m_nVMax;
+
+		nJustJudgeByMinBoudingRect = recipeSideCam.m_recipeFrame2.m_bJustJudgeByMinBoundingRect;
 		break;
 
 		// use recipe of frame 3
@@ -3374,6 +3526,8 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		nSMax = recipeSideCam.m_recipeFrame3.m_nSMax;
 		nVMin = recipeSideCam.m_recipeFrame3.m_nVMin;
 		nVMax = recipeSideCam.m_recipeFrame3.m_nVMax;
+
+		nJustJudgeByMinBoudingRect = recipeSideCam.m_recipeFrame3.m_bJustJudgeByMinBoundingRect;
 		break;
 
 		// use recipe of frame 4
@@ -3393,6 +3547,8 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		nSMax = recipeSideCam.m_recipeFrame4.m_nSMax;
 		nVMin = recipeSideCam.m_recipeFrame4.m_nVMin;
 		nVMax = recipeSideCam.m_recipeFrame4.m_nVMax;
+
+		nJustJudgeByMinBoudingRect = recipeSideCam.m_recipeFrame4.m_bJustJudgeByMinBoundingRect;
 		break;
 
 		// ignore frame 8
@@ -3429,14 +3585,16 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 
 	std::vector<double> vecDist;
 	std::vector<int> vecPosNG;
+	std::vector<cv::Point> vecRotateRectPt;
 
 	BOOL bFindLine_TopBottom = FALSE;
 	BOOL bFindMeasurePt = FALSE;
+	BOOL bResultCheck_BoudingRect = FALSE;
 	BOOL nRet = TRUE;
 
 	if (nUseFindROIAdvanced == 1)
 	{
-		MakeROI_AdvancedAlgorithms(recipeSideCam, &matResultHSV, nFrameIdx, rectROIFindLine, rectROIFindPts);
+		MakeROI_AdvancedAlgorithms(recipeSideCam, &matResultHSV, nFrameIdx, rectROIFindLine, rectROIFindPts, bResultCheck_BoudingRect, vecRotateRectPt);
 	}
 	else if (nUseFindROIAdvanced == 0) {
 		MakeROIFindLine(recipeSideCam, nFrameIdx, rectROIFindLine);
@@ -3449,7 +3607,7 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 	bFindLine_TopBottom = FindLine_Top_Bottom_Average(recipeSideCam, &matResultHSV, nFrameIdx, rectROIFindLine, vecPtLineTop);
 	//FindLine_Bottom_Top_Average(&recipeSideCam, &pMatProcess, nFrameIdx, rectROIFindPts, matROIFindPts, vecPtsLineBottom);
 
-	if (bFindLine_TopBottom == FALSE)
+	if (bFindLine_TopBottom == FALSE && nJustJudgeByMinBoudingRect == FALSE)
 	{
 		// 3. Set buff
 		nRet &= bFindLine_TopBottom;
@@ -3497,7 +3655,7 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 
 	FindClosesPointAndDistancePointToLine(vecMeasurePt, vecPtLineTop, vecClosesPt, vecDist);
 
-	if (bFindMeasurePt == FALSE)
+	if (bFindMeasurePt == FALSE && nJustJudgeByMinBoudingRect == FALSE)
 	{
 		// 3. Set buff
 		nRet &= bFindMeasurePt;
@@ -3539,37 +3697,54 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 		return;
 	}
 
-
-	cv::Point2f closesPt;
-	float fDist = 0.0;
-	for (auto it : vecMeasurePt)
+	if (!vecMeasurePt.empty())
 	{
-		CalculateDistancePointToLine(it, vecPtLineTop[0], vecPtLineTop[1], closesPt, fDist);
-		vecClosesPt.push_back(closesPt);
-		vecDist.push_back(fDist);
-	}
+		cv::Point2f closesPt;
+		float fDist = 0.0;
 
-	double dDistPxlMin = Convert_mm_To_Pixel(dDistanceRefer, dRatio_mm_To_pxl) - Convert_mm_To_Pixel(dDistanceMin, dRatio_mm_To_pxl);
-	double dDistPxlMax = Convert_mm_To_Pixel(dDistanceRefer, dRatio_mm_To_pxl) + Convert_mm_To_Pixel(dDistanceMax, dRatio_mm_To_pxl);
-	int nCounter = 0;
-
-	//nRet &= JudgementInspectDistanceMeasurement_AdvancedAlgorithms(vecDist, vecPosNG, dDistPxlMin, dDistPxlMax, nNumberOfNGMax);
-	char distText[10] = {};
-	double dist_mm = 0.0;
-	for (int i = 0; i < vecDist.size(); i++) {
-		double dist = vecDist[i];
-		dist_mm = Convert_Pixel_To_mm(dist, dRatio_pxl_To_mm);
-		if (dist > dDistPxlMax || dist < dDistPxlMin) {
-			//nRet &= FALSE;
-			nCounter++;
-			vecPosNG.push_back(i);
+		for (auto it : vecMeasurePt)
+		{
+			CalculateDistancePointToLine(it, vecPtLineTop[0], vecPtLineTop[1], closesPt, fDist);
+			vecClosesPt.push_back(closesPt);
+			vecDist.push_back(fDist);
 		}
-		
-		sprintf_s(distText, "%.3f", dist_mm);
-		cv::putText(mat, distText, cv::Point(vecMeasurePt[i].x - 10, vecMeasurePt[i].y + 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, YELLOW_COLOR, 1);
 	}
-	if (nCounter > nNumberOfNGMax)
-		nRet &= FALSE;
+	//nRet &= JudgementInspectDistanceMeasurement_AdvancedAlgorithms(vecDist, vecPosNG, dDistPxlMin, dDistPxlMax, nNumberOfNGMax);
+
+	if (!vecDist.empty())
+	{
+		double dDistPxlMin = Convert_mm_To_Pixel(dDistanceRefer, dRatio_mm_To_pxl) - Convert_mm_To_Pixel(dDistanceMin, dRatio_mm_To_pxl);
+		double dDistPxlMax = Convert_mm_To_Pixel(dDistanceRefer, dRatio_mm_To_pxl) + Convert_mm_To_Pixel(dDistanceMax, dRatio_mm_To_pxl);
+		int nCounter = 0;
+
+		char distText[10] = {};
+		double dist_mm = 0.0;
+		for (int i = 0; i < vecDist.size(); i++) {
+			double dist = vecDist[i];
+			dist_mm = Convert_Pixel_To_mm(dist, dRatio_pxl_To_mm);
+			if (dist > dDistPxlMax || dist < dDistPxlMin) {
+				//nRet &= FALSE;
+				nCounter++;
+				vecPosNG.push_back(i);
+			}
+
+			sprintf_s(distText, "%.3f", dist_mm);
+			cv::putText(mat, distText, cv::Point(vecMeasurePt[i].x - 10, vecMeasurePt[i].y + 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, YELLOW_COLOR, 1);
+		}
+
+		if (nCounter > nNumberOfNGMax)
+			nRet &= FALSE;
+	}
+
+	if (nJustJudgeByMinBoudingRect == TRUE)
+	{
+		nRet &= bResultCheck_BoudingRect;
+
+		if (!vecRotateRectPt.empty())
+			for (int i = 0; i < 4; i++) {
+				cv::line(mat, vecRotateRectPt[i], vecRotateRectPt[(i + 1) % 4], GREEN_COLOR, 2, cv::LINE_8);
+			}
+	}
 
 	DrawROIFindLine(mat, rectROIFindLine, vecPtLineTop);
 	//DrawROIFindLine(mat, rectROIFindPts, vecPtsLineBottom);

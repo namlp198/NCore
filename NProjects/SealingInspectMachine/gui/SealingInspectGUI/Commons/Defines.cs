@@ -42,5 +42,6 @@ namespace SealingInspectGUI.Commons
         public const int NUMBER_OF_LIGHT_CONTROLLER = 2;
         public const int ROI_PARAMETER_COUNT = 4;
         public const int MAX_PLC_COUNT = 2;
+        public const int MAX_MEASURE_DIST_HOUGHCIRCLE_TOPCAM = 126;
     }
 }

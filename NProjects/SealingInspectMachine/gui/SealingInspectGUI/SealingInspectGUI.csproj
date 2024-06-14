@@ -137,6 +137,7 @@
     <Compile Include="Models\CSealingInspect_Simulation_IO.cs" />
     <Compile Include="Models\RecipeSideCamMapToDataGridModel .cs" />
     <Compile Include="Models\RecipeTopCamMapToDataGridModel.cs" />
+    <Compile Include="Models\TopCamResult_MapToDataGrid_Model.cs" />
     <Compile Include="Models\SettingsMapToDataGridModel.cs" />
     <Compile Include="ViewModels\SumCameraViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

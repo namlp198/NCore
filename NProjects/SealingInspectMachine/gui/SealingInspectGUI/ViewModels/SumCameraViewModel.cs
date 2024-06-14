@@ -15,6 +15,7 @@ using SealingInspectGUI.Manager.Class;
 using System.Net.Http.Headers;
 using System.Windows;
 using SealingInspectGUI.Manager.SumManager;
+using SealingInspectGUI.Models;
 
 namespace SealingInspectGUI.ViewModels
 {
@@ -26,6 +27,9 @@ namespace SealingInspectGUI.ViewModels
         private UcSumCameraView _sumCameraView;
         public IOManager_PLC_Wecon PLC_Wecon;
         public Lighting_Controller_CSS_PD3 LightController_PD3;
+
+        private List<TopCamResult_MapToDataGrid_Model> m_listTopCamResult_MapToDataGrid_Cavity1 = new List<TopCamResult_MapToDataGrid_Model>();
+        private List<TopCamResult_MapToDataGrid_Model> m_listTopCamResult_MapToDataGrid_Cavity2 = new List<TopCamResult_MapToDataGrid_Model>();
 
         // status result cavity 1
         private int m_nTopCamFrame1_Cavity1 = -1;
@@ -54,6 +58,16 @@ namespace SealingInspectGUI.ViewModels
         private int m_nSideCamFrame8_Cavity2 = -1;
         private int m_nSideCamFrame9_Cavity2 = -1;
         private int m_nSideCamFrame10_Cavity2 = -1;
+
+        private int m_nTotal_Cavity1 = 0;
+        private int m_nOK_Cavity1 = 0;
+        private int m_nNG_Cavity1 = 0;
+        private double m_dYield_Cavity1 = 0;
+
+        private int m_nTotal_Cavity2 = 0;
+        private int m_nOK_Cavity2 = 0;
+        private int m_nNG_Cavity2 = 0;
+        private double m_dYield_Cavity2 = 0;
         #endregion
 
         #region Constructor
@@ -104,12 +118,6 @@ namespace SealingInspectGUI.ViewModels
             this.GrabCavity2Cmd = new GrabCavity2Cmd();
             this.GrabAllCmd = new GrabAllCmd();
             this.TestIOCmd = new TestIOCmd();
-
-            //PLC_Wecon_1 = new IOManager_PLC_Wecon("192.168.0.10", 1, 1);
-            //PLC_Wecon_1.Initialize();
-
-            //PLC_Wecon_2 = new IOManager_PLC_Wecon("192.168.0.11", 2, 2);
-            //PLC_Wecon_2.Initialize();
 
             PLC_Wecon = new IOManager_PLC_Wecon("192.168.0.10", 0);
             PLC_Wecon.Initialize();
@@ -279,6 +287,41 @@ namespace SealingInspectGUI.ViewModels
                                       m_sealingInspResult_TopCam.m_bStatusFrame1;
             UpdateResultView(SumCameraView.buffTopCam1_Frame1, TopCamFrame1_Cavity1, 0, 0, "TOP");
 
+            // show result
+            double[] arrDistResultTopCam = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]
+                                           .m_sealingInspResult_TopCam.m_dArrDistResult_TopCam;
+            int[] arrPosNG = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]
+                                           .m_sealingInspResult_TopCam.m_nArrPosNG_TopCam;
+
+            if (arrDistResultTopCam.Length > 0)
+            {
+                List<TopCamResult_MapToDataGrid_Model> lstDistResultTopCam = new List<TopCamResult_MapToDataGrid_Model>();
+                for (int i = 0; i < arrDistResultTopCam.Length; i++)
+                {
+                    TopCamResult_MapToDataGrid_Model distRes = new TopCamResult_MapToDataGrid_Model();
+                    distRes.Index = i + 1;
+                    distRes.Dist_mm = arrDistResultTopCam[i].ToString("0.00");
+                    distRes.DistRefer_mm = MainViewModel.Instance.DistRefer_TopCam_Ring_1 + "";
+                    distRes.ToleranceMin_mm = MainViewModel.Instance.DistToleranceMin_TopCam_Ring_1 + "";
+                    distRes.ToleranceMax_mm = MainViewModel.Instance.DistToleranceMax_TopCam_Ring_1 + "";
+                    distRes.ColorSet = "DarkGreen";
+
+                    lstDistResultTopCam.Add(distRes);
+                }
+                if (arrPosNG.Length > 0)
+                {
+                    for (int i = 0; i < arrPosNG.Length; i++)
+                    {
+                        if (arrPosNG[i] == 1)
+                        {
+                            lstDistResultTopCam[i].ColorSet = "IndianRed";
+                        }
+                    }
+                }
+
+                ListTopCamResult_MapToDataGrid_Cavity1 = lstDistResultTopCam;
+            }
+
             TopCamFrame2_Cavity1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
                                       m_sealingInspResult_TopCam.m_bStatusFrame2;
             UpdateResultView(SumCameraView.buffTopCam1_Frame2, TopCamFrame2_Cavity1, 0, 1, "TOP");
@@ -321,6 +364,7 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsInspect_1_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
+                OK_Cavity1++;
             }
             else if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity1) == 0)
             {
@@ -330,8 +374,12 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsInspect_1_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
+                NG_Cavity1++;
             }
             else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
+
+            Total_Cavity1++;
+            Yield_Cavity1 = (OK_Cavity2 / Total_Cavity1) * 100;
         }
         private void InspectionCavity2Complete(int bSetting)
         {
@@ -342,6 +390,40 @@ namespace SealingInspectGUI.ViewModels
             TopCamFrame1_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
                                       m_sealingInspResult_TopCam.m_bStatusFrame1;
             UpdateResultView(SumCameraView.buffTopCam2_Frame1, TopCamFrame1_Cavity2, 1, 0, "TOP");
+
+            // show result
+            double[] arrDistResultTopCam = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
+                                      m_sealingInspResult_TopCam.m_dArrDistResult_TopCam;
+            int[] arrPosNG = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx]
+                                           .m_sealingInspResult_TopCam.m_nArrPosNG_TopCam;
+
+            if (arrDistResultTopCam.Length > 0)
+            {
+                List<TopCamResult_MapToDataGrid_Model> lstDistResultTopCam = new List<TopCamResult_MapToDataGrid_Model>();
+                for (int i = 0; i < arrDistResultTopCam.Length; i++)
+                {
+                    TopCamResult_MapToDataGrid_Model distRes = new TopCamResult_MapToDataGrid_Model();
+                    distRes.Index = i + 1;
+                    distRes.Dist_mm = arrDistResultTopCam[i].ToString("0.00");
+                    distRes.DistRefer_mm = MainViewModel.Instance.DistRefer_TopCam_Ring_2 + "";
+                    distRes.ToleranceMin_mm = MainViewModel.Instance.DistToleranceMin_TopCam_Ring_2 + "";
+                    distRes.ToleranceMax_mm = MainViewModel.Instance.DistToleranceMax_TopCam_Ring_2 + "";
+
+                    lstDistResultTopCam.Add(distRes);
+                }
+                if (arrPosNG.Length > 0)
+                {
+                    for (int i = 0; i < arrPosNG.Length; i++)
+                    {
+                        if (arrPosNG[i] == 1)
+                        {
+                            lstDistResultTopCam[i].ColorSet = "IndianRed";
+                        }
+                    }
+                }
+
+                ListTopCamResult_MapToDataGrid_Cavity2 = lstDistResultTopCam;
+            }
 
             TopCamFrame2_Cavity2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectResult[nCoreIdx].
                                       m_sealingInspResult_TopCam.m_bStatusFrame2;
@@ -385,6 +467,7 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsInspect_2_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
+                OK_Cavity2++;
             }
             else if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity2) == 0)
             {
@@ -394,9 +477,12 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsInspect_2_Completed = true;
                 }
                 MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
+                NG_Cavity2++;
             }
             else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
 
+            Total_Cavity2++;
+            Yield_Cavity2 = (OK_Cavity2 / Total_Cavity2) * 100;
         }
         private void InspectTopCam1Completed(int bSetting)
         {
@@ -487,6 +573,65 @@ namespace SealingInspectGUI.ViewModels
 
         #region Properties
         public UcSumCameraView SumCameraView { get { return _sumCameraView; } }
+
+        public List<TopCamResult_MapToDataGrid_Model> ListTopCamResult_MapToDataGrid_Cavity1
+        {
+            get => m_listTopCamResult_MapToDataGrid_Cavity1;
+            set
+            {
+                SetProperty(ref m_listTopCamResult_MapToDataGrid_Cavity1, value);
+            }
+        }
+        public List<TopCamResult_MapToDataGrid_Model> ListTopCamResult_MapToDataGrid_Cavity2
+        {
+            get => m_listTopCamResult_MapToDataGrid_Cavity2;
+            set
+            {
+                SetProperty(ref m_listTopCamResult_MapToDataGrid_Cavity2, value);
+            }
+        }
+
+        public int Total_Cavity1
+        {
+            get => m_nTotal_Cavity1;
+            set { SetProperty(ref m_nTotal_Cavity1, value); }
+        }
+        public int OK_Cavity1
+        {
+            get => m_nOK_Cavity1;
+            set { SetProperty(ref m_nOK_Cavity1, value); }
+        }
+        public int NG_Cavity1
+        {
+            get => m_nNG_Cavity1;
+            set { SetProperty(ref m_nNG_Cavity1, value); }
+        }
+        public double Yield_Cavity1
+        {
+            get => m_dYield_Cavity1;
+            set { SetProperty(ref m_dYield_Cavity1, value); }
+        }
+
+        public int Total_Cavity2
+        {
+            get => m_nTotal_Cavity2;
+            set { SetProperty(ref m_nTotal_Cavity2, value); }
+        }
+        public int OK_Cavity2
+        {
+            get => m_nOK_Cavity2;
+            set { SetProperty(ref m_nOK_Cavity2, value); }
+        }
+        public int NG_Cavity2
+        {
+            get => m_nNG_Cavity2;
+            set { SetProperty(ref m_nNG_Cavity2, value); }
+        }
+        public double Yield_Cavity2
+        {
+            get => m_dYield_Cavity2;
+            set { SetProperty(ref m_dYield_Cavity2, value); }
+        }
 
         #region properties Cavity 1
         public int TopCamFrame1_Cavity1

@@ -37,6 +37,12 @@ struct CRecipe_TopCam_Frame1
 	int m_nNumberOfDistanceMaxCount_AdvancedAlgorithms;
 	int m_nHoughCircleParam1;
 	int m_nHoughCircleParam2;
+	int m_nHMin;
+	int m_nHMax;
+	int m_nSMin;
+	int m_nSMax;
+	int m_nVMin;
+	int m_nVMax;
 	double m_dRatioPxlUm;
 	double m_dRatioUmPxl;
 };
@@ -142,6 +148,7 @@ struct CRecipe_SideCam_Frame1
 	int m_nSMax;
 	int m_nVMin;
 	int m_nVMax;
+	BOOL m_bJustJudgeByMinBoundingRect;
 	double m_dRatioPxlUm;
 	double m_dRatioUmPxl;
 };
@@ -170,6 +177,7 @@ struct CRecipe_SideCam_Frame2
 	int m_nSMax;
 	int m_nVMin;
 	int m_nVMax;
+	BOOL m_bJustJudgeByMinBoundingRect;
 	double m_dRatioPxlUm;
 	double m_dRatioUmPxl;
 };
@@ -198,6 +206,7 @@ struct CRecipe_SideCam_Frame3
 	int m_nSMax;
 	int m_nVMin;
 	int m_nVMax;
+	BOOL m_bJustJudgeByMinBoundingRect;
 	double m_dRatioPxlUm;
 	double m_dRatioUmPxl;
 };
@@ -226,6 +235,7 @@ struct CRecipe_SideCam_Frame4
 	int m_nSMax;
 	int m_nVMin;
 	int m_nVMax;
+	BOOL m_bJustJudgeByMinBoundingRect;
 	double m_dRatioPxlUm;
 	double m_dRatioUmPxl;
 };

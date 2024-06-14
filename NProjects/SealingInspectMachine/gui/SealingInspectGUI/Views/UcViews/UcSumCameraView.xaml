@@ -242,8 +242,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*" />
                 <RowDefinition Height="1" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
                 <RowDefinition Height="0.6*" />
             </Grid.RowDefinitions>
 
@@ -252,16 +250,75 @@
                   Margin="0 0 0 0"
                   Background="White"></Grid>-->
 
-            <Grid Grid.Row="2">
-
+            <Grid Grid.Row="0">
+                <TabControl Grid.Row="1"
+                            Margin="3">
+                    <TabItem Header="Top Cam Ring Result"
+                             Width="200"
+                             Style="{StaticResource TabItemStyle}"
+                             FontSize="14"
+                             FontFamily="Segoe UI"
+                             FontWeight="Bold"
+                             Foreground="Black">
+                        <DataGrid Grid.Row="1"
+                                  FontSize="12"
+                                  Margin="5"
+                                  Name="dtgridTopCamResult_Ring_1"
+                                  AutoGenerateColumns="False"
+                                  ItemsSource="{Binding ListTopCamResult_MapToDataGrid_Cavity1, Mode=OneWay}">
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="{Binding ColorSet}"/>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="No."
+                                                    Width="30"
+                                                    MinWidth="20"
+                                                    MaxWidth="30"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Binding="{Binding Index}" />
+                                <DataGridTextColumn Header="Dist"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Binding="{Binding Dist_mm, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="Dist Refer"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Normal"
+                                                    Binding="{Binding DistRefer_mm, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="Tolerance Min"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Normal"
+                                                    Binding="{Binding ToleranceMin_mm, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="Tolerance Max"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Normal"
+                                                    Binding="{Binding ToleranceMax_mm, Mode=TwoWay}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
             </Grid>
 
             <!--separator-->
-            <Grid Grid.Row="3"
+            <Grid Grid.Row="1"
                   Margin="0 0 0 0"
                   Background="White"></Grid>
 
-            <StackPanel Grid.Row="4"
+            <StackPanel Grid.Row="2"
                         Orientation="Horizontal">
                 <Label Margin="0 0 10 0"
                        Content="CAVITY 1"
@@ -279,7 +336,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding Total_Cavity1}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -293,7 +350,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding OK_Cavity1}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -307,7 +364,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding NG_Cavity1}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -321,7 +378,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding Yield_Cavity1}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -534,8 +591,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*" />
                 <RowDefinition Height="1" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
                 <RowDefinition Height="0.6*" />
             </Grid.RowDefinitions>
 
@@ -544,16 +599,76 @@
            Margin="0 0 0 0"
            Background="White"></Grid>-->
 
-            <Grid Grid.Row="2">
-
+            <Grid Grid.Row="0">
+                <TabControl Grid.Row="1"
+                            Margin="3">
+                    <TabItem Header="Top Cam Ring Result"
+                             Width="100"
+                             Style="{StaticResource TabItemStyle}"
+                             FontSize="14"
+                             FontFamily="Segoe UI"
+                             FontWeight="Bold"
+                             Foreground="Black">
+                        <DataGrid Grid.Row="1"
+                                  FontSize="12"
+                                  Margin="5"
+                                  Name="dtgridTopCamResult_Ring_2"
+                                  AutoGenerateColumns="False"
+                                  ItemsSource="{Binding ListTopCamResult_MapToDataGrid_Cavity2, Mode=OneWay}">
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background"
+                                            Value="{Binding ColorSet}" />
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="No."
+                                                    Width="30"
+                                                    MinWidth="20"
+                                                    MaxWidth="30"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Binding="{Binding Index}" />
+                                <DataGridTextColumn Header="Dist"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    Binding="{Binding Dist_mm, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="Dist Refer"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Normal"
+                                                    Binding="{Binding DistRefer_mm, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="Tolerance Min"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Normal"
+                                                    Binding="{Binding ToleranceMin_mm, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="Tolerance Max"
+                                                    Width="100"
+                                                    MinWidth="20"
+                                                    MaxWidth="100"
+                                                    FontSize="12"
+                                                    FontWeight="Normal"
+                                                    Binding="{Binding ToleranceMax_mm, Mode=TwoWay}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
             </Grid>
 
             <!--separator-->
-            <Grid Grid.Row="3"
+            <Grid Grid.Row="1"
                   Margin="0 0 0 0"
                   Background="White"></Grid>
 
-            <StackPanel Grid.Row="4"
+            <StackPanel Grid.Row="2"
                         Orientation="Horizontal">
                 <Label Margin="0 0 10 0"
                        Content="CAVITY 2"
@@ -571,7 +686,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding Total_Cavity2}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -585,7 +700,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding OK_Cavity2}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -599,7 +714,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding NG_Cavity2}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
@@ -613,7 +728,7 @@
                            FontSize="12"
                            FontWeight="SemiBold" />
                 <TextBlock Margin="5 2 2 2"
-                           Text="0"
+                           Text="{Binding Yield_Cavity2}"
                            Foreground="White"
                            TextAlignment="Center"
                            VerticalAlignment="Center"

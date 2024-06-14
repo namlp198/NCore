@@ -35,6 +35,13 @@ namespace SealingInspectGUI.ViewModels
 
         private emMachineMode m_machineMode = emMachineMode.MachineMode_Auto;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
+
+        private double m_dDistRefer_TopCam_Ring_1 = 0.0;
+        private double m_dDistToleranceMin_TopCam_Ring_1 = 0.0;
+        private double m_dDistToleranceMax_TopCam_Ring_1 = 0.0;
+        private double m_dDistRefer_TopCam_Ring_2 = 0.0;
+        private double m_dDistToleranceMin_TopCam_Ring_2 = 0.0;
+        private double m_dDistToleranceMax_TopCam_Ring_2 = 0.0;
         #endregion
 
         #region Properties
@@ -59,6 +66,36 @@ namespace SealingInspectGUI.ViewModels
 
                 }
             }
+        }
+        public double DistRefer_TopCam_Ring_1
+        {
+            get => m_dDistRefer_TopCam_Ring_1;
+            set => m_dDistRefer_TopCam_Ring_1 = value;
+        }
+        public double DistToleranceMin_TopCam_Ring_1
+        {
+            get => m_dDistToleranceMin_TopCam_Ring_1;
+            set => m_dDistToleranceMin_TopCam_Ring_1 = value;
+        }
+        public double DistToleranceMax_TopCam_Ring_1
+        {
+            get => m_dDistToleranceMax_TopCam_Ring_1;
+            set => m_dDistToleranceMax_TopCam_Ring_1 = value;
+        }
+        public double DistRefer_TopCam_Ring_2
+        {
+            get => m_dDistRefer_TopCam_Ring_2;
+            set => m_dDistRefer_TopCam_Ring_2 = value;
+        }
+        public double DistToleranceMin_TopCam_Ring_2
+        {
+            get => m_dDistToleranceMin_TopCam_Ring_2;
+            set => m_dDistToleranceMin_TopCam_Ring_2 = value;
+        }
+        public double DistToleranceMax_TopCam_Ring_2
+        {
+            get => m_dDistToleranceMax_TopCam_Ring_2;
+            set => m_dDistToleranceMax_TopCam_Ring_2 = value;
         }
         #endregion
 
@@ -88,6 +125,21 @@ namespace SealingInspectGUI.ViewModels
             InterfaceManager.Instance.m_sealingInspectProcessorManager.
                 m_sealingInspProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe);
             SettingVM.LoadRecipe();
+
+            // add refer value and tolerance min max Top Cam
+            m_dDistRefer_TopCam_Ring_1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                m_sealingInspRecipe_TopCam[0].m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer;
+            m_dDistToleranceMin_TopCam_Ring_1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                m_sealingInspRecipe_TopCam[0].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min;
+            m_dDistToleranceMax_TopCam_Ring_1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                m_sealingInspRecipe_TopCam[0].m_recipeFrame1.m_dDistanceMeasurementTolerance_Max;
+            m_dDistRefer_TopCam_Ring_2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                               m_sealingInspRecipe_TopCam[1].m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer;
+            m_dDistToleranceMin_TopCam_Ring_2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                m_sealingInspRecipe_TopCam[1].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min;
+            m_dDistToleranceMax_TopCam_Ring_2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                m_sealingInspRecipe_TopCam[1].m_recipeFrame1.m_dDistanceMeasurementTolerance_Max;
+
 
             if (InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation == 0)
             {
