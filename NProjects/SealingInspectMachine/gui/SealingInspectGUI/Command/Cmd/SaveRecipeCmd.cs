@@ -251,6 +251,18 @@ namespace SealingInspectGUI.Command.Cmd
                         int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                       m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_nHoughCircleParam2);
                         break;
+                    case 34:
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_dRatioPxlUm);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dRatioPxlUm);
+                        break;
+                    case 35:
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame1.m_dRatioUmPxl);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame1.m_dRatioUmPxl);
+                        break;
                 }
             }
         }
@@ -697,6 +709,18 @@ namespace SealingInspectGUI.Command.Cmd
                         int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                       m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_nVMax);
                         break;
+                    case 73:
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dRatioPxlUm);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dRatioPxlUm);
+                        break;
+                    case 74:
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_TopCam[i].TopCam1Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam1].m_recipeFrame2.m_dRatioUmPxl);
+                        double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_TopCam[i].TopCam2Value, out InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                      m_sealingInspRecipe_TopCam[nTopCam2].m_recipeFrame2.m_dRatioUmPxl);
+                        break;
                 }
             }
         }
@@ -909,6 +933,94 @@ namespace SealingInspectGUI.Command.Cmd
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame1.m_nThresholdBinaryFindROI);
                                 break;
+                            // H Min
+                            case 24:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nHMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nHMin);
+                                break;
+                            // H Max
+                            case 25:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nHMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nHMax);
+                                break;
+                            // S Min
+                            case 26:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nSMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nSMin);
+                                break;
+                            // S Max
+                            case 27:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nSMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nSMax);
+                                break;
+                            // V Min
+                            case 28:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nVMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nVMin);
+                                break;
+                            // V Max
+                            case 29:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_nVMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_nVMax);
+                                break;
+                            // pxl um
+                            case 30:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_dRatioPxlUm);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_dRatioPxlUm);
+                                break;
+                            // um pxl
+                            case 31:
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_dRatioUmPxl);
+                                double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_dRatioUmPxl);
+                                break;
                         }
                     }
                     break;
@@ -1110,6 +1222,72 @@ namespace SealingInspectGUI.Command.Cmd
                                     out InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame2.m_nThresholdBinaryFindROI);
+                                break;
+                            // H Min
+                            case 24:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nHMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nHMin);
+                                break;
+                            // H Max
+                            case 25:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nHMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nHMax);
+                                break;
+                            // S Min
+                            case 26:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nSMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nSMin);
+                                break;
+                            // S Max
+                            case 27:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nSMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nSMax);
+                                break;
+                            // V Min
+                            case 28:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nVMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nVMin);
+                                break;
+                            // V Max
+                            case 29:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame2.m_nVMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame2_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame2.m_nVMax);
                                 break;
                         }
                     }
@@ -1313,6 +1491,72 @@ namespace SealingInspectGUI.Command.Cmd
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame3.m_nThresholdBinaryFindROI);
                                 break;
+                            // H Min
+                            case 24:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nHMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nHMin);
+                                break;
+                            // H Max
+                            case 25:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nHMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nHMax);
+                                break;
+                            // S Min
+                            case 26:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nSMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nSMin);
+                                break;
+                            // S Max
+                            case 27:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nSMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nSMax);
+                                break;
+                            // V Min
+                            case 28:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nVMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nVMin);
+                                break;
+                            // V Max
+                            case 29:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame3.m_nVMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame3_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame3.m_nVMax);
+                                break;
                         }
                     }
                     break;
@@ -1514,6 +1758,72 @@ namespace SealingInspectGUI.Command.Cmd
                                     out InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame4.m_nThresholdBinaryFindROI);
+                                break;
+                            // H Min
+                            case 24:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nHMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nHMin);
+                                break;
+                            // H Max
+                            case 25:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nHMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nHMax);
+                                break;
+                            // S Min
+                            case 26:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nSMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nSMin);
+                                break;
+                            // S Max
+                            case 27:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nSMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nSMax);
+                                break;
+                            // V Min
+                            case 28:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nVMin);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nVMin);
+                                break;
+                            // V Max
+                            case 29:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame4.m_nVMax);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame4_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame4.m_nVMax);
                                 break;
                         }
                     }

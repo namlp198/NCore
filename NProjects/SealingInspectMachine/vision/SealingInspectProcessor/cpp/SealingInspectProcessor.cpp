@@ -456,7 +456,8 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 
 	for (int i = 0; i < MAX_TOPCAM_COUNT; i++)
 	{
-		recipeFile.GetItemValue(i + 1, _T("PIXEL_SIZE_TOPCAM_UM"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dRatioPxlUm, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_PIXEL_UM_TOPCAM"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dRatioPxlUm, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_UM_PIXEL_TOPCAM"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dRatioUmPxl, 0);
 
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_REFER"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer, 0);
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min, 0);
@@ -496,6 +497,7 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 	for (int i = 0; i < MAX_TOPCAM_COUNT; i++)
 	{
 		recipeFile.GetItemValue(i + 1, _T("RATIO_PIXEL_UM_TOPCAM"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_dRatioPxlUm, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_UM_PIXEL_TOPCAM"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_dRatioUmPxl, 0);
 
 		recipeFile.GetItemValue(i + 1, _T("ROI_WIDTH_TOPCAM_FRAME2"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nROIWidth, 0);
 		recipeFile.GetItemValue(i + 1, _T("ROI_HEIGHT_TOPCAM_FRAME2"), readRecipe.m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nROIHeight, 0);
@@ -586,6 +588,10 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 		recipeFile.GetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dRatioPxlUm, 0);
 		recipeFile.GetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_dRatioPxlUm, 0);
 		recipeFile.GetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_dRatioPxlUm, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_UM_PIXEL_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_dRatioUmPxl, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_UM_PIXEL_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dRatioUmPxl, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_UM_PIXEL_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_dRatioUmPxl, 0);
+		recipeFile.GetItemValue(i + 1, _T("RATIO_UM_PIXEL_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_dRatioUmPxl, 0);
 
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_REFER"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer, 0);
 		recipeFile.GetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_REFER"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dDistanceMeasurementTolerance_Refer, 0);
@@ -707,6 +713,34 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nThresholdBinaryFindROI, 0);
 		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nThresholdBinaryFindROI, 0);
 		recipeFile.GetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nThresholdBinaryFindROI, 0);
+
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME1"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nHMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME1"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nHMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME1"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nSMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME1"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nSMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME1"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nVMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME1"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nVMax, 0);
+
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nHMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nHMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nSMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nSMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nVMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME2"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nVMax, 0);
+
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nHMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nHMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nSMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nSMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nVMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nVMax, 0);
+
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nHMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nHMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nSMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nSMax, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nVMin, 0);
+		recipeFile.GetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nVMax, 0);
 
 	}
 
@@ -1019,6 +1053,7 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 		if (nFrameIdx == 1) {
 			for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
 				recipeFile.SetItemValue(i + 1, _T("RATIO_PIXEL_UM_TOPCAM"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dRatioPxlUm);
+				recipeFile.SetItemValue(i + 1, _T("RATIO_UM_PIXEL_TOPCAM"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dRatioUmPxl);
 
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_REFER"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_TOPCAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min);
@@ -1059,6 +1094,7 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 		else if (nFrameIdx == 2) {
 			for (int i = 0; i < MAX_TOPCAM_COUNT; i++) {
 				recipeFile.SetItemValue(i + 1, _T("RATIO_PIXEL_UM_TOPCAM"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_dRatioPxlUm);
+				recipeFile.SetItemValue(i + 1, _T("RATIO_UM_PIXEL_TOPCAM"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_dRatioUmPxl);
 				
 				recipeFile.SetItemValue(i + 1, _T("ROI_WIDTH_TOPCAM_FRAME2"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nROIWidth);
 				recipeFile.SetItemValue(i + 1, _T("ROI_HEIGHT_TOPCAM_FRAME2"), pRecipe->m_sealingInspRecipe_TopCam[i].m_recipeFrame2.m_nROIHeight);
@@ -1154,6 +1190,7 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) 
 			{
 				recipeFile.SetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_dRatioPxlUm);
+				recipeFile.SetItemValue(i + 1, _T("RATIO_UM_PIXEL_SIDECAM"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_dRatioUmPxl);
 
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_REFER"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Refer);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME1_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_dDistanceMeasurementTolerance_Min);
@@ -1170,6 +1207,13 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_TOP_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nOffetY_Top);
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_BOTTOM_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nOffetY_Bottom);
 				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nThresholdBinaryFindROI);
+
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nHMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nHMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nSMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nSMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nVMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nVMax);
 
 				for (int k = 0; k < ROI_PARAMETER_COUNT; k++) 
 				{
@@ -1197,8 +1241,6 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 		case 2:
 			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) 
 			{
-				recipeFile.SetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dRatioPxlUm);
-
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_REFER"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dDistanceMeasurementTolerance_Refer);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dDistanceMeasurementTolerance_Min);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME2_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_dDistanceMeasurementTolerance_Max);
@@ -1214,6 +1256,13 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_TOP_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nOffetY_Top);
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_BOTTOM_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nOffetY_Bottom);
 				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nThresholdBinaryFindROI);
+
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nHMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nHMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nSMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nSMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nVMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME2"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame2.m_nVMax);
 
 				for (int k = 0; k < ROI_PARAMETER_COUNT; k++)
 				{
@@ -1241,8 +1290,6 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 		case 3:
 			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) 
 			{
-				recipeFile.SetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_dRatioPxlUm);
-
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_REFER"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_dDistanceMeasurementTolerance_Refer);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_dDistanceMeasurementTolerance_Min);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME3_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_dDistanceMeasurementTolerance_Max);
@@ -1258,6 +1305,13 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_TOP_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nOffetY_Top);
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_BOTTOM_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nOffetY_Bottom);
 				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nThresholdBinaryFindROI);
+
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nHMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nHMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nSMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nSMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nVMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME3"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_nVMax);
 
 				for (int k = 0; k < ROI_PARAMETER_COUNT; k++)
 				{
@@ -1285,8 +1339,6 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 		case 4:
 			for (int i = 0; i < MAX_SIDECAM_COUNT; i++) 
 			{
-				recipeFile.SetItemValue(i + 1, _T("RATIO_PIXEL_UM_SIDECAM"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_dRatioPxlUm);
-
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_REFER"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_dDistanceMeasurementTolerance_Refer);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_MIN"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_dDistanceMeasurementTolerance_Min);
 				recipeFile.SetItemValue(i + 1, _T("DISTANCE_MEASUREMENT_TOLERANCE_SIDECAM_FRAME4_MAX"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_dDistanceMeasurementTolerance_Max);
@@ -1302,6 +1354,13 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_TOP_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nOffetY_Top);
 				recipeFile.SetItemValue(i + 1, _T("OFFSET_Y_BOTTOM_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nOffetY_Bottom);
 				recipeFile.SetItemValue(i + 1, _T("THRESHOLD_BINARY_FIND_ROI_ADVANCED_ALGORITHMS_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nThresholdBinaryFindROI);
+
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MIN_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nHMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_H_MAX_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nHMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MIN_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nSMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_S_MAX_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nSMax);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MIN_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nVMin);
+				recipeFile.SetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME4"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_nVMax);
 
 				for (int k = 0; k < ROI_PARAMETER_COUNT; k++)
 				{
@@ -1450,10 +1509,11 @@ BOOL CSealingInspectProcessor::Inspect_SideCam_Simulation(int nCoreIdx, int nCam
 
 BOOL CSealingInspectProcessor::TestTCPSocket()
 {
-	char strIP[15] = { "192.168.0.10" };
-	int nPort = 502;
+	char strIP[15] = { "192.168.0.2" };
+	int nPort = 40001;
 
-	char strSendTo[12] = {'0', '0', '0', '0', '0' , '6', '0', '$', '16', '80', '0', '1'};
+	char strSendTo[10] = {"@00F25582"};
+	//sprintf_s(strSendTo, "%s", "@00F25582");
 
 	CTCPSocket::CONNECTRESULT connResult = m_pTcpSocket->Connect(strIP, nPort);
 	if (connResult == CTCPSocket::CONNECTRESULT_CONNECT_SUCCESS) {
@@ -1464,7 +1524,7 @@ BOOL CSealingInspectProcessor::TestTCPSocket()
 		AfxMessageBox(_T("connect fail"));
 	}
 
-	m_pTcpSocket->Send(strSendTo, 12);
+	m_pTcpSocket->Send(strSendTo, 10);
 
 	return TRUE;
 }

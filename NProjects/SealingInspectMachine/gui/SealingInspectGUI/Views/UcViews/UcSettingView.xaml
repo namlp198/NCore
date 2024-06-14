@@ -381,6 +381,27 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
+                                <TabItem Header="Test Light"
+                                         Width="100"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="14"
+                                         FontFamily="Segoe UI"
+                                         FontWeight="Bold"
+                                         Foreground="Black">
+                                    <StackPanel Margin="0 20 0 0">
+                                        <Button Width="120"
+                                                Height="35"
+                                                Content="Set Light 255"
+                                                Name="btnSetLight255"
+                                                Click="btnSetLight255_Click"/>
+                                        <Button Width="120"
+                                                Height="35"
+                                                Margin="5"
+                                                Content="Set Light 0"
+                                                Name="btnSetLight0"
+                                                Click="btnSetLight0_Click" />
+                                    </StackPanel>
+                                </TabItem>
                             </TabControl>
                         </Grid>
                     </Grid>
@@ -542,7 +563,7 @@
                                      FontWeight="Bold"
                                      Foreground="Black">
                                 <TabControl Margin="5">
-                                    <TabItem Header="Frame 1"
+                                    <TabItem Header="Region 1 (1,2)"
                                              Style="{StaticResource TabItemStyle}"
                                              FontSize="14"
                                              FontFamily="Segoe UI"
@@ -607,7 +628,7 @@
                                             </Button>
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="Frame 2"
+                                    <TabItem Header="Region 2 (3,4,5)"
                                              Style="{StaticResource TabItemStyle}"
                                              FontSize="14"
                                              FontFamily="Segoe UI"
@@ -672,7 +693,7 @@
                                             </Button>
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="Frame 3"
+                                    <TabItem Header="Region 3 (6,7)"
                                              Style="{StaticResource TabItemStyle}"
                                              FontSize="14"
                                              FontFamily="Segoe UI"
@@ -737,7 +758,7 @@
                                             </Button>
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="Frame 4"
+                                    <TabItem Header="Region 4 (8,9,10)"
                                              Style="{StaticResource TabItemStyle}"
                                              FontSize="14"
                                              FontFamily="Segoe UI"

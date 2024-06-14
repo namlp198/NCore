@@ -14,6 +14,7 @@ using SealingInspectGUI.Commons;
 using SealingInspectGUI.Manager.Class;
 using System.Net.Http.Headers;
 using System.Windows;
+using SealingInspectGUI.Manager.SumManager;
 
 namespace SealingInspectGUI.ViewModels
 {
@@ -24,6 +25,7 @@ namespace SealingInspectGUI.ViewModels
         private readonly Dispatcher _dispatcher;
         private UcSumCameraView _sumCameraView;
         public IOManager_PLC_Wecon PLC_Wecon;
+        public Lighting_Controller_CSS_PD3 LightController_PD3;
 
         // status result cavity 1
         private int m_nTopCamFrame1_Cavity1 = -1;
@@ -111,6 +113,15 @@ namespace SealingInspectGUI.ViewModels
 
             PLC_Wecon = new IOManager_PLC_Wecon("192.168.0.10", 0);
             PLC_Wecon.Initialize();
+            LightController_PD3 = new Lighting_Controller_CSS_PD3("192.168.0.2", 40001);
+            if(!LightController_PD3.Ping_IP())
+            {
+                MessageBox.Show("Can not connect to Light Controller");
+            }
+            else
+            {
+                LightController_PD3.Set_4_Light_0();
+            }
 
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
             InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);

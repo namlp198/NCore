@@ -45,6 +45,7 @@ namespace SealingInspectGUI.Models
         public int m_nHoughCircleParam1;                              // 31.
         public int m_nHoughCircleParam2;                              // 32.
         public double m_dRatioPxlUm;
+        public double m_dRatioUmPxl;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_TopCam_Frame2
@@ -122,6 +123,7 @@ namespace SealingInspectGUI.Models
         public int m_nVMin;                                           // 70.
         public int m_nVMax;                                           // 71.
         public double m_dRatioPxlUm;                                   // 72.
+        public double m_dRatioUmPxl;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame1
@@ -145,7 +147,14 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public int m_nHMin;
+        public int m_nHMax;
+        public int m_nSMin;
+        public int m_nSMax;
+        public int m_nVMin;
+        public int m_nVMax;
         public double m_dRatioPxlUm;
+        public double m_dRatioUmPxl;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame2
@@ -169,7 +178,14 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public int m_nHMin;
+        public int m_nHMax;
+        public int m_nSMin;
+        public int m_nSMax;
+        public int m_nVMin;
+        public int m_nVMax;
         public double m_dRatioPxlUm;
+        public double m_dRatioUmPxl;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame3
@@ -193,7 +209,14 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public int m_nHMin;
+        public int m_nHMax;
+        public int m_nSMin;
+        public int m_nSMax;
+        public int m_nVMin;
+        public int m_nVMax;
         public double m_dRatioPxlUm;
+        public double m_dRatioUmPxl;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CRecipe_SideCam_Frame4
@@ -217,7 +240,14 @@ namespace SealingInspectGUI.Models
         public int m_nOffetY_Top;
         public int m_nOffetY_Bottom;
         public int m_nThresholdBinaryFindROI;
+        public int m_nHMin;
+        public int m_nHMax;
+        public int m_nSMin;
+        public int m_nSMax;
+        public int m_nVMin;
+        public int m_nVMax;
         public double m_dRatioPxlUm;
+        public double m_dRatioUmPxl;
     }
 
 

@@ -124,7 +124,7 @@
     <Compile Include="Manager\Class\SealingInspectProcessorDll.cs" />
     <Compile Include="Manager\InterfaceManager.cs" />
     <Compile Include="Manager\SimulationThread.cs" />
-    <Compile Include="Manager\SumManager\LightControlManager.cs" />
+    <Compile Include="Manager\SumManager\Lighting_Controller_CSS_PD3.cs" />
     <Compile Include="Manager\SumManager\PlcManager.cs" />
     <Compile Include="Manager\SumManager\SealingInspectProcessorManager.cs" />
     <Compile Include="Manager\SumManager\SequenceManager.cs" />

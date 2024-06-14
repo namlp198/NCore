@@ -30,6 +30,8 @@ namespace SealingInspectGUI.Views.UcViews
         private void btnTestTcpSocket_Click(object sender, RoutedEventArgs e)
         {
             InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.TestTCPSocket();
+
+            //MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
         }
     }
 }

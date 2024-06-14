@@ -2,6 +2,7 @@
 
 using LModbus;
 using SealingInspectGUI.Commons;
+using SealingInspectGUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -177,6 +178,9 @@ namespace SealingInspectGUI.Manager.Class
 
                 // 3. write bit PLC, inform top cam inspect done, start rotate for grab image side cam
 
+                // turn off light
+                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
+                Thread.Sleep(m_nDelayTime);
 
                 WriteSingleCoil(INSPECT_TOPCAM_1_COMPLETED, true);
                 Thread.Sleep(m_nDelayTime);
@@ -188,6 +192,10 @@ namespace SealingInspectGUI.Manager.Class
                 {
                     Thread.Sleep(m_nDelayTime);
                 }
+
+                // turn off light
+                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
+                Thread.Sleep(m_nDelayTime);
 
                 // 5. write OK NG
                 if (m_bJudgement_1_OKNG == false)
@@ -233,6 +241,11 @@ namespace SealingInspectGUI.Manager.Class
                 }
 
                 // 3. write bit PLC, inform top cam inspect done, start rotate for grab image side cam
+
+                // turn on light
+                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
+                Thread.Sleep(m_nDelayTime_2);
+
                 WriteSingleCoil(INSPECT_TOPCAM_2_COMPLETED, true);
                 Thread.Sleep(m_nDelayTime_2);
                 WriteSingleCoil(INSPECT_TOPCAM_2_COMPLETED, false);
@@ -242,6 +255,10 @@ namespace SealingInspectGUI.Manager.Class
                 {
                     Thread.Sleep(m_nDelayTime_2);
                 }
+
+                // turn off light
+                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
+                Thread.Sleep(m_nDelayTime_2);
 
                 // 5. write OK NG
                 if (m_bJudgement_2_OKNG == false)

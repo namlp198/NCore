@@ -182,8 +182,8 @@ private:
 
 	BOOL               FindSealingOverflow(cv::Mat* pMatProcess, cv::Rect rectROI, cv::Rect rectFindSealingOverflow, std::vector<cv::Point>& vertices_FindSealingOverflow, double angle, int nThreshold, int nContourSizeMax, double dAreaContourMax);
 private:
-	double             ConvertUmToPixel(double dGap, double dPixSize) { return (dGap * 1000.0) / dPixSize; }
-	double             ConvertPixelToUm(double dPxl, double dPxlSize) { return (dPxl * dPxlSize) / 1000.0; }
+	double             Convert_mm_To_Pixel(double dGap, double dUmPxl) { return (dGap * 1000.0) * dUmPxl; }
+	double             Convert_Pixel_To_mm(double dPxl, double dPxlUm) { return (dPxl * dPxlUm) / 1000.0; }
 
 public:
 

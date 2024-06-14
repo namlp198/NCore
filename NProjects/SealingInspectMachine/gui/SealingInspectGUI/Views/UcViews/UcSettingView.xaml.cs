@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SealingInspectGUI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,16 @@ namespace SealingInspectGUI.Views.UcViews
         public UcSettingView()
         {
             InitializeComponent();
+        }
+
+        private void btnSetLight255_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
+        }
+
+        private void btnSetLight0_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
         }
     }
 }

@@ -38,6 +38,7 @@ struct CRecipe_TopCam_Frame1
 	int m_nHoughCircleParam1;
 	int m_nHoughCircleParam2;
 	double m_dRatioPxlUm;
+	double m_dRatioUmPxl;
 };
 struct CRecipe_TopCam_Frame2
 {
@@ -114,6 +115,7 @@ struct CRecipe_TopCam_Frame2
 	int m_nVMin;
 	int m_nVMax;
 	double m_dRatioPxlUm;
+	double m_dRatioUmPxl;
 };
 struct CRecipe_SideCam_Frame1
 {
@@ -134,7 +136,14 @@ struct CRecipe_SideCam_Frame1
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	int m_nHMin;
+	int m_nHMax;
+	int m_nSMin;
+	int m_nSMax;
+	int m_nVMin;
+	int m_nVMax;
 	double m_dRatioPxlUm;
+	double m_dRatioUmPxl;
 };
 struct CRecipe_SideCam_Frame2
 {
@@ -155,7 +164,14 @@ struct CRecipe_SideCam_Frame2
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	int m_nHMin;
+	int m_nHMax;
+	int m_nSMin;
+	int m_nSMax;
+	int m_nVMin;
+	int m_nVMax;
 	double m_dRatioPxlUm;
+	double m_dRatioUmPxl;
 };
 struct CRecipe_SideCam_Frame3
 {
@@ -176,7 +192,14 @@ struct CRecipe_SideCam_Frame3
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	int m_nHMin;
+	int m_nHMax;
+	int m_nSMin;
+	int m_nSMax;
+	int m_nVMin;
+	int m_nVMax;
 	double m_dRatioPxlUm;
+	double m_dRatioUmPxl;
 };
 struct CRecipe_SideCam_Frame4
 {
@@ -197,7 +220,14 @@ struct CRecipe_SideCam_Frame4
 	int m_nOffetY_Top;
 	int m_nOffetY_Bottom;
 	int m_nThresholdBinaryFindROI;
+	int m_nHMin;
+	int m_nHMax;
+	int m_nSMin;
+	int m_nSMax;
+	int m_nVMin;
+	int m_nVMax;
 	double m_dRatioPxlUm;
+	double m_dRatioUmPxl;
 };
 
 class AFX_EXT_CLASS CSealingInspectRecipe_TopCam
