@@ -768,6 +768,15 @@ namespace SealingInspectGUI.ViewModels
                                     break;
                                 case 24:
                                     recipe.Index = i + k1 - 1;
+                                    recipe.ParamName = "Use Hardware Trigger (1: Yes, 0: No)";
+                                    recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_bUseHardwareTrigger + "";
+                                    recipe.SideCam2Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
+                                                           m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_bUseHardwareTrigger + "";
+                                    lstRecipeFrame1.Add(recipe);
+                                    break;
+                                case 25:
+                                    recipe.Index = i + k1 - 1;
                                     recipe.ParamName = "Ratio Pixel Um";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
                                                            m_sealingInspRecipe_SideCam[nSideCam1].m_recipeFrame1.m_dRatioPxlUm + "";
@@ -775,7 +784,7 @@ namespace SealingInspectGUI.ViewModels
                                                            m_sealingInspRecipe_SideCam[nSideCam2].m_recipeFrame1.m_dRatioPxlUm + "";
                                     lstRecipeFrame1.Add(recipe);
                                     break;
-                                case 25:
+                                case 26:
                                     recipe.Index = i + k1 - 1;
                                     recipe.ParamName = "Ratio Um Pixel";
                                     recipe.SideCam1Value = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.

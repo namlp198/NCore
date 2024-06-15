@@ -122,9 +122,47 @@ namespace SealingInspectGUI.ViewModels
                 LoadSystemSettings(ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting);
             SettingVM.LoadSystemSettings();
 
+            int nUseSimulation = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation;
+            if(nUseSimulation == 1)
+            {
+                RunVM.SumCamVM.SumCameraView.stackManual.Visibility = System.Windows.Visibility.Visible;
+                RunVM.SumCamVM.SumCameraView.btnInspSimul.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                RunVM.SumCamVM.SumCameraView.stackManual.Visibility = System.Windows.Visibility.Hidden;
+                RunVM.SumCamVM.SumCameraView.btnInspSimul.Visibility = System.Windows.Visibility.Hidden;
+            }
+
             InterfaceManager.Instance.m_sealingInspectProcessorManager.
                 m_sealingInspProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe);
             SettingVM.LoadRecipe();
+
+            #region Set TriggerMode and TriggerSource
+            int nUseHardwareTrigger_SideCam1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[0].m_recipeFrame1.m_bUseHardwareTrigger;
+            if(nUseHardwareTrigger_SideCam1 == 1)
+            {
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerModeHikCam(2, 1);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSourceHikCam(2, 2);
+            }
+            else if(nUseHardwareTrigger_SideCam1 == 0)
+            {
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerModeHikCam(2, 0);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSourceHikCam(2, 2);
+            }
+
+            int nUseHardwareTrigger_SideCam2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[1].m_recipeFrame1.m_bUseHardwareTrigger;
+            if (nUseHardwareTrigger_SideCam2 == 1)
+            {
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerModeHikCam(3, 1);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSourceHikCam(3, 2);
+            }
+            else if (nUseHardwareTrigger_SideCam2 == 0)
+            {
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerModeHikCam(3, 0);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetTriggerSourceHikCam(3, 2);
+            }
+            #endregion
 
             // add refer value and tolerance min max Top Cam
             m_dDistRefer_TopCam_Ring_1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectRecipe.
@@ -147,6 +185,9 @@ namespace SealingInspectGUI.ViewModels
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
             }
+
+            RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
+            RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
         }
 
         ~MainViewModel()

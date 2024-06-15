@@ -149,6 +149,7 @@ struct CRecipe_SideCam_Frame1
 	int m_nVMin;
 	int m_nVMax;
 	BOOL m_bJustJudgeByMinBoundingRect;
+	BOOL m_bUseHardwareTrigger;
 	double m_dRatioPxlUm;
 	double m_dRatioUmPxl;
 };

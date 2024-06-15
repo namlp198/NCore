@@ -452,6 +452,23 @@ int CSealingInspectHikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex
 
 	m_cameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
+	if (nGrabberIndex == 2 || nGrabberIndex == 3)
+	{
+		CSingleLock lockCamCurrentFrame(&m_csCameraFrameIdx[nGrabberIndex]);
+		lockCamCurrentFrame.Lock();
+		int nCurrentFrameWaitProcessIdx = m_currentFrameWaitProcessSideCamIdx[nGrabberIndex];
+		int nNextFrameWaitProcessIdx = nCurrentFrameWaitProcessIdx + 1;
+
+		m_pFrameWaitProcessList[nGrabberIndex]->SetFrameImage(nCurrentFrameWaitProcessIdx, (LPBYTE)pBuffer);
+
+		m_queueInspectWaitList[nGrabberIndex].push(nCurrentFrameWaitProcessIdx);
+
+		nNextFrameWaitProcessIdx = nNextFrameWaitProcessIdx % MAX_IMAGE_BUFFER_SIDECAM;
+		m_currentFrameWaitProcessSideCamIdx[nGrabberIndex] = nNextFrameWaitProcessIdx;
+
+		lockCamCurrentFrame.Unlock();
+	}
+
 	localLock.Unlock();
 
 	return TRUE;

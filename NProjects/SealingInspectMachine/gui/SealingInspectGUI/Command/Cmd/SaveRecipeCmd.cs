@@ -1046,8 +1046,19 @@ namespace SealingInspectGUI.Command.Cmd
                                     m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
                                     m_recipeFrame1.m_bJustJudgeByMinBoundingRect);
                                 break;
-                            // pxl um
+                            // Use Hardware Trigger
                             case 31:
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
+                                   out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                   m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
+                                   m_recipeFrame1.m_bUseHardwareTrigger);
+                                int.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam2Value,
+                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
+                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam2].
+                                    m_recipeFrame1.m_bUseHardwareTrigger);
+                                break;
+                            // pxl um
+                            case 32:
                                 double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].
@@ -1058,7 +1069,7 @@ namespace SealingInspectGUI.Command.Cmd
                                     m_recipeFrame1.m_dRatioPxlUm);
                                 break;
                             // um pxl
-                            case 32:
+                            case 33:
                                 double.TryParse(MainViewModel.Instance.SettingVM.RecipeFrame1_SideCam[i].SideCam1Value,
                                    out InterfaceManager.Instance.m_sealingInspectProcessorManager.
                                    m_sealingInspectRecipe.m_sealingInspRecipe_SideCam[nSideCam1].

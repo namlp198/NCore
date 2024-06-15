@@ -298,7 +298,7 @@ int CFrameGrabber_MVS_GigE::SetTriggerSource(int nSource)
 		break;
 
 	case TriggerSource_Hardware:
-		nRet = m_pCamera->SetEnumValue("TriggerSource", MV_TRIGGER_SOURCE_LINE0);
+		nRet = m_pCamera->SetEnumValue("TriggerSource", MV_TRIGGER_SOURCE_LINE2);
 		break;
 
 	default:

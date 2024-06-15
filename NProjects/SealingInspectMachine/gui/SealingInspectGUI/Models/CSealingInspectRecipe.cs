@@ -160,6 +160,7 @@ namespace SealingInspectGUI.Models
         public int m_nVMin;
         public int m_nVMax;
         public int m_bJustJudgeByMinBoundingRect;
+        public int m_bUseHardwareTrigger;
         public double m_dRatioPxlUm;
         public double m_dRatioUmPxl;
     }

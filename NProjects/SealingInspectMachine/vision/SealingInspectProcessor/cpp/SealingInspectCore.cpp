@@ -125,6 +125,8 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 	int nTopCam1_BufferProcessor = 0;
 	int nSideCam1_BufferProcessor = 0;
 
+	BOOL bUseHardwareTrigger = recipe->m_sealingInspRecipe_SideCam[0].m_recipeFrame1.m_bUseHardwareTrigger;
+
 	int nGotoPos1Time = sysSetting->m_nGoToPos1Time_Cavity1;
 	int nGotoPos2Time = sysSetting->m_nGoToPos2Time_Cavity1;
 	int nGotoPos3Time = sysSetting->m_nGoToPos3Time_Cavity1;
@@ -192,7 +194,7 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 
 		// 7. turn on 4 bar light
 
-		//Sleep(200);
+		//Sleep(100);
 
 		// 8. grab frame
 		if (hikCamControl->GetGrabBufferImage(nTopCam1_BufferHikCamIdx, matBayerRG.data) == FALSE)
@@ -219,68 +221,93 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY1(int nThreadIndex)
 			}
 		}*/
 
-#ifdef TEST_INSPECT_CAVITY_1
-
-		Sleep(nGotoPos1Time);
-
-		for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
+		if (bUseHardwareTrigger == FALSE)
 		{
-			switch (i)
+			Sleep(nGotoPos1Time);
+
+			for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
 			{
-			case 0:
-				Sleep(nGotoPos1Time - nOffsetTimePos1);
-				break;
-			case 1:
-				Sleep(nGotoPos2Time - nGotoPos1Time - nOffsetTimePos2);
-				break;
-			case 2:
-				Sleep(nGotoPos3Time - nGotoPos2Time - nOffsetTimePos3);
-				break;
-			case 3:
-				Sleep(nGotoPos4Time - nGotoPos3Time - nOffsetTimePos4);
-				break;
-			case 4:
-				Sleep(nGotoPos5Time - nGotoPos4Time - nOffsetTimePos5);
-				break;
-			case 5:
-				Sleep(nGotoPos6Time - nGotoPos5Time - nOffsetTimePos6);
-				break;
-			case 6:
-				Sleep(nGotoPos7Time - nGotoPos6Time - nOffsetTimePos7);
-				break;
-			case 7:
-				Sleep(nGotoPos8Time - nGotoPos7Time - nOffsetTimePos8);
-				break;
-			case 8:
-				Sleep(nGotoPos9Time - nGotoPos8Time - nOffsetTimePos9);
-				break;
-			case 9:
-				Sleep(nGotoPos10Time - nGotoPos9Time - nOffsetTimePos10);
-				break;
+				switch (i)
+				{
+				case 0:
+					Sleep(nGotoPos1Time - nOffsetTimePos1);
+					break;
+				case 1:
+					Sleep(nGotoPos2Time - nGotoPos1Time - nOffsetTimePos2);
+					break;
+				case 2:
+					Sleep(nGotoPos3Time - nGotoPos2Time - nOffsetTimePos3);
+					break;
+				case 3:
+					Sleep(nGotoPos4Time - nGotoPos3Time - nOffsetTimePos4);
+					break;
+				case 4:
+					Sleep(nGotoPos5Time - nGotoPos4Time - nOffsetTimePos5);
+					break;
+				case 5:
+					Sleep(nGotoPos6Time - nGotoPos5Time - nOffsetTimePos6);
+					break;
+				case 6:
+					Sleep(nGotoPos7Time - nGotoPos6Time - nOffsetTimePos7);
+					break;
+				case 7:
+					Sleep(nGotoPos8Time - nGotoPos7Time - nOffsetTimePos8);
+					break;
+				case 8:
+					Sleep(nGotoPos9Time - nGotoPos8Time - nOffsetTimePos9);
+					break;
+				case 9:
+					Sleep(nGotoPos10Time - nGotoPos9Time - nOffsetTimePos10);
+					break;
+				}
+				hikCamControl->SetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx);
 			}
-			hikCamControl->SetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx);
+
+			while (!hikCamControl->GetQueueInspectWaitList(nSideCam1_BufferHikCamIdx).empty())
+			{
+				int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam1_BufferHikCamIdx);
+
+				// Not Grab Image..
+				if (nFrameIdx == -1)
+					continue;
+
+				// 1. Get Buffer..
+				LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx, nFrameIdx);
+
+				if (pImageBuffer == NULL)
+					return;
+
+				cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+				ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
+			}
 		}
-
-
-#endif // TEST_INSPECT_CAVITY_1
-
-		while (!hikCamControl->GetQueueInspectWaitList(nSideCam1_BufferHikCamIdx).empty())
+		else if (bUseHardwareTrigger == TRUE)
 		{
-			int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam1_BufferHikCamIdx);
-
-			// Not Grab Image..
-			if (nFrameIdx == -1)
+			while (hikCamControl->GetQueueInspectWaitList(nSideCam1_BufferHikCamIdx).size() < 10)
+			{
+				Sleep(5);
 				continue;
+			}
 
-			// 1. Get Buffer..
-			LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx, nFrameIdx);
+			while (!hikCamControl->GetQueueInspectWaitList(nSideCam1_BufferHikCamIdx).empty())
+			{
+				int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam1_BufferHikCamIdx);
 
-			if (pImageBuffer == NULL)
-				return;
+				// Not Grab Image..
+				if (nFrameIdx == -1)
+					continue;
 
-			cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+				// 1. Get Buffer..
+				LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam1_BufferHikCamIdx, nFrameIdx);
 
-			ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
+				if (pImageBuffer == NULL)
+					return;
+
+				cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+				ProcessFrame_SideCam(recipe, nSideCam1_BufferHikCamIdx, nSideCam1_BufferProcessor, nFrameIdx, mat);
+			}
 		}
 
 		m_pInterface->InspectCavity1Complete(FALSE);
@@ -326,6 +353,8 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 	int nTopCam2_BufferProcessor = 1;
 	int nSideCam2_BufferProcessor = 1;
+
+	BOOL bUseHardwareTrigger = recipe->m_sealingInspRecipe_SideCam[1].m_recipeFrame1.m_bUseHardwareTrigger;
 
 	int nGotoPos1Time = sysSetting->m_nGoToPos1Time_Cavity1;
 	int nGotoPos2Time = sysSetting->m_nGoToPos2Time_Cavity1;
@@ -409,66 +438,93 @@ void CSealingInspectCore::RunningThread_INSPECT_CAVITY2(int nThreadIndex)
 
 		// 10. Read the PLC signal for grab frame, then store in frame wait process list.
 
-#ifdef TEST_INSPECT_CAVITY_1
-
-		Sleep(nGotoPos1Time);
-
-		for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
+		if (bUseHardwareTrigger == FALSE)
 		{
-			switch (i)
+			Sleep(nGotoPos1Time);
+
+			for (int i = 0; i < MAX_IMAGE_BUFFER_SIDECAM; i++)
 			{
-			case 0:
-				Sleep(nGotoPos1Time - nOffsetTimePos1);
-				break;
-			case 1:
-				Sleep(nGotoPos2Time - nGotoPos1Time - nOffsetTimePos2);
-				break;
-			case 2:
-				Sleep(nGotoPos3Time - nGotoPos2Time - nOffsetTimePos3);
-				break;
-			case 3:
-				Sleep(nGotoPos4Time - nGotoPos3Time - nOffsetTimePos4);
-				break;
-			case 4:
-				Sleep(nGotoPos5Time - nGotoPos4Time - nOffsetTimePos5);
-				break;
-			case 5:
-				Sleep(nGotoPos6Time - nGotoPos5Time - nOffsetTimePos6);
-				break;
-			case 6:
-				Sleep(nGotoPos7Time - nGotoPos6Time - nOffsetTimePos7);
-				break;
-			case 7:
-				Sleep(nGotoPos8Time - nGotoPos7Time - nOffsetTimePos8);
-				break;
-			case 8:
-				Sleep(nGotoPos9Time - nGotoPos8Time - nOffsetTimePos9);
-				break;
-			case 9:
-				Sleep(nGotoPos10Time - nGotoPos9Time - nOffsetTimePos10);
-				break;
+				switch (i)
+				{
+				case 0:
+					Sleep(nGotoPos1Time - nOffsetTimePos1);
+					break;
+				case 1:
+					Sleep(nGotoPos2Time - nGotoPos1Time - nOffsetTimePos2);
+					break;
+				case 2:
+					Sleep(nGotoPos3Time - nGotoPos2Time - nOffsetTimePos3);
+					break;
+				case 3:
+					Sleep(nGotoPos4Time - nGotoPos3Time - nOffsetTimePos4);
+					break;
+				case 4:
+					Sleep(nGotoPos5Time - nGotoPos4Time - nOffsetTimePos5);
+					break;
+				case 5:
+					Sleep(nGotoPos6Time - nGotoPos5Time - nOffsetTimePos6);
+					break;
+				case 6:
+					Sleep(nGotoPos7Time - nGotoPos6Time - nOffsetTimePos7);
+					break;
+				case 7:
+					Sleep(nGotoPos8Time - nGotoPos7Time - nOffsetTimePos8);
+					break;
+				case 8:
+					Sleep(nGotoPos9Time - nGotoPos8Time - nOffsetTimePos9);
+					break;
+				case 9:
+					Sleep(nGotoPos10Time - nGotoPos9Time - nOffsetTimePos10);
+					break;
+				}
+				hikCamControl->SetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx);
 			}
-			hikCamControl->SetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx);
+
+			while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
+			{
+				int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
+
+				// Not Grab Image..
+				if (nFrameIdx == -1)
+					continue;
+
+				// 1. Get Buffer..
+				LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
+
+				if (pImageBuffer == NULL)
+					return;
+
+				cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+				ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
+			}
 		}
-#endif // TEST_INSPECT_CAVITY_1
-
-		while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
+		else if(bUseHardwareTrigger == TRUE)
 		{
-			int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
-
-			// Not Grab Image..
-			if (nFrameIdx == -1)
+			while (hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).size() < 10)
+			{
+				Sleep(5);
 				continue;
+			}
 
-			// 1. Get Buffer..
-			LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
+			while (!hikCamControl->GetQueueInspectWaitList(nSideCam2_BufferHikCamIdx).empty())
+			{
+				int nFrameIdx = hikCamControl->PopInspectWaitFrame(nSideCam2_BufferHikCamIdx);
 
-			if (pImageBuffer == NULL)
-				return;
+				// Not Grab Image..
+				if (nFrameIdx == -1)
+					continue;
 
-			cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+				// 1. Get Buffer..
+				LPBYTE pImageBuffer = m_pInterface->GetHikCamControl()->GetFrameWaitProcess_SideCam(nSideCam2_BufferHikCamIdx, nFrameIdx);
 
-			ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
+				if (pImageBuffer == NULL)
+					return;
+
+				cv::Mat mat(FRAME_HEIGHT_SIDECAM, FRAME_WIDTH_SIDECAM, CV_8UC3, pImageBuffer);
+
+				ProcessFrame_SideCam(recipe, nSideCam2_BufferHikCamIdx, nSideCam2_BufferProcessor, nFrameIdx, mat);
+			}
 		}
 
 		m_pInterface->InspectCavity2Complete(FALSE);
@@ -1376,7 +1432,7 @@ BOOL CSealingInspectCore::FindMeasurePoints_SideCam(const CSealingInspectRecipe_
 #ifdef _USE_TBB
 	});
 #else
-	}
+}
 
 #endif
 
@@ -2043,9 +2099,9 @@ BOOL CSealingInspectCore::FindLine_Top_Bottom_Average(CSealingInspectRecipe_Side
 				vecFindLineFitPoints[nX] = cv::Point(nX + nMinSearch, nY + nConst_Pitch - nContinueCount + nFrameY);
 				break;
 			}
-		}
+	}
 #ifdef USE_TBB
-	});
+});
 #else
 }
 
@@ -2670,6 +2726,10 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 	if (mat.empty())
 		return;
 
+	/*char pathSaveImage[200] = { };
+	sprintf_s(pathSaveImage, "%s%s", "E:\\images\\image_20240615\\5_\\", "TopCam1_Frame1.bmp");
+	cv::imwrite(pathSaveImage, mat);*/
+
 	CRecipe_TopCam_Frame1 recipeTopCamFrame1 = pRecipe->m_sealingInspRecipe_TopCam[nCamIdx].m_recipeFrame1;
 
 	int nFrame = 0;
@@ -2754,7 +2814,7 @@ void CSealingInspectCore::ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, i
 
 	cv::inRange(matHSV, minHSV, maxHSV, maskHSV);
 	cv::bitwise_and(matProcess, matProcess, matResultHSV, maskHSV);
-	//cv::cvtColor(matResultHSV, matBGR, cv::COLOR_HSV2BGR);
+	cv::cvtColor(matResultHSV, matBGR, cv::COLOR_HSV2BGR);
 	//cv::imshow("HSV", matResultHSV);
 #pragma endregion
 
@@ -2906,6 +2966,10 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 	if (mat.empty())
 		return;
 
+	/*char pathSaveImage[200] = { };
+	sprintf_s(pathSaveImage, "%s%s", "E:\\images\\image_20240615\\5_\\", "TopCam1_Frame2.bmp");
+	cv::imwrite(pathSaveImage, mat);*/
+
 	cv::Mat matProcess, matGray;
 	mat.copyTo(matProcess);
 
@@ -3024,7 +3088,7 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 
 	MakeROITopCamFrame2(&recipeTopCamFrame2, vecRectROI, &matProcess, m_ptCenter_Inner, m_dRadius_Inner);
 
-	int nCounterNG = 0;
+	m_nCounterNG_TopCam_Frame2 = 0;
 
 	for (int nROIIdx = 0; nROIIdx < vecRectROI.size(); nROIIdx++)
 	{
@@ -3044,8 +3108,8 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		double dAngle_Ver = 0.0;
 
 		cv::Mat matROI_BGR = matProcess(vecRectROI[nROIIdx]);
-		/*if (matROI_BGR.empty())
-			return;*/
+		if (matROI_BGR.empty())
+			return;
 		//cv::imshow("ROI_BGR", matROI_BGR);
 
 		cv::Mat pImageDataROI(vecRectROI[nROIIdx].height, vecRectROI[nROIIdx].width, CV_8UC1);
@@ -3172,8 +3236,8 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		cv::threshold(matHSV2Gray, matBinary, nThresholdMeasureWidth, 255, cv::THRESH_BINARY);
 		//cv::imshow("Binary", matBinary);
 
-		/*if (matBinary.empty())
-			return;*/
+		if (matBinary.empty())
+			return;
 
 		/*matEle = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7));
 		cv::morphologyEx(matBinary, matBinary, cv::MORPH_CLOSE, matEle);
@@ -3219,7 +3283,7 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		if (contours.size() == 0)
 		{
 			bMeasureWidth = FALSE;
-			nCounterNG++;
+			m_nCounterNG_TopCam_Frame2++;
 		}
 		else
 		{
@@ -3243,9 +3307,9 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 				if (dMeasureValue < dWidth_Min_Pxl || dMeasureValue > dWidth_Max_Pxl)
 				{
 					bMeasureWidth = FALSE;
-					nCounterNG++;
+					m_nCounterNG_TopCam_Frame2++;
 				}
-				else if(dMeasureValue > dWidth_Min_Pxl && dMeasureValue < dWidth_Max_Pxl)
+				else if (dMeasureValue > dWidth_Min_Pxl && dMeasureValue < dWidth_Max_Pxl)
 				{
 					bMeasureWidth = TRUE;
 				}
@@ -3275,7 +3339,7 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 
 		if (bFindSealingOverflow_Hoz == FALSE || bFindSealingOverflow_Ver == FALSE)
 		{
-			nCounterNG++;
+			m_nCounterNG_TopCam_Frame2++;
 		}
 
 		//cv::rectangle(mat, cv::Rect(rectFindSealingOverflow_Hoz.x + vecRectROI[nROIIdx].x, rectFindSealingOverflow_Hoz.y + vecRectROI[nROIIdx].y, rectFindSealingOverflow_Hoz.width, rectFindSealingOverflow_Hoz.height), ORANGE_COLOR, 1, cv::LINE_8);
@@ -3287,6 +3351,7 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		char measureValue_mm_Text[20] = {};
 		sprintf_s(measureValue_mm_Text, "%.2f", dMeasureValue_mm);
 		cv::putText(mat, measureValue_mm_Text, cv::Point(rectMeasureWidth.x + vecRectROI[nROIIdx].x - 5, rectMeasureWidth.y + vecRectROI[nROIIdx].y - 12), cv::FONT_HERSHEY_SIMPLEX, 0.7, YELLOW_COLOR, 1, cv::LINE_8);
+
 		DrawRotateRect(mat, vertices_original, bMeasureWidth);
 		DrawRotateRect(mat, vertices_hoz, bFindSealingOverflow_Hoz);
 		DrawRotateRect(mat, vertices_ver, bFindSealingOverflow_Ver);
@@ -3395,13 +3460,12 @@ void CSealingInspectCore::ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, i
 		cv::circle(mat, ptCenterOnOriginal, 3, RED_COLOR, cv::FILLED);
 		cv::Rect rectMeasure(rectMeasureWidth.x + vecRectROI[nROIIdx].x, rectMeasureWidth.y + vecRectROI[nROIIdx].y, rectMeasureWidth.width, rectMeasureWidth.height);
 		//cv::rectangle(mat, rectMeasure, ORANGE_COLOR, 1, cv::LINE_AA);
-
 		//cv::rectangle(mat, cv::Rect(rectFindPt.x + vecRectROI[nROIIdx].x, rectFindPt.y + vecRectROI[nROIIdx].y, rectFindPt.width, rectFindPt.height), ORANGE_COLOR, 1, cv::LINE_AA);
 #pragma endregion
 
 	}
 
-	if (nCounterNG > 0)
+	if (m_nCounterNG_TopCam_Frame2 > 0)
 	{
 		nRet &= FALSE;
 	}
@@ -3438,6 +3502,10 @@ void CSealingInspectCore::ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, i
 
 	if (mat.empty())
 		return;
+
+	/*char pathSaveImage[200] = { };
+	sprintf_s(pathSaveImage, "%s%s_%d.bmp", "E:\\images\\image_20240615\\5_\\", "SideCam1_Frame", nFrameIdx + 1);
+	cv::imwrite(pathSaveImage, mat);*/
 
 	// create a clone of 
 	cv::Mat pMatProcess;

@@ -24,10 +24,12 @@ namespace SealingInspectGUI.Command.Cmd
                     if (InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation == 0)
                     {
                         // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
-                        InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStop(emInspectCavity.emInspectCavity_Cavity1);
-                        InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStop(emInspectCavity.emInspectCavity_Cavity2);
+                        //InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStop(emInspectCavity.emInspectCavity_Cavity1);
+                        //InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStop(emInspectCavity.emInspectCavity_Cavity2);
                         
                     }
+                    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StopThreadPlcWecon1();
+                    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StopThreadPlcWecon2();
 
                     MainViewModel.Instance.MachineMode = Commons.emMachineMode.MachineMode_Manual;
                     MainViewModel.Instance.MainView.tbMachineMode.Text = "RUN";
@@ -41,10 +43,13 @@ namespace SealingInspectGUI.Command.Cmd
                 if (InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation == 0)
                 {
                     // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
-                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
-                    InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
+                    //InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
+                    //InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
                     
                 }
+
+                MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
+                MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
 
                 MainViewModel.Instance.MachineMode = Commons.emMachineMode.MachineMode_Auto;
                 MainViewModel.Instance.MainView.tbMachineMode.Text = "MANUAL";

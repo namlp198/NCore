@@ -47,10 +47,6 @@ namespace SealingInspectGUI.Command.Cmd
                 //if (MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.IsConnected)
                 //    MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon_2.StartThreadPlcWecon1();
 
-                
-                MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
-                MainViewModel.Instance.RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
-
             }
         }
     }

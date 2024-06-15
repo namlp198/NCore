@@ -222,4 +222,6 @@ private:
 	cv::Point2f                         m_ptCenter_Outer;
 	double                              m_dRadius_Inner;
 	double                              m_dRadius_Outer;
+
+	int                                 m_nCounterNG_TopCam_Frame2;
 };

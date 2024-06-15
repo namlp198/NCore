@@ -754,6 +754,7 @@ BOOL CSealingInspectProcessor::LoadRecipe(CSealingInspectRecipe* pRecipe)
 		recipeFile.GetItemValue(i + 1, _T("JUST_JUDGE_BY_MIN_BOUNDING_RECT_SIDECAM_FRAME3"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame3.m_bJustJudgeByMinBoundingRect, 0);
 		recipeFile.GetItemValue(i + 1, _T("JUST_JUDGE_BY_MIN_BOUNDING_RECT_SIDECAM_FRAME4"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame4.m_bJustJudgeByMinBoundingRect, 0);
 
+		recipeFile.GetItemValue(i + 1, _T("USE_HARDWARE_TRIGGER_MODE_SIDECAM"), readRecipe.m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_bUseHardwareTrigger, 0);
 	}
 
 	*(pRecipe) = readRecipe;
@@ -1235,6 +1236,7 @@ BOOL CSealingInspectProcessor::SaveRecipe(CSealingInspectRecipe* pRecipe, CStrin
 				recipeFile.SetItemValue(i + 1, _T("HSV_V_MAX_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_nVMax);
 
 				recipeFile.SetItemValue(i + 1, _T("JUST_JUDGE_BY_MIN_BOUNDING_RECT_SIDECAM_FRAME1"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_bJustJudgeByMinBoundingRect);
+				recipeFile.SetItemValue(i + 1, _T("USE_HARDWARE_TRIGGER_MODE_SIDECAM"), pRecipe->m_sealingInspRecipe_SideCam[i].m_recipeFrame1.m_bUseHardwareTrigger);
 
 				for (int k = 0; k < ROI_PARAMETER_COUNT; k++) 
 				{

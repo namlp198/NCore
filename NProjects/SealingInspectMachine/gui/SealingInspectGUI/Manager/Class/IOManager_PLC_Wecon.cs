@@ -58,6 +58,7 @@ namespace SealingInspectGUI.Manager.Class
         private bool m_bIsStartThread;
 
         Thread m_threadRunTask;
+        Thread m_threadRunTask_2;
 
         public IOManager_PLC_Wecon(string strIP, int nId)
         {
@@ -139,9 +140,20 @@ namespace SealingInspectGUI.Manager.Class
         public void StartThreadPlcWecon2()
         {
             m_bIsStartThread = true;
-            m_threadRunTask = new Thread(new ThreadStart(ThreadTask2));
-            m_threadRunTask.IsBackground = true;
-            m_threadRunTask.Start();
+            m_threadRunTask_2 = new Thread(new ThreadStart(ThreadTask2));
+            m_threadRunTask_2.IsBackground = true;
+            m_threadRunTask_2.Start();
+        }
+
+        public void StopThreadPlcWecon1()
+        {
+            if(m_threadRunTask.IsAlive)
+                m_threadRunTask.Abort();
+        }
+        public void StopThreadPlcWecon2()
+        {
+            if (m_threadRunTask_2.IsAlive)
+                m_threadRunTask_2.Abort();
         }
 
         private void ThreadTask1()
@@ -165,6 +177,7 @@ namespace SealingInspectGUI.Manager.Class
 
                     Thread.Sleep(m_nDelayTime);
                 }
+                MainViewModel.Instance.RunVM.SumCamVM.ListTopCamResult_MapToDataGrid_Cavity1 = null;
 
                 // Id Plc = 1: PLC Cavity1, Id Plc = 2: PLC Cavity 2
 
@@ -176,6 +189,7 @@ namespace SealingInspectGUI.Manager.Class
                     Thread.Sleep(m_nDelayTime);
                 }
 
+                Thread.Sleep(m_nDelayTime);
                 // 3. write bit PLC, inform top cam inspect done, start rotate for grab image side cam
 
                 // turn off light
@@ -215,6 +229,7 @@ namespace SealingInspectGUI.Manager.Class
         {
             while (true)
             {
+
                 int nProcessStatus = 1;
                 m_bInspect_2_Completed = false;
                 m_bInspectTopCam_2_Completed = false;
@@ -231,6 +246,7 @@ namespace SealingInspectGUI.Manager.Class
                     bRet = ReadSingleCoil(LX5V, TRIGGER_TOPCAM_2);
                     Thread.Sleep(m_nDelayTime_2);
                 }
+                MainViewModel.Instance.RunVM.SumCamVM.ListTopCamResult_MapToDataGrid_Cavity2 = null;
 
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.SetProcessStatus2(nProcessStatus);
 
@@ -239,6 +255,8 @@ namespace SealingInspectGUI.Manager.Class
                 {
                     Thread.Sleep(m_nDelayTime_2);
                 }
+
+                Thread.Sleep(m_nDelayTime);
 
                 // 3. write bit PLC, inform top cam inspect done, start rotate for grab image side cam
 
