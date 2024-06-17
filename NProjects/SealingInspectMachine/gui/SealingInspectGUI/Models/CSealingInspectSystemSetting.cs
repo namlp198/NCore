@@ -38,6 +38,8 @@ namespace SealingInspectGUI.Models
         public string m_sDefectImagePath;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
         public string m_sModelName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
+        public string m_sModelList;
         public int m_nGoToPos1Time_Cavity1;
         public int m_nGoToPos2Time_Cavity1;
         public int m_nGoToPos3Time_Cavity1;

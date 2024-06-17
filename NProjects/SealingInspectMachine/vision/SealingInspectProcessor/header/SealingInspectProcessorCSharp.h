@@ -58,6 +58,8 @@ extern "C"
 
 	__declspec(dllexport) bool                      GetInspectionResult(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspectResult* pSealingInspResult);
 
+	__declspec(dllexport) bool                      GetInspectStatus(CSealingInspectProcessor* pProcessor, int nInspStatusIdx, CSealingInspectStatus* pSealingInspStatus);
+
 	__declspec(dllexport) bool                      SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO);
 
 	__declspec(dllexport) bool                      SetCavityInfo(CSealingInspectProcessor* pProcessor, char* strLoadingTime);
@@ -72,6 +74,10 @@ extern "C"
 	__declspec(dllexport) bool                      LoadSystemSettings(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);
 
 	__declspec(dllexport) bool                      LoadRecipe(CSealingInspectProcessor* pProcessor, CSealingInspectRecipe* pRecipe);
+
+	__declspec(dllexport) bool                      ReloadSystenSettings(CSealingInspectProcessor* pProcessor);
+
+	__declspec(dllexport) bool                      ReloadRecipe(CSealingInspectProcessor* pProcessor);
 
 	/************************** Save Setting and Recipe **************************/
 	__declspec(dllexport) bool                      SaveSystemSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting);

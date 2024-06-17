@@ -39,6 +39,7 @@ public:
 	TCHAR               m_sFullImagePath[MAX_STRING_SIZE];
 	TCHAR               m_sDefectImagePath[MAX_STRING_SIZE];
 	TCHAR               m_sModelName[MAX_STRING_SIZE];
+	TCHAR               m_sModelList[MAX_STRING_SIZE];
 	int                 m_nGoToPos1Time_Cavity1;
 	int                 m_nGoToPos2Time_Cavity1;
 	int                 m_nGoToPos3Time_Cavity1;

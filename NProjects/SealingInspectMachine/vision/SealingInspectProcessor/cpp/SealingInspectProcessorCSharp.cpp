@@ -254,6 +254,16 @@ bool GetInspectionResult(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSe
 	else               return true;
 }
 
+bool GetInspectStatus(CSealingInspectProcessor* pProcessor, int nInspStatusIdx, CSealingInspectStatus* pSealingInspStatus)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetInspectStatus(nInspStatusIdx, pSealingInspStatus);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 bool SetSealingInspectSimulationIO(CSealingInspectProcessor* pProcessor, int nCoreIdx, CSealingInspect_Simulation_IO* sealingInspSimulationIO)
 {
 	if (pProcessor == NULL)
@@ -322,6 +332,26 @@ bool LoadRecipe(CSealingInspectProcessor* pProcessor, CSealingInspectRecipe* pRe
 
 	*(pRecipe) = *(pProcessor->GetRecipe());
 	return true;
+}
+
+bool ReloadSystenSettings(CSealingInspectProcessor* pProcessor)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->ReloadSystemSetting();
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool ReloadRecipe(CSealingInspectProcessor* pProcessor)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->ReloadRecipe();
+	if (bRet == FALSE) return false;
+	else               return true;
 }
 
 bool SaveSystemSetting(CSealingInspectProcessor* pProcessor, CSealingInspectSystemSetting* pSysSetting)

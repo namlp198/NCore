@@ -28,7 +28,7 @@ namespace SealingInspectGUI.Views.UcViews
 
         private void btnSetLight255_Click(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
+            MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_3_Bar_Light_255();
         }
 
         private void btnSetLight0_Click(object sender, RoutedEventArgs e)

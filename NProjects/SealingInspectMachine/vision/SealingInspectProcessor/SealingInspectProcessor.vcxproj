@@ -157,6 +157,7 @@
     <ClInclude Include="header\SealingInspectResult.h" />
     <ClInclude Include="header\SealingInspectResult_SideCam.h" />
     <ClInclude Include="header\SealingInspectResult_TopCam.h" />
+    <ClInclude Include="header\SealingInspectStatus.h" />
     <ClInclude Include="header\SealingInspectSystemSetting.h" />
     <ClInclude Include="header\SealingInspect_Simulation_IO.h" />
     <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="cpp\SealingInspectResult.cpp" />
     <ClCompile Include="cpp\SealingInspectResult_SideCam.cpp" />
     <ClCompile Include="cpp\SealingInspectResult_TopCam.cpp" />
+    <ClCompile Include="cpp\SealingInspectStatus.cpp" />
     <ClCompile Include="cpp\SealingInspectSystemSetting.cpp" />
     <ClCompile Include="cpp\SealingInspect_Simulation_IO.cpp" />
     <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber.cpp" />

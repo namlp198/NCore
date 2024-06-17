@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,18 +16,18 @@ namespace SealingInspectGUI.Manager.SumManager
         private const int timeout_period = 10000;
         private string m_strIP;
         private int m_nPort = 40001;
-        private string[] m_arrCmdSetLightIntensity_255;
+        private string[] m_arrCmdSetBarLightIntensity_255;
         private string[] m_arrCmdSetLightIntensity_0;
+        private string[] m_arrCmdSetRingLight_TopCam1_Intensity_255;
         public Lighting_Controller_CSS_PD3(string strIP, int nPort)
         {
             m_strIP = strIP;
             m_nPort = nPort;
 
-            m_arrCmdSetLightIntensity_255 = new string[4] 
+            m_arrCmdSetBarLightIntensity_255 = new string[3] 
             {
                 "@00F25582",
                 "@01F25583",
-                "@02F00078",
                 "@03F25585"
             };
             m_arrCmdSetLightIntensity_0 = new string[4]
@@ -35,6 +36,10 @@ namespace SealingInspectGUI.Manager.SumManager
                 "@01F00077",
                 "@02F00078",
                 "@03F00079"
+            };
+            m_arrCmdSetRingLight_TopCam1_Intensity_255 = new string[1]
+            {
+                "@02F25584"
             };
         }
 
@@ -146,13 +151,17 @@ namespace SealingInspectGUI.Manager.SumManager
             }
 
         }
-        public void Set_4_Light_255()
+        public void Set_3_Bar_Light_255()
         {
-            SendCmd(m_arrCmdSetLightIntensity_255);
+            SendCmd(m_arrCmdSetBarLightIntensity_255);
         }
         public void Set_4_Light_0()
         {
             SendCmd(m_arrCmdSetLightIntensity_0);
+        }
+        public void Set_Ring_TopCam1_255()
+        {
+            SendCmd(m_arrCmdSetRingLight_TopCam1_Intensity_255);
         }
     }
 }

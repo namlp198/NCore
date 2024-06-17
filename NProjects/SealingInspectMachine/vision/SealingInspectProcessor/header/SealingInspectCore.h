@@ -53,6 +53,8 @@ interface ISealingInspectCoreToParent
 	virtual void                            SetProcessStatus2(BOOL bProcessStatus) = 0;
 	virtual BOOL                            GetGrabFrameSideCam(int nCoreIdx) = 0;
 	virtual void                            SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab) = 0;
+	/*virtual void                            SetInspectStatus(int nCavity, BOOL bInspRunning) = 0;
+	virtual BOOL                            GetInspectStatus(int nCavity) = 0;*/
 };
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
@@ -91,10 +93,11 @@ public:
 	void RunningThread_INSPECT_CAVITY1(int nThreadIndex);
 	void RunningThread_INSPECT_CAVITY2(int nThreadIndex);
 	void StopThread();
+	void StartThread(int nThreadCount, emInspectCavity nInspCavity);
 
-	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat);
-	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat);
-	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx, cv::Mat& mat);
+	void ProcessFrame1_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat, BOOL bSimulation);
+	void ProcessFrame2_TopCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, cv::Mat& mat, BOOL bSimulation);
+	void ProcessFrame_SideCam(CSealingInspectRecipe* pRecipe, int nCamIdx, int nBufferProcessorIdx, int nFrameIdx, cv::Mat& mat, BOOL bSimulation);
 
 	void TestInspectCavity1(int nCoreIdx);
 	void TestInspectCavity2(int nCoreIdx);
@@ -106,13 +109,13 @@ private:
 	BOOL FindCircle_MinEnclosing(cv::Mat* matProcess, int nThresholdBinary, int nContourSizeMin, int nContourSizeMax,
 		                        int nRadiusInnerMin, int nRadiusInnerMax,
 		                        std::vector<std::vector<cv::Point>>& vecContours, 
-		                        std::vector<cv::Vec4i>& vecHierarchy, cv::Point2f& center, double& dRadius, int nIdx);
+		                        std::vector<cv::Vec4i>& vecHierarchy, cv::Point2f& center, double& dRadius, int nIdx, BOOL bSimulation);
 
 	BOOL FindCircle_HoughCircle(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, 
 		                        std::vector<cv::Point2i>& vecPts, int nThresholdCanny, int minDist, int nParam1, int nParam2, 
-		                        int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle);
+		                        int nRadiusOuterMin, int nRadiusOuterMax, double dIncreAngle, BOOL bSimulation);
 
-	BOOL FindCircle_HoughCircle_2(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, int nThresholdCanny1, int nThresholdCanny2, int minDist, int nParam1, int nParam2, int nRadiusOuterMin, int nRadiusOuterMax);
+	BOOL FindCircle_HoughCircle_2(cv::Mat* matProcess, std::vector<cv::Vec3f>& vecCircles, int nThresholdCanny1, int nThresholdCanny2, int minDist, int nParam1, int nParam2, int nRadiusOuterMin, int nRadiusOuterMax, BOOL bSimulation);
 
 	BOOL FindDistanceAll_OuterToInner(std::vector<cv::Point2i>& vecPts,
 		                              std::vector<cv::Point2i>& vecPtsIntersection, 
@@ -125,11 +128,11 @@ private:
 
 	BOOL JudgementInspectDistanceMeasurement_AdvancedAlgorithms(std::vector<double>& vecDistance, std::vector<int>& vecPosNG, double nDistanceMin, double nDistanceMax, int nNumberOfDistNGMax);
 
-	BOOL FindMeasurePointsAtPosMinMax(CRecipe_TopCam_Frame1* pRecipeTopCamFrame1, cv::Mat* pMatProcess, cv::Rect& rectROI, std::vector<cv::Point>& vecMeaPts, int nROIIdx);
+	BOOL FindMeasurePointsAtPosMinMax(CRecipe_TopCam_Frame1* pRecipeTopCamFrame1, cv::Mat* pMatProcess, cv::Rect& rectROI, std::vector<cv::Point>& vecMeaPts, int nROIIdx, BOOL bSimulation);
 
-	BOOL FindMeasurePointsAtPosDistMinMax_SideCam(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pImageData, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
+	BOOL FindMeasurePointsAtPosDistMinMax_SideCam(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pImageData, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts, BOOL bSimulation);
 
-	BOOL FindMeasurePoints_SideCam(const CSealingInspectRecipe_SideCam pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts);
+	BOOL FindMeasurePoints_SideCam(const CSealingInspectRecipe_SideCam pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect rectROI, std::vector<cv::Point>& vecMeaPts, BOOL bSimulation);
 
 	BOOL CalculateDistancePointToLine(cv::Point measurePt, cv::Point2f p1, cv::Point2f p2, cv::Point2f& closesPt, float& fDistance);
 
@@ -151,13 +154,13 @@ private:
 
 	BOOL FindSmallestElementsInVector(std::vector<int>& vecNum, int k, std::vector<int>& vecElementIndex);
 
-	BOOL FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam& pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, std::vector<cv::Point2f>& vecPtsLine);
+	BOOL FindLine_Top_Bottom_Average(CSealingInspectRecipe_SideCam& pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, std::vector<cv::Point2f>& vecPtsLine, BOOL bSimulation);
 
-	BOOL FindLine_Bottom_Top_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine);
+	BOOL FindLine_Bottom_Top_Average(CSealingInspectRecipe_SideCam* pRecipeSideCam, cv::Mat* pMatProcess, int nFrame, cv::Rect& rectROI, cv::Mat& matROI, std::vector<cv::Point2f>& vecPtsLine, BOOL bSimulation);
 
-	BOOL FindBlob_SealingSurface(CRecipe_TopCam_Frame2 pRecipeTopCamFrame2, cv::Mat* pMatProcess, cv::Point2f ptCenter, double dRadius, std::vector<std::vector<cv::Point>>& mContours);
+	BOOL FindBlob_SealingSurface(CRecipe_TopCam_Frame2 pRecipeTopCamFrame2, cv::Mat* pMatProcess, cv::Point2f ptCenter, double dRadius, std::vector<std::vector<cv::Point>>& mContours, BOOL bSimulation);
 
-	BOOL FindBlob(CRecipe_TopCam_Frame2 pRecipeTopCamFrame2, cv::Mat* pMatProcess, std::vector<std::vector<cv::Point>>& mContours);
+	BOOL FindBlob(CRecipe_TopCam_Frame2 pRecipeTopCamFrame2, cv::Mat* pMatProcess, std::vector<std::vector<cv::Point>>& mContours, BOOL bSimulation);
 private:
 
 	double             CalculateDistancePointToCircle(cv::Point2i pt, cv::Point2f centerPt, double dRadius);
@@ -184,17 +187,18 @@ private:
 private:
 	double             Convert_mm_To_Pixel(double dGap, double dUmPxl) { return (dGap * 1000.0) * dUmPxl; }
 	double             Convert_Pixel_To_mm(double dPxl, double dPxlUm) { return (dPxl * dPxlUm) / 1000.0; }
+	double             round_to(double value, double precision = 1.0) { return std::round(value / precision) * precision; }
 
 public:
 
 	// setter
-	void        SetSimulatorMode(BOOL bSimu) { m_bSimulator = bSimu; }
-	//void        SetProcessStatus(BOOL bProcessStatus) { m_bProcessStatus = bProcessStatus; }
-	void        SetCoreIndex(UINT nCoreIdx) { m_nCoreIdx = nCoreIdx; }
+	void                SetSimulatorMode(BOOL bSimu) { m_bSimulator = bSimu; }
+	void                SetCoreIndex(UINT nCoreIdx) { m_nCoreIdx = nCoreIdx; }
+
 	// getter
-	BOOL        GetSimulatorMode() { return m_bSimulator; }
-	//BOOL        GetProcessStatus() { return m_bProcessStatus; }
-	UINT        GetCoreIndex() { return m_nCoreIdx; }
+	BOOL                GetSimulatorMode() { return m_bSimulator; }
+	UINT                GetCoreIndex() { return m_nCoreIdx; }
+	CWorkThreadArray*   GetWorkThreadArray(int nThreadIdx) { return m_pWorkThreadArray[nThreadIdx]; }
 
 private:
 

@@ -119,18 +119,6 @@ namespace SealingInspectGUI.ViewModels
             this.GrabAllCmd = new GrabAllCmd();
             this.TestIOCmd = new TestIOCmd();
 
-            PLC_Wecon = new IOManager_PLC_Wecon("192.168.0.10", 0);
-            PLC_Wecon.Initialize();
-            LightController_PD3 = new Lighting_Controller_CSS_PD3("192.168.0.2", 40001);
-            if(!LightController_PD3.Ping_IP())
-            {
-                MessageBox.Show("Can not connect to Light Controller");
-            }
-            else
-            {
-                LightController_PD3.Set_4_Light_0();
-            }
-
             SimulationThread.UpdateUI_SumCameraView += SimulationThread_UpdateUI_SumCameraView;
             InterfaceManager.InspectionCavity1Complete += new InterfaceManager.InspectionCavity1Complete_Handler(InspectionCavity1Complete);
             InterfaceManager.InspectionCavity2Complete += new InterfaceManager.InspectionCavity2Complete_Handler(InspectionCavity2Complete);

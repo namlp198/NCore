@@ -177,7 +177,9 @@ namespace SealingInspectGUI.Manager.Class
 
                     Thread.Sleep(m_nDelayTime);
                 }
+                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_Ring_TopCam1_255();
                 MainViewModel.Instance.RunVM.SumCamVM.ListTopCamResult_MapToDataGrid_Cavity1 = null;
+                Thread.Sleep(m_nDelayTime);
 
                 // Id Plc = 1: PLC Cavity1, Id Plc = 2: PLC Cavity 2
 
@@ -189,11 +191,10 @@ namespace SealingInspectGUI.Manager.Class
                     Thread.Sleep(m_nDelayTime);
                 }
 
-                Thread.Sleep(m_nDelayTime);
                 // 3. write bit PLC, inform top cam inspect done, start rotate for grab image side cam
 
                 // turn off light
-                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
+                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_3_Bar_Light_255();
                 Thread.Sleep(m_nDelayTime);
 
                 WriteSingleCoil(INSPECT_TOPCAM_1_COMPLETED, true);
@@ -261,8 +262,8 @@ namespace SealingInspectGUI.Manager.Class
                 // 3. write bit PLC, inform top cam inspect done, start rotate for grab image side cam
 
                 // turn on light
-                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_255();
-                Thread.Sleep(m_nDelayTime_2);
+                //MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_3_Bar_Light_255();
+                //Thread.Sleep(m_nDelayTime_2);
 
                 WriteSingleCoil(INSPECT_TOPCAM_2_COMPLETED, true);
                 Thread.Sleep(m_nDelayTime_2);
@@ -275,8 +276,8 @@ namespace SealingInspectGUI.Manager.Class
                 }
 
                 // turn off light
-                MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
-                Thread.Sleep(m_nDelayTime_2);
+                //MainViewModel.Instance.RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
+                //Thread.Sleep(m_nDelayTime_2);
 
                 // 5. write OK NG
                 if (m_bJudgement_2_OKNG == false)

@@ -273,6 +273,9 @@
     <ClInclude Include="header\SealingInspect_Simulation_IO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\SealingInspectStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -444,6 +447,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\SealingInspect_Simulation_IO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\SealingInspectStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

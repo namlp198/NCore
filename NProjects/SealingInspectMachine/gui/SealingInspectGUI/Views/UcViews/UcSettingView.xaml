@@ -133,7 +133,7 @@
                         FontSize="12"
                         Width="70"
                         Command="{Binding InspectSimulationCmd}"
-                        CommandParameter="{Binding CameraSelected}"/>
+                        CommandParameter="{Binding CameraSelected}" />
                 <Button Margin="5 2 2 2"
                         Content="Save Image"
                         Command="{Binding SaveImageCmd}"
@@ -196,7 +196,7 @@
                                        Foreground="White"
                                        FontSize="14"
                                        TextAlignment="Left"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center" />
                             <DataGrid Grid.Row="1"
                                       FontSize="12"
                                       Margin="5"
@@ -207,27 +207,25 @@
                                     <DataGridTextColumn Header="No."
                                                         Width="50"
                                                         MinWidth="20"
-                                                        MaxWidth="50" 
+                                                        MaxWidth="50"
                                                         FontSize="12"
                                                         FontWeight="Bold"
-                                                        Binding="{Binding Index}"/>
-                                    <DataGridTextColumn Header="Parameters"
+                                                        Binding="{Binding Index}" />
+                                    <DataGridTextColumn Header="Parameter"
                                                         Width="300"
                                                         MinWidth="300"
                                                         MaxWidth="600"
                                                         FontSize="12"
                                                         FontWeight="Bold"
-                                                        Binding="{Binding Params, Mode=TwoWay}"/>
+                                                        Binding="{Binding Params, Mode=TwoWay}" />
                                     <DataGridTextColumn Header="Value"
                                                         Width="300"
-                                                        MinWidth="10"
-                                                        MaxWidth="500"
-                                                        FontSize="12"
-                                                        FontWeight="Normal"
-                                                        Binding="{Binding Value, Mode=TwoWay}"/>
+                                                        MinWidth="100"
+                                                        MaxWidth="300"
+                                                        Binding="{Binding Value, Mode=TwoWay}" />
                                 </DataGrid.Columns>
                             </DataGrid>
-                            
+
                             <!--Button-->
                             <Button Grid.Row="2"
                                     x:Name="btnSaveSystemSetting"
@@ -258,7 +256,7 @@
                                        TextAlignment="Left"
                                        Foreground="White"
                                        Margin="6 2 2 2"
-                                       Text="Lighting Controller"/>
+                                       Text="Lighting Controller" />
                             <TabControl Grid.Row="1"
                                         Margin="5">
                                 <TabItem Header="Controller 1"
@@ -393,7 +391,7 @@
                                                 Height="35"
                                                 Content="Set Light 255"
                                                 Name="btnSetLight255"
-                                                Click="btnSetLight255_Click"/>
+                                                Click="btnSetLight255_Click" />
                                         <Button Width="120"
                                                 Height="35"
                                                 Margin="5"
@@ -445,27 +443,27 @@
                                                                         MaxWidth="50"
                                                                         FontWeight="Bold"
                                                                         FontSize="12"
-                                                                        Binding="{Binding Index}"/>
+                                                                        Binding="{Binding Index}" />
                                                     <DataGridTextColumn Header="Parameters"
                                                                         MinWidth="500"
                                                                         MaxWidth="700"
                                                                         FontWeight="Bold"
                                                                         FontSize="12"
-                                                                        Binding="{Binding ParamName}"/>
+                                                                        Binding="{Binding ParamName}" />
                                                     <DataGridTextColumn Header="Top Cam 1"
                                                                         Width="160"
                                                                         MinWidth="100"
                                                                         MaxWidth="200"
                                                                         FontWeight="Normal"
                                                                         FontSize="12"
-                                                                        Binding="{Binding TopCam1Value, Mode=TwoWay}"/>
+                                                                        Binding="{Binding TopCam1Value, Mode=TwoWay}" />
                                                     <DataGridTextColumn Header="Top Cam 2"
                                                                         Width="160"
                                                                         MinWidth="100"
                                                                         MaxWidth="200"
                                                                         FontWeight="Normal"
                                                                         FontSize="12"
-                                                                        Binding="{Binding TopCam2Value, Mode=TwoWay}"/>
+                                                                        Binding="{Binding TopCam2Value, Mode=TwoWay}" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
                                             <!--Button-->

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:a="http://schema.Npc.com/wpf/components"
         xmlns:local="clr-namespace:SealingInspectGUI.Views"
         mc:Ignorable="d"
         Title="MainView"
@@ -11,7 +12,9 @@
         Background="{DynamicResource RGB_Night_33_41_57}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
-
+    <Window.Resources>
+        <a:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.3*" />
@@ -88,8 +91,8 @@
             <Button Margin="5"
                     Width="120"
                     Name="btnSelectRecipe"
-                    IsEnabled="False"
-                    Opacity="0.3">
+                    Command="{Binding ShowRecipeListCmd}"
+                    IsEnabled="{Binding InspectRunning, Converter={StaticResource InvertBooleanConverter}}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
                         <Image Source="{DynamicResource IMG_PackageEditIcon}"
@@ -110,6 +113,7 @@
             <Button Margin="5"
                     Width="120"
                     Name="btnSettings"
+                    IsEnabled="{Binding InspectRunning, Converter={StaticResource InvertBooleanConverter}}"
                     Command="{Binding SelectSettingViewCmd}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
@@ -147,6 +151,25 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
+            <Separator Margin="3" />
+            <TextBlock Margin="20 5 5 5"
+                       Text="Recipe"
+                       FontSize="22"
+                       Foreground="White"
+                       FontWeight="Normal"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       TextAlignment="Center"/>
+            <TextBlock Margin="5"
+                       Text="{Binding RecipeName}"
+                       FontSize="22"
+                       Foreground="White"
+                       Background="{DynamicResource ColdColor_4]}"
+                       FontWeight="Bold"
+                       FontStyle="Italic"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       TextAlignment="Center" />
         </ToolBar>
 
         <ContentControl Grid.Row="1"

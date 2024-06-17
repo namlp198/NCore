@@ -111,6 +111,18 @@ namespace SealingInspectGUI.Manager.Class
             return bRet;
         }
 
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool ReloadSystenSettings(IntPtr sealingInspProcessor);
+        public bool ReloadSystenSettings()
+        {
+            bool bRet = ReloadSystenSettings(m_sealingInspectProcessor);
+            return bRet;
+        }
+
 
 #if DEBUG
         [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -126,6 +138,19 @@ namespace SealingInspectGUI.Manager.Class
             bool bRet = LoadRecipe(m_sealingInspectProcessor, pPointer);
             pRecipe = (CSealingInspectRecipe)Marshal.PtrToStructure(pPointer, typeof(CSealingInspectRecipe));
 
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool ReloadRecipe(IntPtr sealingInspProcessor);
+        public bool ReloadRecipe()
+        {
+            bool bRet = ReloadRecipe(m_sealingInspectProcessor);
             return bRet;
         }
         #endregion
@@ -342,6 +367,23 @@ namespace SealingInspectGUI.Manager.Class
             Marshal.StructureToPtr(inspRes, pPointer, false);
             bool bRet = GetInspectionResult(m_sealingInspectProcessor, nCoreIdx, pPointer);
             InspResults = (CSealingInspectResult)Marshal.PtrToStructure(pPointer, typeof(CSealingInspectResult));
+
+            return bRet;
+        }
+
+#if DEBUG
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("SealingInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetInspectStatus(IntPtr sealingInspProcessor, int nCavity, IntPtr InspStatus);
+        public bool GetInspectStatus(int nCavity, ref CSealingInspectStatus InspStatus)
+        {
+            CSealingInspectStatus inspStatus = new CSealingInspectStatus();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(inspStatus));
+            Marshal.StructureToPtr(inspStatus, pPointer, false);
+            bool bRet = GetInspectStatus(m_sealingInspectProcessor, nCavity, pPointer);
+            InspStatus = (CSealingInspectStatus)Marshal.PtrToStructure(pPointer, typeof(CSealingInspectStatus));
 
             return bRet;
         }

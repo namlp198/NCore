@@ -107,6 +107,7 @@
     <Compile Include="Command\Cmd\SaveRecipeCmd.cs" />
     <Compile Include="Command\Cmd\SaveSettingCmd.cs" />
     <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
+    <Compile Include="Command\Cmd\ShowRecipeListCmd.cs" />
     <Compile Include="Command\Cmd\SoftwareTriggerHikCamCmd.cs" />
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\Cmd\TestIOCmd.cs" />
@@ -133,12 +134,15 @@
     <Compile Include="Models\CSealingInspectResult.cs" />
     <Compile Include="Models\CSealingInspectResult_SideCam.cs" />
     <Compile Include="Models\CSealingInspectResult_TopCam.cs" />
+    <Compile Include="Models\CSealingInspectStatus.cs" />
     <Compile Include="Models\CSealingInspectSystemSetting.cs" />
     <Compile Include="Models\CSealingInspect_Simulation_IO.cs" />
+    <Compile Include="Models\RecipeList_MapToDataGrid_Model.cs" />
     <Compile Include="Models\RecipeSideCamMapToDataGridModel .cs" />
     <Compile Include="Models\RecipeTopCamMapToDataGridModel.cs" />
     <Compile Include="Models\TopCamResult_MapToDataGrid_Model.cs" />
     <Compile Include="Models\SettingsMapToDataGridModel.cs" />
+    <Compile Include="ViewModels\RecipeListViewModel.cs" />
     <Compile Include="ViewModels\SumCameraViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ResultViewModel.cs" />
@@ -151,6 +155,9 @@
     </Compile>
     <Compile Include="Views\TestIOView.xaml.cs">
       <DependentUpon>TestIOView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecipeListView.xaml.cs">
+      <DependentUpon>RecipeListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcViews\UcSumCameraView.xaml.cs">
       <DependentUpon>UcSumCameraView.xaml</DependentUpon>
@@ -187,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TestIOView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecipeListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

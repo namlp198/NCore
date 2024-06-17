@@ -14,6 +14,7 @@
 #include "SealingInspectResult.h"
 #include "SealingInspectSystemSetting.h"
 #include "SealingInspect_Simulation_IO.h"
+#include "SealingInspectStatus.h"
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
 #include "ListBoxLog.h"
@@ -54,6 +55,9 @@ public:
 	BOOL         SaveSystemSetting(CSealingInspectSystemSetting* pSystemSetting);
 	BOOL         SaveLightSetting(CSealingInspectSystemSetting* pSystemSetting, int nLightIdx);
 	BOOL         SaveRecipe(CSealingInspectRecipe* pRecipe, CString sPosCam, int nFrameIdx);
+
+	BOOL         ReloadSystemSetting();
+	BOOL         ReloadRecipe();
 
 public:
 	BOOL InspectStart(int nThreadCount, emInspectCavity nInspCavity, BOOL bSimulator);
@@ -117,6 +121,7 @@ public:
 	BOOL                             GetProcessStatus2() { return m_bProcessStatus2; }
 	void                             SetGrabFrameSideCam(int nCoreIdx, BOOL bGrab);
 	BOOL                             GetGrabFrameSideCam(int nCoreId) { return m_bGrabFrameSideCam[nCoreId]; }
+
 public:
 	virtual void							InspectCavity1Complete(BOOL bSetting);
 	virtual void							InspectCavity2Complete(BOOL bSetting);
@@ -127,6 +132,8 @@ public:
 	BOOL                                    GetInspectionResult(int nCoreIdx, CSealingInspectResult* pSealingInspRes);
 	virtual CSealingInspectRecipe*          GetRecipe() { return m_pSealingInspRecipe; }
 	virtual CSealingInspectSystemSetting*   GetSystemSetting() { return m_pSealingInspSystemSetting; }
+	virtual void                            SetInspectStatus(int nCavity, BOOL bInspRunning) { m_pSealingInspStatus[nCavity]->m_bInspRunning = bInspRunning; };
+	virtual BOOL                            GetInspectStatus(int nCavity, CSealingInspectStatus* pInspStatus);
 
 public:
 	void						      LogMessage(char* strMessage);
@@ -183,6 +190,9 @@ private:
 
 	// Recipe
 	CSealingInspectRecipe*                     m_pSealingInspRecipe;
+
+	// Status
+	CSealingInspectStatus*                     m_pSealingInspStatus[NUMBER_OF_SET_INSPECT];
 									           
 	// Result						           
 	CCriticalSection                           m_csInspResult[NUMBER_OF_SET_INSPECT];

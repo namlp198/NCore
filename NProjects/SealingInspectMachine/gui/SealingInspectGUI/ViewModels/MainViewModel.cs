@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Threading;
 using NCore.Wpf.BufferViewerSimple;
 using SealingInspectGUI.Models;
+using System.Windows.Documents;
+using System.Windows;
 
 namespace SealingInspectGUI.ViewModels
 {
@@ -34,6 +36,8 @@ namespace SealingInspectGUI.ViewModels
         public MainView MainView { get => _mainView; private set { } }
 
         private emMachineMode m_machineMode = emMachineMode.MachineMode_Auto;
+        private bool m_bInspRunning = false;
+        private string m_sRecipeName = string.Empty;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
 
         private double m_dDistRefer_TopCam_Ring_1 = 0.0;
@@ -67,6 +71,38 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
+        public bool InspectRunning
+        {
+            get => m_bInspRunning;
+            set
+            {
+                if (SetProperty(ref m_bInspRunning, value))
+                {
+                    if(m_bInspRunning == true)
+                    {
+                        _mainView.btnSelectRecipe.Opacity = 0.3;
+                        _mainView.btnSettings.Opacity = 0.3;
+                    }
+                    else
+                    {
+                        _mainView.btnSelectRecipe.Opacity = 1.0;
+                        _mainView.btnSettings.Opacity = 1.0;
+                    }
+                }
+            }
+        }
+        public string RecipeName
+        {
+            get => m_sRecipeName;
+            set
+            {
+                if (SetProperty(ref m_sRecipeName, value))
+                {
+                   
+                }
+            }
+        }
+
         public double DistRefer_TopCam_Ring_1
         {
             get => m_dDistRefer_TopCam_Ring_1;
@@ -115,12 +151,14 @@ namespace SealingInspectGUI.ViewModels
             this.SelectRunViewCmd = new SelectRunViewCmd();
             this.SelectSettingViewCmd = new SelectSettingViewCmd();
             this.SelectMachineModeCmd = new SelectMachineModeCmd();
+            this.ShowRecipeListCmd = new ShowRecipeListCmd();
 
             InterfaceManager.Instance.m_sealingInspectProcessorManager.Initialize();
 
             InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.
                 LoadSystemSettings(ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting);
             SettingVM.LoadSystemSettings();
+            RecipeName = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sModelName;
 
             int nUseSimulation = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_bSimulation;
             if(nUseSimulation == 1)
@@ -184,10 +222,41 @@ namespace SealingInspectGUI.ViewModels
                 // start inspect with third param set is 1: on SIMULATOR mode, if don't use SIMULATOR, pass 0 value for this param
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity1, 0);
                 InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.InspectStart(1, emInspectCavity.emInspectCavity_Cavity2, 0);
+
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetInspectStatus(0, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectStatus[0]);
+                InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetInspectStatus(1, ref InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectStatus[1]);
+
+                bool bInspStatus_Cav1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectStatus[0].m_bInspRunning == 1 ? true : false;
+                bool bInspStatus_Cav2 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectStatus[1].m_bInspRunning == 1 ? true : false;
+                if (bInspStatus_Cav1 == true || bInspStatus_Cav2 == true)
+                {
+                    InspectRunning = true;
+                }
+                else
+                {
+                    InspectRunning = false;
+                }
             }
 
+            string ipPlc = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC1;
+            string ipLightController1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController1;
+            int nPortLightController1 = 0;
+            int.TryParse(InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController1, out nPortLightController1);
+
+            RunVM.SumCamVM.PLC_Wecon = new Manager.Class.IOManager_PLC_Wecon(ipPlc, 0);
+            RunVM.SumCamVM.PLC_Wecon.Initialize();
             RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
             RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
+
+            RunVM.SumCamVM.LightController_PD3 = new Manager.SumManager.Lighting_Controller_CSS_PD3(ipLightController1, nPortLightController1);
+            if (!RunVM.SumCamVM.LightController_PD3.Ping_IP())
+            {
+                MessageBox.Show("Can not connect to Light Controller");
+            }
+            else
+            {
+                RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
+            }
         }
 
         ~MainViewModel()
@@ -213,6 +282,7 @@ namespace SealingInspectGUI.ViewModels
         public ICommand SelectRunViewCmd { get; }
         public ICommand SelectSettingViewCmd { get; }
         public ICommand SelectMachineModeCmd { get; }
+        public ICommand ShowRecipeListCmd { get; }
         #endregion
     }
 }

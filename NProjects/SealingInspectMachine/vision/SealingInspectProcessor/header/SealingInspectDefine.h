@@ -61,3 +61,4 @@
 
 
 typedef enum { emUNKNOWN = 0, emInspectCavity_Cavity1, emInspectCavity_Cavity2 } emInspectCavity;
+typedef enum { InspectStatus_Running, InspectStatus_Stopped } emInspectStatus;
