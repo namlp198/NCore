@@ -23,6 +23,17 @@ namespace SealingInspectGUI.Commons
         TriggerSource_Software = 0,
         TriggerSource_Hardware
     }
+    public enum eUserLevel
+    {
+        UserLevel_Operator,
+        UserLevel_Admin,
+        UserLevel_SuperAdmin
+    }
+    public enum eLoginStatus
+    {
+        LoginStatus_Success,
+        LoginStatus_Failed
+    }
     public enum emMachineMode { MachineMode_Auto, MachineMode_Manual}
     public class Defines
     {

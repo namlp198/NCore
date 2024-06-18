@@ -36,7 +36,9 @@ namespace SealingInspectGUI.ViewModels
         public MainView MainView { get => _mainView; private set { } }
 
         private emMachineMode m_machineMode = emMachineMode.MachineMode_Auto;
+        private eUserLevel m_userLevel = eUserLevel.UserLevel_Operator;
         private bool m_bInspRunning = false;
+        private bool m_bEnableSetting = false;
         private string m_sRecipeName = string.Empty;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
 
@@ -60,6 +62,17 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
+        public eUserLevel UserLevel
+        {
+            get => m_userLevel;
+            set
+            {
+                if (SetProperty(ref m_userLevel, value))
+                {
+
+                }
+            }
+        }
         public string DisplayImage_MachineModePath
         {
             get => m_displayImage_MachineModePath;
@@ -78,16 +91,29 @@ namespace SealingInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_bInspRunning, value))
                 {
-                    if(m_bInspRunning == true)
+                    if(m_bInspRunning == true && (m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin))
                     {
+                        EnableSetting = false;
                         _mainView.btnSelectRecipe.Opacity = 0.3;
                         _mainView.btnSettings.Opacity = 0.3;
                     }
-                    else
+                    else if(m_bInspRunning == false && (m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin))
                     {
+                        EnableSetting = true;
                         _mainView.btnSelectRecipe.Opacity = 1.0;
                         _mainView.btnSettings.Opacity = 1.0;
                     }
+                }
+            }
+        }
+        public bool EnableSetting
+        {
+            get => m_bEnableSetting;
+            set
+            {
+                if(SetProperty(ref m_bEnableSetting, value))
+                {
+
                 }
             }
         }
@@ -152,6 +178,8 @@ namespace SealingInspectGUI.ViewModels
             this.SelectSettingViewCmd = new SelectSettingViewCmd();
             this.SelectMachineModeCmd = new SelectMachineModeCmd();
             this.ShowRecipeListCmd = new ShowRecipeListCmd();
+            this.ShowLoginViewCmd = new ShowLoginViewCmd();
+            this.InitializeCmd = new InitializeCmd();
 
             InterfaceManager.Instance.m_sealingInspectProcessorManager.Initialize();
 
@@ -283,6 +311,8 @@ namespace SealingInspectGUI.ViewModels
         public ICommand SelectSettingViewCmd { get; }
         public ICommand SelectMachineModeCmd { get; }
         public ICommand ShowRecipeListCmd { get; }
+        public ICommand ShowLoginViewCmd { get; }
+        public ICommand InitializeCmd { get; }
         #endregion
     }
 }

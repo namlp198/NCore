@@ -102,11 +102,14 @@
     <Compile Include="Command\Cmd\GrabAllCmd.cs" />
     <Compile Include="Command\Cmd\GrabCavity2Cmd .cs" />
     <Compile Include="Command\Cmd\GrabCavity1Cmd.cs" />
+    <Compile Include="Command\Cmd\InitializeCmd.cs" />
     <Compile Include="Command\Cmd\InspectSimulationCmd.cs" />
+    <Compile Include="Command\Cmd\LoginCmd.cs" />
     <Compile Include="Command\Cmd\SaveImageCmd.cs" />
     <Compile Include="Command\Cmd\SaveRecipeCmd.cs" />
     <Compile Include="Command\Cmd\SaveSettingCmd.cs" />
     <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
+    <Compile Include="Command\Cmd\ShowLoginViewCmd.cs" />
     <Compile Include="Command\Cmd\ShowRecipeListCmd.cs" />
     <Compile Include="Command\Cmd\SoftwareTriggerHikCamCmd.cs" />
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
@@ -142,6 +145,7 @@
     <Compile Include="Models\RecipeTopCamMapToDataGridModel.cs" />
     <Compile Include="Models\TopCamResult_MapToDataGrid_Model.cs" />
     <Compile Include="Models\SettingsMapToDataGridModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RecipeListViewModel.cs" />
     <Compile Include="ViewModels\SumCameraViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -150,6 +154,9 @@
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\StatisticsViewModel.cs" />
     <Compile Include="ViewModels\TestIOViewModel.cs" />
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -189,6 +196,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
