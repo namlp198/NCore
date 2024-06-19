@@ -775,6 +775,8 @@
                  UriSource="/NpcCore.Wpf;component/Resources/Images/arrow_forward.png" />
     <BitmapImage x:Key="IMG_Arrow_Backward"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/arrow_backward.png" />
+    <BitmapImage x:Key="IMG_Logout"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/logout.png" />
 
 
     <Style x:Key="ImageButtonInforStyle"

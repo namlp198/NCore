@@ -915,5 +915,8 @@
     <Resource Include="Resources\Images\arrow_backward.png" />
     <Resource Include="Resources\Images\arrow_forward.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\logout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

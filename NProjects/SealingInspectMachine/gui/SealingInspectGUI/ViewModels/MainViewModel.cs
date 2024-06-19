@@ -41,6 +41,7 @@ namespace SealingInspectGUI.ViewModels
         private bool m_bEnableSetting = false;
         private string m_sRecipeName = string.Empty;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
+        private string m_displayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/account_2.png";
 
         private double m_dDistRefer_TopCam_Ring_1 = 0.0;
         private double m_dDistToleranceMin_TopCam_Ring_1 = 0.0;
@@ -69,7 +70,18 @@ namespace SealingInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_userLevel, value))
                 {
-
+                    if((m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin) && m_bInspRunning == false)
+                    {
+                        EnableSetting = true;
+                        _mainView.btnSelectRecipe.Opacity = 1.0;
+                        _mainView.btnSettings.Opacity = 1.0;
+                    }
+                    else if(m_userLevel == eUserLevel.UserLevel_Operator)
+                    {
+                        EnableSetting = false;
+                        _mainView.btnSelectRecipe.Opacity = 0.3;
+                        _mainView.btnSettings.Opacity = 0.3;
+                    }
                 }
             }
         }
@@ -84,6 +96,19 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
+
+        public string DisplayImage_LoginStatusPath
+        {
+            get => m_displayImage_LoginStatusPath;
+            set
+            {
+                if (SetProperty(ref m_displayImage_LoginStatusPath, value))
+                {
+
+                }
+            }
+        }
+
         public bool InspectRunning
         {
             get => m_bInspRunning;
@@ -91,7 +116,7 @@ namespace SealingInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_bInspRunning, value))
                 {
-                    if(m_bInspRunning == true && (m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin))
+                    if(m_bInspRunning == true)
                     {
                         EnableSetting = false;
                         _mainView.btnSelectRecipe.Opacity = 0.3;
@@ -102,6 +127,12 @@ namespace SealingInspectGUI.ViewModels
                         EnableSetting = true;
                         _mainView.btnSelectRecipe.Opacity = 1.0;
                         _mainView.btnSettings.Opacity = 1.0;
+                    }
+                    else if(m_bInspRunning == false && m_userLevel == eUserLevel.UserLevel_Operator)
+                    {
+                        EnableSetting = false;
+                        _mainView.btnSelectRecipe.Opacity = 0.3;
+                        _mainView.btnSettings.Opacity = 0.3;
                     }
                 }
             }
@@ -264,26 +295,27 @@ namespace SealingInspectGUI.ViewModels
                 {
                     InspectRunning = false;
                 }
-            }
 
-            string ipPlc = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC1;
-            string ipLightController1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController1;
-            int nPortLightController1 = 0;
-            int.TryParse(InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController1, out nPortLightController1);
+                // Run PLC
+                string ipPlc = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPPLC1;
+                string ipLightController1 = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sIPLightController1;
+                int nPortLightController1 = 0;
+                int.TryParse(InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspectSysSetting.m_sPortLightController1, out nPortLightController1);
 
-            RunVM.SumCamVM.PLC_Wecon = new Manager.Class.IOManager_PLC_Wecon(ipPlc, 0);
-            RunVM.SumCamVM.PLC_Wecon.Initialize();
-            RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
-            RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
+                RunVM.SumCamVM.PLC_Wecon = new Manager.Class.IOManager_PLC_Wecon(ipPlc, 0);
+                RunVM.SumCamVM.PLC_Wecon.Initialize();
+                RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon1();
+                RunVM.SumCamVM.PLC_Wecon.StartThreadPlcWecon2();
 
-            RunVM.SumCamVM.LightController_PD3 = new Manager.SumManager.Lighting_Controller_CSS_PD3(ipLightController1, nPortLightController1);
-            if (!RunVM.SumCamVM.LightController_PD3.Ping_IP())
-            {
-                MessageBox.Show("Can not connect to Light Controller");
-            }
-            else
-            {
-                RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
+                RunVM.SumCamVM.LightController_PD3 = new Manager.SumManager.Lighting_Controller_CSS_PD3(ipLightController1, nPortLightController1);
+                if (!RunVM.SumCamVM.LightController_PD3.Ping_IP())
+                {
+                    MessageBox.Show("Can not connect to Light Controller");
+                }
+                else
+                {
+                    RunVM.SumCamVM.LightController_PD3.Set_4_Light_0();
+                }
             }
         }
 

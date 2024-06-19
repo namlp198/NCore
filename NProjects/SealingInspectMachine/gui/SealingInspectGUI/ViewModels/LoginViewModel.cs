@@ -15,12 +15,12 @@ namespace SealingInspectGUI.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region singleton
-        private static LoginViewModel _instance;
-        public static LoginViewModel Instance
-        {
-            get { return _instance; }
-            private set { }
-        }
+        //private static LoginViewModel _instance;
+        //public static LoginViewModel Instance
+        //{
+        //    get { return _instance; }
+        //    private set { }
+        //}
         #endregion
         public delegate void LoginSystemSuccess_Handler(LoginView login);
         public static event LoginSystemSuccess_Handler LoginSystemSuccess;
@@ -28,7 +28,7 @@ namespace SealingInspectGUI.ViewModels
         private string m_sAdmin = "admin";
         private string m_sPassword = "1234";
         private string m_sSuperAdmin = "superadmin";
-        private string m_sSuperPassword = "1111";
+        private string m_sSuperPassword = "1234";
 
         private eLoginStatus m_loginStatus;
 
@@ -37,13 +37,10 @@ namespace SealingInspectGUI.ViewModels
         public LoginView LoginView { get => _loginView; private set { } }
         public LoginViewModel(Dispatcher dispatcher, LoginView loginView) 
         {
-            if (_instance == null) _instance = this;
-            else return;
-
             _dispatcher = dispatcher;
             _loginView = loginView;
 
-            this.LoginCmd = new LoginCmd();
+            this.LoginCmd = new LoginCmd(this);
         }
         public eLoginStatus LoginStatus
         {

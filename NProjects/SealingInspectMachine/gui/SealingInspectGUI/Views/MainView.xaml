@@ -93,7 +93,7 @@
                     Width="120"
                     Name="btnSelectRecipe"
                     Command="{Binding ShowRecipeListCmd}"
-                    IsEnabled="{Binding InspectRunning, Converter={StaticResource InvertBooleanConverter}}">
+                    IsEnabled="{Binding EnableSetting}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
                         <Image Source="{DynamicResource IMG_PackageEditIcon}"
@@ -136,15 +136,17 @@
             <Button Margin="5"
                     Name="btnLogin"
                     Command="{Binding ShowLoginViewCmd}"
+                    CommandParameter="{Binding ElementName=tbLogin, Path=Text}"
                     IsEnabled="{Binding InspectRunning, Converter={StaticResource InvertBooleanConverter}}"
                     Width="120">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
-                        <Image Source="{DynamicResource IMG_Account_2}"
+                        <Image Source="{Binding DisplayImage_LoginStatusPath}"
                                Margin="8 4 8 0"
                                Width="25"
                                Height="25" />
                         <TextBlock Text="Login"
+                                   Name="tbLogin"
                                    VerticalAlignment="Center"
                                    TextAlignment="Center"
                                    FontSize="14"
