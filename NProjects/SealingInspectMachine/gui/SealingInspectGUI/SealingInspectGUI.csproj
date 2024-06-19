@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="LModbus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\WeconPLC\LModbus.dll</HintPath>
+      <HintPath>..\..\..\..\Libraries\Plc_Wecon\LModbus.dll</HintPath>
     </Reference>
     <Reference Include="NCore.Wpf.BufferViewerSimple">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSimple.dll</HintPath>
