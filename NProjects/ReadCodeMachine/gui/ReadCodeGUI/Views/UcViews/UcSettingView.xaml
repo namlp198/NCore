@@ -1,0 +1,374 @@
+﻿<UserControl x:Class="ReadCodeGUI.Views.UcViews.UcSettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ReadCodeGUI.Views.UcViews"
+             xmlns:Ctrls="clr-namespace:NCore.Wpf.BufferViewerSimple;assembly=NCore.Wpf.BufferViewerSimple"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="1000"
+             Background="{DynamicResource RGB_Night_33_41_57}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/DefaultTheme.xaml" />
+                <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.8*" />
+            <ColumnDefinition Width="1" />
+            <ColumnDefinition Width="2.8*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="1" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Margin="2">
+                <Ctrls:BufferViewerSimple Name="buffVSSettings" />
+
+            </Border>
+
+            <!--separator-->
+            <Grid Grid.Row="1"
+                  Background="White">
+
+            </Grid>
+
+            <StackPanel Grid.Row="2"
+                        Margin="2"
+                        Orientation="Horizontal"
+                        Background="{DynamicResource RGB_Night_46_61_90}">
+
+                <TextBlock Text="Camera"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Margin="5 0 5 0"
+                           FontSize="12"
+                           FontWeight="Bold" />
+                <ComboBox  Margin="3"
+                           x:Name="cbbCameraList"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Width="90"
+                           ItemsSource="{Binding CameraList}"
+                           SelectedItem="{Binding StrCameraSelected, Mode=TwoWay}" />
+
+                <TextBlock Text="Frame"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Margin="5 0 5 0"
+                           FontSize="12"
+                           FontWeight="Bold" />
+                <ComboBox  Margin="3"
+                           x:Name="cbbFrameList"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           ItemsSource="{Binding FrameList}"
+                           SelectedItem="{Binding StrFrameSelected, Mode=TwoWay}"
+                           Width="45" />
+
+                <Button Background="WhiteSmoke"
+                        Name="btnContinuousGrab"
+                        Command="{Binding ContinuousGrabCmd}"
+                        Opacity="1"
+                        Margin="10 3 3 3"
+                        Width="45">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding DisplayImagePath}"
+                                   Margin="0" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Background="WhiteSmoke"
+                        Name="btnSingleGrab"
+                        Command="{Binding SingleGrabCmd}"
+                        Opacity="1"
+                        Margin="3"
+                        Width="45">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{DynamicResource IMG_CameraGrab}"
+                                   Margin="0" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <CheckBox Margin="5 2 2 2"
+                          Content="Software Trigger"
+                          Foreground="White"
+                          FontWeight="SemiBold"
+                          VerticalAlignment="Center"
+                          x:Name="chkSoftwareTrigger"
+                          IsChecked="{Binding UseSoftwareTrigger, Mode=TwoWay}" />
+                <Button Background="WhiteSmoke"
+                        Margin="3"
+                        x:Name="btnLoadImage"
+                        Command="{Binding LoadImageCmd}"
+                        Opacity="1"
+                        Width="45">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{DynamicResource IMG_Load_Img}"
+                                   Margin="0" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Button Margin="5 2 2 2"
+                        Content="Inpsect"
+                        Foreground="Black"
+                        Background="LightGray"
+                        FontWeight="SemiBold"
+                        FontSize="12"
+                        Width="70"
+                        Command="{Binding InspectSimulationCmd}"
+                        CommandParameter="{Binding CameraSelected}" />
+                <Button Margin="5 2 2 2"
+                        Content="Save Image"
+                        Command="{Binding SaveImageCmd}"
+                        CommandParameter="{Binding ImageSavePath}"
+                        Foreground="Black"
+                        Background="LightGray"
+                        FontWeight="SemiBold"
+                        FontSize="12"
+                        Width="80" />
+            </StackPanel>
+
+            <!--separator-->
+            <Grid Grid.Row="3"
+                  Background="White">
+
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <TextBlock Text="Result"
+                           Foreground="White" />
+            </Grid>
+
+            <!--separator-->
+            <Grid Grid.Row="5"
+                  Background="White">
+
+            </Grid>
+
+        </Grid>
+
+        <!--separator-->
+        <Grid Grid.Column="1"
+              Margin="0 2 0 2"
+              Background="White">
+
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                <TabItem Header="SYSTEM SETTINGS"
+                         Width="300"
+                         Style="{StaticResource TabItemStyle}"
+                         FontSize="18"
+                         FontFamily="Segoe UI"
+                         FontWeight="Bold"
+                         Foreground="Black">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition />
+                                <RowDefinition Height="45" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="6 2 2 2"
+                                       Text="System"
+                                       Foreground="White"
+                                       FontSize="14"
+                                       TextAlignment="Left"
+                                       VerticalAlignment="Center" />
+                            <DataGrid Grid.Row="1"
+                                      FontSize="12"
+                                      Margin="5"
+                                      Name="dtgridSystemSettings"
+                                      AutoGenerateColumns="False"
+                                      ItemsSource="{Binding SystemSettingsMapToDataGridModels, Mode=TwoWay}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No."
+                                                        Width="50"
+                                                        MinWidth="20"
+                                                        MaxWidth="50"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Binding="{Binding Index}" />
+                                    <DataGridTextColumn Header="Parameter"
+                                                        Width="300"
+                                                        MinWidth="300"
+                                                        MaxWidth="500"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Binding="{Binding Params, Mode=TwoWay}" />
+                                    <DataGridTextColumn Header="Value"
+                                                        Width="500"
+                                                        MinWidth="400"
+                                                        MaxWidth="600"
+                                                        Binding="{Binding Value, Mode=TwoWay}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!--Button-->
+                            <Button Grid.Row="2"
+                                    x:Name="btnSaveSystemSetting"
+                                    Command="{Binding SaveSettingCmd}"
+                                    CommandParameter="{Binding ElementName=btnSaveSystemSetting, Path=Name}"
+                                    Margin="3"
+                                    Width="130"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition />
+                                <RowDefinition Height="45" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="6 2 2 2"
+                                       Text="PLC Setting"
+                                       Foreground="White"
+                                       FontSize="14"
+                                       TextAlignment="Left"
+                                       VerticalAlignment="Center" />
+                            <DataGrid Grid.Row="1"
+                                      FontSize="12"
+                                      Margin="5"
+                                      Name="dtgridPLCSettings"
+                                      AutoGenerateColumns="False"
+                                      ItemsSource="{Binding PlcSettingsMapToDGModels, Mode=TwoWay}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No."
+                                                        Width="50"
+                                                        MinWidth="20"
+                                                        MaxWidth="50"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Binding="{Binding Index}" />
+                                    <DataGridTextColumn Header="Parameter"
+                                                        Width="200"
+                                                        MinWidth="100"
+                                                        MaxWidth="300"
+                                                        FontSize="12"
+                                                        FontWeight="Bold"
+                                                        Binding="{Binding Params, Mode=TwoWay}" />
+                                    <DataGridTextColumn Header="Value"
+                                                        Width="200"
+                                                        MinWidth="50"
+                                                        MaxWidth="300"
+                                                        Binding="{Binding Value, Mode=TwoWay}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <!--Button-->
+                            <Button Grid.Row="2"
+                                    x:Name="btnSavePLCSetting"
+                                    Command="{Binding SaveSettingCmd}"
+                                    CommandParameter="{Binding ElementName=btnSavePLCSetting, Path=Name}"
+                                    Margin="3"
+                                    Width="130"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="RECIPE"
+                         Style="{StaticResource TabItemStyle}"
+                         FontSize="18"
+                         Width="300"
+                         FontFamily="Segoe UI"
+                         FontWeight="Bold"
+                         Foreground="Black">
+                    <Grid Margin="5 15 5 5">
+                        <Grid Margin="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <DataGrid Name="dtgridFrame1_Top"
+                                      Margin="2"
+                                      AutoGenerateColumns="False"
+                                      ItemsSource="{Binding RecipeMapToDataGridModels, Mode=TwoWay}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No."
+                                                        Width="50"
+                                                        MinWidth="20"
+                                                        MaxWidth="50"
+                                                        FontWeight="Bold"
+                                                        FontSize="12"
+                                                        Binding="{Binding Index}" />
+                                    <DataGridTextColumn Header="Parameters"
+                                                        MinWidth="500"
+                                                        MaxWidth="700"
+                                                        FontWeight="Bold"
+                                                        FontSize="12"
+                                                        Binding="{Binding Params}" />
+                                    <DataGridTextColumn Header="Value"
+                                                        Width="160"
+                                                        MinWidth="100"
+                                                        MaxWidth="200"
+                                                        FontWeight="Normal"
+                                                        FontSize="12"
+                                                        Binding="{Binding Value, Mode=TwoWay}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <!--Button-->
+                            <Button Grid.Row="1"
+                                    x:Name="btnSaveRecipe"
+                                    Command="{Binding SaveRecipeCmd}"
+                                    CommandParameter="{Binding ElementName=btnSaveRecipe, Path=Name}"
+                                    Margin="3"
+                                    Width="130"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save Recipe" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>
