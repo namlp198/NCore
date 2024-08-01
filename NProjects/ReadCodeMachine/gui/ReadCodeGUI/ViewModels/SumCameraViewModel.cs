@@ -98,8 +98,10 @@ namespace ReadCodeGUI.ViewModels
 
                     listResStrMapToDataGrid.Add(resStrMapToDg);
 
-                    // record to database
+                    // record to csv file
+                    List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
                     ExcelTemplateModel excelModel = new ExcelTemplateModel();
+
                     excelModel.Id = m_nIndex;
                     excelModel.ProductName = "PRODUCT_TEST";
                     excelModel.ProductCode = resStr;
@@ -107,7 +109,10 @@ namespace ReadCodeGUI.ViewModels
                     excelModel.Judgement = "OK_TEST";
                     excelModel.Note = "TEST";
 
-                    SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+                    excelTemplateModels.Add(excelModel);
+                    Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                    //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
 
                     m_nIndex++;
                 }
@@ -124,6 +129,7 @@ namespace ReadCodeGUI.ViewModels
                         listResStrMapToDataGrid.Add(resStrMapToDg);
 
                         // record to database
+                        List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
                         ExcelTemplateModel excelModel = new ExcelTemplateModel();
                         excelModel.Id = m_nIndex;
                         excelModel.ProductName = "PRODUCT_TEST";
@@ -132,7 +138,10 @@ namespace ReadCodeGUI.ViewModels
                         excelModel.Judgement = "OK_TEST";
                         excelModel.Note = "TEST";
 
-                        SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+                        excelTemplateModels.Add(excelModel);
+                        Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                        //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
 
                         m_nIndex++;
                     }

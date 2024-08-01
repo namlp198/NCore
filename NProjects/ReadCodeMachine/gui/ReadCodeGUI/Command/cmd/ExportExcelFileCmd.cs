@@ -18,7 +18,9 @@ namespace ReadCodeGUI.Command.Cmd
         public ExportExcelFileCmd() { }
         public override void Execute(object parameter)
         {
-            List<ExcelTemplateModel> listExcelModel = SQLite_Manager.Instance.SelectAllData("Test_Excel");
+            //List<ExcelTemplateModel> listExcelModel = SQLite_Manager.Instance.SelectAllData("Test_Excel");
+
+            List<ExcelTemplateModel> listExcelModel = Csv_Manager.Instance.ReadExcelTemplateModelFromCsv();
 
             MainViewModel.Instance.ExportData(listExcelModel, "TEST", 3);
 

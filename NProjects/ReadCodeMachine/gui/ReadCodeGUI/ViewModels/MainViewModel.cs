@@ -16,6 +16,7 @@ using System.Windows;
 using System.IO;
 using ReadCodeGUI.Models;
 using System.Threading;
+using ReadCodeGUI.Manager.Class;
 
 namespace ReadCodeGUI.ViewModels
 {
@@ -46,6 +47,7 @@ namespace ReadCodeGUI.ViewModels
 
             m_columnNameList = new List<string>() { "A", "B", "C", "D", "E", "F" };
             StartAppExcel();
+            Csv_Manager.Instance.Initialize();
 
             this.SelectRunViewCmd = new SelectRunViewCmd();
             this.SelectSettingViewCmd = new SelectSettingViewCmd();

@@ -152,7 +152,8 @@
             </Grid>
 
             <Grid Grid.Row="4">
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical"
+                            Visibility="Collapsed">
                     <TextBlock Text="Result"
                                Foreground="White" />
                     <Button Height="35"

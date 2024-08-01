@@ -45,15 +45,29 @@ namespace ReadCodeGUI.Views.UcViews
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             // record to database
+            List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
+
             ExcelTemplateModel excelModel = new ExcelTemplateModel();
-            excelModel.Id = 1;
+            excelModel.Id = 4;
             excelModel.ProductName = "PRODUCT_TEST";
-            excelModel.ProductCode = "abcdefgh";
+            excelModel.ProductCode = "abcdefgh_4";
             excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
             excelModel.Judgement = "OK_TEST";
-            excelModel.Note = "TEST";
+            excelModel.Note = "TEST_4";
 
-            SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+            excelTemplateModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+            //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+
+            List<ResultStringMapToDataGridModel> listResStrMapToDataGrid = new List<ResultStringMapToDataGridModel>();
+            ResultStringMapToDataGridModel resStrMapToDg = new ResultStringMapToDataGridModel();
+            resStrMapToDg.Index = 4;
+            resStrMapToDg.CodeName = "Code " + 4;
+            resStrMapToDg.Code = "abcdefgh_4";
+
+            listResStrMapToDataGrid.Add(resStrMapToDg);
+
+            MainViewModel.Instance.ResultVM.ListResultStringMapToDataGrid = listResStrMapToDataGrid;
         }
     }
 }
