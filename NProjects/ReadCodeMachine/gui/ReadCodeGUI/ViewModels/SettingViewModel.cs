@@ -17,6 +17,8 @@ using System.Xml;
 using System.ComponentModel;
 using System.Reflection;
 using ReadCodeGUI.Manager.Class;
+using DocumentFormat.OpenXml.Bibliography;
+using LSIS.Driver.Core.DataTypes;
 
 namespace ReadCodeGUI.ViewModels
 {
@@ -37,6 +39,8 @@ namespace ReadCodeGUI.ViewModels
 
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
         private List<string> m_cameraLst = new List<string>();
+        private string m_strCameraSelected = string.Empty;
+        private ECameraList m_cameraSelected = new ECameraList();
         private bool m_bStreamming = false;
         public CameraStreamingController m_cameraStreamingController = null;
         #endregion
@@ -179,29 +183,79 @@ namespace ReadCodeGUI.ViewModels
                         {
                             case 0:
                                 plcSetting.Params = "Plc COM";
+                                if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                                {
+                                    //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.PlcCOM = nodeList[i].InnerText;
+                                    MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.PlcCOM = nodeList[i].InnerText;
+                                }
                                 break;
                             case 1:
                                 plcSetting.Params = "Trigger Delay (ms)";
+                                if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                                {
+                                    //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.TriggerDelay = int.Parse(nodeList[i].InnerText);
+                                    MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.TriggerDelay = int.Parse(nodeList[i].InnerText);
+                                }
                                 break;
                             case 2:
                                 plcSetting.Params = "Signal NG Delay (ms)";
+                                if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                                {
+                                    //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.SignalNGDelay = int.Parse(nodeList[i].InnerText);
+                                    MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.SignalNGDelay = int.Parse(nodeList[i].InnerText);
+                                }
                                 break;
                             case 3:
                                 plcSetting.Params = "Register Trigger Delay";
+                                if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                                {
+                                    //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.RegisterTriggerDelay = nodeList[i].InnerText;
+                                    MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.RegisterTriggerDelay = nodeList[i].InnerText;
+                                }
                                 break;
                             case 4:
                                 plcSetting.Params = "Register Output 1 Delay";
+                                if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                                {
+                                    //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.RegisterOutput1Delay = nodeList[i].InnerText;
+                                    MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.RegisterOutput1Delay = nodeList[i].InnerText;
+                                }
                                 break;
                         }
                         plcSetting.Index = i + 1;
                         plcSetting.Value = nodeList[i].InnerText;
-
                         plcSettings.Add(plcSetting);
                     }
                 }
             }
 
             PlcSettingsMapToDGModels = plcSettings;
+            //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.Initialize();
+
+            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
+            SetAllParamPlcDelta();
+        }
+        public void SetAllParamPlcDelta()
+        {
+            string regTriggerDelay = MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.RegisterTriggerDelay.Trim();
+            short triggerDelay = (short)MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.TriggerDelay;
+            string regOutput1Delay = MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.RegisterOutput1Delay.Trim();
+            short output1Delay = (short)MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.SignalNGDelay;
+            SetParameterPlcDelta(triggerDelay, regTriggerDelay);
+            SetParameterPlcDelta(output1Delay, regOutput1Delay);
+        }
+        private void SetParameterPlcDelta(short value, string register)
+        {
+            if (register != null)
+            {
+                int indexReg = 0;
+                int.TryParse(register.Substring(register.IndexOf("D") + 1), out indexReg);
+                MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressRegister += (uint)indexReg;
+
+                MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.SetParameterToSingleRegister(value);
+
+                MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressRegister = 4096; // reset to init value
+            }
         }
         public void SavePlcSettings()
         {
@@ -213,27 +267,54 @@ namespace ReadCodeGUI.ViewModels
                     case 0:
                         XmlNode plcCOMNode = m_xmlManagement.SelectSingleNode("//PlcSettings//PLC_COM");
                         plcCOMNode.InnerText = value;
+                        if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                        {
+                            //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.PlcCOM = value;
+                            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.PlcCOM = value;
+                        }
                         break;
                     case 1:
                         XmlNode triggerDelayNode = m_xmlManagement.SelectSingleNode("//PlcSettings//TriggerDelay");
                         triggerDelayNode.InnerText = value;
+
+                        if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                        {
+                            //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.TriggerDelay = int.Parse(value);
+                            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.TriggerDelay = int.Parse(value);
+                        }
                         break;
                     case 2:
                         XmlNode signalNGDelayNode = m_xmlManagement.SelectSingleNode("//PlcSettings//SignalNGDelay");
                         signalNGDelayNode.InnerText = value;
+                        if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                        {
+                            //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.SignalNGDelay = int.Parse(value);
+                            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.SignalNGDelay = int.Parse(value);
+                        }
                         break;
                     case 3:
                         XmlNode registerTriggerDelayNode = m_xmlManagement.SelectSingleNode("//PlcSettings//RegisterTriggerDelay");
                         registerTriggerDelayNode.InnerText = value;
+                        if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                        {
+                            //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.RegisterTriggerDelay = value;
+                            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.RegisterTriggerDelay = value;
+                        }
                         break;
                     case 4:
                         XmlNode registerOutput1DelayNode = m_xmlManagement.SelectSingleNode("//PlcSettings//RegisterOutput1Delay");
                         registerOutput1DelayNode.InnerText = value;
+                        if (MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP != null)
+                        {
+                            //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.PlcLSModel.RegisterOutput1Delay = value;
+                            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.PlcDeltaModel.RegisterOutput1Delay = value;
+                        }
                         break;
                 }
             }
 
             m_xmlManagement.Save(Defines.StartupProgPath + "\\Settings\\PlcSettings.config");
+            SetAllParamPlcDelta();
         }
 
         // Load Recipe
@@ -288,7 +369,6 @@ namespace ReadCodeGUI.ViewModels
 
             return modeTestString;
         }
-
         private async void SimulationThread_UpdateUI()
         {
             _settingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetSimulatorBuffer(0, 0);
@@ -349,6 +429,37 @@ namespace ReadCodeGUI.ViewModels
                 if (SetProperty(ref m_cameraLst, value))
                 {
 
+                }
+            }
+        }
+        public ECameraList CameraSelected
+        {
+            get => m_cameraSelected;
+            set
+            {
+                if (SetProperty(ref m_cameraSelected, value))
+                {
+                    switch (m_cameraSelected)
+                    {
+
+                    }
+                }
+            }
+        }
+        public string StrCameraSelected
+        {
+            get => m_strCameraSelected;
+            set
+            {
+                if (SetProperty(ref m_strCameraSelected, value))
+                {
+                    if (string.Compare("Cam 1", m_strCameraSelected) == 0)
+                    {
+                        CameraSelected = ECameraList.Cam1;
+                        _settingView.buffVSSettings.CameraIndex = 0; // 0: Index of Top Cam 1
+                        _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
+
+                    }
                 }
             }
         }

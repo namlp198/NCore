@@ -7,12 +7,12 @@ using Npc.Foundation.Base;
 
 namespace ReadCodeGUI.Models
 {
-    public class Plc_LS_Model : ModelBase
+    public class Plc_Delta_Model : ModelBase
     {
-        public Plc_LS_Model() 
+        public Plc_Delta_Model() 
         {
             m_strPlcCOM = "COM11";
-            m_nBaudRate = 115200;
+            m_nBaudRate = 9600;
         }
 
         private string m_strPlcCOM;

@@ -152,8 +152,25 @@
             </Grid>
 
             <Grid Grid.Row="4">
-                <TextBlock Text="Result"
-                           Foreground="White" />
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Result"
+                               Foreground="White" />
+                    <Button Height="35"
+                            Width="80"
+                            HorizontalAlignment="Left"
+                            Content="Test OK"
+                            Click="Button_Click"/>
+                    <Button Height="35"
+                            Width="80"
+                            HorizontalAlignment="Left"
+                            Content="Test NG"
+                            Click="Button_Click_1" />
+                    <Button Height="35"
+                            Width="80"
+                            HorizontalAlignment="Left"
+                            Content="Test Database"
+                            Click="Button_Click_2" />
+                </StackPanel>
             </Grid>
 
             <!--separator-->

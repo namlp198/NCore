@@ -66,9 +66,10 @@ bool StopGrabBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx)
 	if (pBaslerCam == NULL)
 		return false;
 
+	int retVal = pBaslerCam->StopGrab(nCamIdx);
+
 	pBaslerCam->SetIsStreaming(FALSE);
 
-	int retVal = pBaslerCam->StopGrab(nCamIdx);
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }

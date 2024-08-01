@@ -26,6 +26,8 @@ namespace ReadCodeGUI.ViewModels
         private readonly Dispatcher _dispatcher;
         private UcSumCameraView _sumCameraView;
         private int m_nIndex = 1;
+        private IOManager_PLC_LS m_Plc_LS = new IOManager_PLC_LS();
+        private IOManager_PLC_Delta_DVP m_Plc_Delta = new IOManager_PLC_Delta_DVP();
         #endregion
 
         #region Constructor
@@ -46,6 +48,17 @@ namespace ReadCodeGUI.ViewModels
 
         #region Properties
         public UcSumCameraView SumCameraView { get { return _sumCameraView; } }
+
+        public IOManager_PLC_LS Plc_LS
+        {
+            get => m_Plc_LS;
+            set => m_Plc_LS = value;
+        }
+        public IOManager_PLC_Delta_DVP Plc_Delta_DVP
+        {
+            get => m_Plc_Delta;
+            set => m_Plc_Delta = value;
+        }
         #endregion
 
         #region Methods
@@ -56,8 +69,20 @@ namespace ReadCodeGUI.ViewModels
             SumCameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetResultBuffer(0, 0);
             await SumCameraView.buffCam.UpdateImage();
 
-            if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1) SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
-            else SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
+            if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
+            {
+                SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
+                m_Plc_Delta.StartAddressBitM += 3; // Out Y3
+                m_Plc_Delta.SetOutputPlc(true);
+                m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
+            }
+            else
+            {
+                SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
+                m_Plc_Delta.StartAddressBitM += 2; // Out Y2
+                m_Plc_Delta.SetOutputPlc(true);
+                m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
+            }
 
             string resStr = InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_sResultString;
             List<ResultStringMapToDataGridModel> listResStrMapToDataGrid = new List<ResultStringMapToDataGridModel>();

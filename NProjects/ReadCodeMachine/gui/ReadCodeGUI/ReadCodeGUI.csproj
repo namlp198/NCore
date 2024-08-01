@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -59,6 +60,9 @@
   <ItemGroup>
     <Reference Include="DocumentFormat.OpenXml">
       <HintPath>..\..\..\..\Libraries\excel\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="IndustrialNetworks.ModbusCore">
+      <HintPath>..\..\..\..\Libraries\Plc_Delta\x64\IndustrialNetworks.ModbusCore.dll</HintPath>
     </Reference>
     <Reference Include="KisToolkit">
       <HintPath>..\..\..\..\Libraries\KisToolkit\KisToolkit.dll</HintPath>
@@ -123,6 +127,7 @@
     <Compile Include="Commons\Defines.cs" />
     <Compile Include="Manager\Class\CameraStreamingController.cs" />
     <Compile Include="Manager\Class\ExcelParser.cs" />
+    <Compile Include="Manager\Class\IOManager_PLC_Delta_DVP.cs" />
     <Compile Include="Manager\Class\IOManager_PLC_LS.cs" />
     <Compile Include="Manager\Class\ReadCodeProcessorDll.cs" />
     <Compile Include="Manager\Class\SQLite_Manager.cs" />
@@ -134,6 +139,7 @@
     <Compile Include="Models\CReadCodeSystemSetting.cs" />
     <Compile Include="Models\ExcelTemplateModel.cs" />
     <Compile Include="Models\PlcSettingsMapToDataGridModel.cs" />
+    <Compile Include="Models\Plc_Delta_Model.cs" />
     <Compile Include="Models\Plc_LS_Model.cs" />
     <Compile Include="Models\ResultStringMapToDataGridModel.cs" />
     <Compile Include="Models\RecipeMapToDataGridModel.cs" />

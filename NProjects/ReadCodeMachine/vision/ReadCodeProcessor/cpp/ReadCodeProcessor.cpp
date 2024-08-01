@@ -63,6 +63,37 @@ BOOL CReadCodeProcessor::Destroy()
 	if (m_pReadCodeBaslerCam != NULL)
 		delete m_pReadCodeBaslerCam, m_pReadCodeBaslerCam = NULL;
 
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	{
+		if (m_pResultBuffer[i] != NULL)
+		{
+			m_pResultBuffer[i]->DeleteSharedMemory();
+			delete m_pResultBuffer[i];
+			m_pResultBuffer[i] = NULL;
+		}
+	}
+
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	{
+		if (m_pSimulatorBuffer[i] != NULL)
+		{
+			m_pSimulatorBuffer[i]->DeleteSharedMemory();
+			delete m_pSimulatorBuffer[i];
+			m_pSimulatorBuffer[i] = NULL;
+		}
+	}
+
+	if (m_pReadCodeSystemSetting != NULL)
+		delete m_pReadCodeSystemSetting, m_pReadCodeSystemSetting = NULL;
+
+	if (m_pReadCodeRecipe != NULL)
+		delete m_pReadCodeRecipe, m_pReadCodeRecipe = NULL;
+
+	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+		if (m_pReadCodeResult[i] != NULL)
+			delete m_pReadCodeResult[i], m_pReadCodeResult[i] = NULL;
+	}
+
 	return TRUE;
 }
 
@@ -91,11 +122,11 @@ BOOL CReadCodeProcessor::InspectStart(BOOL bSimulator)
 
 BOOL CReadCodeProcessor::InspectStop()
 {
-	//m_pReadCodeBaslerCam->SetTriggerMode(0, 1);
-	m_pReadCodeBaslerCam->SetTriggerSource(0, 0);
-	//m_pReadCodeBaslerCam->SetExposureTime(0, 100.0);
-
 	m_pReadCodeBaslerCam->StopGrab(0);
+
+	m_pReadCodeBaslerCam->SetTriggerMode(0, 0);
+	m_pReadCodeBaslerCam->SetTriggerSource(0, 0);
+	m_pReadCodeBaslerCam->SetExposureTime(0, 5000.0);
 
 	return TRUE;
 }
