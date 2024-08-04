@@ -30,11 +30,11 @@ bool ContinuousGrabBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx)
 	if (pProcessor == NULL)
 		return false;
 
+	pProcessor->GetReadCodeStatusControl(0)->SetStreaming(TRUE);
+
 	CReadCodeBaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
 	if (pBaslerCam == NULL)
 		return false;
-
-	pBaslerCam->SetIsStreaming(TRUE);
 
 	int retVal = pBaslerCam->StartGrab(nCamIdx);
 	if (retVal == 0) return false;
@@ -46,11 +46,11 @@ bool SingleGrabBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx)
 	if (pProcessor == NULL)
 		return false;
 
+	pProcessor->GetReadCodeStatusControl(0)->SetStreaming(TRUE);
+
 	CReadCodeBaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
 	if (pBaslerCam == NULL)
 		return false;
-
-	pBaslerCam->SetIsStreaming(TRUE);
 
 	int retVal = pBaslerCam->SingleGrab(nCamIdx);
 	if (retVal == 0) return false;
@@ -62,13 +62,13 @@ bool StopGrabBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx)
 	if (pProcessor == NULL)
 		return false;
 
+	pProcessor->GetReadCodeStatusControl(0)->SetStreaming(FALSE);
+
 	CReadCodeBaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
 	if (pBaslerCam == NULL)
 		return false;
 
 	int retVal = pBaslerCam->StopGrab(nCamIdx);
-
-	pBaslerCam->SetIsStreaming(FALSE);
 
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
@@ -82,12 +82,12 @@ BYTE* GetImageBufferBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx)
 	return pProcessor->GetImageBufferBaslerCam(nCamIdx);
 }
 
-bool InspectStart(CReadCodeProcessor* pProcessor, BOOL isSimulator)
+bool InspectStart(CReadCodeProcessor* pProcessor, int nThreadCount, BOOL isSimulator)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->InspectStart(isSimulator);
+	BOOL bRet = pProcessor->InspectStart(nThreadCount, isSimulator);
 	if (bRet == FALSE) return false;
 	else               return true;
 }

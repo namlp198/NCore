@@ -7,6 +7,8 @@
 #include "ReadCodeSystemSetting.h"
 #include "ReadCodeResult.h"
 #include "ReadCodeDefine.h"
+#include "ReadCodeStatus.h"
+#include "ReadCodeCameraSetting.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -15,13 +17,14 @@
 
 #include "ZXingOpenCV.h"
 
+typedef void __stdcall ReceivedImageCallback(LPVOID pBuffer, int nGrabberIndex, int nNextFrameIdx, LPVOID pParam);
+
 interface IReadCodeBaslerCamToParent
 {
-	virtual CReadCodeRecipe*         GetRecipeControl() = 0;
-	virtual CReadCodeSystemSetting*  GetSystemSettingControl() = 0;
-	virtual BOOL                     SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
-	virtual CReadCodeResult*         GetInspectionResultControl(int nCoreIdx) = 0;
-	virtual void                     InspectComplete(BOOL bSetting) = 0;
+	virtual CReadCodeRecipe*          GetRecipeControl() = 0;
+	virtual CReadCodeSystemSetting*   GetSystemSettingControl() = 0;
+	virtual CReadCodeCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
+	virtual CReadCodeStatus*          GetReadCodeStatusControl(int nCoreIdx) = 0;
 };
 
 class AFX_EXT_CLASS CReadCodeBaslerCam : public IFrameGrabber2Parent
@@ -36,6 +39,8 @@ public:
 	BOOL                            GetCamStatus();
 
 	LPBYTE                          GetBufferImage(int nCamIdx);
+	// Register image callback
+	void                            RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID param);
 
 public:
 	virtual void	DisplayMessage(TCHAR* str, ...) {};
@@ -52,15 +57,12 @@ public:
 	int SetExposureTime(int nCamIdx, double dExpTime);
 	int SetAnalogGain(int nCamIdx, double dGain);
 
-public:
-	// getter
-	BOOL GetIsStreaming() { return m_bIsStreaming; }
-
-	// setter
-	void SetIsStreaming(BOOL bStatus) { m_bIsStreaming = bStatus; }
-
 private:
 	IReadCodeBaslerCamToParent*              m_pInterface;
+
+	// callback
+	ReceivedImageCallback*                   m_pReceivedImgCallback;
+	LPVOID                                   m_pParam;
 
 	// Area Camera
 	BOOL							         m_bCamera_ConnectStatus[MAX_CAMERA_INSPECT_COUNT];
@@ -68,8 +70,7 @@ private:
 
 	// Area Cam Live Buffer Control
 	CCriticalSection				         m_csCameraFrameIdx[MAX_CAMERA_INSPECT_COUNT];
+
 	int								         m_pCameraCurrentFrameIdx[MAX_CAMERA_INSPECT_COUNT];
 	CSharedMemoryBuffer*                     m_pCameraImageBuffer[MAX_CAMERA_INSPECT_COUNT];
-
-	BOOL                                     m_bIsStreaming;
 };

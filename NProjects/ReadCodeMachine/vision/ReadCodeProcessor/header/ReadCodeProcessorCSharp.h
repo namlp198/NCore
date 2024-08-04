@@ -22,7 +22,7 @@ extern "C"
 	__declspec(dllexport) BYTE*                   GetImageBufferBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx);
 
 	/************************** Operation **************************/
-	__declspec(dllexport) bool                    InspectStart(CReadCodeProcessor* pProcessor, BOOL isSimulator);
+	__declspec(dllexport) bool                    InspectStart(CReadCodeProcessor* pProcessor, int nThreadCount, BOOL isSimulator);
 
 	__declspec(dllexport) bool                    InspectStop(CReadCodeProcessor* pProcessor);
 

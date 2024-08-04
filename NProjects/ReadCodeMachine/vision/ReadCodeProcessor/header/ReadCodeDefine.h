@@ -17,3 +17,5 @@
 #define NUMBER_OF_SET_INSPECT 1
 #define MAX_STRING_SIZE		  256
 #define MAX_STRING_SIZE_RESULT 1000
+
+typedef enum { InspectStatus_Inspecting, InspectStatus_Stopping, InspectStatus_Busy } emInspectStatus;

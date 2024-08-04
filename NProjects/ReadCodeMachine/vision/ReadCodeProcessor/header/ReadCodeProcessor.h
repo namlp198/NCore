@@ -8,6 +8,9 @@
 #include "ReadCodeBaslerCam.h"
 #include "ReadCodeResult.h"
 #include "ReadCodeSystemSetting.h"
+#include "ReadCodeStatus.h"
+#include "ReadCodeCore.h"
+#include "ReadCodeCameraSetting.h"
 
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
@@ -25,7 +28,8 @@ typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarm(char* strAlarmMessage);
 typedef void _stdcall CallbackInspectComplete(BOOL bSetting);
 
-class AFX_EXT_CLASS CReadCodeProcessor : public IReadCodeBaslerCamToParent
+class AFX_EXT_CLASS CReadCodeProcessor : public IReadCodeBaslerCamToParent,
+	                                     public IReadCodeCoreToParent
 {
 public:
 	CReadCodeProcessor();
@@ -38,19 +42,25 @@ public:
 
 	virtual      CReadCodeRecipe*           GetRecipeControl() { return m_pReadCodeRecipe; }
 	virtual      CReadCodeSystemSetting*    GetSystemSettingControl() { return m_pReadCodeSystemSetting; }
+	virtual      CReadCodeCameraSetting*    GetCameraSettingControl(int nCamIdx) { return m_pReadCodeCameraSetting[nCamIdx]; };
 
 public:
-	BOOL                       InspectStart(BOOL bSimulator);
+	BOOL                       InspectStart(int nThreadCount, BOOL bSimulator);
 	BOOL                       InspectStop();
 
-public:
-	BOOL         LoadSystemSettings(CReadCodeSystemSetting* pSystemSetting);
-	BOOL         LoadRecipe(CReadCodeRecipe* pRecipe);
-	BOOL         SaveSystemSetting(CReadCodeSystemSetting* pSystemSetting);
-	BOOL         SaveRecipe(CReadCodeRecipe* pRecipe);
+	static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
+	void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);
 
-	BOOL         ReloadSystemSetting();
-	BOOL         ReloadRecipe();
+public:
+	BOOL                       LoadSystemSettings(CReadCodeSystemSetting* pSystemSetting);
+	BOOL                       LoadRecipe(CReadCodeRecipe* pRecipe);
+	BOOL                       LoadCameraSettings(CReadCodeCameraSetting* pCameraSetting);
+	BOOL                       SaveSystemSetting(CReadCodeSystemSetting* pSystemSetting);
+	BOOL                       SaveRecipe(CReadCodeRecipe* pRecipe);
+	BOOL                       SaveCameraSettings(CReadCodeCameraSetting* pCameraSetting, int nCamIdx);
+				               
+	BOOL                       ReloadSystemSetting();
+	BOOL                       ReloadRecipe();
 
 public:
 	void                       RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc);
@@ -67,7 +77,9 @@ public:
 	LPBYTE                            GetResultBuffer(int nBuff, int nFrame);
 	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff);
 	BOOL                              GetInspectionResult(int nCoreIdx, CReadCodeResult* pReadCodeInspRes);
-	virtual CReadCodeResult*          GetInspectionResultControl(int nCoreIdx) { return m_pReadCodeResult[nCoreIdx]; }
+	virtual CReadCodeResult*          GetReadCodeResultControl(int nCoreIdx) { return m_pReadCodeResult[nCoreIdx]; }
+	virtual CReadCodeStatus*          GetReadCodeStatusControl(int nCoreIdx) { return m_pReadCodeStatus[nCoreIdx]; }
+
 
 	CReadCodeBaslerCam*               GetBaslerCamControl() { return m_pReadCodeBaslerCam; }
 	LPBYTE                            GetImageBufferBaslerCam(int nCamIdx);
@@ -90,15 +102,24 @@ private:
 								               
 	// UI						                            
 	CLogView*                                  m_pLogView;
+
+	// Core
+	CReadCodeCore*                             m_pReadCodeCore[MAX_CAMERA_INSPECT_COUNT];
 								               
 	// System Setting			                   
 	CReadCodeSystemSetting*                    m_pReadCodeSystemSetting;
 								               
 	// Recipe					               
 	CReadCodeRecipe*                           m_pReadCodeRecipe;
+
+	// Camera Setting
+	CReadCodeCameraSetting*                    m_pReadCodeCameraSetting[MAX_CAMERA_INSPECT_COUNT];
 								               
 	// Result					               
-	CReadCodeResult*                           m_pReadCodeResult[NUMBER_OF_SET_INSPECT];
+	CReadCodeResult*                           m_pReadCodeResult[MAX_CAMERA_INSPECT_COUNT];
+
+	// Status
+	CReadCodeStatus*                           m_pReadCodeStatus[MAX_CAMERA_INSPECT_COUNT];
 								               
 	// Basler cam				               
 	CReadCodeBaslerCam*                        m_pReadCodeBaslerCam;
@@ -115,6 +136,7 @@ private:
 	// system settings file path	           
 	CString                                    m_csSysSettingsPath;
 	CString                                    m_csRecipePath;
+	CString                                    m_csCam1SettingPath;
 
 	cv::Mat                                    m_matBGR;
 };

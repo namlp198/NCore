@@ -213,6 +213,15 @@
     <ClInclude Include="header\ZXingOpenCV.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\ReadCodeCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\ReadCodeStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\ReadCodeCameraSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -340,6 +349,15 @@
     </ClCompile>
     <ClCompile Include="cpp\Tools\View\LogView.cpp">
       <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ReadCodeCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ReadCodeStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ReadCodeCameraSetting.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

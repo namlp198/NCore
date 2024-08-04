@@ -149,11 +149,14 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="header\ReadCodeBaslerCam.h" />
+    <ClInclude Include="header\ReadCodeCameraSetting.h" />
+    <ClInclude Include="header\ReadCodeCore.h" />
     <ClInclude Include="header\ReadCodeDefine.h" />
     <ClInclude Include="header\ReadCodeProcessor.h" />
     <ClInclude Include="header\ReadCodeProcessorCSharp.h" />
     <ClInclude Include="header\ReadCodeRecipe.h" />
     <ClInclude Include="header\ReadCodeResult.h" />
+    <ClInclude Include="header\ReadCodeStatus.h" />
     <ClInclude Include="header\ReadCodeSystemSetting.h" />
     <ClInclude Include="header\Tools\Camera\FrameGrabber.h" />
     <ClInclude Include="header\Tools\Camera\FrameGrabberParam.h" />
@@ -200,10 +203,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\ReadCodeBaslerCam.cpp" />
+    <ClCompile Include="cpp\ReadCodeCameraSetting.cpp" />
+    <ClCompile Include="cpp\ReadCodeCore.cpp" />
     <ClCompile Include="cpp\ReadCodeProcessor.cpp" />
     <ClCompile Include="cpp\ReadCodeProcessorCSharp.cpp" />
     <ClCompile Include="cpp\ReadCodeRecipe.cpp" />
     <ClCompile Include="cpp\ReadCodeResult.cpp" />
+    <ClCompile Include="cpp\ReadCodeStatus.cpp" />
     <ClCompile Include="cpp\ReadCodeSystemSetting.cpp" />
     <ClCompile Include="cpp\Tools\Camera\FrameGrabber.cpp" />
     <ClCompile Include="cpp\Tools\Camera\FrameGrabber_BaslerCam_New.cpp" />

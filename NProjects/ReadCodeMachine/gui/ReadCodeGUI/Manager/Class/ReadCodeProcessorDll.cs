@@ -63,8 +63,8 @@ namespace ReadCodeGUI.Manager.Class
 #else
         [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool InspectStart(IntPtr readCodeProcessor, int isSimulator);
-        public bool InspectStart(int isSimulator) { return InspectStart(m_readCodeProcessor, isSimulator); }
+        extern private static bool InspectStart(IntPtr readCodeProcessor, int nThreadCount, int isSimulator);
+        public bool InspectStart(int nThreadCount, int isSimulator) { return InspectStart(m_readCodeProcessor, nThreadCount, isSimulator); }
         /**********************************
          - Inspection Ready / Start
          - Parameter : Inspection Cavity

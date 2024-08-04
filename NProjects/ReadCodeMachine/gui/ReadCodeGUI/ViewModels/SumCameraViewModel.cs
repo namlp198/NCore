@@ -65,78 +65,57 @@ namespace ReadCodeGUI.ViewModels
         #region Methods
         private async void InspectionComplete(int bSetting)
         {
-            InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetInspectionResult(0, ref InterfaceManager.Instance.m_processorManager.m_readCodeResult[0]);
-
-            SumCameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetResultBuffer(0, 0);
-            await SumCameraView.buffCam.UpdateImage();
-
-            if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
+            if (bSetting == 0)
             {
-                SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
-                m_Plc_Delta.StartAddressBitM += 1; // Out Y3
-                m_Plc_Delta.SetOutputPlc(true);
-                Thread.Sleep(5);
-                m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
-            }
-            else
-            {
-                SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
-                m_Plc_Delta.StartAddressBitM += 0; // Out Y2
-                m_Plc_Delta.SetOutputPlc(true);
-                Thread.Sleep(5);
-                m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
-            }
+                InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetInspectionResult(0, ref InterfaceManager.Instance.m_processorManager.m_readCodeResult[0]);
 
-            string resStr = InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_sResultString;
-            List<ResultStringMapToDataGridModel> listResStrMapToDataGrid = new List<ResultStringMapToDataGridModel>();
-            if (!resStr.IsNullOrEmpty())
-            {
-                if (resStr.IndexOf(";") == -1)
+                SumCameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetResultBuffer(0, 0);
+                await SumCameraView.buffCam.UpdateImage();
+
+                MainViewModel.Instance.RunVM.ResultVM.CountTotal++;
+
+                if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
                 {
-                    ResultStringMapToDataGridModel resStrMapToDg = new ResultStringMapToDataGridModel();
+                    SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
+                    m_Plc_Delta.StartAddressBitM += 1; // Out Y3
+                    m_Plc_Delta.SetOutputPlc(true);
+                    Thread.Sleep(5);
+                    m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
 
-                    resStrMapToDg.Index = 1;
-                    resStrMapToDg.CodeName = "Code 1";
-                    resStrMapToDg.Code = resStr;
-
-                    listResStrMapToDataGrid.Add(resStrMapToDg);
-
-                    // record to csv file
-                    List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
-                    ExcelTemplateModel excelModel = new ExcelTemplateModel();
-
-                    excelModel.Id = m_nIndex;
-                    excelModel.ProductName = "PRODUCT_TEST";
-                    excelModel.ProductCode = resStr;
-                    excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
-                    excelModel.Judgement = "OK_TEST";
-                    excelModel.Note = "TEST";
-
-                    excelTemplateModels.Add(excelModel);
-                    Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
-
-                    //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
-
-                    m_nIndex++;
+                    MainViewModel.Instance.RunVM.ResultVM.CountOK++;
                 }
                 else
                 {
-                    string[] arrStr = resStr.Split(new char[] { ';' });
-                    for (int i = 0; i < arrStr.Length; i++)
+                    SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
+                    m_Plc_Delta.StartAddressBitM += 0; // Out Y2
+                    m_Plc_Delta.SetOutputPlc(true);
+                    Thread.Sleep(5);
+                    m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
+
+                    MainViewModel.Instance.RunVM.ResultVM.CountNG++;
+                }
+
+                string resStr = InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_sResultString;
+                List<ResultStringMapToDataGridModel> listResStrMapToDataGrid = new List<ResultStringMapToDataGridModel>();
+                if (!resStr.IsNullOrEmpty())
+                {
+                    if (resStr.IndexOf(";") == -1)
                     {
                         ResultStringMapToDataGridModel resStrMapToDg = new ResultStringMapToDataGridModel();
-                        resStrMapToDg.Index = i + 1;
-                        resStrMapToDg.CodeName = "Code " + i + 1;
-                        resStrMapToDg.Code = arrStr[i];
+
+                        resStrMapToDg.Index = 1;
+                        resStrMapToDg.CodeName = "Code 1";
+                        resStrMapToDg.Code = resStr;
 
                         listResStrMapToDataGrid.Add(resStrMapToDg);
 
-                        // record to database
+                        // record to csv file
                         List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
                         ExcelTemplateModel excelModel = new ExcelTemplateModel();
+
                         excelModel.Id = m_nIndex;
                         excelModel.ProductName = "PRODUCT_TEST";
-                        excelModel.ProductCode = arrStr[i];
+                        excelModel.ProductCode = resStr;
                         excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
                         excelModel.Judgement = "OK_TEST";
                         excelModel.Note = "TEST";
@@ -148,10 +127,39 @@ namespace ReadCodeGUI.ViewModels
 
                         m_nIndex++;
                     }
-                }
-            }
+                    else
+                    {
+                        string[] arrStr = resStr.Split(new char[] { ';' });
+                        for (int i = 0; i < arrStr.Length; i++)
+                        {
+                            ResultStringMapToDataGridModel resStrMapToDg = new ResultStringMapToDataGridModel();
+                            resStrMapToDg.Index = i + 1;
+                            resStrMapToDg.CodeName = "Code " + i + 1;
+                            resStrMapToDg.Code = arrStr[i];
 
-            MainViewModel.Instance.ResultVM.ListResultStringMapToDataGrid = listResStrMapToDataGrid;
+                            listResStrMapToDataGrid.Add(resStrMapToDg);
+
+                            // record to database
+                            List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
+                            ExcelTemplateModel excelModel = new ExcelTemplateModel();
+                            excelModel.Id = m_nIndex;
+                            excelModel.ProductName = "PRODUCT_TEST";
+                            excelModel.ProductCode = arrStr[i];
+                            excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
+                            excelModel.Judgement = "OK_TEST";
+                            excelModel.Note = "TEST";
+
+                            excelTemplateModels.Add(excelModel);
+                            Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                            //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+
+                            m_nIndex++;
+                        }
+                    }
+                }
+                MainViewModel.Instance.ResultVM.ListResultStringMapToDataGrid = listResStrMapToDataGrid;
+            }
         }
         //private async void BuffCam_ShowDetail(object sender, System.Windows.RoutedEventArgs e)
         //{

@@ -20,6 +20,7 @@ using ReadCodeGUI.Manager.Class;
 using DocumentFormat.OpenXml.Bibliography;
 using LSIS.Driver.Core.DataTypes;
 using System.Threading;
+using NCore.Wpf.BufferViewerSimple;
 
 namespace ReadCodeGUI.ViewModels
 {
@@ -63,6 +64,7 @@ namespace ReadCodeGUI.ViewModels
             this.ContinuousGrabCmd = new ContinuousGrabCmd();
             this.SingleGrabCmd = new SingleGrabCmd();
             this.LoadImageCmd = new LoadImageCmd();
+            this.InspectSimulationCmd = new InspectSimulationCmd();
 
             m_xmlManagement.Load(Defines.StartupProgPath + "\\Settings\\PlcSettings.config");
 
@@ -72,6 +74,7 @@ namespace ReadCodeGUI.ViewModels
                                                                         _settingView.buffVSSettings.ModeView);
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
+            InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
         }
         #endregion
 
@@ -377,6 +380,27 @@ namespace ReadCodeGUI.ViewModels
             await _settingView.buffVSSettings.UpdateImage();
         }
 
+        private async void InspectionComplete(int bSetting)
+        {
+            if (bSetting == 1)
+            {
+                InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetInspectionResult(0, ref InterfaceManager.Instance.m_processorManager.m_readCodeResult[0]);
+
+                SettingView.buffVSSettings.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetResultBuffer(0, 0);
+                await SettingView.buffVSSettings.UpdateImage();
+
+                if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
+                {
+                    SettingView.buffVSSettings.InspectResult = EInspectResult.InspectResult_OK;
+                }
+                else
+                {
+                    SettingView.buffVSSettings.InspectResult = EInspectResult.InspectResult_NG;
+                }
+
+                string resStr = InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_sResultString;
+            }
+        }
         #endregion
 
         #region Properties
@@ -476,27 +500,12 @@ namespace ReadCodeGUI.ViewModels
                         DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/btn_stop_all_50.png";
                         _settingView.cbbCameraList.IsEnabled = false;
 
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 9; // reset m9
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(false);
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
-                        //Thread.Sleep(50);
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 8; // set m8
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(true);
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
-                        //Thread.Sleep(50);
                     }
                     else
                     {
                         DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
                         _settingView.cbbCameraList.IsEnabled = true;
 
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 9; // set m9
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(true);
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
-                        //Thread.Sleep(50);
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 8; // set m8
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(false);
-                        //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
                     }
                 }
             }
@@ -509,6 +518,7 @@ namespace ReadCodeGUI.ViewModels
         public ICommand ContinuousGrabCmd { get; }
         public ICommand SingleGrabCmd { get; }
         public ICommand LoadImageCmd { get; }
+        public ICommand InspectSimulationCmd { get; }
 
         #endregion
     }

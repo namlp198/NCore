@@ -67,21 +67,13 @@ namespace ReadCodeGUI.ViewModels
 
             if (InterfaceManager.Instance.m_processorManager.m_readCodeSysSettings.m_bSimulation == 0)
             {
-                if (InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(0))
+                if (InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(1,0))
                 {
                     InspectRunning = true;
-
-                    //RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 8; // Out Y4
-                    //RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(true);
-                    //RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset output to init value
                 }
                 else
                 {
                     InspectRunning = false;
-
-                    //RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 8; // Out Y4
-                    //RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(false);
-                    //RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset output to init value
                 }
             }
             else
@@ -96,9 +88,6 @@ namespace ReadCodeGUI.ViewModels
         #region Destructor
         ~MainViewModel() 
         {
-           RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM += 8; // Out Y4
-           RunVM.SumCamVM.Plc_Delta_DVP.SetOutputPlc(false);
-           RunVM.SumCamVM.Plc_Delta_DVP.StartAddressBitM = 2048; // reset output to init value
         }
         #endregion
 

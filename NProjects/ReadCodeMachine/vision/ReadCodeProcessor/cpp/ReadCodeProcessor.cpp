@@ -5,6 +5,7 @@
 CReadCodeProcessor::CReadCodeProcessor()
 {
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("Settings\\SystemSettings.config");
+	m_csCam1SettingPath = GetCurrentPathApp() + _T("Settings\\Camera1Settings.config");
 }
 
 CReadCodeProcessor::~CReadCodeProcessor()
@@ -14,7 +15,22 @@ CReadCodeProcessor::~CReadCodeProcessor()
 
 BOOL CReadCodeProcessor::Initialize()
 {
-	// 1. Create Result Buffer
+	// 1. Load System Setting
+	if (m_pReadCodeSystemSetting != NULL)
+		delete m_pReadCodeSystemSetting, m_pReadCodeSystemSetting = NULL;
+	m_pReadCodeSystemSetting = new CReadCodeSystemSetting;
+	LoadSystemSettings(m_pReadCodeSystemSetting);
+
+	// 2. Camera Setting
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
+		if (m_pReadCodeCameraSetting[i] != NULL)
+			delete m_pReadCodeCameraSetting[i], m_pReadCodeCameraSetting[i] = NULL;
+		m_pReadCodeCameraSetting[i] = new CReadCodeCameraSetting;
+		LoadCameraSettings(m_pReadCodeCameraSetting[i]);
+	}
+
+	// 3. Create Result Buffer and simulator buffer
+
 	if (CreateResultBuffer() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Fail!"));
@@ -26,33 +42,43 @@ BOOL CReadCodeProcessor::Initialize()
 		return FALSE;
 	}
 
-	// 2. Load System Setting
-	if (m_pReadCodeSystemSetting != NULL)
-		delete m_pReadCodeSystemSetting, m_pReadCodeSystemSetting = NULL;
-	m_pReadCodeSystemSetting = new CReadCodeSystemSetting;
-	LoadSystemSettings(m_pReadCodeSystemSetting);
-
-	// 3. Recipe
+	// 4. Recipe
 	if (m_pReadCodeRecipe != NULL)
 		delete m_pReadCodeRecipe, m_pReadCodeRecipe = NULL;
 	m_pReadCodeRecipe = new CReadCodeRecipe;
 
-	// 4. Result
-	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+	// 5. Result
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
 		if (m_pReadCodeResult[i] != NULL)
 			delete m_pReadCodeResult[i], m_pReadCodeResult[i] = NULL;
 		m_pReadCodeResult[i] = new CReadCodeResult;
 	}
 
+	// 6. Status
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
+		if (m_pReadCodeStatus[i] != NULL)
+			delete m_pReadCodeStatus[i], m_pReadCodeStatus[i] = NULL;
+		m_pReadCodeStatus[i] = new CReadCodeStatus;
+	}
+
+	// 7. Camera
 	if (m_pReadCodeSystemSetting->m_bSimulation == FALSE)
 	{
-		// 6. Hik Cam
+		
 		if (m_pReadCodeBaslerCam != NULL)
 			delete m_pReadCodeBaslerCam, m_pReadCodeBaslerCam = NULL;
 		m_pReadCodeBaslerCam = new CReadCodeBaslerCam(this);
 #ifndef TEST_NO_CAMERA
 		m_pReadCodeBaslerCam->Initialize();
+		m_pReadCodeBaslerCam->RegisterReceivedImageCallback(ReceivedImageCallback, this);
 #endif
+	}
+
+	// 8. Process Core
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
+		if (m_pReadCodeCore[i] != NULL)
+			delete m_pReadCodeCore[i], m_pReadCodeCore[i] = NULL;
+		m_pReadCodeCore[i] = new CReadCodeCore(this);
 	}
 
 	return TRUE;
@@ -71,10 +97,7 @@ BOOL CReadCodeProcessor::Destroy()
 			delete m_pResultBuffer[i];
 			m_pResultBuffer[i] = NULL;
 		}
-	}
 
-	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
-	{
 		if (m_pSimulatorBuffer[i] != NULL)
 		{
 			m_pSimulatorBuffer[i]->DeleteSharedMemory();
@@ -89,9 +112,18 @@ BOOL CReadCodeProcessor::Destroy()
 	if (m_pReadCodeRecipe != NULL)
 		delete m_pReadCodeRecipe, m_pReadCodeRecipe = NULL;
 
-	for (int i = 0; i < NUMBER_OF_SET_INSPECT; i++) {
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
 		if (m_pReadCodeResult[i] != NULL)
 			delete m_pReadCodeResult[i], m_pReadCodeResult[i] = NULL;
+
+		if (m_pReadCodeStatus[i] != NULL)
+			delete m_pReadCodeStatus[i], m_pReadCodeStatus[i] = NULL;
+
+		if (m_pReadCodeCore[i] != NULL)
+			delete m_pReadCodeCore[i], m_pReadCodeCore[i] = NULL;
+
+		if (m_pReadCodeCameraSetting[i] != NULL)
+			delete m_pReadCodeCameraSetting[i], m_pReadCodeCameraSetting[i] = NULL;
 	}
 
 	return TRUE;
@@ -108,27 +140,58 @@ CString CReadCodeProcessor::GetCurrentPathApp()
 	return csFolder;
 }
 
-BOOL CReadCodeProcessor::InspectStart(BOOL bSimulator)
+BOOL CReadCodeProcessor::InspectStart(int nThreadCount, BOOL bSimulator)
 {
+	if (bSimulator == TRUE)
+	{
+		int nCoreIdx = 0;
+		int nFrame = 0;
+		m_pReadCodeCore[nCoreIdx]->Inspect_Simulation(nCoreIdx, nFrame);
+
+		return TRUE;
+	}
+
+	int nCamIdx = 0;
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 1);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 1);
-	m_pReadCodeBaslerCam->SetExposureTime(0, 50);
-	m_pReadCodeBaslerCam->SetIsStreaming(FALSE);
+	m_pReadCodeBaslerCam->SetExposureTime(0, 50.0);
 
 	m_pReadCodeBaslerCam->StartGrab(0);
+	
+	m_pReadCodeStatus[nCamIdx]->SetInspectRunning(TRUE);
 
 	return TRUE;
 }
 
 BOOL CReadCodeProcessor::InspectStop()
 {
+	int nCamIdx = 0;
+
 	m_pReadCodeBaslerCam->StopGrab(0);
 
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 0);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 0);
-	//m_pReadCodeBaslerCam->SetExposureTime(0, 50000.0);
+	m_pReadCodeBaslerCam->SetExposureTime(0, m_pReadCodeCameraSetting[0]->m_nExposureTime);
+
+	m_pReadCodeStatus[nCamIdx]->SetInspectRunning(FALSE);
 
 	return TRUE;
+}
+
+void CReadCodeProcessor::ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param)
+{
+	CReadCodeProcessor* pThis = (CReadCodeProcessor*)param;
+	pThis->ReceivedImageCallbackEx(nGrabberIdx, nFrameIdx, pBuffer);
+}
+
+void CReadCodeProcessor::ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer)
+{
+	if ((LPBYTE)pBuffer == NULL)
+		return;
+
+	int nCoreIdx = nGrabberIdx;
+
+	m_pReadCodeCore[nCoreIdx]->Inspect_Real(nCoreIdx, (LPBYTE)pBuffer);
 }
 
 BOOL CReadCodeProcessor::LoadSystemSettings(CReadCodeSystemSetting* pSystemSetting)
@@ -264,6 +327,83 @@ BOOL CReadCodeProcessor::LoadRecipe(CReadCodeRecipe* pRecipe)
 	return TRUE;
 }
 
+BOOL CReadCodeProcessor::LoadCameraSettings(CReadCodeCameraSetting* pCameraSetting)
+{
+	if (m_csCam1SettingPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Camera setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csCam1SettingPath);
+	if (m_csCam1SettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Camera setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CReadCodeCameraSetting camSettings;
+
+	// convert path
+	USES_CONVERSION;
+	char chCamSettingPath[1024] = {};
+	sprintf_s(chCamSettingPath, "%s", W2A(m_csCam1SettingPath));
+
+	// 1. init xml manager
+	XMLFile* m_pXmlFile;
+	XMLDocument_2* m_pXmlDoc;
+	std::string error;
+
+	// 2. Open file
+	m_pXmlFile = ::OpenXMLFile(chCamSettingPath, error);
+	if (!m_pXmlFile)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		return FALSE;
+	}
+
+	// 3. Create xml doc
+	m_pXmlDoc = ::CreateXMLFromFile(m_pXmlFile, error);
+	if (!m_pXmlDoc)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		return FALSE;
+	}
+
+	// 4. Find root: Configurations
+	XMLElement* pRoot = ::FirstOrDefaultElement(m_pXmlDoc, "Camera1Settings", error);
+	if (!pRoot)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		::DisposeXMLObject(m_pXmlDoc);
+		return FALSE;
+	}
+
+	// start read
+
+	camSettings.m_nFrameWidth = std::stoi(pRoot->first_node("FrameWidth")->value());
+	camSettings.m_nFrameHeight = std::stoi(pRoot->first_node("FrameHeight")->value());
+	camSettings.m_nChannel = std::stoi(pRoot->first_node("Channel")->value());
+	camSettings.m_nTriggerMode = std::stoi(pRoot->first_node("TriggerMode")->value());
+	camSettings.m_nTriggerSource = std::stoi(pRoot->first_node("TriggerSource")->value());
+	camSettings.m_nExposureTime = std::atof(pRoot->first_node("ExposureTime")->value());
+	camSettings.m_nAnalogGain = std::atof(pRoot->first_node("AnalogGain")->value());
+	
+	CString csSerialNumber = (CString)pRoot->first_node("SerialNumber")->value();
+	ZeroMemory(camSettings.m_sSerialNumber, sizeof(camSettings.m_sSerialNumber));
+	wsprintf(camSettings.m_sSerialNumber, _T("%s"), (TCHAR*)(LPCTSTR)csSerialNumber);
+	*(pCameraSetting) = camSettings;
+
+	::DisposeXMLFile(m_pXmlFile);
+	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
+}
+
 BOOL CReadCodeProcessor::SaveSystemSetting(CReadCodeSystemSetting* pSystemSetting)
 {
 	if (m_csSysSettingsPath.IsEmpty())
@@ -391,6 +531,104 @@ BOOL CReadCodeProcessor::SaveRecipe(CReadCodeRecipe* pRecipe)
 	recipeFile.WriteToFile();
 }
 
+BOOL CReadCodeProcessor::SaveCameraSettings(CReadCodeCameraSetting* pCameraSetting, int nCamIdx)
+{
+	if (m_csCam1SettingPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Camera setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csCam1SettingPath);
+	if (m_csCam1SettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Camera setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CReadCodeCameraSetting camSetting;
+	camSetting = *(pCameraSetting);
+	*(m_pReadCodeCameraSetting[nCamIdx]) = *(pCameraSetting);
+
+	// convert path
+	USES_CONVERSION;
+	char chCamSettingPath[1024] = {};
+	sprintf_s(chCamSettingPath, "%s", W2A(m_csCam1SettingPath));
+
+	XMLDocument_2 xmlDoc;
+	std::string error;
+
+	std::ifstream fs(chCamSettingPath, std::ios::in | std::ios::out);
+	std::string inputXml;
+	std::string line;
+	while (std::getline(fs, line))
+	{
+		inputXml += line;
+	}
+	std::vector<char> buffer(inputXml.begin(), inputXml.end());
+	buffer.push_back('\0');
+	xmlDoc.parse<rapidxml::parse_full | rapidxml::parse_no_data_nodes>(&buffer[0]);
+
+	rapidxml::xml_node<>* pRoot = xmlDoc.first_node("Camera1Settings");
+
+	// Write data
+
+#pragma region Write data 
+
+	CString csFrameWidth;
+	csFrameWidth.Format(_T("%d"), camSetting.m_nFrameWidth);
+	const char* sFrameWidth = W2A(csFrameWidth);
+	pRoot->first_node("FrameWidth")->value(sFrameWidth);
+
+	CString csFrameHeight;
+	csFrameHeight.Format(_T("%d"), camSetting.m_nFrameHeight);
+	const char* sFrameHeight = W2A(csFrameHeight);
+	pRoot->first_node("FrameHeight")->value(sFrameHeight);
+
+	CString csChannel;
+	csChannel.Format(_T("%d"), camSetting.m_nChannel);
+	const char* sChannel = W2A(csChannel);
+	pRoot->first_node("Channel")->value(sChannel);
+
+	CString csTriggerMode;
+	csTriggerMode.Format(_T("%d"), camSetting.m_nTriggerMode);
+	const char* sTriggerMode = W2A(csTriggerMode);
+	pRoot->first_node("TriggerMode")->value(sTriggerMode);
+
+	CString csTriggerSource;
+	csTriggerSource.Format(_T("%d"), camSetting.m_nTriggerSource);
+	const char* sTriggerSource = W2A(csTriggerSource);
+	pRoot->first_node("TriggerSource")->value(sTriggerSource);
+
+	CString csExposureTime;
+	csExposureTime.Format(_T("%.1f"), camSetting.m_nExposureTime);
+	const char* sExposureTime = W2A(csExposureTime);
+	pRoot->first_node("ExposureTime")->value(sExposureTime);
+
+	CString csAnalogGain;
+	csAnalogGain.Format(_T("%.1f"), camSetting.m_nAnalogGain);
+	const char* sAnalogGain = W2A(csAnalogGain);
+	pRoot->first_node("AnalogGain")->value(sAnalogGain);
+
+	const char* sSerialNumber = W2A(camSetting.m_sSerialNumber);
+	pRoot->first_node("SerialNumber")->value(sSerialNumber);
+
+#pragma endregion
+
+	// Convert the modified XML back to a string
+	std::string data;
+	rapidxml::print(std::back_inserter(data), xmlDoc);
+
+	std::ofstream file;
+	file.open(chCamSettingPath);
+	file << data;
+	file.close();
+
+	return TRUE;
+}
+
 BOOL CReadCodeProcessor::ReloadSystemSetting()
 {
 	if (m_pReadCodeSystemSetting == NULL)
@@ -475,6 +713,7 @@ LPBYTE CReadCodeProcessor::GetImageBufferBaslerCam(int nCamIdx)
 	return m_matBGR.data;
 
 }
+
 
 BOOL CReadCodeProcessor::LoadSimulatorBuffer(int nBuff, int nFrame, CString strFilePath)
 {
@@ -561,15 +800,17 @@ BOOL CReadCodeProcessor::CreateResultBuffer()
 {
 	BOOL bRetValue = FALSE;
 
-	DWORD dwFrameWidth = (DWORD)FRAME_WIDTH;
-	DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT;
-	DWORD dwFrameCount = 0;
-	DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
-
+	DWORD dwFrameSize = 0;
 	DWORD64 dwTotalFrameCount = 0;
 
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
 	{
+		DWORD dwFrameWidth = (DWORD)m_pReadCodeCameraSetting[i]->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)m_pReadCodeCameraSetting[i]->m_nFrameHeight;
+		DWORD dwFrameCount = 0;
+
+		dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
+
 		if (m_pResultBuffer[i] != NULL)
 		{
 			m_pResultBuffer[i]->DeleteSharedMemory();
@@ -620,15 +861,17 @@ BOOL CReadCodeProcessor::CreateSimulatorBuffer()
 {
 	BOOL bRetValue = FALSE;
 
-	DWORD dwFrameWidth = (DWORD)FRAME_WIDTH;
-	DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT;
 	DWORD dwFrameCount = 0;
-	DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
+	DWORD dwFrameSize = 0;
 
 	DWORD64 dwTotalFrameCount = 0;
 
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
 	{
+		DWORD dwFrameWidth = (DWORD)m_pReadCodeCameraSetting[i]->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)m_pReadCodeCameraSetting[i]->m_nFrameHeight;
+		dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
+
 		if (m_pSimulatorBuffer[i] != NULL)
 		{
 			m_pSimulatorBuffer[i]->DeleteSharedMemory();
