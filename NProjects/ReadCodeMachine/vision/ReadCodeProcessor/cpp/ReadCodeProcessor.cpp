@@ -112,7 +112,7 @@ BOOL CReadCodeProcessor::InspectStart(BOOL bSimulator)
 {
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 1);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 1);
-	m_pReadCodeBaslerCam->SetExposureTime(0, 100.0);
+	m_pReadCodeBaslerCam->SetExposureTime(0, 50);
 	m_pReadCodeBaslerCam->SetIsStreaming(FALSE);
 
 	m_pReadCodeBaslerCam->StartGrab(0);
@@ -126,7 +126,7 @@ BOOL CReadCodeProcessor::InspectStop()
 
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 0);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 0);
-	m_pReadCodeBaslerCam->SetExposureTime(0, 5000.0);
+	//m_pReadCodeBaslerCam->SetExposureTime(0, 50000.0);
 
 	return TRUE;
 }

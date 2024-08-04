@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.IO;
 using ReadCodeGUI.Manager.Class;
+using System.Threading;
 
 namespace ReadCodeGUI.ViewModels
 {
@@ -72,15 +73,17 @@ namespace ReadCodeGUI.ViewModels
             if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
             {
                 SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
-                m_Plc_Delta.StartAddressBitM += 3; // Out Y3
+                m_Plc_Delta.StartAddressBitM += 1; // Out Y3
                 m_Plc_Delta.SetOutputPlc(true);
+                Thread.Sleep(5);
                 m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
             }
             else
             {
                 SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
-                m_Plc_Delta.StartAddressBitM += 2; // Out Y2
+                m_Plc_Delta.StartAddressBitM += 0; // Out Y2
                 m_Plc_Delta.SetOutputPlc(true);
+                Thread.Sleep(5);
                 m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
             }
 

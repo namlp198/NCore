@@ -6,6 +6,12 @@ CReadCodeBaslerCam::CReadCodeBaslerCam(IReadCodeBaslerCamToParent* pInterface)
 {
 	m_pInterface = pInterface;
 	m_bIsStreaming = FALSE;
+
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	{
+		if (m_pCamera[i] != NULL)
+			delete m_pCamera[i], m_pCamera[i] = NULL;
+	}
 }
 
 CReadCodeBaslerCam::~CReadCodeBaslerCam()
@@ -90,7 +96,7 @@ BOOL CReadCodeBaslerCam::Destroy()
 		if (m_pCamera[i] != NULL)
 		{
 			m_pCamera[i]->StopGrab();
-			Sleep(500);
+			Sleep(1000);
 			m_pCamera[i]->Disconnect();
 			delete m_pCamera[i], m_pCamera[i] = NULL;
 		}
@@ -169,6 +175,10 @@ int CReadCodeBaslerCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, c
 	cv::Mat matResult(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC3);
 
 	memcpy(matSrc.data, (LPBYTE)pBuffer, m_pCameraImageBuffer[nGrabberIndex]->GetFrameSize());
+
+	/*char pathSaveImage[200] = { };
+	sprintf_s(pathSaveImage, "%s%s_%d.bmp", "D:\\entry\\NCore\\NProjects\\ReadCodeMachine\\bin\\SaveImages\\", "Code_", nNextFrameIdx);
+	cv::imwrite(pathSaveImage, matSrc);*/
 
 	cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
 
