@@ -1,4 +1,9 @@
 #pragma once
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+
 #include "FrameGrabber.h"
 #include "FrameGrabberParam.h"
 #include "FrameGrabber_BaslerCam_New.h"
@@ -10,14 +15,9 @@
 #include "ReadCodeStatus.h"
 #include "ReadCodeCameraSetting.h"
 
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-
 #include "ZXingOpenCV.h"
 
-typedef void __stdcall ReceivedImageCallback(LPVOID pBuffer, int nGrabberIndex, int nNextFrameIdx, LPVOID pParam);
+//typedef void __stdcall ReceivedImageCallback(LPVOID pBuffer, int nGrabberIndex, int nNextFrameIdx, LPVOID pParam);
 
 interface IReadCodeBaslerCamToParent
 {
@@ -25,6 +25,9 @@ interface IReadCodeBaslerCamToParent
 	virtual CReadCodeSystemSetting*   GetSystemSettingControl() = 0;
 	virtual CReadCodeCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
 	virtual CReadCodeStatus*          GetReadCodeStatusControl(int nCoreIdx) = 0;
+	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual CReadCodeResult*          GetReadCodeResultControl(int nCoreIdx) = 0;
+	virtual void                      InspectComplete(BOOL bSetting) = 0;
 };
 
 class AFX_EXT_CLASS CReadCodeBaslerCam : public IFrameGrabber2Parent
@@ -40,7 +43,7 @@ public:
 
 	LPBYTE                          GetBufferImage(int nCamIdx);
 	// Register image callback
-	void                            RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID param);
+	//void                            RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam);
 
 public:
 	virtual void	DisplayMessage(TCHAR* str, ...) {};
@@ -61,8 +64,8 @@ private:
 	IReadCodeBaslerCamToParent*              m_pInterface;
 
 	// callback
-	ReceivedImageCallback*                   m_pReceivedImgCallback;
-	LPVOID                                   m_pParam;
+	//ReceivedImageCallback*                   m_pReceivedImgCallback;
+	//LPVOID                                   m_pParam;
 
 	// Area Camera
 	BOOL							         m_bCamera_ConnectStatus[MAX_CAMERA_INSPECT_COUNT];

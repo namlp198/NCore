@@ -3,14 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "ReadCodeRecipe.h"
-#include "ReadCodeDefine.h"
 #include "ReadCodeBaslerCam.h"
-#include "ReadCodeResult.h"
-#include "ReadCodeSystemSetting.h"
-#include "ReadCodeStatus.h"
 #include "ReadCodeCore.h"
-#include "ReadCodeCameraSetting.h"
 
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
@@ -48,8 +42,8 @@ public:
 	BOOL                       InspectStart(int nThreadCount, BOOL bSimulator);
 	BOOL                       InspectStop();
 
-	static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
-	void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);
+	//static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
+	//void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);
 
 public:
 	BOOL                       LoadSystemSettings(CReadCodeSystemSetting* pSystemSetting);

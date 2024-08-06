@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ReadCodeProcessor.h"
-#include "ReadCodeDefine.h"
 
 CReadCodeProcessor::CReadCodeProcessor()
 {
@@ -61,24 +60,24 @@ BOOL CReadCodeProcessor::Initialize()
 		m_pReadCodeStatus[i] = new CReadCodeStatus;
 	}
 
-	// 7. Camera
-	if (m_pReadCodeSystemSetting->m_bSimulation == FALSE)
-	{
-		
-		if (m_pReadCodeBaslerCam != NULL)
-			delete m_pReadCodeBaslerCam, m_pReadCodeBaslerCam = NULL;
-		m_pReadCodeBaslerCam = new CReadCodeBaslerCam(this);
-#ifndef TEST_NO_CAMERA
-		m_pReadCodeBaslerCam->Initialize();
-		m_pReadCodeBaslerCam->RegisterReceivedImageCallback(ReceivedImageCallback, this);
-#endif
-	}
-
 	// 8. Process Core
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
 		if (m_pReadCodeCore[i] != NULL)
 			delete m_pReadCodeCore[i], m_pReadCodeCore[i] = NULL;
 		m_pReadCodeCore[i] = new CReadCodeCore(this);
+	}
+
+	// 7. Camera
+	if (m_pReadCodeSystemSetting->m_bSimulation == FALSE)
+	{
+
+		if (m_pReadCodeBaslerCam != NULL)
+			m_pReadCodeBaslerCam->Destroy();
+		m_pReadCodeBaslerCam = new CReadCodeBaslerCam(this);
+#ifndef TEST_NO_CAMERA
+		m_pReadCodeBaslerCam->Initialize();
+		//m_pReadCodeBaslerCam->RegisterReceivedImageCallback(ReceivedImageCallback, this);
+#endif
 	}
 
 	return TRUE;
@@ -152,13 +151,14 @@ BOOL CReadCodeProcessor::InspectStart(int nThreadCount, BOOL bSimulator)
 	}
 
 	int nCamIdx = 0;
+	m_pReadCodeStatus[nCamIdx]->SetStreaming(FALSE);
+	m_pReadCodeStatus[nCamIdx]->SetInspectRunning(TRUE);
+
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 1);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 1);
-	m_pReadCodeBaslerCam->SetExposureTime(0, 50.0);
+	m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
 
 	m_pReadCodeBaslerCam->StartGrab(0);
-	
-	m_pReadCodeStatus[nCamIdx]->SetInspectRunning(TRUE);
 
 	return TRUE;
 }
@@ -166,6 +166,8 @@ BOOL CReadCodeProcessor::InspectStart(int nThreadCount, BOOL bSimulator)
 BOOL CReadCodeProcessor::InspectStop()
 {
 	int nCamIdx = 0;
+	m_pReadCodeStatus[nCamIdx]->SetStreaming(TRUE);
+	m_pReadCodeStatus[nCamIdx]->SetInspectRunning(FALSE);
 
 	m_pReadCodeBaslerCam->StopGrab(0);
 
@@ -173,26 +175,24 @@ BOOL CReadCodeProcessor::InspectStop()
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 0);
 	m_pReadCodeBaslerCam->SetExposureTime(0, m_pReadCodeCameraSetting[0]->m_nExposureTime);
 
-	m_pReadCodeStatus[nCamIdx]->SetInspectRunning(FALSE);
-
 	return TRUE;
 }
 
-void CReadCodeProcessor::ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param)
-{
-	CReadCodeProcessor* pThis = (CReadCodeProcessor*)param;
-	pThis->ReceivedImageCallbackEx(nGrabberIdx, nFrameIdx, pBuffer);
-}
-
-void CReadCodeProcessor::ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer)
-{
-	if ((LPBYTE)pBuffer == NULL)
-		return;
-
-	int nCoreIdx = nGrabberIdx;
-
-	m_pReadCodeCore[nCoreIdx]->Inspect_Real(nCoreIdx, (LPBYTE)pBuffer);
-}
+//void CReadCodeProcessor::ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param)
+//{
+//	CReadCodeProcessor* pThis = (CReadCodeProcessor*)param;
+//	pThis->ReceivedImageCallbackEx(nGrabberIdx, nFrameIdx, pBuffer);
+//}
+//
+//void CReadCodeProcessor::ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer)
+//{
+//	if ((LPBYTE)pBuffer == NULL)
+//		return;
+//
+//	int nCoreIdx = nGrabberIdx;
+//
+//	m_pReadCodeCore[nCoreIdx]->Inspect_Real(nCoreIdx, (LPBYTE)pBuffer);
+//}
 
 BOOL CReadCodeProcessor::LoadSystemSettings(CReadCodeSystemSetting* pSystemSetting)
 {
