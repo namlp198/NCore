@@ -7,6 +7,9 @@
 #ifndef PCH_H
 #define PCH_H
 
+#undef NDEBUG
+#include <assert.h>
+
 // add headers that you want to pre-compile here
 #include "framework.h"
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS 

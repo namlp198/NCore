@@ -43,6 +43,7 @@ namespace DinoWpf.ViewModels
             _mainView = mainView;
 
             GetAllJobNames();
+            InterfaceManager.Instance.TempInspProcessorManager.TempInspProcessorDll.Initialize();
         }
         #endregion
 

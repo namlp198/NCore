@@ -41,9 +41,10 @@ public:
 public:
 	BOOL                       InspectStart(int nThreadCount, BOOL bSimulator);
 	BOOL                       InspectStop();
+	BOOL                       ProcessFrame(int nCoreIdx, LPBYTE pBuff);
 
-	//static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
-	//void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);
+	/*static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
+	void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);*/
 
 public:
 	BOOL                       LoadSystemSettings(CReadCodeSystemSetting* pSystemSetting);

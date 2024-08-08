@@ -61,7 +61,7 @@ BOOL CTempInspectProcessor::Initialize()
 		delete m_pHikCamera, m_pHikCamera = NULL;
 	}
 	m_pHikCamera = new CTempInspectHikCam(this);
-	m_pHikCamera->Initialize();
+	//m_pHikCamera->Initialize();
 	m_pHikCamera->RegisterReceivedImageCallback(ReceivedImageCallback, this);
 #endif // SIMULATOR
 

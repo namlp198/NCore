@@ -481,9 +481,9 @@ namespace ReadCodeGUI.ViewModels
                     if (string.Compare("Cam 1", m_strCameraSelected) == 0)
                     {
                         CameraSelected = ECameraList.Cam1;
-                        _settingView.buffVSSettings.CameraIndex = 0; // 0: Index of Top Cam 1
+                        _settingView.buffVSSettings.CameraIndex = 0;
                         _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
-
+                        
                     }
                 }
             }

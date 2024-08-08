@@ -156,7 +156,7 @@ BOOL CReadCodeProcessor::InspectStart(int nThreadCount, BOOL bSimulator)
 
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 1);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 1);
-	m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
+	//m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
 
 	m_pReadCodeBaslerCam->StartGrab(0);
 
@@ -173,7 +173,17 @@ BOOL CReadCodeProcessor::InspectStop()
 
 	m_pReadCodeBaslerCam->SetTriggerMode(0, 0);
 	m_pReadCodeBaslerCam->SetTriggerSource(0, 0);
-	m_pReadCodeBaslerCam->SetExposureTime(0, m_pReadCodeCameraSetting[0]->m_nExposureTime);
+	//m_pReadCodeBaslerCam->SetExposureTime(0, m_pReadCodeCameraSetting[0]->m_nExposureTime);
+
+	return TRUE;
+}
+
+BOOL CReadCodeProcessor::ProcessFrame(int nCoreIdx, LPBYTE pBuff)
+{
+	if (pBuff == NULL)
+		return FALSE;
+
+	m_pReadCodeCore[nCoreIdx]->Inspect_Real(nCoreIdx, pBuff);
 
 	return TRUE;
 }
@@ -706,10 +716,14 @@ LPBYTE CReadCodeProcessor::GetImageBufferBaslerCam(int nCamIdx)
 	LPBYTE pImageBuff = m_pReadCodeBaslerCam->GetBufferImage(nCamIdx);
 
 
-	cv::Mat mat(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC1, pImageBuff);
+	cv::Mat mat(m_pReadCodeCameraSetting[0]->m_nFrameWidth, m_pReadCodeCameraSetting[0]->m_nFrameHeight, CV_8UC1, pImageBuff);
 
 	cv::cvtColor(mat, m_matBGR, cv::COLOR_GRAY2BGR);
 
+	/*char ch[200] = {};
+	sprintf_s(ch, "%s%s", "D:\\entry\\NCore\\NProjects\\ReadCodeMachine\\bin\\SaveImages\\", "imageTest.bmp");
+	cv::imwrite(ch, m_matBGR);*/
+	
 	return m_matBGR.data;
 
 }

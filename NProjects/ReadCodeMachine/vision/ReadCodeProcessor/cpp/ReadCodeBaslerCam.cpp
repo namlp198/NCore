@@ -174,61 +174,8 @@ int CReadCodeBaslerCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, c
 		return TRUE;
 	}
 
-	// Start read code
-
-	int nCoreIdx = 0;
-
-	cv::Mat matSrc(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC1);
-	cv::Mat matResult(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC3);
-
-	DWORD dFrameSize = FRAME_HEIGHT * FRAME_WIDTH * NUMBER_OF_CHANNEL_ORIGINAL;
-	memcpy(matSrc.data, (LPBYTE)pBuffer, dFrameSize);
-
-	/*char pathSaveImage[200] = { };
-	sprintf_s(pathSaveImage, "%s%s_%d.bmp", "D:\\entry\\NCore\\NProjects\\ReadCodeMachine\\bin\\SaveImages\\", "Code_", nNextFrameIdx);
-	cv::imwrite(pathSaveImage, matSrc);*/
-
-	cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
-
-	BOOL bRet = FALSE;
-	CString csRet;
-
-	auto barcodes = ReadBarcodes(matSrc);
-
-	if (!barcodes.empty())
-	{
-		if (barcodes.size() == m_pInterface->GetRecipeControl()->m_nMaxCodeCount)
-		{
-			bRet = TRUE;
-		}
-		else
-		{
-			bRet = FALSE;
-		}
-
-		std::string sRet;
-		const char* const delim = ";";
-		for (auto& barcode : barcodes) {
-			DrawBarcode(matResult, barcode);
-			if (!sRet.empty())
-				sRet += delim;
-
-			sRet += barcode.text();
-		}
-		csRet = (CString)sRet.c_str();
-	}
-
-	m_pInterface->SetResultBuffer(0, 0, matResult.data);
-
-	m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_bInspectCompleted = TRUE;
-	m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_bResultStatus = bRet;
-	ZeroMemory(m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_sResultString, sizeof(m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_sResultString));
-	wsprintf(m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
-
-	m_pInterface->InspectComplete(FALSE);
-
-	localLock.Unlock();
-	return TRUE;
+	//m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nCurrentFrameIdx, m_pParam);
+	m_pInterface->ProcessFrame(nGrabberIndex, (LPBYTE)pBuffer);
 }
 
 int CReadCodeBaslerCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)

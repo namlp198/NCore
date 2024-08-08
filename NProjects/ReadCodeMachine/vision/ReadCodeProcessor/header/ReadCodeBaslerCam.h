@@ -26,8 +26,7 @@ interface IReadCodeBaslerCamToParent
 	virtual CReadCodeCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
 	virtual CReadCodeStatus*          GetReadCodeStatusControl(int nCoreIdx) = 0;
 	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
-	virtual CReadCodeResult*          GetReadCodeResultControl(int nCoreIdx) = 0;
-	virtual void                      InspectComplete(BOOL bSetting) = 0;
+	virtual BOOL                      ProcessFrame(int nCoreIdx, LPBYTE pBuff) = 0;
 };
 
 class AFX_EXT_CLASS CReadCodeBaslerCam : public IFrameGrabber2Parent
@@ -42,8 +41,6 @@ public:
 	BOOL                            GetCamStatus();
 
 	LPBYTE                          GetBufferImage(int nCamIdx);
-	// Register image callback
-	//void                            RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam);
 
 public:
 	virtual void	DisplayMessage(TCHAR* str, ...) {};
@@ -59,6 +56,9 @@ public:
 	int SetTriggerSource(int nCamIdx, int nSource);
 	int SetExposureTime(int nCamIdx, double dExpTime);
 	int SetAnalogGain(int nCamIdx, double dGain);
+
+	// Register image callback
+	//void RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam);
 
 private:
 	IReadCodeBaslerCamToParent*              m_pInterface;

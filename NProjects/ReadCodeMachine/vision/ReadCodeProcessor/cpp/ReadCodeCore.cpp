@@ -182,9 +182,6 @@ void CReadCodeCore::Inspect_Simulation(int nCoreIdx, int nFrame)
 
 void CReadCodeCore::Inspect_Real(int nCoreIdx, LPBYTE pBuffer)
 {
-	if (pBuffer != NULL)
-		return;
-
 	ProcessFrame(nCoreIdx, pBuffer);
 }
 
@@ -195,10 +192,10 @@ void CReadCodeCore::ProcessFrame(int nCoreIdx, LPBYTE pBuffer)
 
 	// Start read code
 
-	cv::Mat matSrc(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC1);
-	cv::Mat matResult(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC3);
+	cv::Mat matSrc(m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nFrameHeight, m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nFrameWidth, CV_8UC1);
+	cv::Mat matResult(m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nFrameHeight, m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nFrameWidth, CV_8UC3);
 
-	DWORD dFrameSize = FRAME_HEIGHT * FRAME_WIDTH * NUMBER_OF_CHANNEL_ORIGINAL;
+	DWORD dFrameSize = m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nFrameHeight * m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nFrameWidth * m_pInterface->GetCameraSettingControl(nCoreIdx)->m_nChannel;
 	memcpy(matSrc.data, (LPBYTE)pBuffer, dFrameSize);
 
 	/*char pathSaveImage[200] = { };
@@ -235,7 +232,7 @@ void CReadCodeCore::ProcessFrame(int nCoreIdx, LPBYTE pBuffer)
 		csRet = (CString)sRet.c_str();
 	}
 
-	m_pInterface->SetResultBuffer(0, 0, matResult.data);
+	m_pInterface->SetResultBuffer(nCoreIdx, 0, matResult.data); // cause the buffer just have a frame should be frame index = 0
 
 	m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_bInspectCompleted = TRUE;
 	m_pInterface->GetReadCodeResultControl(nCoreIdx)->m_bResultStatus = bRet;

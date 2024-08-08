@@ -7,6 +7,7 @@
 #include "SharedMemoryBuffer.h"
 #include "ReadCodeRecipe.h"
 #include "ReadCodeSystemSetting.h"
+#include "ReadCodeCameraSetting.h"
 #include "ReadCodeResult.h"
 #include "ReadCodeDefine.h"
 #include "ReadCodeStatus.h"
@@ -18,6 +19,7 @@ interface IReadCodeCoreToParent
 {
 	virtual CReadCodeRecipe*          GetRecipeControl() = 0;
 	virtual CReadCodeSystemSetting*   GetSystemSettingControl() = 0;
+	virtual CReadCodeCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
 	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame) = 0;
 	virtual CReadCodeResult*          GetReadCodeResultControl(int nCoreIdx) = 0;
