@@ -60,13 +60,15 @@ namespace ReadCodeGUI.ViewModels
             InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.LoadSystemSettings(ref InterfaceManager.Instance.m_processorManager.m_readCodeSysSettings);
             SettingVM.LoadSystemSettings();
 
-            SettingVM.LoadPlcSettings();
-
             InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_readCodeRecipe);
             SettingVM.LoadRecipe();
 
+            SettingVM.LoadPlcSettings();
+
             if (InterfaceManager.Instance.m_processorManager.m_readCodeSysSettings.m_bSimulation == 0)
             {
+                RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
+                SettingVM.SetAllParamPlcDelta();
                 if (InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(1,0))
                 {
                     InspectRunning = true;

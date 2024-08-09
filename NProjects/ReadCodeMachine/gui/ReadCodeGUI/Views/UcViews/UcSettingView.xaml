@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ReadCodeGUI.Views.UcViews"
              xmlns:Ctrls="clr-namespace:NCore.Wpf.BufferViewerSimple;assembly=NCore.Wpf.BufferViewerSimple"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="1000"
@@ -326,6 +327,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="RECIPE"
+                         Visibility="Collapsed"
                          Style="{StaticResource TabItemStyle}"
                          FontSize="18"
                          Width="300"
@@ -384,6 +386,47 @@
                                 </Button.Content>
                             </Button>
                         </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="RECIPE"
+                         Style="{StaticResource TabItemStyle}"
+                         FontSize="18"
+                         FontWeight="Bold"
+                         Foreground="Black"
+                         Width="300"
+                         FontFamily="Segoe UI">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="60" />
+                        </Grid.RowDefinitions>
+                        <xctk:PropertyGrid x:Name="propGridRecipe"
+                                           Margin="10"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           AutoGenerateProperties="True"
+                                           NameColumnWidth="450"
+                                           SelectedObject="{Binding ReadCodePropertyGrid, Mode=TwoWay}">
+
+                        </xctk:PropertyGrid>
+                        <!--Button-->
+                        <Button Grid.Row="1"
+                                x:Name="btnSaveRecipe_PropertyGrid"
+                                Command="{Binding SaveRecipeCmd}"
+                                CommandParameter="{Binding ElementName=btnSaveRecipe_PropertyGrid, Path=Name}"
+                                Margin="3"
+                                Width="130"
+                                HorizontalAlignment="Right"
+                                Foreground="White"
+                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="14"
+                                               FontWeight="Bold"
+                                               Text="Save Recipe" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                     </Grid>
                 </TabItem>
             </TabControl>

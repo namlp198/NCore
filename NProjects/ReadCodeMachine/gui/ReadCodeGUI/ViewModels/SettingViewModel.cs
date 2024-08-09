@@ -38,6 +38,7 @@ namespace ReadCodeGUI.ViewModels
         private List<SystemSettingsMapToDataGridModel> m_sysSettingsMapToDataGridModels = new List<SystemSettingsMapToDataGridModel>();
         private List<RecipeMapToDataGridModel> m_recipeMapToDataGridModels = new List<RecipeMapToDataGridModel>();
         private List<PlcSettingsMapToDataGridModel> m_plcSettingsMapToDGModel = new List<PlcSettingsMapToDataGridModel>();
+        private CReadCodeRecipe_PropertyGrid m_readCodeRecipe_PropertyGrid = new CReadCodeRecipe_PropertyGrid();
 
         private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
         private List<string> m_cameraLst = new List<string>();
@@ -236,8 +237,8 @@ namespace ReadCodeGUI.ViewModels
             PlcSettingsMapToDGModels = plcSettings;
             //MainViewModel.Instance.RunVM.SumCamVM.Plc_LS.Initialize();
 
-            MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
-            SetAllParamPlcDelta();
+            //MainViewModel.Instance.RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
+            //SetAllParamPlcDelta();
         }
         public void SetAllParamPlcDelta()
         {
@@ -324,6 +325,107 @@ namespace ReadCodeGUI.ViewModels
         // Load Recipe
         public void LoadRecipe()
         {
+            CReadCodeRecipe_PropertyGrid readCodeRecipe_PropertyGrid = new CReadCodeRecipe_PropertyGrid();
+            {
+                readCodeRecipe_PropertyGrid.UseReadCode = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bUseReadCode == 1 ? true : false;
+                readCodeRecipe_PropertyGrid.UseInkjetCharactersInspect = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bUseInkjetCharactersInspect == 1 ? true : false;
+                readCodeRecipe_PropertyGrid.UseRotateROI = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bUseRotateROI == 1 ? true : false;
+                readCodeRecipe_PropertyGrid.MaxCodeCount = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nMaxCodeCount;
+                // Params Template Matching
+                readCodeRecipe_PropertyGrid.TemplateROI_OuterX = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateROI_OuterX;
+                readCodeRecipe_PropertyGrid.TemplateROI_OuterY = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateROI_OuterY;
+                readCodeRecipe_PropertyGrid.TemplateROI_Outer_Width = InterfaceManager.Instance.m_processorManager.
+                                                     m_readCodeRecipe.m_nTemplateROI_Outer_Width;
+                readCodeRecipe_PropertyGrid.TemplateROI_Outer_Height = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateROI_Outer_Height;
+                readCodeRecipe_PropertyGrid.TemplateROI_InnerX = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateROI_InnerX;
+                readCodeRecipe_PropertyGrid.TemplateROI_InnerY = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateROI_InnerY;
+                readCodeRecipe_PropertyGrid.TemplateROI_Inner_Width = InterfaceManager.Instance.m_processorManager.
+                                                     m_readCodeRecipe.m_nTemplateROI_Inner_Width;
+                readCodeRecipe_PropertyGrid.TemplateROI_Inner_Height = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateROI_Inner_Height;
+                readCodeRecipe_PropertyGrid.TemplateCoordinatesX = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateCoordinatesX;
+                readCodeRecipe_PropertyGrid.TemplateCoordinatesY = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nTemplateCoordinatesY;
+                readCodeRecipe_PropertyGrid.TemplateAngleRotate = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_dTemplateAngleRotate;
+                readCodeRecipe_PropertyGrid.TemplateShowGraphics = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bTemplateShowGraphics == 1 ? true : false;
+                // ROI 1
+                readCodeRecipe_PropertyGrid.ROI1_OffsetX = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_OffsetX;
+                readCodeRecipe_PropertyGrid.ROI1_OffsetY = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_OffsetY;
+                readCodeRecipe_PropertyGrid.ROI1_Width = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_Width;
+                readCodeRecipe_PropertyGrid.ROI1_Height = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_Height;
+                readCodeRecipe_PropertyGrid.ROI1_AngleRotate = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_AngleRotate;
+                readCodeRecipe_PropertyGrid.ROI1_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_GrayThreshold_Min;
+                readCodeRecipe_PropertyGrid.ROI1_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_GrayThreshold_Max;
+                readCodeRecipe_PropertyGrid.ROI1_PixelCount_Min = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_PixelCount_Min;
+                readCodeRecipe_PropertyGrid.ROI1_PixelCount_Max = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI1_PixelCount_Max;
+                readCodeRecipe_PropertyGrid.ROI1ShowGraphics = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bROI1ShowGraphics == 1? true : false;
+                // ROI 2
+                readCodeRecipe_PropertyGrid.ROI2_OffsetX = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_OffsetX;
+                readCodeRecipe_PropertyGrid.ROI2_OffsetY = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_OffsetY;
+                readCodeRecipe_PropertyGrid.ROI2_Width = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_Width;
+                readCodeRecipe_PropertyGrid.ROI2_Height = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_Height;
+                readCodeRecipe_PropertyGrid.ROI2_AngleRotate = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_AngleRotate;
+                readCodeRecipe_PropertyGrid.ROI2_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_GrayThreshold_Min;
+                readCodeRecipe_PropertyGrid.ROI2_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_GrayThreshold_Max;
+                readCodeRecipe_PropertyGrid.ROI2_PixelCount_Min = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_PixelCount_Min;
+                readCodeRecipe_PropertyGrid.ROI2_PixelCount_Max = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI2_PixelCount_Max;
+                readCodeRecipe_PropertyGrid.ROI2ShowGraphics = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bROI2ShowGraphics == 1 ? true : false;
+                // ROI 3
+                readCodeRecipe_PropertyGrid.ROI3_OffsetX = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_OffsetX;
+                readCodeRecipe_PropertyGrid.ROI3_OffsetY = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_OffsetY;
+                readCodeRecipe_PropertyGrid.ROI3_Width = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_Width;
+                readCodeRecipe_PropertyGrid.ROI3_Height = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_Height;
+                readCodeRecipe_PropertyGrid.ROI3_AngleRotate = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_AngleRotate;
+                readCodeRecipe_PropertyGrid.ROI3_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_GrayThreshold_Min;
+                readCodeRecipe_PropertyGrid.ROI3_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_GrayThreshold_Max;
+                readCodeRecipe_PropertyGrid.ROI3_PixelCount_Min = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_PixelCount_Min;
+                readCodeRecipe_PropertyGrid.ROI3_PixelCount_Max = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_nROI3_PixelCount_Max;
+                readCodeRecipe_PropertyGrid.ROI3ShowGraphics = InterfaceManager.Instance.m_processorManager.
+                                                      m_readCodeRecipe.m_bROI3ShowGraphics == 1 ? true : false;
+            }
+            ReadCodePropertyGrid = readCodeRecipe_PropertyGrid;
+
             List<RecipeMapToDataGridModel> recipeModels = new List<RecipeMapToDataGridModel>();
 
             int nPropertyCount = typeof(CReadCodeRecipe).GetFields().Count();
@@ -335,8 +437,217 @@ namespace ReadCodeGUI.ViewModels
                 {
                     case 0:
                         recipe.Index = i + 1;
+                        recipe.Params = "Use Read Code Tool (1: Use, 0: Not Use)";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseReadCode + "";
+                        break;
+                    case 1:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Use Inkjet Characters Inspect Tool (1: Use, 0: Not Use)";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseInkjetCharactersInspect + "";
+                        break;
+                    case 2:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Use Rotate ROI (1: Use, 0: Not Use)";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseRotateROI + "";
+                        break;
+                    case 3:
+                        recipe.Index = i + 1;
                         recipe.Params = "Max Code Count";
                         recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nMaxCodeCount + "";
+                        break;
+                    // Template Matching
+                    case 4:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Outer X";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_OuterX + "";
+                        break;
+                    case 5:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Outer Y";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_OuterY + "";
+                        break;
+                    case 6:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Outer Width";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Outer_Width + "";
+                        break;
+                    case 7:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Outer Height";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Outer_Height + "";
+                        break;
+                    case 8:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Inner X";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_InnerX + "";
+                        break;
+                    case 9:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Inner Y";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_InnerY + "";
+                        break;
+                    case 10:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Inner Width";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Inner_Width + "";
+                        break;
+                    case 11:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template ROI Inner Height";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Inner_Height + "";
+                        break;
+                    case 12:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template Coordinates X";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateCoordinatesX + "";
+                        break;
+                    case 13:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template Coordinates Y";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateCoordinatesY + "";
+                        break;
+                    case 14:
+                        recipe.Index = i + 1;
+                        recipe.Params = "Template Angle Rotate";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_dTemplateAngleRotate + "";
+                        break;
+                    // ROI1
+                    case 15:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Offset X";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_OffsetX + "";
+                        break;
+                    case 16:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Offset Y";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_OffsetY + "";
+                        break;
+                    case 17:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Width";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_Width + "";
+                        break;
+                    case 18:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Height";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_Height + "";
+                        break;
+                    case 19:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Angle Rotate";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_AngleRotate + "";
+                        break;
+                    case 20:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Gray Threshold Min";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_GrayThreshold_Min + "";
+                        break;
+                    case 21:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Gray Threshold Max";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_GrayThreshold_Max + "";
+                        break;
+                    case 22:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Pixel Count Min";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_PixelCount_Min + "";
+                        break;
+                    case 23:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI1 Pixel Count Max";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_PixelCount_Max + "";
+                        break;
+                    // ROI2
+                    case 24:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Offset X";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_OffsetX + "";
+                        break;
+                    case 25:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Offset Y";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_OffsetY + "";
+                        break;
+                    case 26:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Width";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_Width + "";
+                        break;
+                    case 27:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Height";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_Height + "";
+                        break;
+                    case 28:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Angle Rotate";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_AngleRotate + "";
+                        break;
+                    case 29:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Gray Threshold Min";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_GrayThreshold_Min + "";
+                        break;
+                    case 30:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Gray Threshold Max";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_GrayThreshold_Max + "";
+                        break;
+                    case 31:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Pixel Count Min";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_PixelCount_Min + "";
+                        break;
+                    case 32:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI2 Pixel Count Max";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_PixelCount_Max + "";
+                        break;
+                    // ROI3
+                    case 33:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Offset X";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_OffsetX + "";
+                        break;
+                    case 34:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Offset Y";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_OffsetY + "";
+                        break;
+                    case 35:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Width";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_Width + "";
+                        break;
+                    case 36:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Height";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_Height + "";
+                        break;
+                    case 37:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Angle Rotate";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_AngleRotate + "";
+                        break;
+                    case 38:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Gray Threshold Min";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_GrayThreshold_Min + "";
+                        break;
+                    case 39:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Gray Threshold Max";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_GrayThreshold_Max + "";
+                        break;
+                    case 40:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Pixel Count Min";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_PixelCount_Min + "";
+                        break;
+                    case 41:
+                        recipe.Index = i + 1;
+                        recipe.Params = "ROI3 Pixel Count Max";
+                        recipe.Value = InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_PixelCount_Max + "";
                         break;
                 }
                 recipeModels.Add(recipe);
@@ -434,6 +745,11 @@ namespace ReadCodeGUI.ViewModels
             {
                 if (SetProperty(ref m_plcSettingsMapToDGModel, value)) { }
             }
+        }
+        public CReadCodeRecipe_PropertyGrid ReadCodePropertyGrid
+        {
+            get => m_readCodeRecipe_PropertyGrid;
+            set => m_readCodeRecipe_PropertyGrid = value;
         }
         public string DisplayImagePath
         {
