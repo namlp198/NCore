@@ -28,6 +28,7 @@ namespace ReadCodeGUI.Models
         public int m_nTemplateCoordinatesX;
         public int m_nTemplateCoordinatesY;
         public double m_dTemplateAngleRotate;
+        public double m_dTemplateMatchingRate;
         // ROI1
         public int m_nROI1_OffsetX;
         public int m_nROI1_OffsetY;

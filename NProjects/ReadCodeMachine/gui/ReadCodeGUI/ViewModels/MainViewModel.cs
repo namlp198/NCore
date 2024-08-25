@@ -67,6 +67,15 @@ namespace ReadCodeGUI.ViewModels
 
             if (InterfaceManager.Instance.m_processorManager.m_readCodeSysSettings.m_bSimulation == 0)
             {
+                // add camera list
+                List<string> lstCameras = new List<string>();
+                for (int i = 1; i <= Defines.MAX_CAMERA_INSPECT_COUNT; i++)
+                {
+                    string sCamera = "Cam " + i + "";
+                    lstCameras.Add(sCamera);
+                }
+                SettingVM.SettingView.buffSetting.CameraList = lstCameras;
+
                 RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
                 SettingVM.SetAllParamPlcDelta();
                 if (InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(1,0))

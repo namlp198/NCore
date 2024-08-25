@@ -17,56 +17,57 @@ namespace ReadCodeGUI.Command.Cmd
         {
             //SetValueRecipe();
             {
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseReadCode = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.UseReadCode == true ? 1 : 0;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseInkjetCharactersInspect = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.UseInkjetCharactersInspect == true ? 1 : 0;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseRotateROI = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.UseRotateROI == true ? 1 : 0;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nMaxCodeCount = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.MaxCodeCount;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseReadCode = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.UseReadCode == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseInkjetCharactersInspect = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.UseInkjetCharactersInspect == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bUseRotateROI = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.UseRotateROI == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nMaxCodeCount = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.MaxCodeCount;
                 // params of Template Matching
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_OuterX = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_OuterX;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_OuterY = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_OuterY;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Outer_Width = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_Outer_Width;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Outer_Height = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_Outer_Height;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_InnerX = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_InnerX;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_InnerY = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_InnerY;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Inner_Width = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_Inner_Width;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Inner_Height = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateROI_Inner_Height;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateCoordinatesX = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateCoordinatesX;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateCoordinatesY = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateCoordinatesY;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_dTemplateAngleRotate = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateAngleRotate;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bTemplateShowGraphics = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.TemplateShowGraphics == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_OuterX = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_OuterX;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_OuterY = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_OuterY;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Outer_Width = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_Outer_Width;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Outer_Height = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_Outer_Height;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_InnerX = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_InnerX;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_InnerY = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_InnerY;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Inner_Width = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_Inner_Width;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateROI_Inner_Height = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateROI_Inner_Height;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateCoordinatesX = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateCoordinatesX;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nTemplateCoordinatesY = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateCoordinatesY;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_dTemplateAngleRotate = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateAngleRotate;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_dTemplateMatchingRate = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateMatchingRate;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bTemplateShowGraphics = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.TemplateShowGraphics == true ? 1 : 0;
                 // ROI 1
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_OffsetX = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_OffsetX;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_OffsetY = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_OffsetY;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_Width = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_Width;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_Height = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_Height;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_AngleRotate = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_AngleRotate;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_GrayThreshold_Min = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_GrayThreshold_Min;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_GrayThreshold_Max = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_GrayThreshold_Max;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_PixelCount_Min = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_PixelCount_Min;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_PixelCount_Max = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1_PixelCount_Max;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bROI1ShowGraphics = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI1ShowGraphics == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_OffsetX = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_OffsetX;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_OffsetY = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_OffsetY;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_Width = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_Width;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_Height = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_Height;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_AngleRotate = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_AngleRotate;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_GrayThreshold_Min = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_GrayThreshold_Min;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_GrayThreshold_Max = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_GrayThreshold_Max;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_PixelCount_Min = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_PixelCount_Min;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI1_PixelCount_Max = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1_PixelCount_Max;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bROI1ShowGraphics = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI1ShowGraphics == true ? 1 : 0;
                 // ROI 2
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_OffsetX = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_OffsetX;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_OffsetY = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_OffsetY;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_Width = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_Width;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_Height = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_Height;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_AngleRotate = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_AngleRotate;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_GrayThreshold_Min = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_GrayThreshold_Min;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_GrayThreshold_Max = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_GrayThreshold_Max;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_PixelCount_Min = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_PixelCount_Min;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_PixelCount_Max = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2_PixelCount_Max;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bROI2ShowGraphics = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI2ShowGraphics == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_OffsetX = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_OffsetX;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_OffsetY = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_OffsetY;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_Width = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_Width;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_Height = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_Height;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_AngleRotate = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_AngleRotate;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_GrayThreshold_Min = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_GrayThreshold_Min;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_GrayThreshold_Max = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_GrayThreshold_Max;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_PixelCount_Min = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_PixelCount_Min;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI2_PixelCount_Max = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2_PixelCount_Max;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bROI2ShowGraphics = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI2ShowGraphics == true ? 1 : 0;
                 // ROI 3
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_OffsetX = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_OffsetX;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_OffsetY = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_OffsetY;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_Width = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_Width;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_Height = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_Height;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_AngleRotate = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_AngleRotate;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_GrayThreshold_Min = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_GrayThreshold_Min;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_GrayThreshold_Max = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_GrayThreshold_Max;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_PixelCount_Min = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_PixelCount_Min;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_PixelCount_Max = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3_PixelCount_Max;
-                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bROI3ShowGraphics = MainViewModel.Instance.SettingVM.ReadCodePropertyGrid.ROI3ShowGraphics == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_OffsetX = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_OffsetX;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_OffsetY = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_OffsetY;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_Width = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_Width;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_Height = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_Height;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_AngleRotate = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_AngleRotate;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_GrayThreshold_Min = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_GrayThreshold_Min;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_GrayThreshold_Max = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_GrayThreshold_Max;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_PixelCount_Min = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_PixelCount_Min;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_nROI3_PixelCount_Max = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3_PixelCount_Max;
+                InterfaceManager.Instance.m_processorManager.m_readCodeRecipe.m_bROI3ShowGraphics = MainViewModel.Instance.SettingVM.ReadCodeRecipePropertyGrid.ROI3ShowGraphics == true ? 1 : 0;
             }
 
             InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.

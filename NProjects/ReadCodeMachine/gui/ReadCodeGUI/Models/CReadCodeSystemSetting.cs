@@ -21,6 +21,8 @@ namespace ReadCodeGUI.Models
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
         public string m_sDefectImagePath;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
+        public string m_sTemplateImagePath;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
         public string m_sModelName;
         public int m_bTestMode;
     }

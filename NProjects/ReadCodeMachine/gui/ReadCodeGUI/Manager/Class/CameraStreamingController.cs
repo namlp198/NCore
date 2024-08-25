@@ -1,4 +1,5 @@
-﻿using NCore.Wpf.BufferViewerSimple;
+﻿using NCore.Wpf.BufferViewerSetting;
+using NCore.Wpf.BufferViewerSimple;
 using NpcCore.Wpf.MVVM;
 using ReadCodeGUI.Commons;
 using ReadCodeGUI.ViewModels;
@@ -20,6 +21,7 @@ namespace ReadCodeGUI.Manager.Class
         private CancellationTokenSource _cancellationTokenSource;
         private Task _previewTask;
         private BufferViewerSimple m_bufferViewerSimple;
+        private BufferViewerSetting m_bufferViewerSetting;
 
         public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSimple ucBuffV, NCore.Wpf.BufferViewerSimple.ModeView modeView)
         {
@@ -32,16 +34,27 @@ namespace ReadCodeGUI.Manager.Class
             this.m_bufferViewerSimple.ModeView = modeView;
             this.m_bufferViewerSimple.SetParamsModeColor(frameWidth, frameHeight);
         }
+        public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSetting ucBuffViewerSetting, NCore.Wpf.BufferViewerSetting.EnModeView modeView)
+        {
+            this._frameWidth = frameWidth;
+            this._frameHeight = frameHeight;
+            this.m_bufferViewerSetting = ucBuffViewerSetting;
+
+            this.m_bufferViewerSetting.FrameWidth = frameWidth;
+            this.m_bufferViewerSetting.FrameHeight = frameHeight;
+            this.m_bufferViewerSetting.ModeView = modeView;
+            this.m_bufferViewerSetting.SetParamsModeColor(frameWidth, frameHeight);
+        }
 
         public void SingleGrab()
         {
             Task.Factory.StartNew(async () =>
             {
-                if (!InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.SingleGrabBaslerCam(m_bufferViewerSimple.CameraIndex)) return;
+                if (!InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.SingleGrabBaslerCam(m_bufferViewerSetting.CameraIndex)) return;
 
-                m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetImageBufferBaslerCam(m_bufferViewerSimple.CameraIndex);
+                m_bufferViewerSetting.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetImageBufferBaslerCam(m_bufferViewerSetting.CameraIndex);
 
-                await m_bufferViewerSimple.UpdateImage();
+                await m_bufferViewerSetting.UpdateImage();
             });
         }
 
@@ -58,9 +71,10 @@ namespace ReadCodeGUI.Manager.Class
                 case CameraType.iRayple:
                     break;
                 case CameraType.Basler:
-                    if (!InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.ContinuousGrabBaslerCam(m_bufferViewerSimple.CameraIndex)) return;
+                    if (!InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.ContinuousGrabBaslerCam(m_bufferViewerSetting.CameraIndex)) return;
 
                     MainViewModel.Instance.SettingVM.IsStreamming = true;
+                    MainViewModel.Instance.SettingVM.SettingView.buffSetting.IsStreamming = true;
 
                     var initializationSemaphore0 = new SemaphoreSlim(0, 1);
 
@@ -71,8 +85,8 @@ namespace ReadCodeGUI.Manager.Class
                         while (!_cancellationTokenSource.IsCancellationRequested)
                         {
                             // read hik camera
-                            m_bufferViewerSimple.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetImageBufferBaslerCam(m_bufferViewerSimple.CameraIndex);
-                            await m_bufferViewerSimple.UpdateImage();
+                            m_bufferViewerSetting.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetImageBufferBaslerCam(m_bufferViewerSetting.CameraIndex);
+                            await m_bufferViewerSetting.UpdateImage();
 
                             await Task.Delay(33);
                         }
@@ -103,10 +117,11 @@ namespace ReadCodeGUI.Manager.Class
                 case CameraType.iRayple:
                     break;
                 case CameraType.Basler:
-                    InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.StopGrabBaslerCam(m_bufferViewerSimple.CameraIndex);
+                    InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.StopGrabBaslerCam(m_bufferViewerSetting.CameraIndex);
+                    MainViewModel.Instance.SettingVM.SettingView.buffSetting.IsStreamming = false;
                     break;
             }
-            
+
         }
         public async Task StopGrab(CameraType cameraType)
         {
@@ -124,10 +139,10 @@ namespace ReadCodeGUI.Manager.Class
 
                     if (!_previewTask.IsCompleted)
                     {
-                        InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.StopGrabBaslerCam(m_bufferViewerSimple.CameraIndex);
-                        _cancellationTokenSource.Cancel();
+                        if (!InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.StopGrabBaslerCam(m_bufferViewerSetting.CameraIndex)) return;
 
-                        MainViewModel.Instance.SettingVM.IsStreamming = false;
+                        MainViewModel.Instance.SettingVM.SettingView.buffSetting.IsStreamming = false;
+                        _cancellationTokenSource.Cancel();
 
                         // Wait for it, to avoid conflicts with read/write of _lastFrame
                         await _previewTask;

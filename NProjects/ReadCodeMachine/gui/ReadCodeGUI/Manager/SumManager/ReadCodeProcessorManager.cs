@@ -18,6 +18,7 @@ namespace ReadCodeGUI.Manager.SumManager
 
         public void Initialize()
         {
+            m_readCodeProcessorDll.RegCallbackLocatorTrainedFunc(InterfaceManager.Instance.CallbackLocatorTrainedFunc);
             m_readCodeProcessorDll.RegCallBackInspectCompleteFunc(InterfaceManager.Instance.CallbackInsCompleteFunc);
             m_readCodeProcessorDll.Initialize();
         }

@@ -13,6 +13,7 @@ namespace ReadCodeGUI.Manager.Class
         IntPtr m_readCodeProcessor;
 
         public static CallbackInsCompleteFunc m_RegInsCompleteCallBack;
+        public static CallbackLocatorTrainedFunc m_RegLocatorTrainedCallBack;
         public ReadCodeProcessorDll()
         {
             m_readCodeProcessor = CreateReadCodeProcessor();
@@ -21,6 +22,10 @@ namespace ReadCodeGUI.Manager.Class
         // Inspection Compete CallBack
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void CallbackInsCompleteFunc(int bSetting);
+
+        // Inspection Compete CallBack
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void CallbackLocatorTrainedFunc(int bSetting);
 
         #region Init and delete
         /// <summary>
@@ -251,6 +256,23 @@ namespace ReadCodeGUI.Manager.Class
          - Register Inspection Complete CallBack
          - Parameter : CallBack Func Pointer
         **********************************/
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallbackLocatorTrainedFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainedFunc callbackPointer);
+        public void RegCallbackLocatorTrainedFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainedFunc callbackPointer)
+        {
+            m_RegLocatorTrainedCallBack = callbackPointer;
+
+            RegCallbackLocatorTrainedFunc(m_readCodeProcessor, m_RegLocatorTrainedCallBack);
+        }
+        /**********************************
+         - Register Locator Trained CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
         #endregion
 
         #region Basler Cam
@@ -289,6 +311,69 @@ namespace ReadCodeGUI.Manager.Class
 #endif
         extern private static IntPtr GetImageBufferBaslerCam(IntPtr readCodeProcessor, int nCamIdx);
         public IntPtr GetImageBufferBaslerCam(int nCamIdx) { return GetImageBufferBaslerCam(m_readCodeProcessor, nCamIdx); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetTriggerMode(IntPtr readCodeProcessor, int nCamIdx, int nMode);
+        public bool SetTriggerMode(int nCamIdx, int nMode) { return SetTriggerMode(m_readCodeProcessor, nCamIdx, nMode); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetTriggerSource(IntPtr readCodeProcessor, int nCamIdx, int nSource);
+        public bool SetTriggerSource(int nCamIdx, int nSource) { return SetTriggerSource(m_readCodeProcessor, nCamIdx, nSource); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetExposureTime(IntPtr readCodeProcessor, int nCamIdx, double dExpTime);
+        public bool SetExposureTime(int nCamIdx, double dExpTime) { return SetExposureTime(m_readCodeProcessor, nCamIdx, dExpTime); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SetAnalogGain(IntPtr readCodeProcessor, int nCamIdx, double dGain);
+        public bool SetAnalogGain(int nCamIdx, double dGain) { return SetAnalogGain(m_readCodeProcessor, nCamIdx, dGain); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveImage(IntPtr readCodeProcessor, int nCamIdx);
+        public bool SaveImage(int nCamIdx) { return SaveImage(m_readCodeProcessor, nCamIdx); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LocatorTool_Train(IntPtr readCodeProcessor, int nCamIdx);
+        public bool LocatorTool_Train(int nCamIdx) { return LocatorTool_Train(m_readCodeProcessor, nCamIdx); }
+
+
+#if DEBUG
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("ReadCodeProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LocatorToolSimulator_Train(IntPtr readCodeProcessor, int nSimuBuff, int nFrame);
+        public bool LocatorToolSimulator_Train(int nSimuBuff, int nFrame) { return LocatorToolSimulator_Train(m_readCodeProcessor, nSimuBuff, nFrame); }
 
         #endregion
     }
