@@ -25,6 +25,7 @@ interface IReadCodeCoreToParent
 	virtual CReadCodeResult*          GetReadCodeResultControl(int nCoreIdx) = 0;
 	virtual CReadCodeStatus*          GetReadCodeStatusControl(int nCoreIdx) = 0;
 	virtual void                      InspectComplete(BOOL bSetting) = 0;
+	virtual void                      LocatorTrained(BOOL bSetting) = 0;
 };
 
 class AFX_EXT_CLASS CTempInspectCoreThreadData : public CWorkThreadData
@@ -63,12 +64,13 @@ public:
 	void StartThread(int nThreadCount);
 
 public:
-
-	void Inspect_Simulation(int nBuff, int nFrame);
-	void Inspect_Real(int nCoreIdx, LPBYTE pBuffer);
+	void                       Inspect_Simulation(int nBuff, int nFrame);
+	void                       Inspect_Real(int nCamIdx, LPBYTE pBuffer);
+	BOOL                       LocatorTool_Train(LPBYTE pBuffer);
 
 private:
-	void ProcessFrame(int nCoreIdx, LPBYTE pBuffer);
+	void                       ProcessFrame(int nCamIdx, LPBYTE pBuffer);
+	BOOL                       SaveTemplateImage(cv::Mat& matTemplate);
 
 private:
 	// interface

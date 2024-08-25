@@ -178,12 +178,76 @@ BOOL CReadCodeProcessor::InspectStop()
 	return TRUE;
 }
 
-BOOL CReadCodeProcessor::ProcessFrame(int nCoreIdx, LPBYTE pBuff)
+BOOL CReadCodeProcessor::ProcessFrame(int nCamIdx, LPBYTE pBuff)
 {
 	if (pBuff == NULL)
 		return FALSE;
 
-	m_pReadCodeCore[nCoreIdx]->Inspect_Real(nCoreIdx, pBuff);
+	int nCoreIdx = 0;
+	m_pReadCodeCore[nCoreIdx]->Inspect_Real(nCamIdx, pBuff);
+
+	return TRUE;
+}
+
+BOOL CReadCodeProcessor::SetTriggerMode(int nCamIdx, int nMode)
+{
+	if (m_pReadCodeBaslerCam == NULL)
+		return FALSE;
+
+	m_pReadCodeBaslerCam->SetTriggerMode(nCamIdx, nMode);
+
+	return TRUE;
+}
+
+BOOL CReadCodeProcessor::SetTriggerSource(int nCamIdx, int nSource)
+{
+	if (m_pReadCodeBaslerCam == NULL)
+		return FALSE;
+
+	m_pReadCodeBaslerCam->SetTriggerSource(nCamIdx, nSource);
+
+	return TRUE;
+}
+
+BOOL CReadCodeProcessor::SetExposureTime(int nCamIdx, double dExpTime)
+{
+	if (m_pReadCodeBaslerCam == NULL)
+		return FALSE;
+
+	m_pReadCodeBaslerCam->SetTriggerMode(nCamIdx, dExpTime);
+
+	return TRUE;
+}
+
+BOOL CReadCodeProcessor::SetAnalogGain(int nCamIdx, double dGain)
+{
+	if (m_pReadCodeBaslerCam == NULL)
+		return FALSE;
+
+	m_pReadCodeBaslerCam->SetTriggerMode(nCamIdx, dGain);
+
+	return TRUE;
+}
+
+BOOL CReadCodeProcessor::SaveImage(int nCamIdx)
+{
+	if (m_pReadCodeBaslerCam == NULL)
+		return FALSE;
+
+	USES_CONVERSION;
+	char chSavePath[1000] = {};
+	sprintf_s(chSavePath, "%s", W2A(m_pReadCodeSystemSetting->m_sFullImagePath));
+	std::string sSavePath(chSavePath);
+
+	cv::Mat matSave(m_pReadCodeCameraSetting[nCamIdx]->m_nFrameHeight, m_pReadCodeCameraSetting[nCamIdx]->m_nFrameWidth, CV_8UC1, m_pReadCodeBaslerCam->GetBufferImage(nCamIdx));
+	cv::cvtColor(matSave, matSave, cv::COLOR_GRAY2BGR);
+
+	uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	std::string sFileName = "image_" + std::to_string(ms) + ".png";
+
+	sSavePath = sSavePath + sFileName;
+
+	cv::imwrite(sSavePath, matSave);
 
 	return TRUE;
 }
@@ -285,6 +349,10 @@ BOOL CReadCodeProcessor::LoadSystemSettings(CReadCodeSystemSetting* pSystemSetti
 	ZeroMemory(sysSettings.m_sDefectImagePath, sizeof(sysSettings.m_sDefectImagePath));
 	wsprintf(sysSettings.m_sDefectImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csDefectImagePath);
 
+	CString csTemplateImagePath = (CString)pRoot->first_node("TemplateImagePath")->value();
+	ZeroMemory(sysSettings.m_sTemplateImagePath, sizeof(sysSettings.m_sTemplateImagePath));
+	wsprintf(sysSettings.m_sTemplateImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csTemplateImagePath);
+
 	CString csModelName = (CString)pRoot->first_node("ModelName")->value();
 	ZeroMemory(sysSettings.m_sModelName, sizeof(sysSettings.m_sModelName));
 	wsprintf(sysSettings.m_sModelName, _T("%s"), (TCHAR*)(LPCTSTR)csModelName);
@@ -348,6 +416,7 @@ BOOL CReadCodeProcessor::LoadRecipe(CReadCodeRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("TEMPLATE_COORDINATES_X"), readRecipe.m_nTemplateCoordinatesX, 0);
 	recipeFile.GetItemValue(_T("TEMPLATE_COORDINATES_Y"), readRecipe.m_nTemplateCoordinatesY, 0);
 	recipeFile.GetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), readRecipe.m_dTemplateAngleRotate, 0);
+	recipeFile.GetItemValue(_T("TEMPLATE_MATCHING_RATE"), readRecipe.m_dTemplateMatchingRate, 0);
 	recipeFile.GetItemValue(_T("TEMPLATE_SHOW_GRAPHICS"), readRecipe.m_bTemplateShowGraphics, 0);
 
 	recipeFile.GetItemValue(_T("ROI1_OFFSET_X"), readRecipe.m_nROI1_OffsetX, 0);
@@ -453,7 +522,7 @@ BOOL CReadCodeProcessor::LoadCameraSettings(CReadCodeCameraSetting* pCameraSetti
 	camSettings.m_nTriggerSource = std::stoi(pRoot->first_node("TriggerSource")->value());
 	camSettings.m_nExposureTime = std::atof(pRoot->first_node("ExposureTime")->value());
 	camSettings.m_nAnalogGain = std::atof(pRoot->first_node("AnalogGain")->value());
-	
+
 	CString csSerialNumber = (CString)pRoot->first_node("SerialNumber")->value();
 	ZeroMemory(camSettings.m_sSerialNumber, sizeof(camSettings.m_sSerialNumber));
 	wsprintf(camSettings.m_sSerialNumber, _T("%s"), (TCHAR*)(LPCTSTR)csSerialNumber);
@@ -537,6 +606,9 @@ BOOL CReadCodeProcessor::SaveSystemSetting(CReadCodeSystemSetting* pSystemSettin
 	const char* sDefectImagePath = W2A(sysSetting.m_sDefectImagePath);
 	pRoot->first_node("DefectImagePath")->value(sDefectImagePath);
 
+	const char* sTemplateImagePath = W2A(sysSetting.m_sTemplateImagePath);
+	pRoot->first_node("TemplateImagePath")->value(sTemplateImagePath);
+
 	const char* sModelName = W2A(sysSetting.m_sModelName);
 	pRoot->first_node("ModelName")->value(sModelName);
 
@@ -604,6 +676,7 @@ BOOL CReadCodeProcessor::SaveRecipe(CReadCodeRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("TEMPLATE_COORDINATES_X"), pRecipe->m_nTemplateCoordinatesX);
 	recipeFile.SetItemValue(_T("TEMPLATE_COORDINATES_Y"), pRecipe->m_nTemplateCoordinatesY);
 	recipeFile.SetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), pRecipe->m_dTemplateAngleRotate);
+	recipeFile.SetItemValue(_T("TEMPLATE_MATCHING_RATE"), pRecipe->m_dTemplateMatchingRate);
 
 	recipeFile.SetItemValue(_T("ROI1_OFFSET_X"), pRecipe->m_nROI1_OffsetX);
 	recipeFile.SetItemValue(_T("ROI1_OFFSET_Y"), pRecipe->m_nROI1_OffsetY);
@@ -774,12 +847,25 @@ void CReadCodeProcessor::RegCallbackAlarm(CallbackAlarm* pFunc)
 	m_pCallbackAlarm = pFunc;
 }
 
+void CReadCodeProcessor::RegCallbackLocatorTrainedFunc(CallbackLocatorTrained* pFunc)
+{
+	m_pCallbackLocatorTrainedFunc = pFunc;
+}
+
 void CReadCodeProcessor::InspectComplete(BOOL bSetting)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
 		return;
 
 	(m_pCallbackInsCompleteFunc)(bSetting);
+}
+
+void CReadCodeProcessor::LocatorTrained(BOOL bSetting)
+{
+	if (m_pCallbackLocatorTrainedFunc == NULL)
+		return;
+
+	(m_pCallbackLocatorTrainedFunc);
 }
 
 void CReadCodeProcessor::LogMessage(char* strMessage)
@@ -825,7 +911,7 @@ LPBYTE CReadCodeProcessor::GetImageBufferBaslerCam(int nCamIdx)
 	/*char ch[200] = {};
 	sprintf_s(ch, "%s%s", "D:\\entry\\NCore\\NProjects\\ReadCodeMachine\\bin\\SaveImages\\", "imageTest.bmp");
 	cv::imwrite(ch, m_matBGR);*/
-	
+
 	return m_matBGR.data;
 
 }
@@ -878,6 +964,28 @@ BOOL CReadCodeProcessor::LoadSimulatorBuffer(int nBuff, int nFrame, CString strF
 	m_pSimulatorBuffer[nBuff]->SetFrameImage(nFrame, pOpenImage.data);
 
 	return TRUE;
+}
+
+BOOL CReadCodeProcessor::LocatorTool_Train(int nCamIdx)
+{
+	LPBYTE pBuffer = GetImageBufferBaslerCam(nCamIdx);
+
+	if (pBuffer == NULL)
+		return FALSE;
+
+	int nCoreIdx = nCamIdx;
+	m_pReadCodeCore[nCoreIdx]->LocatorTool_Train(pBuffer);
+}
+
+BOOL CReadCodeProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFrame)
+{
+	LPBYTE pBuffer = GetSimulatorBuffer(nSimuBuff, nFrame);
+
+	if (pBuffer == NULL)
+		return FALSE;
+
+	int nCoreIdx = nSimuBuff;
+	m_pReadCodeCore[nCoreIdx]->LocatorTool_Train(pBuffer);
 }
 
 LPBYTE CReadCodeProcessor::GetSimulatorBuffer(int nBuff, int nFrame)

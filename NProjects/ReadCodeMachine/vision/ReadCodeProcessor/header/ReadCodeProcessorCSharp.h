@@ -5,6 +5,7 @@
 extern "C"
 {
 	/************************** Declare AND Delete **************************/
+
 	__declspec(dllexport) CReadCodeProcessor*     CreateReadCodeProcessor();
 
 	__declspec(dllexport) void                    DeleteReadCodeProcessor(CReadCodeProcessor* pProcessor);
@@ -21,7 +22,22 @@ extern "C"
 
 	__declspec(dllexport) BYTE*                   GetImageBufferBaslerCam(CReadCodeProcessor* pProcessor, int nCamIdx);
 
+	__declspec(dllexport) bool                    SetTriggerMode(CReadCodeProcessor* pProcessor, int nCamIdx, int nMode);
+
+	__declspec(dllexport) bool                    SetTriggerSource(CReadCodeProcessor* pProcessor, int nCamIdx, int nSource);
+
+	__declspec(dllexport) bool                    SetExposureTime(CReadCodeProcessor* pProcessor, int nCamIdx, double dExpTime);
+
+	__declspec(dllexport) bool                    SetAnalogGain(CReadCodeProcessor* pProcessor, int nCamIdx, double dGain);
+
+	__declspec(dllexport) bool                    SaveImage(CReadCodeProcessor* pProcessor, int nCamIdx);
+
+	__declspec(dllexport) bool                    LocatorTool_Train(CReadCodeProcessor* pProcessor, int nCamIdx);
+
+	__declspec(dllexport) bool                    LocatorToolSimulator_Train(CReadCodeProcessor* pProcessor, int nSimuBuff, int nFrame);
+
 	/************************** Operation **************************/
+
 	__declspec(dllexport) bool                    InspectStart(CReadCodeProcessor* pProcessor, int nThreadCount, BOOL isSimulator);
 
 	__declspec(dllexport) bool                    InspectStop(CReadCodeProcessor* pProcessor);
@@ -35,13 +51,17 @@ extern "C"
 	__declspec(dllexport) BYTE*                   GetSimulatorBuffer(CReadCodeProcessor* pProcessor, int nBuff, int nFrame);
 
 	/************************** Callback **************************/
+
 	__declspec(dllexport) void			          RegCallBackInspectCompleteFunc(CReadCodeProcessor* pProcessor, CallbackInspectComplete* pFunc);
 
 	__declspec(dllexport) void			          RegCallbackLogFunc(CReadCodeProcessor* pProcessor, CallbackLogFunc* pFunc);
 
 	__declspec(dllexport) void			          RegCallbackAlarm(CReadCodeProcessor* pProcessor, CallbackAlarm* pFunc);
 
+	__declspec(dllexport) void			          RegCallbackLocatorTrainedFunc(CReadCodeProcessor* pProcessor, CallbackLocatorTrained* pFunc);
+
 	/************************** Load Setting and Recipe **************************/
+
 	__declspec(dllexport) bool                    LoadSystemSettings(CReadCodeProcessor* pProcessor, CReadCodeSystemSetting* pSysSetting);
 
 	__declspec(dllexport) bool                    LoadRecipe(CReadCodeProcessor* pProcessor, CReadCodeRecipe* pRecipe);
@@ -51,6 +71,7 @@ extern "C"
 	__declspec(dllexport) bool                    ReloadRecipe(CReadCodeProcessor* pProcessor);
 
 	/************************** Save Setting and Recipe **************************/
+
 	__declspec(dllexport) bool                    SaveSystemSetting(CReadCodeProcessor* pProcessor, CReadCodeSystemSetting* pSysSetting);
 
 	__declspec(dllexport) bool                    SaveRecipe(CReadCodeProcessor* pProcessor, CReadCodeRecipe* pRecipe);

@@ -25,6 +25,7 @@ public:
 	int                m_nTemplateCoordinatesX;
 	int                m_nTemplateCoordinatesY;
 	double             m_dTemplateAngleRotate;
+	double             m_dTemplateMatchingRate;
 	// ROI1
 	int                m_nROI1_OffsetX;
 	int                m_nROI1_OffsetY;

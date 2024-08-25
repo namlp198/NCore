@@ -21,6 +21,7 @@
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarm(char* strAlarmMessage);
 typedef void _stdcall CallbackInspectComplete(BOOL bSetting);
+typedef void _stdcall CallbackLocatorTrained(BOOL bSetting);
 
 class AFX_EXT_CLASS CReadCodeProcessor : public IReadCodeBaslerCamToParent,
 	                                     public IReadCodeCoreToParent
@@ -41,7 +42,13 @@ public:
 public:
 	BOOL                       InspectStart(int nThreadCount, BOOL bSimulator);
 	BOOL                       InspectStop();
-	BOOL                       ProcessFrame(int nCoreIdx, LPBYTE pBuff);
+	BOOL                       ProcessFrame(int nCamIdx, LPBYTE pBuff);
+	BOOL                       SetTriggerMode(int nCamIdx, int nMode);
+	BOOL                       SetTriggerSource(int nCamIdx, int nSource);
+	BOOL                       SetExposureTime(int nCamIdx, double dExpTime);
+	BOOL                       SetAnalogGain(int nCamIdx, double dGain);
+	BOOL                       SaveImage(int nCamIdx);
+
 
 	/*static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
 	void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);*/
@@ -61,7 +68,9 @@ public:
 	void                       RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc);
 	void                       RegCallbackLogFunc(CallbackLogFunc* pFunc);
 	void                       RegCallbackAlarm(CallbackAlarm* pFunc);
+	void                       RegCallbackLocatorTrainedFunc(CallbackLocatorTrained* pFunc);
 	virtual void		       InspectComplete(BOOL bSetting);
+	virtual void               LocatorTrained(BOOL bSetting);
 
 public:
 	void						      LogMessage(char* strMessage);
@@ -80,6 +89,8 @@ public:
 	LPBYTE                            GetImageBufferBaslerCam(int nCamIdx);
 
 	BOOL                              LoadSimulatorBuffer(int nBuff, int nFrame, CString strFilePath);
+	BOOL                              LocatorTool_Train(int nCamIdx);
+	BOOL                              LocatorToolSimulator_Train(int nSimuBuff, int nFrame);
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
 
 private:
@@ -94,6 +105,8 @@ private:
 	CallbackLogFunc*                           m_pCallbackLogFunc;
 								               
 	CallbackAlarm*                             m_pCallbackAlarm;
+
+	CallbackLocatorTrained*                    m_pCallbackLocatorTrainedFunc;
 								               
 	// UI						                            
 	CLogView*                                  m_pLogView;
