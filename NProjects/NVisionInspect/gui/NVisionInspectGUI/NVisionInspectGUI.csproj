@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BABC927A-9B32-4EC4-AE99-EDFF733F7EB0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>NVisionInspectGUI</RootNamespace>
+    <AssemblyName>NVisionInspectGUI</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\..\..\..\packages\CsvHelper.33.0.1\lib\net48\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\..\..\Libraries\excel\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="IndustrialNetworks.ModbusCore">
+      <HintPath>..\..\..\..\Libraries\Plc_Delta\x64\IndustrialNetworks.ModbusCore.dll</HintPath>
+    </Reference>
+    <Reference Include="KisToolkit">
+      <HintPath>..\..\..\..\Libraries\packages\KisToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="LModbus">
+      <HintPath>..\..\..\..\Libraries\Plc_Wecon\LModbus.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\Libraries\packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="LSIS.Driver.Core">
+      <HintPath>..\..\..\..\Libraries\Plc_LS\Library-V2\LSIS.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\..\..\..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="NCore.Wpf.BufferViewerSettingPRO">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSettingPRO.dll</HintPath>
+    </Reference>
+    <Reference Include="NCore.Wpf.BufferViewerSimple">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSimple.dll</HintPath>
+    </Reference>
+    <Reference Include="Npc.Foundation">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Npc.Foundation.dll</HintPath>
+    </Reference>
+    <Reference Include="NpcCore.Toolkit">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NpcCore.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="NpcCore.Wpf">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NpcCore.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Unity.Wpf">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Prism.Unity.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\..\..\Libraries\packages\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
+    <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
+    <Compile Include="Command\Cmd\InitializeCmd.cs" />
+    <Compile Include="Command\Cmd\InspectSimulationCmd.cs" />
+    <Compile Include="Command\Cmd\LoadImageCmd.cs" />
+    <Compile Include="Command\Cmd\SaveRecipeCmd.cs" />
+    <Compile Include="Command\Cmd\SaveSettingCmd.cs" />
+    <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
+    <Compile Include="Command\Cmd\SelectRunViewCmd.cs" />
+    <Compile Include="Command\Cmd\SelectSettingViewCmd.cs" />
+    <Compile Include="Command\Cmd\SingleGrabCmd.cs" />
+    <Compile Include="Manager\Class\CameraStreamingController.cs" />
+    <Compile Include="Manager\Class\Csv_Manager.cs" />
+    <Compile Include="Manager\Class\ExcelParser.cs" />
+    <Compile Include="Manager\Class\IOManager_PLC_Delta_DVP.cs" />
+    <Compile Include="Manager\Class\IOManager_PLC_LS.cs" />
+    <Compile Include="Manager\Class\NVisionInspectProcessorDll.cs" />
+    <Compile Include="Manager\InterfaceManager.cs" />
+    <Compile Include="Manager\SimulationThread.cs" />
+    <Compile Include="Manager\SumManager\NVisionInspectProcessorManager.cs" />
+    <Compile Include="Models\CNVisionInspectRecipe.cs" />
+    <Compile Include="Models\CNVisionInspectRecipe_PropertyGrid.cs" />
+    <Compile Include="Models\CNVisionInspectResult.cs" />
+    <Compile Include="Models\CNVisionInspectSystemSetting.cs" />
+    <Compile Include="Models\CNVisionInspectSystemSetting_PropertyGrid.cs" />
+    <Compile Include="Models\ExcelTemplateModel.cs" />
+    <Compile Include="Models\Plc_Delta_Model.cs" />
+    <Compile Include="Models\Plc_LS_Model.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ResultViewModel.cs" />
+    <Compile Include="ViewModels\RunViewModel.cs" />
+    <Compile Include="ViewModels\SettingViewModel.cs" />
+    <Compile Include="ViewModels\Sum1CameraViewModel.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcSum1CameraView.xaml.cs">
+      <DependentUpon>UcSum1CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcResultView.xaml.cs">
+      <DependentUpon>UcResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcRunView.xaml.cs">
+      <DependentUpon>UcRunView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcSettingView.xaml.cs">
+      <DependentUpon>UcSettingView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Command\CommandBase.cs" />
+    <Compile Include="Commons\Defines.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcSum1CameraView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcRunView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

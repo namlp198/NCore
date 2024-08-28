@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{fadf1597-d121-4d2c-b2a0-60f72f1255d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera">
+      <UniqueIdentifier>{f443dafd-346d-48e0-be39-562913d60d0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Camera\Hik">
+      <UniqueIdentifier>{f7bb5bed-4b48-4713-b9b6-85c29e86cf38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{1f8f3ef8-cbba-492f-96eb-1f9966cc63f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera">
+      <UniqueIdentifier>{ec20736c-225e-4a06-9c56-0dd173de39c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera\Hik">
+      <UniqueIdentifier>{954ef4d9-7ff7-466d-953e-c27d0f7af850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\ConfigFile">
+      <UniqueIdentifier>{1dc2315e-5e70-407a-91ef-a8204ffc1835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Lighting">
+      <UniqueIdentifier>{3e46f6e0-f919-439d-9ab1-7b271e396952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Log">
+      <UniqueIdentifier>{0b72a2d7-6f33-4529-8cf2-03bf38bc9079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Network">
+      <UniqueIdentifier>{b3e9ebe2-8a84-4664-85bf-174ad9877e9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\ThreadPool">
+      <UniqueIdentifier>{3173320b-a2c8-431f-8620-6c37067f6143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\Time">
+      <UniqueIdentifier>{e43de301-fc95-4497-831b-3f7396e35a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools\View">
+      <UniqueIdentifier>{47184932-e61c-4a12-bc57-70699640c575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\ConfigFile">
+      <UniqueIdentifier>{b0b235ff-9d78-4f12-a057-750d79dfeac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Lighting">
+      <UniqueIdentifier>{296b4106-1f8c-43c2-bcc4-159e1a1095f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Log">
+      <UniqueIdentifier>{3e3c8df7-32cc-451d-a062-8b79b8db50e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Network">
+      <UniqueIdentifier>{d85277f8-bbbc-44e3-b2ce-60411dd2a616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\View">
+      <UniqueIdentifier>{5ed53fb9-843d-4106-92ac-94ca5f050330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Time">
+      <UniqueIdentifier>{4f58d8ca-d729-416d-9973-ada1f1bc3d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\ThreadPool">
+      <UniqueIdentifier>{693058a5-6e5a-4d42-9862-e7586caef1ee}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber_MVS_GigE.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabberParam.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Hik\MvCamera.h">
+      <Filter>Header Files\Tools\Camera\Hik</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\BasedConfig.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\Config.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\FileIOInterface.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\FileList.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\FileMap.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\FileVersionManager.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\IniManager.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ConfigFile\Registery.h">
+      <Filter>Header Files\Tools\ConfigFile</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_CCS_PJ2_3005_4CA_PE.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_Dasol_Ch16.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_Inoray_TB30_B4.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_L_LIGHT_50W4CH_LP.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_NVSystem_AKP_04RA.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_NVSystem_AKP6.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_ONUV_OLC-304A.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_PLS_Ch8.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControls_Simulation.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\LightControlsParam.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\Serial.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Lighting\SerialPort.h">
+      <Filter>Header Files\Tools\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Log\FolderScheduling.h">
+      <Filter>Header Files\Tools\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Log\ListBoxLog.h">
+      <Filter>Header Files\Tools\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Log\xLogWnd.h">
+      <Filter>Header Files\Tools\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Log\xLogWnd_Backup.h">
+      <Filter>Header Files\Tools\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Network\TCPServer.h">
+      <Filter>Header Files\Tools\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Network\TCPSocket.h">
+      <Filter>Header Files\Tools\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\PriorityThread.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\ThreadData.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\ThreadPool.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\TimerThreadPool.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WaitThreadPool.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h">
+      <Filter>Header Files\Tools\View</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Time\TimeCalculator.h">
+      <Filter>Header Files\Tools\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\View\HWChecker.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\View\LogView.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\View\SharedMemoryBuffer.h">
+      <Filter>Header Files\Tools\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspect_HikCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectCameraSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectProcessorCSharp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectRecipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspectSystemSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\ZXingOpenCV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber_MVS.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Hik\MvCamera.cpp">
+      <Filter>Source Files\Tools\Camera\Hik</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\BasedConfig.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\Config.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\FileIOInterface.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\FileList.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\FileMap.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\FileVersionManager.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\IniManager.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ConfigFile\Registery.cpp">
+      <Filter>Source Files\Tools\ConfigFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_CCS_PJ2_3005_4CA_PE.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_Dasol_16Ch.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_Inoray_TB30_B4.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_L_LIGHT_50W4CH_LP.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_NVSystem_AKP_04RA.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_NVSystem_AKP6.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_ONUV_OLC-304A.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_PLS_8Ch.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\LightControls_Simulation.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\Serial.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Lighting\SerialPort.cpp">
+      <Filter>Source Files\Tools\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Log\FolderScheduling.cpp">
+      <Filter>Source Files\Tools\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Log\ListBoxLog.cpp">
+      <Filter>Source Files\Tools\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Network\TCPServer.cpp">
+      <Filter>Source Files\Tools\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Network\TCPSocket.cpp">
+      <Filter>Source Files\Tools\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\PriorityThread.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\ThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\TimerThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WaitThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadArray.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadPool.cpp">
+      <Filter>Source Files\Tools\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Time\TimeCalculator.cpp">
+      <Filter>Source Files\Tools\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\View\HWChecker.cpp">
+      <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\View\LogView.cpp">
+      <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\View\SharedMemoryBuffer.cpp">
+      <Filter>Source Files\Tools\View</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspect_HikCam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectCameraSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectProcessorCSharp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectRecipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspectSystemSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
