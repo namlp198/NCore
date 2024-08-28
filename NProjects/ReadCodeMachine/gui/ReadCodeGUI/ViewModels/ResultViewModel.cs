@@ -16,6 +16,11 @@ namespace ReadCodeGUI.ViewModels
         private static readonly object _lockObj = new object();
         private readonly Dispatcher _dispatcher;
         private UcResultView _resultView;
+        private bool m_bResultOKNG;
+        private int m_nCountOK;
+        private int m_nCountNG;
+        private int m_nCountTotal;
+        private double m_dProcessTime;
 
         private List<ResultStringMapToDataGridModel> m_listResultStringMapToDataGrid = new List<ResultStringMapToDataGridModel>();
         #endregion
@@ -40,6 +45,39 @@ namespace ReadCodeGUI.ViewModels
                 {
 
                 }
+            }
+        }
+
+        public int CountOK
+        {
+            get => m_nCountOK;
+            set
+            {
+                if (SetProperty(ref m_nCountOK, value)) { }
+            }
+        }
+        public int CountNG
+        {
+            get => m_nCountNG;
+            set
+            {
+                if (SetProperty(ref m_nCountNG, value)) { }
+            }
+        }
+        public int CountTotal
+        {
+            get => m_nCountTotal;
+            set
+            {
+                if (SetProperty(ref m_nCountTotal, value)) { }
+            }
+        }
+        public double ProcessTime
+        {
+            get => m_dProcessTime;
+            set
+            {
+                if (SetProperty(ref m_dProcessTime, value)) { }
             }
         }
         #endregion

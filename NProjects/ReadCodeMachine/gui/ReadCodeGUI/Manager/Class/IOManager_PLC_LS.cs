@@ -18,9 +18,17 @@ namespace ReadCodeGUI.Manager.Class
         private Plc_LS_Model m_plcModel = new Plc_LS_Model();
         public IOManager_PLC_LS()
         {
-            m_xgt = new XGTProtocol(m_plcModel.PlcCOM, m_plcModel.BaudRate, Parity.None, 8, StopBits.One);
+            
+        }
 
-            m_xgt.Connect();
+        public void Initialize()
+        {
+            if (!string.IsNullOrEmpty(m_plcModel.PlcCOM))
+            {
+                m_xgt = new XGTProtocol(m_plcModel.PlcCOM, m_plcModel.BaudRate, Parity.None, 8, StopBits.One);
+
+                m_xgt.Connect();
+            }
         }
         public Plc_LS_Model PlcLSModel
         {
@@ -46,13 +54,44 @@ namespace ReadCodeGUI.Manager.Class
             }
         }
 
-        public void WriteData(string deviceName, params INT[] data)
+        public void WriteData(string deviceName, REAL[] data)
         {
             try
             {
                 if (m_xgt != null)
                 {
-                    bool result = m_xgt.Write(stationNo: 1, deviceName: deviceName, data);
+                    bool result = m_xgt.Write<REAL>(stationNo: 1, deviceName, data);
+                    if (result)
+                    {
+                        MessageBox.Show("Save param PLC success!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Couldn't save to PLC");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void WriteData(string deviceName, short numberOfBlocks, INT data)
+        {
+            try
+            {
+                if (m_xgt != null)
+                {
+                    bool result = m_xgt.Write<INT>(stationNo: 1, numberOfBlocks: 1, deviceName: deviceName, data);
+                    if (result)
+                    {
+                        MessageBox.Show("Save param PLC success!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Couldn't save to PLC");
+                    }
                 }
             }
             catch (Exception ex)

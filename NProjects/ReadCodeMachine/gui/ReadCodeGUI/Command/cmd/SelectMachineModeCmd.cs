@@ -1,8 +1,10 @@
-﻿using ReadCodeGUI.ViewModels;
+﻿using ReadCodeGUI.Manager;
+using ReadCodeGUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -21,6 +23,8 @@ namespace ReadCodeGUI.Command.Cmd
                 {
                    
                     MainViewModel.Instance.InspectRunning = false;
+                    InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStop();
+
                     MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Manual;
                     MainViewModel.Instance.MainView.tbMachineMode.Text = "RUN";
                     MainViewModel.Instance.MainView.tbShowMachineMode.Text = "[MANUAL MODE]"; 
@@ -30,6 +34,8 @@ namespace ReadCodeGUI.Command.Cmd
             else
             {
                 MainViewModel.Instance.InspectRunning = true;
+                InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(1, 0);
+
                 MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Auto;
                 MainViewModel.Instance.MainView.tbMachineMode.Text = "MANUAL";
                 MainViewModel.Instance.MainView.tbShowMachineMode.Text = "[AUTO MODE]";

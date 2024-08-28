@@ -5,6 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ReadCodeGUI.Views.UcViews"
              xmlns:Ctrls="clr-namespace:NCore.Wpf.BufferViewerSimple;assembly=NCore.Wpf.BufferViewerSimple"
+             xmlns:BuffSet="clr-namespace:NCore.Wpf.BufferViewerSetting;assembly=NCore.Wpf.BufferViewerSetting"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:vm="clr-namespace:ReadCodeGUI.ViewModels"
+             d:DataContext="{d:DesignInstance vm:SettingViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="1000"
@@ -19,7 +23,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.8*" />
+            <ColumnDefinition Width="2.3*" />
             <ColumnDefinition Width="1" />
             <ColumnDefinition Width="2.8*" />
         </Grid.ColumnDefinitions>
@@ -34,21 +38,30 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
+                    Grid.RowSpan="5"
                     Margin="2">
+                <BuffSet:BufferViewerSetting Name="buffSetting"
+                                             FontSize="14"
+                                             FontWeight="SemiBold"
+                                             FontFamily="Segoe UI" />
+            </Border>
+            <Border Grid.Row="0"
+                    Margin="2"
+                    Visibility="Collapsed">
                 <Ctrls:BufferViewerSimple Name="buffVSSettings" />
 
             </Border>
-
             <!--separator-->
             <Grid Grid.Row="1"
-                  Background="White">
+                  Background="White"
+                  Visibility="Collapsed">
 
             </Grid>
-
             <StackPanel Grid.Row="2"
                         Margin="2"
                         Orientation="Horizontal"
-                        Background="{DynamicResource RGB_Night_46_61_90}">
+                        Background="{DynamicResource RGB_Night_46_61_90}"
+                        Visibility="Collapsed">
 
                 <TextBlock Text="Camera"
                            VerticalAlignment="Center"
@@ -144,18 +157,34 @@
                         FontSize="12"
                         Width="80" />
             </StackPanel>
-
             <!--separator-->
             <Grid Grid.Row="3"
-                  Background="White">
+                  Background="White"
+                  Visibility="Collapsed">
 
             </Grid>
-
-            <Grid Grid.Row="4">
-                <TextBlock Text="Result"
-                           Foreground="White" />
+            <Grid Grid.Row="4"
+                  Visibility="Collapsed">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Result"
+                               Foreground="White" />
+                    <Button Height="35"
+                            Width="80"
+                            HorizontalAlignment="Left"
+                            Content="Test OK"
+                            Click="Button_Click" />
+                    <Button Height="35"
+                            Width="80"
+                            HorizontalAlignment="Left"
+                            Content="Test NG"
+                            Click="Button_Click_1" />
+                    <Button Height="35"
+                            Width="80"
+                            HorizontalAlignment="Left"
+                            Content="Test Database"
+                            Click="Button_Click_2" />
+                </StackPanel>
             </Grid>
-
             <!--separator-->
             <Grid Grid.Row="5"
                   Background="White">
@@ -182,10 +211,11 @@
                          Foreground="Black">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="2.2*" />
                             <ColumnDefinition Width="1.5*" />
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
+                        <Grid Grid.Column="0"
+                              Visibility="Collapsed">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
                                 <RowDefinition />
@@ -212,8 +242,8 @@
                                                         FontWeight="Bold"
                                                         Binding="{Binding Index}" />
                                     <DataGridTextColumn Header="Parameter"
-                                                        Width="300"
-                                                        MinWidth="300"
+                                                        Width="260"
+                                                        MinWidth="200"
                                                         MaxWidth="500"
                                                         FontSize="12"
                                                         FontWeight="Bold"
@@ -245,7 +275,42 @@
                                 </Button.Content>
                             </Button>
                         </Grid>
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <xctk:PropertyGrid x:Name="propGridSystem"
+                                               Margin="10"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               AutoGenerateProperties="True"
+                                               NameColumnWidth="250"
+                                               ShowHorizontalScrollBar="True"
+                                               SelectedObject="{Binding ReadCodeSystemSettingsPropertyGrid, Mode=TwoWay}">
+
+                            </xctk:PropertyGrid>
+                            <!--Button-->
+                            <Button Grid.Row="2"
+                                    x:Name="btnSaveSystemSetting_PropertyGrid"
+                                    Command="{Binding SaveSettingCmd}"
+                                    CommandParameter="{Binding ElementName=btnSaveSystemSetting_PropertyGrid, Path=Name}"
+                                    Margin="3"
+                                    Width="130"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="1"
+                              Visibility="Collapsed">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
                                 <RowDefinition />
@@ -305,9 +370,44 @@
                                 </Button.Content>
                             </Button>
                         </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <xctk:PropertyGrid x:Name="propGridPlcSetting"
+                                               Margin="10"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               AutoGenerateProperties="True"
+                                               NameColumnWidth="200"
+                                               ShowHorizontalScrollBar="True"
+                                               SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
+
+                            </xctk:PropertyGrid>
+                            <!--Button-->
+                            <Button Grid.Row="2"
+                                    x:Name="btnSavePLCSetting_PropertyGrid"
+                                    Command="{Binding SaveSettingCmd}"
+                                    CommandParameter="{Binding ElementName=btnSavePLCSetting_PropertyGrid, Path=Name}"
+                                    Margin="3"
+                                    Width="130"
+                                    HorizontalAlignment="Right"
+                                    Foreground="White"
+                                    Background="{DynamicResource RGB_Cold_77_136_255}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Text="Save" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem Header="RECIPE"
+                         Visibility="Collapsed"
                          Style="{StaticResource TabItemStyle}"
                          FontSize="18"
                          Width="300"
@@ -368,6 +468,61 @@
                         </Grid>
                     </Grid>
                 </TabItem>
+                <TabItem Header="RECIPE"
+                         Style="{StaticResource TabItemStyle}"
+                         FontSize="18"
+                         FontWeight="Bold"
+                         Foreground="Black"
+                         Width="300"
+                         FontFamily="Segoe UI">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="60" />
+                        </Grid.RowDefinitions>
+                        <xctk:PropertyGrid x:Name="propGridRecipe"
+                                           Margin="10"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           AutoGenerateProperties="True"
+                                           NameColumnWidth="450"
+                                           SelectedObject="{Binding ReadCodeRecipePropertyGrid, Mode=TwoWay}">
+
+                        </xctk:PropertyGrid>
+                        <!--Button-->
+                        <Button Grid.Row="1"
+                                x:Name="btnSaveRecipe_PropertyGrid"
+                                Command="{Binding SaveRecipeCmd}"
+                                CommandParameter="{Binding ElementName=btnSaveRecipe_PropertyGrid, Path=Name}"
+                                Margin="3"
+                                Width="130"
+                                HorizontalAlignment="Right"
+                                Foreground="White"
+                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="14"
+                                               FontWeight="Bold"
+                                               Text="Save Recipe" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <!--<TabItem Header="Test BufferView Setting"
+                         Style="{StaticResource TabItemStyle}"
+                         FontSize="18"
+                         FontWeight="Bold"
+                         Foreground="Black"
+                         Width="300"
+                         FontFamily="Segoe UI">
+                    <Border Margin="5">
+                        <BuffSet:BufferViewerSetting Name="buffSetting"
+                                                     FontSize="16"
+                                                     FontWeight="SemiBold"
+                                                     FontFamily="Segoe UI"/>
+                    </Border>
+                </TabItem>-->
             </TabControl>
         </Grid>
     </Grid>

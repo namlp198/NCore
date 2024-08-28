@@ -9,6 +9,12 @@ namespace ReadCodeGUI.Models
 {
     public class Plc_LS_Model : ModelBase
     {
+        public Plc_LS_Model() 
+        {
+            m_strPlcCOM = "COM11";
+            m_nBaudRate = 115200;
+        }
+
         private string m_strPlcCOM;
         private int m_nBaudRate;
         private int m_nTriggerDelay;

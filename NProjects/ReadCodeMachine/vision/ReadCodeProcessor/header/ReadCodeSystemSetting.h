@@ -15,6 +15,7 @@ public:
 	BOOL                m_bByPass;
 	TCHAR               m_sFullImagePath[MAX_STRING_SIZE];
 	TCHAR               m_sDefectImagePath[MAX_STRING_SIZE];
+	TCHAR               m_sTemplateImagePath[MAX_STRING_SIZE];
 	TCHAR               m_sModelName[MAX_STRING_SIZE];
 	BOOL                m_bTestMode;
 };

@@ -12,6 +12,9 @@ namespace ReadCodeGUI.Manager
         public delegate void InspectionComplete_Handler(int bSetting);
         public static event InspectionComplete_Handler InspectionComplete;
 
+        public delegate void LocatorTrained_Handler(int bSetting);
+        public static event LocatorTrained_Handler LocatorTrained;
+
         public ReadCodeProcessorManager m_processorManager = new ReadCodeProcessorManager();
         public SimulationThread m_simulationThread = new SimulationThread();
 
@@ -32,6 +35,11 @@ namespace ReadCodeGUI.Manager
         public void CallbackInsCompleteFunc(int bSetting)
         {
             InspectionComplete(bSetting);
+        }
+
+        public void CallbackLocatorTrainedFunc(int bSetting)
+        {
+            LocatorTrained(bSetting);
         }
     }
 }

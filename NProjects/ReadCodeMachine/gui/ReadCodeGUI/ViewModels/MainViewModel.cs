@@ -16,6 +16,7 @@ using System.Windows;
 using System.IO;
 using ReadCodeGUI.Models;
 using System.Threading;
+using ReadCodeGUI.Manager.Class;
 
 namespace ReadCodeGUI.ViewModels
 {
@@ -46,6 +47,7 @@ namespace ReadCodeGUI.ViewModels
 
             m_columnNameList = new List<string>() { "A", "B", "C", "D", "E", "F" };
             StartAppExcel();
+            Csv_Manager.Instance.Initialize();
 
             this.SelectRunViewCmd = new SelectRunViewCmd();
             this.SelectSettingViewCmd = new SelectSettingViewCmd();
@@ -58,14 +60,25 @@ namespace ReadCodeGUI.ViewModels
             InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.LoadSystemSettings(ref InterfaceManager.Instance.m_processorManager.m_readCodeSysSettings);
             SettingVM.LoadSystemSettings();
 
-            SettingVM.LoadPlcSettings();
-
             InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_readCodeRecipe);
             SettingVM.LoadRecipe();
 
+            SettingVM.LoadPlcSettings();
+
             if (InterfaceManager.Instance.m_processorManager.m_readCodeSysSettings.m_bSimulation == 0)
             {
-                if (InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(0))
+                // add camera list
+                List<string> lstCameras = new List<string>();
+                for (int i = 1; i <= Defines.MAX_CAMERA_INSPECT_COUNT; i++)
+                {
+                    string sCamera = "Cam " + i + "";
+                    lstCameras.Add(sCamera);
+                }
+                SettingVM.SettingView.buffSetting.CameraList = lstCameras;
+
+                RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
+                SettingVM.SetAllParamPlcDelta();
+                if (InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.InspectStart(1,0))
                 {
                     InspectRunning = true;
                 }
@@ -84,7 +97,9 @@ namespace ReadCodeGUI.ViewModels
         #endregion
 
         #region Destructor
-        ~MainViewModel() { }
+        ~MainViewModel() 
+        {
+        }
         #endregion
 
         #region variables
@@ -109,7 +124,6 @@ namespace ReadCodeGUI.ViewModels
             {
                 if (SetProperty(ref m_machineMode, value))
                 {
-
                 }
             }
         }

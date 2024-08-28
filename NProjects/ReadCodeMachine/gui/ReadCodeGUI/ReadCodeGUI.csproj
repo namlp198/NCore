@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,15 +57,37 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LOGO-I-TECH.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=33.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\CsvHelper.33.0.1\lib\net48\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="DocumentFormat.OpenXml">
       <HintPath>..\..\..\..\Libraries\excel\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="IndustrialNetworks.ModbusCore">
+      <HintPath>..\..\..\..\Libraries\Plc_Delta\x64\IndustrialNetworks.ModbusCore.dll</HintPath>
     </Reference>
     <Reference Include="KisToolkit">
       <HintPath>..\..\..\..\Libraries\KisToolkit\KisToolkit.dll</HintPath>
     </Reference>
     <Reference Include="LSIS.Driver.Core">
       <HintPath>..\..\..\..\Libraries\Plc_LS\Library-V2\LSIS.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="NCore.Wpf.BufferViewerSetting">
+      <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSetting.dll</HintPath>
     </Reference>
     <Reference Include="NCore.Wpf.BufferViewerSimple">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSimple.dll</HintPath>
@@ -87,9 +110,25 @@
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\..\..\Libraries\SQLite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -103,6 +142,21 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -112,6 +166,7 @@
     <Compile Include="Command\cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\cmd\InitializeCmd.cs" />
     <Compile Include="Command\cmd\ExportExcelFileCmd.cs" />
+    <Compile Include="Command\cmd\InspectSimulationCmd.cs" />
     <Compile Include="Command\cmd\LoadImageCmd.cs" />
     <Compile Include="Command\cmd\SaveRecipeCmd.cs" />
     <Compile Include="Command\cmd\SaveSettingCmd.cs" />
@@ -122,18 +177,23 @@
     <Compile Include="Command\cmd\SelectMachineModeCmd.cs" />
     <Compile Include="Commons\Defines.cs" />
     <Compile Include="Manager\Class\CameraStreamingController.cs" />
+    <Compile Include="Manager\Class\Csv_Manager.cs" />
     <Compile Include="Manager\Class\ExcelParser.cs" />
+    <Compile Include="Manager\Class\IOManager_PLC_Delta_DVP.cs" />
     <Compile Include="Manager\Class\IOManager_PLC_LS.cs" />
     <Compile Include="Manager\Class\ReadCodeProcessorDll.cs" />
     <Compile Include="Manager\Class\SQLite_Manager.cs" />
     <Compile Include="Manager\InterfaceManager.cs" />
     <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\ReadCodeProcessorManager.cs" />
+    <Compile Include="Models\CReadCodeRecipe_PropertyGrid.cs" />
     <Compile Include="Models\CReadCodeRecipe.cs" />
     <Compile Include="Models\CReadCodeResult.cs" />
     <Compile Include="Models\CReadCodeSystemSetting.cs" />
+    <Compile Include="Models\CReadCodeSystemSetting_PropertyGrid.cs" />
     <Compile Include="Models\ExcelTemplateModel.cs" />
     <Compile Include="Models\PlcSettingsMapToDataGridModel.cs" />
+    <Compile Include="Models\Plc_Delta_Model.cs" />
     <Compile Include="Models\Plc_LS_Model.cs" />
     <Compile Include="Models\ResultStringMapToDataGridModel.cs" />
     <Compile Include="Models\RecipeMapToDataGridModel.cs" />
@@ -209,6 +269,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -217,6 +278,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="LOGO-I-TECH.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

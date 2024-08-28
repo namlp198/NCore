@@ -167,6 +167,7 @@
     <Compile Include="Controls\Image3DViewerControl.xaml.cs">
       <DependentUpon>Image3DViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImageExt_Basic.cs" />
     <Compile Include="Controls\ImageExt.cs" />
     <Compile Include="Controls\ImageProcessControl.xaml.cs">
       <DependentUpon>ImageProcessControl.xaml</DependentUpon>
@@ -175,6 +176,7 @@
     <Compile Include="Controls\ItemCustomControl.cs" />
     <Compile Include="Controls\OuterGlowBorder.cs" />
     <Compile Include="Controls\OverFlowControl.cs" />
+    <Compile Include="Controls\ScrollViewerExt_Basic.cs" />
     <Compile Include="Controls\ScrollViewerExt.cs" />
     <Compile Include="Controls\SliderControl.cs" />
     <Compile Include="Controls\TextBoxControl.cs" />

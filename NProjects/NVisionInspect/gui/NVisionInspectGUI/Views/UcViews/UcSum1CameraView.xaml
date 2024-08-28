@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="NVisionInspectGUI.Views.UcViews.UcSum1CameraView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NVisionInspectGUI.Views.UcViews"
+             xmlns:Cvt="clr-namespace:NCore.Wpf.BufferViewerSimple.Converters;assembly=NCore.Wpf.BufferViewerSimple"
+             xmlns:Ctrls="clr-namespace:NCore.Wpf.BufferViewerSimple;assembly=NCore.Wpf.BufferViewerSimple"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Border Margin="2">
+            <Ctrls:BufferViewerSimple Name="buffCam" />
+
+        </Border>
+    </Grid>
+</UserControl>

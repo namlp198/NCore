@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "ReadCodeBaslerCam.h"
-#include "ReadCodeDefine.h"
 
 CReadCodeBaslerCam::CReadCodeBaslerCam(IReadCodeBaslerCamToParent* pInterface)
 {
 	m_pInterface = pInterface;
-	m_bIsStreaming = FALSE;
+
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	{
+		if (m_pCamera[i] != NULL)
+			delete m_pCamera[i], m_pCamera[i] = NULL;
+	}
 }
 
 CReadCodeBaslerCam::~CReadCodeBaslerCam()
@@ -17,12 +21,13 @@ BOOL CReadCodeBaslerCam::Initialize()
 {
 	CFrameGrabberParam grabberParam[MAX_CAMERA_INSPECT_COUNT];
 
-	grabberParam[0].SetParam_GrabberPort((CString)_T("22125820"));
-	grabberParam[0].SetParam_FrameWidth(FRAME_WIDTH);
-	grabberParam[0].SetParam_FrameHeight(FRAME_HEIGHT);
-	grabberParam[0].SetParam_FrameWidthStep(FRAME_WIDTH);
+	//grabberParam[0].SetParam_GrabberPort((CString)_T("22125820"));
+	grabberParam[0].SetParam_GrabberPort((CString)m_pInterface->GetCameraSettingControl(0)->m_sSerialNumber);
+	grabberParam[0].SetParam_FrameWidth(m_pInterface->GetCameraSettingControl(0)->m_nFrameWidth);
+	grabberParam[0].SetParam_FrameHeight(m_pInterface->GetCameraSettingControl(0)->m_nFrameHeight);
+	grabberParam[0].SetParam_FrameWidthStep(m_pInterface->GetCameraSettingControl(0)->m_nFrameWidth);
 	grabberParam[0].SetParam_FrameDepth(FRAME_DEPTH);
-	grabberParam[0].SetParam_FrameChannels(NUMBER_OF_CHANNEL_ORIGINAL);
+	grabberParam[0].SetParam_FrameChannels(m_pInterface->GetCameraSettingControl(0)->m_nChannel);
 	grabberParam[0].SetParam_FrameCount(MAX_FRAME_COUNT);
 
 	int nCamIdx = 0;
@@ -36,10 +41,10 @@ BOOL CReadCodeBaslerCam::Initialize()
 			m_pCameraImageBuffer[nCamIdx] = NULL;
 		}
 
-		DWORD dwFrameWidth = (DWORD)FRAME_WIDTH;
-		DWORD dwFrameHeight = (DWORD)FRAME_HEIGHT;
+		DWORD dwFrameWidth = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight;
 		DWORD dwFrameCount = MAX_FRAME_COUNT;
-		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * NUMBER_OF_CHANNEL_ORIGINAL;
+		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nChannel;
 
 		m_pCameraImageBuffer[nCamIdx] = new CSharedMemoryBuffer;
 		m_pCameraImageBuffer[nCamIdx]->SetFrameWidth(dwFrameWidth);
@@ -50,7 +55,7 @@ BOOL CReadCodeBaslerCam::Initialize()
 		DWORD64 dw64Size_TopCam = (DWORD64)dwFrameCount * dwFrameSize;
 
 		CString strMemory;
-		strMemory.Format(_T("%s_%d"), "BufferCam", nCamIdx);
+		strMemory.Format(_T("%s_%d"), "BufferBasler", nCamIdx);
 		m_pCameraImageBuffer[nCamIdx]->CreateSharedMemory(strMemory, dw64Size_TopCam);
 
 		// Camera
@@ -90,7 +95,7 @@ BOOL CReadCodeBaslerCam::Destroy()
 		if (m_pCamera[i] != NULL)
 		{
 			m_pCamera[i]->StopGrab();
-			Sleep(500);
+			Sleep(1000);
 			m_pCamera[i]->Disconnect();
 			delete m_pCamera[i], m_pCamera[i] = NULL;
 		}
@@ -134,6 +139,12 @@ LPBYTE CReadCodeBaslerCam::GetBufferImage(int nCamIdx)
 	return m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx);
 }
 
+//void CReadCodeBaslerCam::RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam)
+//{
+//	m_pParam = pParam;
+//	m_pReceivedImgCallback = callback;
+//}
+
 int CReadCodeBaslerCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
 {
 	if (nGrabberIndex < 0 || MAX_CAMERA_INSPECT_COUNT <= nGrabberIndex)
@@ -149,7 +160,6 @@ int CReadCodeBaslerCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, c
 	localLock.Lock();
 
 	int nCurrentFrameIdx = m_pCameraCurrentFrameIdx[nGrabberIndex];
-
 	int nNextFrameIdx = nCurrentFrameIdx + 1;
 
 	nNextFrameIdx = nNextFrameIdx % MAX_FRAME_COUNT;
@@ -158,61 +168,14 @@ int CReadCodeBaslerCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, c
 
 	m_pCameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
-	if (m_bIsStreaming == TRUE)
+	if (m_pInterface->GetReadCodeStatusControl(nGrabberIndex)->GetStreaming() == TRUE)
 	{
 		localLock.Unlock();
 		return TRUE;
 	}
 
-	// Start read code
-	cv::Mat matSrc(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC1);
-	cv::Mat matResult(FRAME_HEIGHT, FRAME_WIDTH, CV_8UC3);
-
-	memcpy(matSrc.data, (LPBYTE)pBuffer, m_pCameraImageBuffer[nGrabberIndex]->GetFrameSize());
-
-	cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
-
-	BOOL bRet = FALSE;
-	CString csRet;
-
-	auto barcodes = ReadBarcodes(matSrc);
-
-	if (!barcodes.empty())
-	{
-		if (barcodes.size() == m_pInterface->GetRecipeControl()->m_nMaxCodeCount)
-		{
-			bRet = TRUE;
-		}
-		else
-		{
-			bRet = FALSE;
-		}
-
-		std::string sRet;
-		const char* const delim = ";";
-		for (auto& barcode : barcodes) {
-			DrawBarcode(matResult, barcode);
-			if (!sRet.empty())
-				sRet += delim;
-
-			sRet += barcode.text();
-		}
-		csRet = (CString)sRet.c_str();
-	}
-
-	localLock.Unlock();
-
-	m_pInterface->SetResultBuffer(nGrabberIndex, 0, matResult.data);
-
-	m_pInterface->GetInspectionResultControl(nGrabberIndex)->m_bInspectCompleted = TRUE;
-	m_pInterface->GetInspectionResultControl(nGrabberIndex)->m_bResultStatus = bRet;
-	ZeroMemory(m_pInterface->GetInspectionResultControl(nGrabberIndex)->m_sResultString, sizeof(m_pInterface->GetInspectionResultControl(nGrabberIndex)->m_sResultString));
-	wsprintf(m_pInterface->GetInspectionResultControl(nGrabberIndex)->m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
-
-	m_pInterface->InspectComplete(FALSE);
-
-
-	return TRUE;
+	//m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nCurrentFrameIdx, m_pParam);
+	m_pInterface->ProcessFrame(nGrabberIndex, (LPBYTE)pBuffer);
 }
 
 int CReadCodeBaslerCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)
