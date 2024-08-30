@@ -111,6 +111,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             imageExt_Basic.SaveFullImage += ImageExt_Basic_SaveFullImage;
             imageExt_Basic.SaveROIImage += ImageExt_Basic_SaveROIImage;
             imageExt_Basic.TrainLocator += ImageExt_Basic_TrainLocator;
+            imageExt_Basic.Fit += ImageExt_Basic_Fit;
 
             // Try creating a new image with a custom palette.
             List<System.Windows.Media.Color> colors = new List<System.Windows.Media.Color>();
@@ -691,7 +692,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             "ShowImageDetail",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(ImageExt_Basic));
+            typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler ShowDetail
         {
             add
@@ -709,7 +710,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             "SetExposureTime",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(ImageExt_Basic));
+            typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler SetExposureTime
         {
             add
@@ -727,7 +728,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             "SetAnalogGain",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(ImageExt_Basic));
+            typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler SetAnalogGain
         {
             add
@@ -745,7 +746,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             "SelectCameraChanged",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(ImageExt_Basic));
+            typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler SelectCameraChanged
         {
             add
@@ -763,7 +764,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             "SelectFrameChanged",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(ImageExt_Basic));
+            typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler SelectFrameChanged
         {
             add
@@ -781,7 +782,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
            "SelectTriggerModeChanged",
            RoutingStrategy.Bubble,
            typeof(RoutedEventHandler),
-           typeof(ImageExt_Basic));
+           typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler SelectTriggerModeChanged
         {
             add
@@ -799,7 +800,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
            "SelectTriggerSourceChanged",
            RoutingStrategy.Bubble,
            typeof(RoutedEventHandler),
-           typeof(ImageExt_Basic));
+           typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler SelectTriggerSourceChanged
         {
             add
@@ -817,7 +818,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             "ROISelectionDone",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(ImageExt_Basic));
+            typeof(BufferViewerSettingPRO));
         public event RoutedEventHandler ROISelectionDone
         {
             add
@@ -895,7 +896,6 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         {
             RaiseEvent(new RoutedEventArgs(ShowImageDetailEvent, this));
         }
-
         private void btnSetExposureTime_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(SetExposureTimeEvent, this));
@@ -992,7 +992,10 @@ namespace NCore.Wpf.BufferViewerSettingPRO
 
             RaiseEvent(new RoutedEventArgs(ROISelectionDoneEvent, this));
         }
-
+        private void ImageExt_Basic_Fit(object sender, RoutedEventArgs e)
+        {
+            scrollViewerExt_Basic.Reset();
+        }
         #endregion
 
         // KERNEL FUNCTIONS

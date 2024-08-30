@@ -14,11 +14,11 @@ namespace NVisionInspectGUI.Commons
         public static string StartupProgPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
         public static string ReportFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)) + "\\VisionSettings\\Report";
 
-        //public const int FRAME_WIDTH = 1280;
-        //public const int FRAME_HEIGHT = 1024;
+        public const int FRAME_WIDTH = 1280;
+        public const int FRAME_HEIGHT = 1024;
 
-        public const int FRAME_WIDTH = 2590;
-        public const int FRAME_HEIGHT = 1942;
+        //public const int FRAME_WIDTH = 2590;
+        //public const int FRAME_HEIGHT = 1942;
 
         public const int NUMBER_OF_SET_INSPECT = 1;
         public const int MAX_STRING_SIZE = 256;

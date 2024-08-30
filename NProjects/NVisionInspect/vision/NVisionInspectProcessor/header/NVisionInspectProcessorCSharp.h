@@ -63,6 +63,8 @@ extern "C"
 	/************************** Load Setting and Recipe **************************/
 
 	__declspec(dllexport) bool                          LoadSystemSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting);
+
+	__declspec(dllexport) bool                          LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx);
 												        
 	__declspec(dllexport) bool                          LoadRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe);
 												        
@@ -73,6 +75,8 @@ extern "C"
 	/************************** Save Setting and Recipe **************************/
 
 	__declspec(dllexport) bool                          SaveSystemSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting);
+
+	__declspec(dllexport) bool                          SaveCameraSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx);
 												        
 	__declspec(dllexport) bool                          SaveRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe);
 };

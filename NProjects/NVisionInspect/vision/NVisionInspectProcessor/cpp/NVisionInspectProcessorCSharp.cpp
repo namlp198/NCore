@@ -31,8 +31,7 @@ bool ContinuousGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
 		return false;
 
 	int nCoreIdx = nCamIdx;
-	pProcessor->GetStatusControl(nCoreIdx)->SetStreaming(TRUE);
-
+	
 	CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
 	if (pHikCam == NULL)
 		return false;
@@ -48,15 +47,18 @@ bool SingleGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
 		return false;
 
 	int nCoreIdx = nCamIdx;
-	pProcessor->GetStatusControl(nCoreIdx)->SetStreaming(TRUE);
-
+	
 	CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
 	if (pHikCam == NULL)
 		return false;
 
-	int retVal = pHikCam->SoftwareTrigger(nCamIdx);
+	int retVal = pHikCam->StartGrab(nCamIdx);
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
+
+	/*int retVal = pHikCam->SoftwareTrigger(nCamIdx);
+	if (retVal == 0) return false;
+	else if (retVal == 1) return true;*/
 }
 
 bool StopGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
@@ -73,11 +75,7 @@ bool StopGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
 	int retVal = pHikCam->StopGrab(nCamIdx);
 
 	if (retVal == 0) return false;
-	else if (retVal == 1)
-	{
-		pProcessor->GetStatusControl(nCoreIdx)->SetStreaming(FALSE);
-		return true;
-	}
+	else if (retVal == 1) return true;
 }
 
 BYTE* GetImageBufferHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
@@ -257,6 +255,15 @@ bool LoadSystemSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectSys
 	return true;
 }
 
+bool LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	*(pCamSetting) = *(pProcessor->GetCameraSettingControl(nCamIdx));
+	return true;
+}
+
 bool LoadRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe)
 {
 	if (pProcessor == NULL)
@@ -294,6 +301,16 @@ bool SaveSystemSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectSyst
 		return false;
 
 	BOOL bRet = pProcessor->SaveSystemSetting(pSysSetting);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool SaveCameraSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SaveCameraSettings(pCamSetting, nCamIdx);
 	if (bRet == FALSE) return false;
 	else               return true;
 }

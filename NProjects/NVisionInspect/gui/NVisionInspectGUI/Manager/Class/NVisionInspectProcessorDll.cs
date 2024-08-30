@@ -154,6 +154,23 @@ namespace NVisionInspectGUI.Manager.Class
             return bRet;
         }
 
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadCameraSettings(IntPtr NVisionInspectProcessor, IntPtr pCamSetting, int nCamIdx);
+        public bool LoadCameraSettings(ref CNVisionInspectCameraSetting camSetting, int nCamIdx)
+        {
+            CNVisionInspectCameraSetting settings = new CNVisionInspectCameraSetting();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(settings));
+            Marshal.StructureToPtr(settings, pPointer, false);
+            bool bRet = LoadCameraSettings(m_NVisionInspectProcessor, pPointer, nCamIdx);
+            camSetting = (CNVisionInspectCameraSetting)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectCameraSetting));
+
+            return bRet;
+        }
+
 
 #if DEBUG
         [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -214,6 +231,21 @@ namespace NVisionInspectGUI.Manager.Class
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(sysSetting));
             Marshal.StructureToPtr(sysSetting, pPointer, false);
             bool bRet = SaveSystemSetting(m_NVisionInspectProcessor, pPointer);
+
+            return bRet;
+        }
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveCameraSetting(IntPtr NVisionInspectProcessor, IntPtr pSysSetting, int nCamIdx);
+        public bool SaveCameraSetting(ref CNVisionInspectCameraSetting camSetting, int nCamIdx)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(camSetting));
+            Marshal.StructureToPtr(camSetting, pPointer, false);
+            bool bRet = SaveCameraSetting(m_NVisionInspectProcessor, pPointer, nCamIdx);
 
             return bRet;
         }

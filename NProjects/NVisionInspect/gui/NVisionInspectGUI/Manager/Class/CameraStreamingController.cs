@@ -13,33 +13,25 @@ namespace NVisionInspectGUI.Manager.Class
     public enum CameraType { Hik, iRayple, Basler }
     public class CameraStreamingController : IDisposable
     {
-        private readonly int _frameWidth;
-        private readonly int _frameHeight;
-
         private CancellationTokenSource _cancellationTokenSource;
         private Task _previewTask;
         private BufferViewerSettingPRO m_bufferViewerSettingPRO;
 
-        public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSettingPRO ucBuffV, NCore.Wpf.BufferViewerSettingPRO.EnModeView modeView)
+        public CameraStreamingController(BufferViewerSettingPRO ucBuffV)
         {
-            this._frameWidth = frameWidth;
-            this._frameHeight = frameHeight;
             this.m_bufferViewerSettingPRO = ucBuffV;
-
-            this.m_bufferViewerSettingPRO.FrameWidth = frameWidth;
-            this.m_bufferViewerSettingPRO.FrameHeight = frameHeight;
-            this.m_bufferViewerSettingPRO.ModeView = modeView;
-            this.m_bufferViewerSettingPRO.SetParamsModeColor(frameWidth, frameHeight);
         }
 
         public void SingleGrab()
         {
             Task.Factory.StartNew(async () =>
             {
-                if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SingleGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
+                int nCamIdx = m_bufferViewerSettingPRO.CameraIndex;
+                if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SingleGrabHikCam(nCamIdx)) return;
 
-                //m_bufferViewerSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_readCodeProcessorDll.GetImageBufferBaslerCam(m_bufferViewerSettingPRO.CameraIndex);
-                //await m_bufferViewerSettingPRO.UpdateImage();
+                // read hik camera
+                m_bufferViewerSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetImageBufferHikCam(nCamIdx);
+                await m_bufferViewerSettingPRO.UpdateImage();
             });
         }
 
@@ -51,11 +43,11 @@ namespace NVisionInspectGUI.Manager.Class
 
             switch (cameraType)
             {
-                case CameraType.Hik:
+                case CameraType.Basler:
                     break;
                 case CameraType.iRayple:
                     break;
-                case CameraType.Basler:
+                case CameraType.Hik:
                     if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.ContinuousGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
 
                     MainViewModel.Instance.SettingVM.IsStreamming = true;
@@ -97,12 +89,13 @@ namespace NVisionInspectGUI.Manager.Class
         {
             switch (cameraType)
             {
-                case CameraType.Hik:
+                case CameraType.Basler:
                     break;
                 case CameraType.iRayple:
                     break;
-                case CameraType.Basler:
+                case CameraType.Hik:
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.StopGrabHikCam(m_bufferViewerSettingPRO.CameraIndex);
+                    MainViewModel.Instance.SettingVM.IsStreamming = false;
                     MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.IsStreamming = false;
                     break;
             }
@@ -112,11 +105,11 @@ namespace NVisionInspectGUI.Manager.Class
         {
             switch (cameraType)
             {
-                case CameraType.Hik:
+                case CameraType.Basler:
                     break;
                 case CameraType.iRayple:
                     break;
-                case CameraType.Basler:
+                case CameraType.Hik:
                     if (_cancellationTokenSource == null) return;
                     // If "Dispose" gets called before Stop
                     if (_cancellationTokenSource.IsCancellationRequested)
@@ -126,6 +119,7 @@ namespace NVisionInspectGUI.Manager.Class
                     {
                         if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.StopGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
 
+                        MainViewModel.Instance.SettingVM.IsStreamming = false;
                         MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.IsStreamming = false;
                         _cancellationTokenSource.Cancel();
 

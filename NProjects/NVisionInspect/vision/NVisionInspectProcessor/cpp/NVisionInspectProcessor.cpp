@@ -235,7 +235,7 @@ BOOL CNVisionInspectProcessor::SaveImage(int nCamIdx)
 
 	USES_CONVERSION;
 	char chSavePath[1000] = {};
-	sprintf_s(chSavePath, "%s", W2A(m_pNVisionInspectSystemSetting->m_sFullImagePath));
+	sprintf_s(chSavePath, "%s", W2A(m_pNVisionInspectCameraSetting[nCamIdx]->m_sFullImagePath));
 	std::string sSavePath(chSavePath);
 
 	cv::Mat matSave(m_pNVisionInspectCameraSetting[nCamIdx]->m_nFrameHeight, m_pNVisionInspectCameraSetting[nCamIdx]->m_nFrameWidth, CV_8UC1, m_pNVisionInspectHikCam->GetBufferImage(nCamIdx));
@@ -324,15 +324,7 @@ BOOL CNVisionInspectProcessor::LoadSystemSettings(CNVisionInspectSystemSetting* 
 	}
 
 	// start read
-
-	CString csSaveFullImage = (CString)pRoot->first_node("SaveFullImage")->value();
-	sysSettings.m_bSaveFullImage = csSaveFullImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
-
-	CString csSaveDefectImage = (CString)pRoot->first_node("SaveDefectImage")->value();
-	sysSettings.m_bSaveDefectImage = csSaveDefectImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
-
-	CString csShowDetailImage = (CString)pRoot->first_node("ShowDetailImage")->value();
-	sysSettings.m_bShowDetailImage = csShowDetailImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+	sysSettings.m_nInspectCameraCount = std::stoi(pRoot->first_node("InspectCameraCount")->value());
 
 	CString csSimulation = (CString)pRoot->first_node("Simulation")->value();
 	sysSettings.m_bSimulation = csSimulation.Compare(_T("true")) == 0 ? TRUE : FALSE;
@@ -340,27 +332,15 @@ BOOL CNVisionInspectProcessor::LoadSystemSettings(CNVisionInspectSystemSetting* 
 	CString csByPass = (CString)pRoot->first_node("ByPass")->value();
 	sysSettings.m_bByPass = csByPass.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csFullImagePath = (CString)pRoot->first_node("FullImagePath")->value();
-	ZeroMemory(sysSettings.m_sFullImagePath, sizeof(sysSettings.m_sFullImagePath));
-	wsprintf(sysSettings.m_sFullImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csFullImagePath);
-
-	CString csDefectImagePath = (CString)pRoot->first_node("DefectImagePath")->value();
-	ZeroMemory(sysSettings.m_sDefectImagePath, sizeof(sysSettings.m_sDefectImagePath));
-	wsprintf(sysSettings.m_sDefectImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csDefectImagePath);
-
-	CString csTemplateImagePath = (CString)pRoot->first_node("TemplateImagePath")->value();
-	ZeroMemory(sysSettings.m_sTemplateImagePath, sizeof(sysSettings.m_sTemplateImagePath));
-	wsprintf(sysSettings.m_sTemplateImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csTemplateImagePath);
-
-	CString csModelName = (CString)pRoot->first_node("ModelName")->value();
-	ZeroMemory(sysSettings.m_sModelName, sizeof(sysSettings.m_sModelName));
-	wsprintf(sysSettings.m_sModelName, _T("%s"), (TCHAR*)(LPCTSTR)csModelName);
-
 	CString csTestMode = (CString)pRoot->first_node("TestMode")->value();
 	sysSettings.m_bTestMode = csTestMode.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
+	CString csRecipeName = (CString)pRoot->first_node("RecipeName")->value();
+	ZeroMemory(sysSettings.m_sRecipeName, sizeof(sysSettings.m_sRecipeName));
+	wsprintf(sysSettings.m_sRecipeName, _T("%s"), (TCHAR*)(LPCTSTR)csRecipeName);
+
 	// set recipe path
-	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sModelName, _T("cfg"));
+	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sRecipeName, _T("cfg"));
 
 	*(pSystemSetting) = sysSettings;
 
@@ -418,8 +398,8 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("TEMPLATE_MATCHING_RATE"), readRecipe.m_dTemplateMatchingRate, 0);
 	recipeFile.GetItemValue(_T("TEMPLATE_SHOW_GRAPHICS"), readRecipe.m_bTemplateShowGraphics, 0);
 
-	recipeFile.GetItemValue(_T("ROI1_OFFSET_X"), readRecipe.m_nROI1_OffsetX, 0);
-	recipeFile.GetItemValue(_T("ROI1_OFFSET_Y"), readRecipe.m_nROI1_OffsetY, 0);
+	recipeFile.GetItemValue(_T("ROI1_X"), readRecipe.m_nROI1_X, 0);
+	recipeFile.GetItemValue(_T("ROI1_Y"), readRecipe.m_nROI1_Y, 0);
 	recipeFile.GetItemValue(_T("ROI1_WIDTH"), readRecipe.m_nROI1_Width, 0);
 	recipeFile.GetItemValue(_T("ROI1_HEIGHT"), readRecipe.m_nROI1_Height, 0);
 	recipeFile.GetItemValue(_T("ROI1_ANGLE_ROTATE"), readRecipe.m_nROI1_AngleRotate, 0);
@@ -427,10 +407,12 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI1_GrayThreshold_Max, 0);
 	recipeFile.GetItemValue(_T("ROI1_PIXEL_COUNT_MIN"), readRecipe.m_nROI1_PixelCount_Min, 0);
 	recipeFile.GetItemValue(_T("ROI1_PIXEL_COUNT_MAX"), readRecipe.m_nROI1_PixelCount_Max, 0);
+	recipeFile.GetItemValue(_T("ROI1_USE_OFFSET"), readRecipe.m_bROI1UseOffset, 0);
+	recipeFile.GetItemValue(_T("ROI1_USE_LOCATOR"), readRecipe.m_bROI1UseLocator, 0);
 	recipeFile.GetItemValue(_T("ROI1_SHOW_GRAPHICS"), readRecipe.m_bROI1ShowGraphics, 0);
 
-	recipeFile.GetItemValue(_T("ROI2_OFFSET_X"), readRecipe.m_nROI2_OffsetX, 0);
-	recipeFile.GetItemValue(_T("ROI2_OFFSET_Y"), readRecipe.m_nROI2_OffsetY, 0);
+	recipeFile.GetItemValue(_T("ROI2_X"), readRecipe.m_nROI2_X, 0);
+	recipeFile.GetItemValue(_T("ROI2_Y"), readRecipe.m_nROI2_Y, 0);
 	recipeFile.GetItemValue(_T("ROI2_WIDTH"), readRecipe.m_nROI2_Width, 0);
 	recipeFile.GetItemValue(_T("ROI2_HEIGHT"), readRecipe.m_nROI2_Height, 0);
 	recipeFile.GetItemValue(_T("ROI2_ANGLE_ROTATE"), readRecipe.m_nROI2_AngleRotate, 0);
@@ -438,10 +420,12 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI2_GrayThreshold_Max, 0);
 	recipeFile.GetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), readRecipe.m_nROI2_PixelCount_Min, 0);
 	recipeFile.GetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), readRecipe.m_nROI2_PixelCount_Max, 0);
+	recipeFile.GetItemValue(_T("ROI2_USE_OFFSET"), readRecipe.m_bROI2UseOffset, 0);
+	recipeFile.GetItemValue(_T("ROI2_USE_LOCATOR"), readRecipe.m_bROI2UseLocator, 0);
 	recipeFile.GetItemValue(_T("ROI2_SHOW_GRAPHICS"), readRecipe.m_bROI2ShowGraphics, 0);
 
-	recipeFile.GetItemValue(_T("ROI3_OFFSET_X"), readRecipe.m_nROI3_OffsetX, 0);
-	recipeFile.GetItemValue(_T("ROI3_OFFSET_Y"), readRecipe.m_nROI3_OffsetY, 0);
+	recipeFile.GetItemValue(_T("ROI3_X"), readRecipe.m_nROI3_X, 0);
+	recipeFile.GetItemValue(_T("ROI3_Y"), readRecipe.m_nROI3_Y, 0);
 	recipeFile.GetItemValue(_T("ROI3_WIDTH"), readRecipe.m_nROI3_Width, 0);
 	recipeFile.GetItemValue(_T("ROI3_HEIGHT"), readRecipe.m_nROI3_Height, 0);
 	recipeFile.GetItemValue(_T("ROI3_ANGLE_ROTATE"), readRecipe.m_nROI3_AngleRotate, 0);
@@ -449,6 +433,8 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI3_GrayThreshold_Max, 0);
 	recipeFile.GetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), readRecipe.m_nROI3_PixelCount_Min, 0);
 	recipeFile.GetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), readRecipe.m_nROI3_PixelCount_Max, 0);
+	recipeFile.GetItemValue(_T("ROI3_USE_OFFSET"), readRecipe.m_bROI3UseOffset, 0);
+	recipeFile.GetItemValue(_T("ROI2_USE_LOCATOR"), readRecipe.m_bROI2UseLocator, 0);
 	recipeFile.GetItemValue(_T("ROI3_SHOW_GRAPHICS"), readRecipe.m_bROI3ShowGraphics, 0);
 
 	*(pRecipe) = readRecipe;
@@ -514,17 +500,58 @@ BOOL CNVisionInspectProcessor::LoadCameraSettings(CNVisionInspectCameraSetting* 
 
 	// start read
 
+	CString csIsSaveFullImage = (CString)pRoot->first_node("IsSaveFullImage")->value();
+	camSettings.m_bSaveFullImage = csIsSaveFullImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csIsSaveDefectImage = (CString)pRoot->first_node("IsSaveDefectImage")->value();
+	camSettings.m_bSaveDefectImage = csIsSaveDefectImage.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	CString csShowGraphics = (CString)pRoot->first_node("ShowGraphics")->value();
+	camSettings.m_bShowGraphics = csShowGraphics.Compare(_T("true")) == 0 ? TRUE : FALSE;
+
+	camSettings.m_nChannels = std::stoi(pRoot->first_node("Channels")->value());
 	camSettings.m_nFrameWidth = std::stoi(pRoot->first_node("FrameWidth")->value());
 	camSettings.m_nFrameHeight = std::stoi(pRoot->first_node("FrameHeight")->value());
-	camSettings.m_nChannel = std::stoi(pRoot->first_node("Channel")->value());
-	camSettings.m_nTriggerMode = std::stoi(pRoot->first_node("TriggerMode")->value());
-	camSettings.m_nTriggerSource = std::stoi(pRoot->first_node("TriggerSource")->value());
-	camSettings.m_nExposureTime = std::atof(pRoot->first_node("ExposureTime")->value());
-	camSettings.m_nAnalogGain = std::atof(pRoot->first_node("AnalogGain")->value());
+	camSettings.m_nFrameDepth = std::stoi(pRoot->first_node("FrameDepth")->value());
+	camSettings.m_nMaxFrameCount = std::stoi(pRoot->first_node("MaxFrameCount")->value());
+	camSettings.m_nNumberOfROI = std::stoi(pRoot->first_node("NumberOfROI")->value());
+
+	CString csCameraName = (CString)pRoot->first_node("CameraName")->value();
+	ZeroMemory(camSettings.m_sCameraName, sizeof(camSettings.m_sCameraName));
+	wsprintf(camSettings.m_sCameraName, _T("%s"), (TCHAR*)(LPCTSTR)csCameraName);
+
+	CString csInterfaceType = (CString)pRoot->first_node("InterfaceType")->value();
+	ZeroMemory(camSettings.m_sInterfaceType, sizeof(camSettings.m_sInterfaceType));
+	wsprintf(camSettings.m_sInterfaceType, _T("%s"), (TCHAR*)(LPCTSTR)csInterfaceType);
+
+	CString csSensorType = (CString)pRoot->first_node("SensorType")->value();
+	ZeroMemory(camSettings.m_sSensorType, sizeof(camSettings.m_sSensorType));
+	wsprintf(camSettings.m_sSensorType, _T("%s"), (TCHAR*)(LPCTSTR)csSensorType);
+
+	CString csManufacturer = (CString)pRoot->first_node("Manufacturer")->value();
+	ZeroMemory(camSettings.m_sManufacturer, sizeof(camSettings.m_sManufacturer));
+	wsprintf(camSettings.m_sManufacturer, _T("%s"), (TCHAR*)(LPCTSTR)csManufacturer);
 
 	CString csSerialNumber = (CString)pRoot->first_node("SerialNumber")->value();
 	ZeroMemory(camSettings.m_sSerialNumber, sizeof(camSettings.m_sSerialNumber));
 	wsprintf(camSettings.m_sSerialNumber, _T("%s"), (TCHAR*)(LPCTSTR)csSerialNumber);
+
+	CString csModel = (CString)pRoot->first_node("Model")->value();
+	ZeroMemory(camSettings.m_sModel, sizeof(camSettings.m_sModel));
+	wsprintf(camSettings.m_sModel, _T("%s"), (TCHAR*)(LPCTSTR)csModel);
+
+	CString csFullImagePath = (CString)pRoot->first_node("FullImagePath")->value();
+	ZeroMemory(camSettings.m_sFullImagePath, sizeof(camSettings.m_sFullImagePath));
+	wsprintf(camSettings.m_sFullImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csFullImagePath);
+
+	CString csDefectImagePath = (CString)pRoot->first_node("DefectImagePath")->value();
+	ZeroMemory(camSettings.m_sDefectImagePath, sizeof(camSettings.m_sDefectImagePath));
+	wsprintf(camSettings.m_sDefectImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csDefectImagePath);
+
+	CString csTemplateImagePath = (CString)pRoot->first_node("TemplateImagePath")->value();
+	ZeroMemory(camSettings.m_sTemplateImagePath, sizeof(camSettings.m_sTemplateImagePath));
+	wsprintf(camSettings.m_sTemplateImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csTemplateImagePath);
+
 	*(pCameraSetting) = camSettings;
 
 	::DisposeXMLFile(m_pXmlFile);
@@ -579,17 +606,8 @@ BOOL CNVisionInspectProcessor::SaveSystemSetting(CNVisionInspectSystemSetting* p
 
 #pragma region Write data 
 
-	CString csSaveFullImage = sysSetting.m_bSaveFullImage == TRUE ? _T("true") : _T("false");
-	const char* sSaveFullImage = W2A(csSaveFullImage);
-	pRoot->first_node("SaveFullImage")->value(sSaveFullImage);
-
-	CString csSaveDefectImage = sysSetting.m_bSaveDefectImage == TRUE ? _T("true") : _T("false");
-	const char* sSaveDefectImage = W2A(csSaveDefectImage);
-	pRoot->first_node("SaveDefectImage")->value(sSaveDefectImage);
-
-	CString csShowDetailImage = sysSetting.m_bShowDetailImage == TRUE ? _T("true") : _T("false");
-	const char* sShowDetailImage = W2A(csShowDetailImage);
-	pRoot->first_node("ShowDetailImage")->value(sShowDetailImage);
+	const char* sInspCameraCount = std::to_string(sysSetting.m_nInspectCameraCount).c_str();
+	pRoot->first_node("InspectCameraCount")->value(sInspCameraCount);
 
 	CString csSimulation = sysSetting.m_bSimulation == TRUE ? _T("true") : _T("false");
 	const char* sSimulation = W2A(csSimulation);
@@ -599,21 +617,12 @@ BOOL CNVisionInspectProcessor::SaveSystemSetting(CNVisionInspectSystemSetting* p
 	const char* sByPass = W2A(csByPass);
 	pRoot->first_node("ByPass")->value(sByPass);
 
-	const char* sFullImagePath = W2A(sysSetting.m_sFullImagePath);
-	pRoot->first_node("FullImagePath")->value(sFullImagePath);
-
-	const char* sDefectImagePath = W2A(sysSetting.m_sDefectImagePath);
-	pRoot->first_node("DefectImagePath")->value(sDefectImagePath);
-
-	const char* sTemplateImagePath = W2A(sysSetting.m_sTemplateImagePath);
-	pRoot->first_node("TemplateImagePath")->value(sTemplateImagePath);
-
-	const char* sModelName = W2A(sysSetting.m_sModelName);
-	pRoot->first_node("ModelName")->value(sModelName);
-
 	CString csTestMode = sysSetting.m_bTestMode == TRUE ? _T("true") : _T("false");
 	const char* sTestMode = W2A(csTestMode);
 	pRoot->first_node("TestMode")->value(sTestMode);
+
+	const char* sRecipeName = W2A(sysSetting.m_sRecipeName);
+	pRoot->first_node("RecipeName")->value(sRecipeName);
 
 #pragma endregion
 
@@ -677,8 +686,8 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), pRecipe->m_dTemplateAngleRotate);
 	recipeFile.SetItemValue(_T("TEMPLATE_MATCHING_RATE"), pRecipe->m_dTemplateMatchingRate);
 
-	recipeFile.SetItemValue(_T("ROI1_OFFSET_X"), pRecipe->m_nROI1_OffsetX);
-	recipeFile.SetItemValue(_T("ROI1_OFFSET_Y"), pRecipe->m_nROI1_OffsetY);
+	recipeFile.SetItemValue(_T("ROI1_X"), pRecipe->m_nROI1_X);
+	recipeFile.SetItemValue(_T("ROI1_Y"), pRecipe->m_nROI1_Y);
 	recipeFile.SetItemValue(_T("ROI1_WIDTH"), pRecipe->m_nROI1_Width);
 	recipeFile.SetItemValue(_T("ROI1_HEIGHT"), pRecipe->m_nROI1_Height);
 	recipeFile.SetItemValue(_T("ROI1_ANGLE_ROTATE"), pRecipe->m_nROI1_AngleRotate);
@@ -686,10 +695,12 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI1_GrayThreshold_Max);
 	recipeFile.SetItemValue(_T("ROI1_PIXEL_COUNT_MIN"), pRecipe->m_nROI1_PixelCount_Min);
 	recipeFile.SetItemValue(_T("ROI1_PIXEL_COUNT_MAX"), pRecipe->m_nROI1_PixelCount_Max);
+	recipeFile.SetItemValue(_T("ROI1_USE_OFFSET"), pRecipe->m_bROI1UseOffset);
+	recipeFile.SetItemValue(_T("ROI1_USE_LOCATOR"), pRecipe->m_bROI1UseLocator);
 	recipeFile.SetItemValue(_T("ROI1_SHOW_GRAPHICS"), pRecipe->m_bROI1ShowGraphics);
 
-	recipeFile.SetItemValue(_T("ROI2_OFFSET_X"), pRecipe->m_nROI2_OffsetX);
-	recipeFile.SetItemValue(_T("ROI2_OFFSET_Y"), pRecipe->m_nROI2_OffsetY);
+	recipeFile.SetItemValue(_T("ROI2_X"), pRecipe->m_nROI2_X);
+	recipeFile.SetItemValue(_T("ROI2_Y"), pRecipe->m_nROI2_Y);
 	recipeFile.SetItemValue(_T("ROI2_WIDTH"), pRecipe->m_nROI2_Width);
 	recipeFile.SetItemValue(_T("ROI2_HEIGHT"), pRecipe->m_nROI2_Height);
 	recipeFile.SetItemValue(_T("ROI2_ANGLE_ROTATE"), pRecipe->m_nROI2_AngleRotate);
@@ -697,10 +708,12 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI2_GrayThreshold_Max);
 	recipeFile.SetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), pRecipe->m_nROI2_PixelCount_Min);
 	recipeFile.SetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), pRecipe->m_nROI2_PixelCount_Max);
+	recipeFile.SetItemValue(_T("ROI2_USE_OFFSET"), pRecipe->m_bROI2UseOffset);
+	recipeFile.SetItemValue(_T("ROI2_USE_LOCATOR"), pRecipe->m_bROI2UseLocator);
 	recipeFile.SetItemValue(_T("ROI2_SHOW_GRAPHICS"), pRecipe->m_bROI2ShowGraphics);
 
-	recipeFile.SetItemValue(_T("ROI3_OFFSET_X"), pRecipe->m_nROI3_OffsetX);
-	recipeFile.SetItemValue(_T("ROI3_OFFSET_Y"), pRecipe->m_nROI3_OffsetY);
+	recipeFile.SetItemValue(_T("ROI3_X"), pRecipe->m_nROI3_X);
+	recipeFile.SetItemValue(_T("ROI3_Y"), pRecipe->m_nROI3_Y);
 	recipeFile.SetItemValue(_T("ROI3_WIDTH"), pRecipe->m_nROI3_Width);
 	recipeFile.SetItemValue(_T("ROI3_HEIGHT"), pRecipe->m_nROI3_Height);
 	recipeFile.SetItemValue(_T("ROI3_ANGLE_ROTATE"), pRecipe->m_nROI3_AngleRotate);
@@ -708,6 +721,8 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI3_GrayThreshold_Max);
 	recipeFile.SetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), pRecipe->m_nROI3_PixelCount_Min);
 	recipeFile.SetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), pRecipe->m_nROI3_PixelCount_Max);
+	recipeFile.SetItemValue(_T("ROI3_USE_OFFSET"), pRecipe->m_bROI3UseOffset);
+	recipeFile.SetItemValue(_T("ROI3_USE_LOCATOR"), pRecipe->m_bROI3UseLocator);
 	recipeFile.SetItemValue(_T("ROI3_SHOW_GRAPHICS"), pRecipe->m_bROI3ShowGraphics);
 
 	*(m_pNVisionInspectRecipe) = *pRecipe;
@@ -761,6 +776,23 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* 
 
 #pragma region Write data 
 
+	CString csIsSaveFullImage = camSetting.m_bSaveFullImage == TRUE ? _T("true") : _T("false");
+	const char* sIsSaveFullImage = W2A(csIsSaveFullImage);
+	pRoot->first_node("IsSaveFullImage")->value(sIsSaveFullImage);
+
+	CString csIsSaveDefectImage = camSetting.m_bSaveDefectImage == TRUE ? _T("true") : _T("false");
+	const char* sIsSaveDefectImage = W2A(csIsSaveDefectImage);
+	pRoot->first_node("IsSaveDefectImage")->value(sIsSaveDefectImage);
+
+	CString csShowGraphics = camSetting.m_bShowGraphics == TRUE ? _T("true") : _T("false");
+	const char* sShowGraphics = W2A(csShowGraphics);
+	pRoot->first_node("ShowGraphics")->value(sShowGraphics);
+
+	CString csChannels;
+	csChannels.Format(_T("%d"), camSetting.m_nChannels);
+	const char* sChannels = W2A(csChannels);
+	pRoot->first_node("Channels")->value(sChannels);
+
 	CString csFrameWidth;
 	csFrameWidth.Format(_T("%d"), camSetting.m_nFrameWidth);
 	const char* sFrameWidth = W2A(csFrameWidth);
@@ -771,33 +803,47 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* 
 	const char* sFrameHeight = W2A(csFrameHeight);
 	pRoot->first_node("FrameHeight")->value(sFrameHeight);
 
-	CString csChannel;
-	csChannel.Format(_T("%d"), camSetting.m_nChannel);
-	const char* sChannel = W2A(csChannel);
-	pRoot->first_node("Channel")->value(sChannel);
+	CString csFrameDepth;
+	csFrameDepth.Format(_T("%d"), camSetting.m_nFrameDepth);
+	const char* sFrameDepth = W2A(csFrameDepth);
+	pRoot->first_node("FrameDepth")->value(sFrameDepth);
 
-	CString csTriggerMode;
-	csTriggerMode.Format(_T("%d"), camSetting.m_nTriggerMode);
-	const char* sTriggerMode = W2A(csTriggerMode);
-	pRoot->first_node("TriggerMode")->value(sTriggerMode);
+	CString csMaxFrameCount;
+	csMaxFrameCount.Format(_T("%d"), camSetting.m_nMaxFrameCount);
+	const char* sMaxFrameCount = W2A(csMaxFrameCount);
+	pRoot->first_node("MaxFrameCount")->value(sMaxFrameCount);
 
-	CString csTriggerSource;
-	csTriggerSource.Format(_T("%d"), camSetting.m_nTriggerSource);
-	const char* sTriggerSource = W2A(csTriggerSource);
-	pRoot->first_node("TriggerSource")->value(sTriggerSource);
+	CString csNumberOfROI;
+	csNumberOfROI.Format(_T("%d"), camSetting.m_nNumberOfROI);
+	const char* sNumberOfROI = W2A(csNumberOfROI);
+	pRoot->first_node("NumberOfROI")->value(sNumberOfROI);
 
-	CString csExposureTime;
-	csExposureTime.Format(_T("%.1f"), camSetting.m_nExposureTime);
-	const char* sExposureTime = W2A(csExposureTime);
-	pRoot->first_node("ExposureTime")->value(sExposureTime);
+	const char* sCameraName = W2A(camSetting.m_sCameraName);
+	pRoot->first_node("CameraName")->value(sCameraName);
 
-	CString csAnalogGain;
-	csAnalogGain.Format(_T("%.1f"), camSetting.m_nAnalogGain);
-	const char* sAnalogGain = W2A(csAnalogGain);
-	pRoot->first_node("AnalogGain")->value(sAnalogGain);
+	const char* sInterfaceType = W2A(camSetting.m_sInterfaceType);
+	pRoot->first_node("InterfaceType")->value(sInterfaceType);
+
+	const char* sSensorType = W2A(camSetting.m_sSensorType);
+	pRoot->first_node("SensorType")->value(sSensorType);
+
+	const char* sManufacturer = W2A(camSetting.m_sManufacturer);
+	pRoot->first_node("Manufacturer")->value(sManufacturer);
 
 	const char* sSerialNumber = W2A(camSetting.m_sSerialNumber);
 	pRoot->first_node("SerialNumber")->value(sSerialNumber);
+
+	const char* sModel = W2A(camSetting.m_sModel);
+	pRoot->first_node("Model")->value(sModel);
+
+	const char* sFullImagePath = W2A(camSetting.m_sFullImagePath);
+	pRoot->first_node("FullImagePath")->value(sFullImagePath);
+
+	const char* sDefectImagePath = W2A(camSetting.m_sDefectImagePath);
+	pRoot->first_node("DefectImagePath")->value(sDefectImagePath);
+
+	const char* sTemplateImagePath = W2A(camSetting.m_sTemplateImagePath);
+	pRoot->first_node("TemplateImagePath")->value(sTemplateImagePath);
 
 #pragma endregion
 
@@ -926,6 +972,17 @@ LPBYTE CNVisionInspectProcessor::GetImageBufferHikCam(int nCamIdx)
 		return NULL;
 
 	LPBYTE pImageBuff = m_pNVisionInspectHikCam->GetBufferImage(nCamIdx);
+
+	if (m_pNVisionInspectCameraSetting[nCamIdx]->m_nChannels == 1)
+	{
+		int nWidth = m_pNVisionInspectCameraSetting[nCamIdx]->m_nFrameWidth;
+		int nHeight = m_pNVisionInspectCameraSetting[nCamIdx]->m_nFrameHeight;
+		cv::Mat matGray(nHeight, nWidth, CV_8UC1, pImageBuff);
+
+		cv::cvtColor(matGray, m_matBGR, cv::COLOR_GRAY2BGR);
+
+		return m_matBGR.data;
+	}
 
 	return pImageBuff;
 }

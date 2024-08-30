@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -32,6 +33,36 @@ namespace Npc.Foundation.Util
             }
 
             return attr.Description;
+        }
+        public static string GetEnumDescription<T>(T enumObj)
+        {
+            FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
+            if (fieldInfo != null)
+            {
+                object[] attribArray = fieldInfo.GetCustomAttributes(false);
+                if (attribArray != null && attribArray.Length > 0 && attribArray[0] is DescriptionAttribute attrib)
+                {
+                    return attrib.Description;
+                }
+            }
+            return enumObj.ToString();
+        }
+        public static List<string> GetEnumDescriptionToListString<T>()
+        {
+            List<string> listDesStr = new List<string>();
+            List<T> listDes = Enum.GetValues(typeof(T))
+                                           .Cast<T>()
+                                           .ToList();
+
+            foreach (var item in listDes)
+            {
+                string s = GetEnumDescription(item);
+                //if (s.Equals("Null"))
+                //    continue;
+                listDesStr.Add(s);
+            }
+
+            return listDesStr;
         }
     }
 }

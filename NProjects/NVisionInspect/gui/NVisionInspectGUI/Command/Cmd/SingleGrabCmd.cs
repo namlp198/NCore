@@ -15,7 +15,7 @@ namespace NVisionInspectGUI.Command.Cmd
         {
             MainViewModel.Instance.SettingVM.SettingView.Dispatcher.BeginInvoke(new Action(() =>
             {
-               MainViewModel.Instance.SettingVM.m_cameraStreamingController.SingleGrab();
+               MainViewModel.Instance.SettingVM.CameraStreamingController.SingleGrab();
             }));
         }
     }

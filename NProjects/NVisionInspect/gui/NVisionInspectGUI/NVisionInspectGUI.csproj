@@ -149,9 +149,13 @@
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
     <Compile Include="Command\Cmd\InitializeCmd.cs" />
-    <Compile Include="Command\Cmd\InspectSimulationCmd.cs" />
+    <Compile Include="Command\Cmd\ReadCodeCmd.cs" />
+    <Compile Include="Command\Cmd\SelectROICmd.cs" />
+    <Compile Include="Command\Cmd\LocateCmd.cs" />
+    <Compile Include="Command\Cmd\InspectCmd.cs" />
     <Compile Include="Command\Cmd\LoadImageCmd.cs" />
     <Compile Include="Command\Cmd\SaveRecipeCmd.cs" />
+    <Compile Include="Command\Cmd\SaveImageCmd.cs" />
     <Compile Include="Command\Cmd\SaveSettingCmd.cs" />
     <Compile Include="Command\Cmd\SelectMachineModeCmd.cs" />
     <Compile Include="Command\Cmd\SelectRunViewCmd.cs" />
@@ -166,6 +170,8 @@
     <Compile Include="Manager\InterfaceManager.cs" />
     <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\NVisionInspectProcessorManager.cs" />
+    <Compile Include="Models\CNVisionInspectCameraSetting_PropertyGrid.cs" />
+    <Compile Include="Models\CNVisionInspectCameraSetting.cs" />
     <Compile Include="Models\CNVisionInspectRecipe.cs" />
     <Compile Include="Models\CNVisionInspectRecipe_PropertyGrid.cs" />
     <Compile Include="Models\CNVisionInspectResult.cs" />
