@@ -9,12 +9,11 @@ using System.Windows;
 
 namespace NVisionInspectGUI.Command.Cmd
 {
-    public class InspectSimulationCmd : CommandBase
+    public class ReadCodeCmd : CommandBase
     {
-        public InspectSimulationCmd() { }
+        public ReadCodeCmd() { }
         public override void Execute(object parameter)
         {
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(1, 1);
         }
     }
 }

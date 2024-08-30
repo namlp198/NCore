@@ -44,7 +44,9 @@ namespace NVisionInspectGUI.Manager
 
             string filePath = ofd.FileName;
 
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(0, 0, filePath);
+            int nBuff = 0;
+            int nFrame = 0;
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(nBuff, nFrame, filePath);
             UpdateUI?.Invoke();
         }
     }

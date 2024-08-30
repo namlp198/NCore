@@ -39,9 +39,9 @@ BOOL CNVisionInspect_HikCam::Initialize()
 		grabberParam[i].SetParam_FrameWidth(m_pInterface->GetCameraSettingControl(i)->m_nFrameWidth);
 		grabberParam[i].SetParam_FrameHeight(m_pInterface->GetCameraSettingControl(i)->m_nFrameHeight);
 		grabberParam[i].SetParam_FrameWidthStep(m_pInterface->GetCameraSettingControl(i)->m_nFrameWidth);
-		grabberParam[i].SetParam_FrameDepth(FRAME_DEPTH);
-		grabberParam[i].SetParam_FrameChannels(m_pInterface->GetCameraSettingControl(i)->m_nChannel);
-		grabberParam[i].SetParam_FrameCount(MAX_FRAME_COUNT);
+		grabberParam[i].SetParam_FrameDepth(m_pInterface->GetCameraSettingControl(i)->m_nFrameDepth);
+		grabberParam[i].SetParam_FrameChannels(m_pInterface->GetCameraSettingControl(i)->m_nChannels);
+		grabberParam[i].SetParam_FrameCount(m_pInterface->GetCameraSettingControl(i)->m_nMaxFrameCount);
 	}
 
 	for (int nCamIdx = 0; nCamIdx < MAX_CAMERA_INSPECT_COUNT; nCamIdx++)
@@ -56,8 +56,8 @@ BOOL CNVisionInspect_HikCam::Initialize()
 
 		DWORD dwFrameWidth = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth;
 		DWORD dwFrameHeight = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight;
-		DWORD dwFrameCount = MAX_FRAME_COUNT;
-		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nChannel;
+		DWORD dwFrameCount = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nMaxFrameCount;
+		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nChannels;
 
 		m_pCameraImageBuffer[nCamIdx] = new CSharedMemoryBuffer;
 		m_pCameraImageBuffer[nCamIdx]->SetFrameWidth(dwFrameWidth);
@@ -325,11 +325,13 @@ int CNVisionInspect_HikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameInde
 
 	nNextFrameIdx = nNextFrameIdx % MAX_FRAME_COUNT;
 
+	localLock.Unlock();
+
 	m_pCameraImageBuffer[nGrabberIndex]->SetFrameImage(nNextFrameIdx, (LPBYTE)pBuffer);
 
 	m_cameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
-	if (nGrabberIndex == 2 || nGrabberIndex == 3)
+	/*if (nGrabberIndex == 2 || nGrabberIndex == 3)
 	{
 		CSingleLock lockCamCurrentFrame(&m_csCameraFrameIdx[nGrabberIndex]);
 		lockCamCurrentFrame.Lock();
@@ -344,9 +346,7 @@ int CNVisionInspect_HikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameInde
 		m_currentFrameWaitProcessIdx[nGrabberIndex] = nNextFrameWaitProcessIdx;
 
 		lockCamCurrentFrame.Unlock();
-	}
-
-	localLock.Unlock();
+	}*/
 
 	return TRUE;
 }

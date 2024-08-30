@@ -30,8 +30,8 @@ namespace NVisionInspectGUI.Models
         public double m_dTemplateAngleRotate;
         public double m_dTemplateMatchingRate;
         // ROI1
-        public int m_nROI1_OffsetX;
-        public int m_nROI1_OffsetY;
+        public int m_nROI1_X;
+        public int m_nROI1_Y;
         public int m_nROI1_Width;
         public int m_nROI1_Height;
         public double m_nROI1_AngleRotate;
@@ -39,10 +39,12 @@ namespace NVisionInspectGUI.Models
         public int m_nROI1_GrayThreshold_Max;
         public int m_nROI1_PixelCount_Min;
         public int m_nROI1_PixelCount_Max;
+        public int m_bROI1UseOffset;
+        public int m_bROI1UseLocator;
         public int m_bROI1ShowGraphics;
         // ROI2
-        public int m_nROI2_OffsetX;
-        public int m_nROI2_OffsetY;
+        public int m_nROI2_X;
+        public int m_nROI2_Y;
         public int m_nROI2_Width;
         public int m_nROI2_Height;
         public double m_nROI2_AngleRotate;
@@ -50,10 +52,12 @@ namespace NVisionInspectGUI.Models
         public int m_nROI2_GrayThreshold_Max;
         public int m_nROI2_PixelCount_Min;
         public int m_nROI2_PixelCount_Max;
+        public int m_bROI2UseOffset;
+        public int m_bROI2UseLocator;
         public int m_bROI2ShowGraphics;
         // ROI3
-        public int m_nROI3_OffsetX;
-        public int m_nROI3_OffsetY;
+        public int m_nROI3_X;
+        public int m_nROI3_Y;
         public int m_nROI3_Width;
         public int m_nROI3_Height;
         public double m_nROI3_AngleRotate;
@@ -61,6 +65,8 @@ namespace NVisionInspectGUI.Models
         public int m_nROI3_GrayThreshold_Max;
         public int m_nROI3_PixelCount_Min;
         public int m_nROI3_PixelCount_Max;
+        public int m_bROI3UseOffset;
+        public int m_bROI3UseLocator;
         public int m_bROI3ShowGraphics;
     }
 }

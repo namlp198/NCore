@@ -12,7 +12,9 @@ namespace NVisionInspectGUI.Manager.SumManager
     public class NVisionInspectProcessorManager
     {
         public NVisionInspectProcessorDll m_NVisionInspectProcessorDll = new NVisionInspectProcessorDll();
-        public CNVisionInspectResult[] m_NVisionInspectResult = new CNVisionInspectResult[Defines.NUMBER_OF_SET_INSPECT];
+
+        public CNVisionInspectResult[] m_NVisionInspectResult = new CNVisionInspectResult[Defines.MAX_CAMERA_INSPECT_COUNT];
+        public CNVisionInspectCameraSetting[] m_NVisionInspectCamSetting = new CNVisionInspectCameraSetting[Defines.MAX_CAMERA_INSPECT_COUNT];
         public CNVisionInspectSystemSetting m_NVisionInspectSysSettings = new CNVisionInspectSystemSetting();
         public CNVisionInspectRecipe m_NVisionInspectRecipe = new CNVisionInspectRecipe();
         public void Initialize()

@@ -17,14 +17,14 @@ namespace NVisionInspectGUI.Command.Cmd
             {
                 MainViewModel.Instance.SettingVM.SettingView.Dispatcher.BeginInvoke(new Action(async () =>
                 {
-                    await MainViewModel.Instance.SettingVM.m_cameraStreamingController.ContinuousGrab(Manager.Class.CameraType.Basler);
+                    await MainViewModel.Instance.SettingVM.CameraStreamingController.ContinuousGrab(Manager.Class.CameraType.Hik);
                 }));
             }
             else
             {
                 MainViewModel.Instance.SettingVM.SettingView.Dispatcher.BeginInvoke(new Action(async () =>
                 {
-                    await MainViewModel.Instance.SettingVM.m_cameraStreamingController.StopGrab(Manager.Class.CameraType.Basler);
+                    await MainViewModel.Instance.SettingVM.CameraStreamingController.StopGrab(Manager.Class.CameraType.Hik);
                 }));
             }
         }

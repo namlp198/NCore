@@ -21,488 +21,461 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2.3*" />
-            <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="2.8*" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition Height="1" />
                 <RowDefinition />
-                <RowDefinition Height="1" />
-                <RowDefinition Height="35" />
-                <RowDefinition Height="1" />
-                <RowDefinition Height="150" />
-                <RowDefinition Height="1" />
             </Grid.RowDefinitions>
-
-            <Border Grid.Row="0"
-                    Grid.RowSpan="5"
-                    Margin="2">
-                <BuffSet:BufferViewerSettingPRO Name="buffSettingPRO"
-                                                FontSize="14"
-                                                FontWeight="SemiBold"
-                                                FontFamily="Segoe UI" />
-            </Border>
-            <!--separator-->
+            <Grid Grid.Row="0">
+                <ToolBar Margin="3"
+                         Background="{DynamicResource RGB_Night_56_59_65}">
+                    <DockPanel>
+                        <TextBlock Text="From To"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Margin="5 0 5 0"
+                                   FontSize="14"
+                                   FontWeight="Bold" />
+                        <ComboBox  Margin="3"
+                                   x:Name="cbbImageSource"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Width="120" 
+                                   ItemsSource="{Binding ListFromImageSource}"/>
+                    </DockPanel>
+                    <Separator Margin="3"/>
+                    <DockPanel>
+                        <TextBlock Text="ROIs"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Margin="5 0 5 0"
+                                   FontSize="14"
+                                   FontWeight="Bold" />
+                        <ComboBox  Margin="3"
+                                   x:Name="cbbROI"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Width="80"
+                                   ItemsSource="{Binding ListROI}"
+                                   SelectedItem="{Binding ROISelected, Mode=TwoWay}"/>
+                    </DockPanel>
+                    <Separator Margin="3"/>
+                    <Button Margin="5 0 5 0"
+                            x:Name="btnLocatorTool"
+                            Command="{Binding LocateCmd}"
+                            ToolTip="Locator Tool">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_IC_BaseTeaching}"
+                                       Stretch="Fill"
+                                       Margin="5" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="3" />
+                    <Button Margin="5 0 5 0"
+                            x:Name="btnSelectROITool"
+                            Command="{Binding SelectROICmd}"
+                            ToolTip="Select ROI Tool">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_Select_ROI}"
+                                       Stretch="Fill"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="3" />
+                    <Button Margin="5 0 5 0"
+                            x:Name="btnReadCodeTool"
+                            Command="{Binding ReadCodeCmd}"
+                            ToolTip="Read Code">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_IC_Barcode_W_N}"
+                                       Stretch="Fill"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="3" />
+                    <Button x:Name="btnInspect"
+                            Command="{Binding InspectCmd}"
+                            Margin="5 0 5 0"
+                            Width="100">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_SideBarDownIcon}"
+                                       Margin="0 5 5 5" />
+                                <TextBlock Text="INSPECT"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           Foreground="White"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Margin="0 0 0 0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="3"/>
+                    <Button Background="WhiteSmoke"
+                            Name="btnContinuousGrab"
+                            Command="{Binding ContinuousGrabCmd}"
+                            Margin="5 0 0 0"
+                            Width="60">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding DisplayImagePath}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Name="btnSingleGrab"
+                            Command="{Binding SingleGrabCmd}"
+                            Margin="5 0 0 0"
+                            Width="60">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_CameraGrab}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Margin="5 0 0 0"
+                            x:Name="btnLoadImage"
+                            Command="{Binding LoadImageCmd}"
+                            Width="60">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_Load_Img_2}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="{DynamicResource RGB_Cold_77_136_255}"
+                            x:Name="btnSaveImage"
+                            Command="{Binding SaveImageCmd}"
+                            Margin="5 0 5 0"
+                            Width="100">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_SaveIcon}"
+                                       Margin="0 5 0 5" />
+                                <TextBlock Text="SAVE IMAGE"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           Foreground="White"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Margin="0 0 0 0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </ToolBar>
+            </Grid>
             <Grid Grid.Row="1"
-                  Background="White"
-                  Visibility="Collapsed">
-
-            </Grid>
-            <StackPanel Grid.Row="2"
-                        Margin="2"
-                        Orientation="Horizontal"
-                        Background="{DynamicResource RGB_Night_46_61_90}"
-                        Visibility="Collapsed">
-
-                <TextBlock Text="Camera"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           Margin="5 0 5 0"
-                           FontSize="12"
-                           FontWeight="Bold" />
-                <ComboBox  Margin="3"
-                           x:Name="cbbCameraList"
-                           FontSize="12"
-                           FontWeight="Bold"
-                           Width="90"
-                           ItemsSource="{Binding CameraList}"
-                           SelectedItem="{Binding StrCameraSelected, Mode=TwoWay}" />
-
-                <TextBlock Text="Frame"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           Margin="5 0 5 0"
-                           FontSize="12"
-                           FontWeight="Bold" />
-                <ComboBox  Margin="3"
-                           x:Name="cbbFrameList"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           ItemsSource="{Binding FrameList}"
-                           SelectedItem="{Binding StrFrameSelected, Mode=TwoWay}"
-                           Width="45" />
-
-                <Button Background="WhiteSmoke"
-                        Name="btnContinuousGrab"
-                        Command="{Binding ContinuousGrabCmd}"
-                        Opacity="1"
-                        Margin="10 3 3 3"
-                        Width="45">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding DisplayImagePath}"
-                                   Margin="0" />
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-                <Button Background="WhiteSmoke"
-                        Name="btnSingleGrab"
-                        Command="{Binding SingleGrabCmd}"
-                        Opacity="1"
-                        Margin="3"
-                        Width="45">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{DynamicResource IMG_CameraGrab}"
-                                   Margin="0" />
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-                <CheckBox Margin="5 2 2 2"
-                          Content="Software Trigger"
-                          Foreground="White"
-                          FontWeight="SemiBold"
-                          VerticalAlignment="Center"
-                          x:Name="chkSoftwareTrigger"
-                          IsChecked="{Binding UseSoftwareTrigger, Mode=TwoWay}" />
-                <Button Background="WhiteSmoke"
-                        Margin="3"
-                        x:Name="btnLoadImage"
-                        Command="{Binding LoadImageCmd}"
-                        Opacity="1"
-                        Width="45">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{DynamicResource IMG_Load_Img}"
-                                   Margin="0" />
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-
-                <Button Margin="5 2 2 2"
-                        Content="Inpsect"
-                        Foreground="Black"
-                        Background="LightGray"
-                        FontWeight="SemiBold"
-                        FontSize="12"
-                        Width="70"
-                        Command="{Binding InspectSimulationCmd}"
-                        CommandParameter="{Binding CameraSelected}" />
-                <Button Margin="5 2 2 2"
-                        Content="Save Image"
-                        Command="{Binding SaveImageCmd}"
-                        CommandParameter="{Binding ImageSavePath}"
-                        Foreground="Black"
-                        Background="LightGray"
-                        FontWeight="SemiBold"
-                        FontSize="12"
-                        Width="80" />
-            </StackPanel>
-            <!--separator-->
-            <Grid Grid.Row="3"
-                  Background="White"
-                  Visibility="Collapsed">
-
-            </Grid>
-            <Grid Grid.Row="4"
-                  Visibility="Collapsed">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Result"
-                               Foreground="White" />
-                    <Button Height="35"
-                            Width="80"
-                            HorizontalAlignment="Left"
-                            Content="Test OK"
-                            Click="Button_Click" />
-                    <Button Height="35"
-                            Width="80"
-                            HorizontalAlignment="Left"
-                            Content="Test NG"
-                            Click="Button_Click_1" />
-                    <Button Height="35"
-                            Width="80"
-                            HorizontalAlignment="Left"
-                            Content="Test Database"
-                            Click="Button_Click_2" />
-                </StackPanel>
-            </Grid>
-            <!--separator-->
-            <Grid Grid.Row="5"
                   Background="White">
 
             </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.3*" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="2.8*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="1" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="1" />
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="1" />
+                    </Grid.RowDefinitions>
 
-        </Grid>
-
-        <!--separator-->
-        <Grid Grid.Column="1"
-              Margin="0 2 0 2"
-              Background="White">
-
-        </Grid>
-
-        <Grid Grid.Column="2">
-            <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
-                <TabItem Header="SYSTEM SETTINGS"
-                         Width="300"
-                         Style="{StaticResource TabItemStyle}"
-                         FontSize="18"
-                         FontFamily="Segoe UI"
-                         FontWeight="Bold"
-                         Foreground="Black">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2.2*" />
-                            <ColumnDefinition Width="1.5*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0"
-                              Visibility="Collapsed">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition />
-                                <RowDefinition Height="45" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Margin="6 2 2 2"
-                                       Text="System"
-                                       Foreground="White"
-                                       FontSize="14"
-                                       TextAlignment="Left"
-                                       VerticalAlignment="Center" />
-                            <DataGrid Grid.Row="1"
-                                      FontSize="12"
-                                      Margin="5"
-                                      Name="dtgridSystemSettings"
-                                      AutoGenerateColumns="False"
-                                      ItemsSource="{Binding SystemSettingsMapToDataGridModels, Mode=TwoWay}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No."
-                                                        Width="50"
-                                                        MinWidth="20"
-                                                        MaxWidth="50"
-                                                        FontSize="12"
-                                                        FontWeight="Bold"
-                                                        Binding="{Binding Index}" />
-                                    <DataGridTextColumn Header="Parameter"
-                                                        Width="260"
-                                                        MinWidth="200"
-                                                        MaxWidth="500"
-                                                        FontSize="12"
-                                                        FontWeight="Bold"
-                                                        Binding="{Binding Params, Mode=TwoWay}" />
-                                    <DataGridTextColumn Header="Value"
-                                                        Width="500"
-                                                        MinWidth="400"
-                                                        MaxWidth="600"
-                                                        Binding="{Binding Value, Mode=TwoWay}" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-
-                            <!--Button-->
-                            <Button Grid.Row="2"
-                                    x:Name="btnSaveSystemSetting"
-                                    Command="{Binding SaveSettingCmd}"
-                                    CommandParameter="{Binding ElementName=btnSaveSystemSetting, Path=Name}"
-                                    Margin="3"
-                                    Width="130"
-                                    HorizontalAlignment="Right"
-                                    Foreground="White"
-                                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Text="Save" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Column="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="60" />
-                            </Grid.RowDefinitions>
-                            <xctk:PropertyGrid x:Name="propGridSystem"
-                                               Margin="10"
-                                               FontSize="16"
-                                               FontWeight="SemiBold"
-                                               AutoGenerateProperties="True"
-                                               NameColumnWidth="250"
-                                               ShowHorizontalScrollBar="True"
-                                               SelectedObject="{Binding NVisionInspectSystemSettingsPropertyGrid, Mode=TwoWay}">
-
-                            </xctk:PropertyGrid>
-                            <!--Button-->
-                            <Button Grid.Row="2"
-                                    x:Name="btnSaveSystemSetting_PropertyGrid"
-                                    Command="{Binding SaveSettingCmd}"
-                                    CommandParameter="{Binding ElementName=btnSaveSystemSetting_PropertyGrid, Path=Name}"
-                                    Margin="3"
-                                    Width="130"
-                                    HorizontalAlignment="Right"
-                                    Foreground="White"
-                                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Text="Save" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Column="1"
-                              Visibility="Collapsed">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition />
-                                <RowDefinition Height="45" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Margin="6 2 2 2"
-                                       Text="PLC Setting"
-                                       Foreground="White"
-                                       FontSize="14"
-                                       TextAlignment="Left"
-                                       VerticalAlignment="Center" />
-                            <DataGrid Grid.Row="1"
-                                      FontSize="12"
-                                      Margin="5"
-                                      Name="dtgridPLCSettings"
-                                      AutoGenerateColumns="False"
-                                      ItemsSource="{Binding PlcSettingsMapToDGModels, Mode=TwoWay}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No."
-                                                        Width="50"
-                                                        MinWidth="20"
-                                                        MaxWidth="50"
-                                                        FontSize="12"
-                                                        FontWeight="Bold"
-                                                        Binding="{Binding Index}" />
-                                    <DataGridTextColumn Header="Parameter"
-                                                        Width="200"
-                                                        MinWidth="100"
-                                                        MaxWidth="300"
-                                                        FontSize="12"
-                                                        FontWeight="Bold"
-                                                        Binding="{Binding Params, Mode=TwoWay}" />
-                                    <DataGridTextColumn Header="Value"
-                                                        Width="200"
-                                                        MinWidth="50"
-                                                        MaxWidth="300"
-                                                        Binding="{Binding Value, Mode=TwoWay}" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-
-                            <!--Button-->
-                            <Button Grid.Row="2"
-                                    x:Name="btnSavePLCSetting"
-                                    Command="{Binding SaveSettingCmd}"
-                                    CommandParameter="{Binding ElementName=btnSavePLCSetting, Path=Name}"
-                                    Margin="3"
-                                    Width="130"
-                                    HorizontalAlignment="Right"
-                                    Foreground="White"
-                                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Text="Save" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="60" />
-                            </Grid.RowDefinitions>
-                            <xctk:PropertyGrid x:Name="propGridPlcSetting"
-                                               Margin="10"
-                                               FontSize="16"
-                                               FontWeight="SemiBold"
-                                               AutoGenerateProperties="True"
-                                               NameColumnWidth="200"
-                                               ShowHorizontalScrollBar="True"
-                                               SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
-
-                            </xctk:PropertyGrid>
-                            <!--Button-->
-                            <Button Grid.Row="2"
-                                    x:Name="btnSavePLCSetting_PropertyGrid"
-                                    Command="{Binding SaveSettingCmd}"
-                                    CommandParameter="{Binding ElementName=btnSavePLCSetting_PropertyGrid, Path=Name}"
-                                    Margin="3"
-                                    Width="130"
-                                    HorizontalAlignment="Right"
-                                    Foreground="White"
-                                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Text="Save" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </Grid>
+                    <Border Grid.Row="0"
+                            Grid.RowSpan="5"
+                            Margin="2">
+                        <BuffSet:BufferViewerSettingPRO Name="buffSettingPRO"
+                                                        FontSize="14"
+                                                        FontWeight="SemiBold"
+                                                        FontFamily="Segoe UI" />
+                    </Border>
+                    
+                    <Grid Grid.Row="4"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Result"
+                                       Foreground="White" />
+                            <Button Height="35"
+                                    Width="80"
+                                    HorizontalAlignment="Left"
+                                    Content="Test OK"
+                                    Click="Button_Click" />
+                            <Button Height="35"
+                                    Width="80"
+                                    HorizontalAlignment="Left"
+                                    Content="Test NG"
+                                    Click="Button_Click_1" />
+                            <Button Height="35"
+                                    Width="80"
+                                    HorizontalAlignment="Left"
+                                    Content="Test Database"
+                                    Click="Button_Click_2" />
+                        </StackPanel>
                     </Grid>
-                </TabItem>
-                <TabItem Header="RECIPE"
-                         Visibility="Collapsed"
-                         Style="{StaticResource TabItemStyle}"
-                         FontSize="18"
-                         Width="300"
-                         FontFamily="Segoe UI"
-                         FontWeight="Bold"
-                         Foreground="Black">
-                    <Grid Margin="5 15 5 5">
-                        <Grid Margin="2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="60" />
-                            </Grid.RowDefinitions>
-                            <DataGrid Name="dtgridFrame1_Top"
-                                      Margin="2"
-                                      AutoGenerateColumns="False"
-                                      ItemsSource="{Binding RecipeMapToDataGridModels, Mode=TwoWay}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="No."
-                                                        Width="50"
-                                                        MinWidth="20"
-                                                        MaxWidth="50"
-                                                        FontWeight="Bold"
-                                                        FontSize="12"
-                                                        Binding="{Binding Index}" />
-                                    <DataGridTextColumn Header="Parameters"
-                                                        MinWidth="500"
-                                                        MaxWidth="700"
-                                                        FontWeight="Bold"
-                                                        FontSize="12"
-                                                        Binding="{Binding Params}" />
-                                    <DataGridTextColumn Header="Value"
-                                                        Width="160"
-                                                        MinWidth="100"
-                                                        MaxWidth="200"
-                                                        FontWeight="Normal"
-                                                        FontSize="12"
-                                                        Binding="{Binding Value, Mode=TwoWay}" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <!--Button-->
-                            <Button Grid.Row="1"
-                                    x:Name="btnSaveRecipe"
-                                    Command="{Binding SaveRecipeCmd}"
-                                    CommandParameter="{Binding ElementName=btnSaveRecipe, Path=Name}"
-                                    Margin="3"
-                                    Width="130"
-                                    HorizontalAlignment="Right"
-                                    Foreground="White"
-                                    Background="{DynamicResource RGB_Cold_77_136_255}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Text="Save Recipe" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="RECIPE"
-                         Style="{StaticResource TabItemStyle}"
-                         FontSize="18"
-                         FontWeight="Bold"
-                         Foreground="Black"
-                         Width="300"
-                         FontFamily="Segoe UI">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="60" />
-                        </Grid.RowDefinitions>
-                        <xctk:PropertyGrid x:Name="propGridRecipe"
-                                           Margin="10"
-                                           FontSize="16"
-                                           FontWeight="SemiBold"
-                                           AutoGenerateProperties="True"
-                                           NameColumnWidth="450"
-                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid, Mode=TwoWay}">
+                    <!--separator-->
+                    <Grid Grid.Row="5"
+                          Background="White">
 
-                        </xctk:PropertyGrid>
-                        <!--Button-->
-                        <Button Grid.Row="1"
-                                x:Name="btnSaveRecipe_PropertyGrid"
-                                Command="{Binding SaveRecipeCmd}"
-                                CommandParameter="{Binding ElementName=btnSaveRecipe_PropertyGrid, Path=Name}"
-                                Margin="3"
-                                Width="130"
-                                HorizontalAlignment="Right"
-                                Foreground="White"
-                                Background="{DynamicResource RGB_Cold_77_136_255}">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontSize="14"
-                                               FontWeight="Bold"
-                                               Text="Save Recipe" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
                     </Grid>
-                </TabItem>
-            </TabControl>
+
+                </Grid>
+
+                <!--separator-->
+                <Grid Grid.Column="1"
+                      Margin="0 2 0 2"
+                      Background="White">
+
+                </Grid>
+
+                <Grid Grid.Column="2">
+                    <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                        <TabItem Header="SYSTEM SETTINGS"
+                                 Width="300"
+                                 Style="{StaticResource TabItemStyle}"
+                                 FontSize="18"
+                                 FontFamily="Segoe UI"
+                                 FontWeight="Bold"
+                                 Foreground="Black">
+                            <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                                <TabItem Header="System"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="SemiBold"
+                                         Foreground="Black"
+                                         Width="200"
+                                         FontFamily="Segoe UI">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridSystem"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVisionInspectSystemSettingsPropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveSystemSetting_PropertyGrid"
+                                                Command="{Binding SaveSettingCmd}"
+                                                CommandParameter="{Binding ElementName=btnSaveSystemSetting_PropertyGrid, Path=Name}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="PLC Setting"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="SemiBold"
+                                         Foreground="Black"
+                                         Width="200"
+                                         FontFamily="Segoe UI">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridPlcSetting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSavePLCSetting_PropertyGrid"
+                                                Command="{Binding SaveSettingCmd}"
+                                                CommandParameter="{Binding ElementName=btnSavePLCSetting_PropertyGrid, Path=Name}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Light Setting"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="SemiBold"
+                                         Foreground="Black"
+                                         Width="200"
+                                         FontFamily="Segoe UI">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridLightSetting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveLightSetting_PropertyGrid"
+                                                Command="{Binding SaveSettingCmd}"
+                                                CommandParameter="{Binding ElementName=btnSavePLCSetting_PropertyGrid, Path=Name}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+                        <TabItem Header="CAMERA SETTINGS"
+                                 Style="{StaticResource TabItemStyle}"
+                                 FontSize="18"
+                                 FontWeight="Bold"
+                                 Foreground="Black"
+                                 Width="300"
+                                 FontFamily="Segoe UI">
+                            <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                                <TabItem Header="CAMERA 1"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="18"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCameraSetting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVisionInspectCamera1SettingsPropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCameraSetting_PropertyGrid"
+                                                Command="{Binding SaveSettingCmd}"
+                                                CommandParameter="{Binding ElementName=btnSaveCameraSetting_PropertyGrid, Path=Name}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+                        <TabItem Header="RECIPE"
+                                 Style="{StaticResource TabItemStyle}"
+                                 FontSize="18"
+                                 FontWeight="Bold"
+                                 Foreground="Black"
+                                 Width="300"
+                                 FontFamily="Segoe UI">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="60" />
+                                </Grid.RowDefinitions>
+                                <xctk:PropertyGrid x:Name="propGridRecipe"
+                                                   Margin="10"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   AutoGenerateProperties="True"
+                                                   NameColumnWidth="450"
+                                                   SelectedObject="{Binding NVisionInspectRecipePropertyGrid, Mode=TwoWay}">
+
+                                </xctk:PropertyGrid>
+                                <!--Button-->
+                                <Button Grid.Row="1"
+                                        x:Name="btnSaveRecipe_PropertyGrid"
+                                        Command="{Binding SaveRecipeCmd}"
+                                        CommandParameter="{Binding ElementName=btnSaveRecipe_PropertyGrid, Path=Name}"
+                                        Margin="5 5 10 5"
+                                        Width="130"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Background="{DynamicResource RGB_Cold_77_136_255}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Text="Save Recipe" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

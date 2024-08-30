@@ -224,7 +224,7 @@ BOOL CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 	for (int i = 0; i < imgOuter.rows; i++)
 		memcpy(&imgOuter.data[i * imgOuter.step1()], &matGray.data[(i + nRectOuter_Y) * matGray.step1() + nRectOuter_X], imgOuter.cols);
 
-	SaveTemplateImage(imgTemplate);
+	SaveTemplateImage(imgTemplate, nCamIdx);
 
 	// make inner ROI, outer ROI and draw
 	cv::Rect rectInner(nRectInner_X, nRectInner_Y, nRectInner_Width, nRectInner_Height);
@@ -281,7 +281,7 @@ void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 	cv::Mat matSrc(m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight, m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth, CV_8UC1);
 	cv::Mat matResult(m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight, m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth, CV_8UC3);
 
-	DWORD dFrameSize = m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nChannel;
+	DWORD dFrameSize = m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nChannels;
 	memcpy(matSrc.data, (LPBYTE)pBuffer, dFrameSize);
 
 	/*char pathSaveImage[200] = { };
@@ -328,14 +328,14 @@ void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 	m_pInterface->InspectComplete(FALSE);
 }
 
-BOOL CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate)
+BOOL CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx)
 {
 	if (matTemplate.empty())
 		return FALSE;
 
 	USES_CONVERSION;
 	char chImgTemplatePath[1000] = {};
-	sprintf_s(chImgTemplatePath, "%s%s", W2A(m_pInterface->GetSystemSettingControl()->m_sTemplateImagePath), "template.png");
+	sprintf_s(chImgTemplatePath, "%s%s", W2A(m_pInterface->GetCameraSettingControl(nCamIdx)->m_sTemplateImagePath), "template.png");
 
 	cv::imwrite(chImgTemplatePath, matTemplate);
 

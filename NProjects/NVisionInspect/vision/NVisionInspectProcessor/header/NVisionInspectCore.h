@@ -71,7 +71,7 @@ public:
 
 private:
 	void                       ProcessFrame(int nCamIdx, LPBYTE pBuffer);
-	BOOL                       SaveTemplateImage(cv::Mat& matTemplate);
+	BOOL                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
 
 private:
 
