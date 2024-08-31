@@ -150,6 +150,7 @@
     <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
     <Compile Include="Command\Cmd\InitializeCmd.cs" />
     <Compile Include="Command\Cmd\ReadCodeCmd.cs" />
+    <Compile Include="Command\Cmd\StartAcquisitionCmd.cs" />
     <Compile Include="Command\Cmd\SelectROICmd.cs" />
     <Compile Include="Command\Cmd\LocateCmd.cs" />
     <Compile Include="Command\Cmd\InspectCmd.cs" />
@@ -161,6 +162,8 @@
     <Compile Include="Command\Cmd\SelectRunViewCmd.cs" />
     <Compile Include="Command\Cmd\SelectSettingViewCmd.cs" />
     <Compile Include="Command\Cmd\SingleGrabCmd.cs" />
+    <Compile Include="Converter\EnumBooleanToBooleanMultiConverter.cs" />
+    <Compile Include="Converter\InvertBooleanConverter.cs" />
     <Compile Include="Manager\Class\CameraStreamingController.cs" />
     <Compile Include="Manager\Class\Csv_Manager.cs" />
     <Compile Include="Manager\Class\ExcelParser.cs" />

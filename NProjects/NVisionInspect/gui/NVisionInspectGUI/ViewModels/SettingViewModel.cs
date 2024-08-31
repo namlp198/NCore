@@ -51,11 +51,14 @@ namespace NVisionInspectGUI.ViewModels
         private List<string> m_lstImageSource = new List<string>();
         private List<string> m_lstROI = new List<string>();
 
-        private string _displayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
+        private string m_strDisplayImagePath_Live = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
+        private string m_strDisplayImagePath_StartAcq = "/NpcCore.Wpf;component/Resources/Images/btn_start_50.png";
         private string m_strCameraSelected = string.Empty;
         private string m_strROISelected = string.Empty;
 
         private bool m_bStreamming = false;
+        private bool m_bStartedAcq = false;
+        private bool m_bSelectedCamera = false;
 
         private EnImageSource m_fromImageSource = EnImageSource.FromToCamera;
 
@@ -76,6 +79,7 @@ namespace NVisionInspectGUI.ViewModels
             this.SaveImageCmd = new SaveImageCmd();
             this.SelectROICmd = new SelectROICmd();
             this.SingleGrabCmd = new SingleGrabCmd();
+            this.StartAcquisitionCmd = new StartAcquisitionCmd();
             this.ContinuousGrabCmd = new ContinuousGrabCmd();
             this.LoadImageCmd = new LoadImageCmd();
             this.LocateCmd = new LocateCmd();
@@ -103,6 +107,7 @@ namespace NVisionInspectGUI.ViewModels
             SettingView.buffSettingPRO.TrainLocator += BuffSettingPRO_TrainLocator;
 
             #endregion
+
             m_cameraStreamingController = new CameraStreamingController(SettingView.buffSettingPRO);
         }
 
@@ -120,7 +125,18 @@ namespace NVisionInspectGUI.ViewModels
         }
         private void BuffSettingPRO_SelectCameraChanged(object sender, RoutedEventArgs e)
         {
+            if (SettingView.buffSettingPRO.CameraName == null)
+                return;
+
             int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+
+            if (nCamIdx == -1 || nCamIdx == 99)
+            {
+                IsSelectedCamera = false;
+                return;
+            }
+
+            IsSelectedCamera = true;
             int nNumberOfROI = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nNumberOfROI;
 
             List<string> lstROI = new List<string>();
@@ -549,30 +565,25 @@ namespace NVisionInspectGUI.ViewModels
             get => m_plcDeltaModel;
             set => m_plcDeltaModel = value;
         }
-        public string DisplayImagePath
+        public string DisplayImagePath_Live
         {
-            get => _displayImagePath;
+            get => m_strDisplayImagePath_Live;
             set
             {
-                if (SetProperty(ref _displayImagePath, value))
+                if (SetProperty(ref m_strDisplayImagePath_Live, value))
                 {
 
                 }
             }
         }
-        public string StrCameraSelected
+        public string DisplayImagePath_StartAcq
         {
-            get => m_strCameraSelected;
+            get => m_strDisplayImagePath_StartAcq;
             set
             {
-                if (SetProperty(ref m_strCameraSelected, value))
+                if (SetProperty(ref m_strDisplayImagePath_StartAcq, value))
                 {
-                    if (string.Compare("Cam 1", m_strCameraSelected) == 0)
-                    {
-                        m_ucSettingView.buffSettingPRO.CameraIndex = 0;
-                        m_ucSettingView.buffSettingPRO.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
 
-                    }
                 }
             }
         }
@@ -596,12 +607,41 @@ namespace NVisionInspectGUI.ViewModels
                 {
                     if (m_bStreamming)
                     {
-                        DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/btn_stop_all_50.png";
+                        DisplayImagePath_Live = "/NpcCore.Wpf;component/Resources/Images/btn_stop_all_50.png";
                     }
                     else
                     {
-                        DisplayImagePath = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
+                        DisplayImagePath_Live = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
                     }
+                }
+            }
+        }
+        public bool IsStartedAcq
+        {
+            get => m_bStartedAcq;
+            set
+            {
+                if (SetProperty(ref m_bStartedAcq, value))
+                {
+                    if (m_bStartedAcq)
+                    {
+                        DisplayImagePath_StartAcq = "/NpcCore.Wpf;component/Resources/Images/SideBarView/ic_hw_stop_s.png";
+                    }
+                    else
+                    {
+                        DisplayImagePath_StartAcq = "/NpcCore.Wpf;component/Resources/Images/btn_start_50.png";
+                    }
+                }
+            }
+        }
+        public bool IsSelectedCamera
+        {
+            get => m_bSelectedCamera;
+            set
+            {
+                if (!SetProperty(ref m_bSelectedCamera, value))
+                {
+
                 }
             }
         }
@@ -612,27 +652,27 @@ namespace NVisionInspectGUI.ViewModels
             {
                 if(SetProperty(ref m_fromImageSource, value))
                 {
-                    switch(m_fromImageSource)
-                    {
-                        case EnImageSource.FromToImage:
-                            SettingView.btnContinuousGrab.IsEnabled = false;
-                            SettingView.btnSingleGrab.IsEnabled = false;
-                            SettingView.btnLoadImage.IsEnabled = true;
+                    //switch(m_fromImageSource)
+                    //{
+                    //    case EnImageSource.FromToImage:
+                    //        SettingView.btnContinuousGrab.IsEnabled = false;
+                    //        SettingView.btnSingleGrab.IsEnabled = false;
+                    //        SettingView.btnLoadImage.IsEnabled = true;
 
-                            SettingView.btnContinuousGrab.Opacity = 0.3;
-                            SettingView.btnSingleGrab.Opacity = 0.3;
-                            SettingView.btnLoadImage.Opacity = 1.0;
-                            break;
-                        case EnImageSource.FromToCamera:
-                            SettingView.btnContinuousGrab.IsEnabled = true;
-                            SettingView.btnSingleGrab.IsEnabled = true;
-                            SettingView.btnLoadImage.IsEnabled = false;
+                    //        SettingView.btnContinuousGrab.Opacity = 0.3;
+                    //        SettingView.btnSingleGrab.Opacity = 0.3;
+                    //        SettingView.btnLoadImage.Opacity = 1.0;
+                    //        break;
+                    //    case EnImageSource.FromToCamera:
+                    //        SettingView.btnContinuousGrab.IsEnabled = true;
+                    //        SettingView.btnSingleGrab.IsEnabled = true;
+                    //        SettingView.btnLoadImage.IsEnabled = false;
 
-                            SettingView.btnContinuousGrab.Opacity = 1.0;
-                            SettingView.btnSingleGrab.Opacity = 1.0;
-                            SettingView.btnLoadImage.Opacity = 0.3;
-                            break;
-                    }
+                    //        SettingView.btnContinuousGrab.Opacity = 1.0;
+                    //        SettingView.btnSingleGrab.Opacity = 1.0;
+                    //        SettingView.btnLoadImage.Opacity = 0.3;
+                    //        break;
+                    //}
                 }
             }
         }
@@ -642,9 +682,10 @@ namespace NVisionInspectGUI.ViewModels
         public ICommand SaveSettingCmd { get; }
         public ICommand SaveRecipeCmd { get; }
         public ICommand SaveImageCmd { get; }
-        public ICommand ContinuousGrabCmd { get; }
         public ICommand SingleGrabCmd { get; }
         public ICommand SelectROICmd { get; }
+        public ICommand StartAcquisitionCmd { get; }
+        public ICommand ContinuousGrabCmd { get; }
         public ICommand LoadImageCmd { get; }
         public ICommand LocateCmd { get; }
         public ICommand InspectCmd { get; }
