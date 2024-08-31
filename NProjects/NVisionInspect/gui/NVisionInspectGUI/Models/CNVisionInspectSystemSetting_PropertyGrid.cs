@@ -17,15 +17,19 @@ namespace NVisionInspectGUI.Models
         [PropertyOrder(1)]
         [DisplayName("Inspect Camera Count")]
         public int InspectCameraCount { get; set; }
+
         [PropertyOrder(2)]
         [DisplayName("Use Simulation ?")]
         public bool Simulation { get; set; }
+
         [PropertyOrder(3)]
         [DisplayName("By Pass ?")]
         public bool ByPass { get; set; }
+
         [PropertyOrder(4)]
         [DisplayName("Test Mode ?")]
         public bool TestMode { get; set; }
+
         [PropertyOrder(5)]
         [DisplayName("Recipe Name")]
         public string RecipeName { get; set; }

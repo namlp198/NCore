@@ -24,10 +24,10 @@ namespace NVisionInspectGUI.Manager.Class
 
         public void SingleGrab()
         {
+            int nCamIdx = m_bufferViewerSettingPRO.CameraIndex;
             Task.Factory.StartNew(async () =>
             {
-                int nCamIdx = m_bufferViewerSettingPRO.CameraIndex;
-                if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SingleGrabHikCam(nCamIdx)) return;
+                //if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SingleGrabHikCam(nCamIdx)) return;
 
                 // read hik camera
                 m_bufferViewerSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetImageBufferHikCam(nCamIdx);
@@ -48,7 +48,8 @@ namespace NVisionInspectGUI.Manager.Class
                 case CameraType.iRayple:
                     break;
                 case CameraType.Hik:
-                    if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.ContinuousGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
+                   
+                    //if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.ContinuousGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
 
                     MainViewModel.Instance.SettingVM.IsStreamming = true;
                     MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.IsStreamming = true;
@@ -94,7 +95,7 @@ namespace NVisionInspectGUI.Manager.Class
                 case CameraType.iRayple:
                     break;
                 case CameraType.Hik:
-                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.StopGrabHikCam(m_bufferViewerSettingPRO.CameraIndex);
+                    //InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.StopGrabHikCam(m_bufferViewerSettingPRO.CameraIndex);
                     MainViewModel.Instance.SettingVM.IsStreamming = false;
                     MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.IsStreamming = false;
                     break;
@@ -117,7 +118,8 @@ namespace NVisionInspectGUI.Manager.Class
 
                     if (!_previewTask.IsCompleted)
                     {
-                        if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.StopGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
+
+                        //if (!InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.StopGrabHikCam(m_bufferViewerSettingPRO.CameraIndex)) return;
 
                         MainViewModel.Instance.SettingVM.IsStreamming = false;
                         MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.IsStreamming = false;

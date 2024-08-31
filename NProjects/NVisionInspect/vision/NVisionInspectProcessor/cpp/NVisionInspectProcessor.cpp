@@ -242,7 +242,7 @@ BOOL CNVisionInspectProcessor::SaveImage(int nCamIdx)
 	cv::cvtColor(matSave, matSave, cv::COLOR_GRAY2BGR);
 
 	uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	std::string sFileName = "image_" + std::to_string(ms) + ".png";
+	std::string sFileName = "Image_" + std::to_string(ms) + ".png";
 
 	sSavePath = sSavePath + sFileName;
 
@@ -606,8 +606,8 @@ BOOL CNVisionInspectProcessor::SaveSystemSetting(CNVisionInspectSystemSetting* p
 
 #pragma region Write data 
 
-	const char* sInspCameraCount = std::to_string(sysSetting.m_nInspectCameraCount).c_str();
-	pRoot->first_node("InspectCameraCount")->value(sInspCameraCount);
+	std::string strInspCameraCount = std::to_string(sysSetting.m_nInspectCameraCount);
+	pRoot->first_node("InspectCameraCount")->value(strInspCameraCount.c_str());
 
 	CString csSimulation = sysSetting.m_bSimulation == TRUE ? _T("true") : _T("false");
 	const char* sSimulation = W2A(csSimulation);

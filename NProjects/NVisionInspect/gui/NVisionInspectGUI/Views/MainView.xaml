@@ -78,7 +78,7 @@
                     Command="{Binding SelectRunViewCmd}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
-                        <Image Source="{DynamicResource IMG_Board_Setting_Button_Navigator_Off_O}"
+                        <Image Source="{DynamicResource IMG_NoNavigation}"
                                Margin="8 4 8 0"
                                Width="35"
                                Height="35" />

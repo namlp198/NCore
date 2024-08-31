@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NVisionInspectGUI.Views.UcViews"
              xmlns:BuffSet="clr-namespace:NCore.Wpf.BufferViewerSettingPRO;assembly=NCore.Wpf.BufferViewerSettingPRO"
+             xmlns:cvt="clr-namespace:NVisionInspectGUI.Converter"
              mc:Ignorable="d"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:NVisionInspectGUI.ViewModels"
@@ -18,6 +19,13 @@
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Themes/DefaultTheme.xaml" />
                 <ResourceDictionary Source="/NpcCore.Wpf;component/Converters.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <cvt:EnumBooleanToBooleanMultiConverter x:Key="EnumBooleanToBooleanMultiConverter" />
+            <cvt:EnumBooleanToReverseBooleanMultiConverter x:Key="EnumBooleanToReverseBooleanMultiConverter" />
+            <cvt:EnumBooleanToDoubleMultiConverter x:Key="EnumBooleanToDoubleMultiConverter"/>
+            <cvt:EnumBooleanToReverseDoubleMultiConverter x:Key="EnumBooleanToReverseDoubleMultiConverter" />
+            <cvt:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+            <cvt:InvertBooleanToOpacityConverter x:Key="InvertBooleanToOpacityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -42,6 +50,8 @@
                                    FontSize="14"
                                    FontWeight="Bold"
                                    Width="120" 
+                                   IsEnabled="{Binding IsStartedAcq, Converter={StaticResource InvertBooleanConverter}}"
+                                   Opacity="{Binding IsStartedAcq, Converter={StaticResource InvertBooleanToOpacityConverter}}"
                                    ItemsSource="{Binding ListFromImageSource}"/>
                     </DockPanel>
                     <Separator Margin="3"/>
@@ -80,7 +90,7 @@
                             ToolTip="Select ROI Tool">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_Select_ROI}"
+                                <Image Source="{DynamicResource IMG_Toolbar_Cursor}"
                                        Stretch="Fill"
                                        Margin="3" />
                             </StackPanel>
@@ -119,14 +129,55 @@
                         </Button.Content>
                     </Button>
                     <Separator Margin="3"/>
+                    <Button Background="{DynamicResource RGB_Cold_77_136_255}"
+                            Name="btnStartAcq"
+                            ToolTip="Start Acquisition"
+                            Command="{Binding StartAcquisitionCmd}"
+                            Margin="5 0 0 0"
+                            Width="50">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                        <Button.Opacity>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToDoubleMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.Opacity>
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding DisplayImagePath_StartAcq}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                     <Button Background="WhiteSmoke"
                             Name="btnContinuousGrab"
                             Command="{Binding ContinuousGrabCmd}"
                             Margin="5 0 0 0"
                             Width="60">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                        <Button.Opacity>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToDoubleMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.Opacity>
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{Binding DisplayImagePath}"
+                                <Image Source="{Binding DisplayImagePath_Live}"
                                        Margin="3" />
                             </StackPanel>
                         </Button.Content>
@@ -136,6 +187,20 @@
                             Command="{Binding SingleGrabCmd}"
                             Margin="5 0 0 0"
                             Width="60">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                        <Button.Opacity>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToDoubleMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.Opacity>
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{DynamicResource IMG_CameraGrab}"
@@ -148,6 +213,20 @@
                             x:Name="btnLoadImage"
                             Command="{Binding LoadImageCmd}"
                             Width="60">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                        <Button.Opacity>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToReverseDoubleMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.Opacity>
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{DynamicResource IMG_Load_Img_2}"
@@ -155,7 +234,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Background="{DynamicResource RGB_Cold_77_136_255}"
+                    <Button Background="{DynamicResource RGB_Cold_92_184_92}"
                             x:Name="btnSaveImage"
                             Command="{Binding SaveImageCmd}"
                             Margin="5 0 5 0"
