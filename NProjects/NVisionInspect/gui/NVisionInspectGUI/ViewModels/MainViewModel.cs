@@ -51,6 +51,9 @@ namespace NVisionInspectGUI.ViewModels
             this.SelectRunViewCmd = new SelectRunViewCmd();
             this.SelectSettingViewCmd = new SelectSettingViewCmd();
             this.SelectMachineModeCmd = new SelectMachineModeCmd();
+            this.ShowLoginViewCmd = new ShowLoginViewCmd();
+            this.ShowRecipeListCmd = new ShowRecipeListCmd();
+            this.ShowReportViewCmd = new ShowReportViewCmd();
             this.ExportExcelFileCmd = new ExportExcelFileCmd();
             this.InitializeCmd = new InitializeCmd();
 
@@ -111,9 +114,12 @@ namespace NVisionInspectGUI.ViewModels
         public MainView MainView { get => m_ucMainView; private set { } }
 
         private eMachineMode m_machineMode = eMachineMode.MachineMode_Auto;
+        private eUserLevel m_userLevel = eUserLevel.UserLevel_Operator;
         private bool m_bInspRunning = false;
         private bool m_bEnableSetting = false;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
+        private string m_displayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/account_2.png";
+        private string m_sRecipeName = string.Empty;
 
         private ExcelParser m_excelParser = new ExcelParser();
         private List<string> m_columnNameList;
@@ -130,12 +136,58 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
+        public eUserLevel UserLevel
+        {
+            get => m_userLevel;
+            set
+            {
+                if (SetProperty(ref m_userLevel, value))
+                {
+                    if ((m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin) && m_bInspRunning == false)
+                    {
+                        EnableSetting = true;
+                        m_ucMainView.btnSelectRecipe.Opacity = 1.0;
+                        m_ucMainView.btnReport.Opacity = 1.0;
+                        m_ucMainView.btnSettings.Opacity = 1.0;
+                    }
+                    else if (m_userLevel == eUserLevel.UserLevel_Operator)
+                    {
+                        EnableSetting = false;
+                        m_ucMainView.btnSelectRecipe.Opacity = 0.3;
+                        m_ucMainView.btnReport.Opacity = 0.3;
+                        m_ucMainView.btnSettings.Opacity = 0.3;
+                    }
+                }
+            }
+        }
         public string DisplayImage_MachineModePath
         {
             get => m_displayImage_MachineModePath;
             set
             {
                 if (SetProperty(ref m_displayImage_MachineModePath, value))
+                {
+
+                }
+            }
+        }
+        public string DisplayImage_LoginStatusPath
+        {
+            get => m_displayImage_LoginStatusPath;
+            set
+            {
+                if (SetProperty(ref m_displayImage_LoginStatusPath, value))
+                {
+
+                }
+            }
+        }
+        public string RecipeName
+        {
+            get => m_sRecipeName;
+            set
+            {
+                if (SetProperty(ref m_sRecipeName, value))
                 {
 
                 }
@@ -151,14 +203,23 @@ namespace NVisionInspectGUI.ViewModels
                     if (m_bInspRunning == true)
                     {
                         EnableSetting = false;
-                        m_ucMainView.btnExportExcel.Opacity = 0.3;
+                        m_ucMainView.btnSelectRecipe.Opacity = 0.3;
+                        m_ucMainView.btnReport.Opacity = 0.3;
                         m_ucMainView.btnSettings.Opacity = 0.3;
                     }
-                    else if (m_bInspRunning == false)
+                    else if (m_bInspRunning == false && (m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin))
                     {
                         EnableSetting = true;
-                        m_ucMainView.btnExportExcel.Opacity = 1.0;
+                        m_ucMainView.btnSelectRecipe.Opacity = 1.0;
+                        m_ucMainView.btnReport.Opacity = 1.0;
                         m_ucMainView.btnSettings.Opacity = 1.0;
+                    }
+                    else if (m_bInspRunning == false && m_userLevel == eUserLevel.UserLevel_Operator)
+                    {
+                        EnableSetting = false;
+                        m_ucMainView.btnSelectRecipe.Opacity = 0.3;
+                        m_ucMainView.btnReport.Opacity = 0.3;
+                        m_ucMainView.btnSettings.Opacity = 0.3;
                     }
                 }
             }
@@ -303,6 +364,9 @@ namespace NVisionInspectGUI.ViewModels
         public ICommand SelectRunViewCmd { get; }
         public ICommand SelectSettingViewCmd { get; }
         public ICommand SelectMachineModeCmd { get; }
+        public ICommand ShowRecipeListCmd { get; }
+        public ICommand ShowLoginViewCmd { get; }
+        public ICommand ShowReportViewCmd { get; }
         public ICommand ExportExcelFileCmd {  get; }
         public ICommand InitializeCmd { get; }
         #endregion

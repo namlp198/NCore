@@ -62,13 +62,14 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0"
                         Margin="3"
                         BorderBrush="LightGray"
                         BorderThickness="0.6"
-                        CornerRadius="2">
+                        CornerRadius="2"
+                        Visibility="Collapsed">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -124,9 +125,81 @@
                                Content="{Binding ProcessTime}" />
                     </Grid>
                 </Border>
+                <Grid Grid.Row="3">
+                    <Border CornerRadius="2"
+                            BorderThickness="1"
+                            BorderBrush="White">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Margin="2 2 10 2"
+                                   Content="STATISTICS"
+                                   Foreground="White"
+                                   Background="{DynamicResource DarkColor_1}"
+                                   VerticalContentAlignment="Center"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Width="100" />
+                            <TextBlock Margin="10 2 2 2"
+                                       Text="TOTAL"
+                                       Foreground="White"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="10 2 2 2"
+                                       Text="0"
+                                       Foreground="White"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="50 2 2 2"
+                                       Text="OK"
+                                       Foreground="{DynamicResource ColdColor_3}"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="10 2 2 2"
+                                       Text="0"
+                                       Foreground="White"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="50 2 2 2"
+                                       Text="NG"
+                                       Foreground="{DynamicResource HotColor_1}"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="10 2 2 2"
+                                       Text="0"
+                                       Foreground="White"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="50 2 2 2"
+                                       Text="YIELD"
+                                       Foreground="{DynamicResource HotColor_3}"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Margin="10 2 2 2"
+                                       Text="0"
+                                       Foreground="White"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       FontWeight="SemiBold" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Logs"
+        <TabItem Header="LOG"
                  Style="{StaticResource TabItemStyle}"
                  FontSize="14"
                  FontFamily="Segoe UI"

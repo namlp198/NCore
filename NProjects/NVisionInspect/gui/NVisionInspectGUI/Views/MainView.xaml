@@ -94,9 +94,9 @@
             </Button>
             <Separator Margin="3" />
             <Button Margin="5"
-                    Width="130"
-                    Name="btnExportExcel"
-                    Command="{Binding ExportExcelFileCmd}"
+                    Width="120"
+                    Name="btnSelectRecipe"
+                    Command="{Binding ShowRecipeListCmd}"
                     IsEnabled="{Binding EnableSetting}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
@@ -104,7 +104,7 @@
                                Margin="8 4 8 0"
                                Width="35"
                                Height="35" />
-                        <TextBlock Text="EXPORT EXCEL"
+                        <TextBlock Text="RECIPE LIST"
                                    VerticalAlignment="Center"
                                    TextAlignment="Center"
                                    FontSize="18"
@@ -137,6 +137,51 @@
                 </Button.Content>
             </Button>
             <Separator Margin="3" />
+            <Button Margin="5"
+                    Width="130"
+                    Name="btnReport"
+                    Command="{Binding ShowReportViewCmd}"
+                    IsEnabled="{Binding EnableSetting}">
+                <Button.Content>
+                    <StackPanel Orientation="Vertical">
+                        <Image Source="{DynamicResource IMG_Report_2}"
+                               Margin="4 4 4 0"
+                               Width="35"
+                               Height="35" />
+                        <TextBlock Text="REPORT"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   FontSize="18"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   Margin="0 3 5 0" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Separator Margin="3" />
+            <Button Margin="5"
+                    Name="btnLogin"
+                    Command="{Binding ShowLoginViewCmd}"
+                    CommandParameter="{Binding ElementName=tbLogin, Path=Text}"
+                    IsEnabled="{Binding InspectRunning, Converter={StaticResource InvertBooleanConverter}}"
+                    Width="120">
+                <Button.Content>
+                    <StackPanel Orientation="Vertical">
+                        <Image Source="{Binding DisplayImage_LoginStatusPath}"
+                               Margin="8 4 8 0"
+                               Width="35"
+                               Height="35" />
+                        <TextBlock Text="LOGIN"
+                                   Name="tbLogin"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"
+                                   FontSize="18"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   Margin="0 3 5 0" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
         </ToolBar>
 
         <ContentControl Grid.Row="1"

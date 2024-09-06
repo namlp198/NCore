@@ -16,6 +16,8 @@ namespace NVisionInspectGUI.Models
         public int m_bByPass;
         public int m_bTestMode;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
-        public string m_sRecipeName;
+        public string m_sModelName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
+        public string m_sModelList;
     }
 }

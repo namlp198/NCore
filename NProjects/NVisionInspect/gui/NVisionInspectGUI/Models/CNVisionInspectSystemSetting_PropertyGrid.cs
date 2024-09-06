@@ -31,7 +31,11 @@ namespace NVisionInspectGUI.Models
         public bool TestMode { get; set; }
 
         [PropertyOrder(5)]
-        [DisplayName("Recipe Name")]
-        public string RecipeName { get; set; }
+        [DisplayName("Model Name")]
+        public string ModelName { get; set; }
+
+        [PropertyOrder(6)]
+        [DisplayName("Model List")]
+        public string ModelList { get; set; }
     }
 }

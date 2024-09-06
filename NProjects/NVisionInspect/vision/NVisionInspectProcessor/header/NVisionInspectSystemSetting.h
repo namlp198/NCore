@@ -12,5 +12,6 @@ public:
 	BOOL                m_bSimulation;
 	BOOL                m_bByPass;
 	BOOL                m_bTestMode;
-	TCHAR               m_sRecipeName[MAX_STRING_SIZE];
+	TCHAR               m_sModelName[MAX_STRING_SIZE];
+	TCHAR               m_sModelList[MAX_STRING_SIZE];
 };
