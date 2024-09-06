@@ -106,9 +106,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.8*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <ContentControl Grid.Column="0"

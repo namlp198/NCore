@@ -199,7 +199,8 @@ namespace NVisionInspectGUI.ViewModels
                 cNVisionInspSystemSetting_PropertyGrid.Simulation = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation == 1 ? true : false;
                 cNVisionInspSystemSetting_PropertyGrid.ByPass = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bByPass == 1 ? true : false;
                 cNVisionInspSystemSetting_PropertyGrid.TestMode = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bTestMode == 1 ? true : false;
-                cNVisionInspSystemSetting_PropertyGrid.RecipeName = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sRecipeName;
+                cNVisionInspSystemSetting_PropertyGrid.ModelName = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sModelName;
+                cNVisionInspSystemSetting_PropertyGrid.ModelList = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sModelList;
 
                 NVisionInspectSystemSettingsPropertyGrid = cNVisionInspSystemSetting_PropertyGrid;
             }

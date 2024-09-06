@@ -920,5 +920,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\logout.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\report_1.png" />
+    <Resource Include="Resources\Images\report_2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

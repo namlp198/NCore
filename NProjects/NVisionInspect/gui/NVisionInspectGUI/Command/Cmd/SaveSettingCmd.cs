@@ -25,7 +25,8 @@ namespace NVisionInspectGUI.Command.Cmd
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.Simulation == true ? 1 : 0;
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bByPass = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.ByPass == true ? 1 : 0;
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bTestMode = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.TestMode == true ? 1 : 0;
-                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sRecipeName = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.RecipeName;
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sModelName = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.ModelName;
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sModelList = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.ModelList;
                     }
 
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SaveSystemSetting(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings);

@@ -149,7 +149,11 @@
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
     <Compile Include="Command\Cmd\InitializeCmd.cs" />
+    <Compile Include="Command\Cmd\LoginCmd.cs" />
     <Compile Include="Command\Cmd\ReadCodeCmd.cs" />
+    <Compile Include="Command\Cmd\ShowLoginViewCmd.cs" />
+    <Compile Include="Command\Cmd\ShowReportViewCmd.cs" />
+    <Compile Include="Command\Cmd\ShowRecipeListCmd.cs" />
     <Compile Include="Command\Cmd\StartAcquisitionCmd.cs" />
     <Compile Include="Command\Cmd\SelectROICmd.cs" />
     <Compile Include="Command\Cmd\LocateCmd.cs" />
@@ -183,13 +187,29 @@
     <Compile Include="Models\ExcelTemplateModel.cs" />
     <Compile Include="Models\Plc_Delta_Model.cs" />
     <Compile Include="Models\Plc_LS_Model.cs" />
+    <Compile Include="Models\RecipeList_MapToDataGrid_Model.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\RecipeListViewModel.cs" />
+    <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\ResultViewModel.cs" />
     <Compile Include="ViewModels\RunViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\Sum1CameraViewModel.cs" />
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecipeListView.xaml.cs">
+      <DependentUpon>RecipeListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportView.xaml.cs">
+      <DependentUpon>ReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViews\UcShowDetail.xaml.cs">
+      <DependentUpon>UcShowDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcViews\UcSum1CameraView.xaml.cs">
       <DependentUpon>UcSum1CameraView.xaml</DependentUpon>
@@ -217,9 +237,25 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecipeListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UcViews\UcShowDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\UcViews\UcSum1CameraView.xaml">
       <SubType>Designer</SubType>

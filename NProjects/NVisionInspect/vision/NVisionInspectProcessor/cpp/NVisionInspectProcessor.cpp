@@ -335,12 +335,16 @@ BOOL CNVisionInspectProcessor::LoadSystemSettings(CNVisionInspectSystemSetting* 
 	CString csTestMode = (CString)pRoot->first_node("TestMode")->value();
 	sysSettings.m_bTestMode = csTestMode.Compare(_T("true")) == 0 ? TRUE : FALSE;
 
-	CString csRecipeName = (CString)pRoot->first_node("RecipeName")->value();
-	ZeroMemory(sysSettings.m_sRecipeName, sizeof(sysSettings.m_sRecipeName));
-	wsprintf(sysSettings.m_sRecipeName, _T("%s"), (TCHAR*)(LPCTSTR)csRecipeName);
+	CString csModelName = (CString)pRoot->first_node("ModelName")->value();
+	ZeroMemory(sysSettings.m_sModelName, sizeof(sysSettings.m_sModelName));
+	wsprintf(sysSettings.m_sModelName, _T("%s"), (TCHAR*)(LPCTSTR)csModelName);
+
+	CString csModelList = (CString)pRoot->first_node("ModelList")->value();
+	ZeroMemory(sysSettings.m_sModelList, sizeof(sysSettings.m_sModelList));
+	wsprintf(sysSettings.m_sModelList, _T("%s"), (TCHAR*)(LPCTSTR)csModelList);
 
 	// set recipe path
-	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sRecipeName, _T("cfg"));
+	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sModelName, _T("cfg"));
 
 	*(pSystemSetting) = sysSettings;
 
@@ -621,8 +625,11 @@ BOOL CNVisionInspectProcessor::SaveSystemSetting(CNVisionInspectSystemSetting* p
 	const char* sTestMode = W2A(csTestMode);
 	pRoot->first_node("TestMode")->value(sTestMode);
 
-	const char* sRecipeName = W2A(sysSetting.m_sRecipeName);
-	pRoot->first_node("RecipeName")->value(sRecipeName);
+	const char* sModelName = W2A(sysSetting.m_sModelName);
+	pRoot->first_node("ModelName")->value(sModelName);
+
+	const char* sModelList = W2A(sysSetting.m_sModelList);
+	pRoot->first_node("ModelList")->value(sModelList);
 
 #pragma endregion
 

@@ -9,6 +9,17 @@ using System.Threading.Tasks;
 namespace NVisionInspectGUI.Commons
 {
     public enum eMachineMode { MachineMode_Auto, MachineMode_Manual }
+    public enum eUserLevel
+    {
+        UserLevel_Operator,
+        UserLevel_Admin,
+        UserLevel_SuperAdmin
+    }
+    public enum eLoginStatus
+    {
+        LoginStatus_Success,
+        LoginStatus_Failed
+    }
     public class Defines
     {
         public static string StartupProgPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
