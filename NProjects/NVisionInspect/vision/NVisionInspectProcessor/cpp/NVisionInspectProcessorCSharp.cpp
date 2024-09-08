@@ -222,7 +222,7 @@ void RegCallBackInspectCompleteFunc(CNVisionInspectProcessor* pProcessor, Callba
 	pProcessor->RegCallbackInsCompleteFunc(pFunc);
 }
 
-void RegCallbackLogFunc(CNVisionInspectProcessor* pProcessor, CallbackLogFunc* pFunc)
+void RegCallBackLogFunc(CNVisionInspectProcessor* pProcessor, CallbackLogFunc* pFunc)
 {
 	if (pProcessor == NULL)
 		return;
@@ -230,20 +230,20 @@ void RegCallbackLogFunc(CNVisionInspectProcessor* pProcessor, CallbackLogFunc* p
 	pProcessor->RegCallbackLogFunc(pFunc);
 }
 
-void RegCallbackAlarm(CNVisionInspectProcessor* pProcessor, CallbackAlarm* pFunc)
+void RegCallBackAlarmFunc(CNVisionInspectProcessor* pProcessor, CallbackAlarmFunc* pFunc)
 {
 	if (pProcessor == NULL)
 		return;
 
-	pProcessor->RegCallbackAlarm(pFunc);
+	pProcessor->RegCallbackAlarmFunc(pFunc);
 }
 
-void RegCallbackLocatorTrainedFunc(CNVisionInspectProcessor* pProcessor, CallbackLocatorTrained* pFunc)
+void RegCallBackLocatorTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackLocatorTrainComplete* pFunc)
 {
 	if (pProcessor == NULL)
 		return;
 
-	pProcessor->RegCallbackLocatorTrainedFunc(pFunc);
+	pProcessor->RegCallbackLocatorTrainCompleteFunc(pFunc);
 }
 
 bool LoadSystemSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting)

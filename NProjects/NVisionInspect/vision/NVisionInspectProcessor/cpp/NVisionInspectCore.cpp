@@ -184,10 +184,10 @@ void CNVisionInspectCore::Inspect_Reality(int nCamIdx, LPBYTE pBuffer)
 	ProcessFrame(nCamIdx, pBuffer);
 }
 
-BOOL CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
+void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 {
 	if (pBuffer == NULL)
-		return FALSE;
+		return;
 
 	int nCamIdx = 0;
 
@@ -226,6 +226,8 @@ BOOL CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 
 	SaveTemplateImage(imgTemplate, nCamIdx);
 
+	//m_pInterface->AlarmMessage(_T("Saved Image Template Success!"));
+
 	// make inner ROI, outer ROI and draw
 	cv::Rect rectInner(nRectInner_X, nRectInner_Y, nRectInner_Width, nRectInner_Height);
 	cv::Rect rectOuter(nRectOuter_X, nRectOuter_Y, nRectOuter_Width, nRectOuter_Height);
@@ -255,20 +257,32 @@ BOOL CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 		cv::putText(matBGR, "Can't Find Template", cv::Point(matBGR.rows - 20, 80), cv::FONT_HERSHEY_SIMPLEX, 2.0, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
 		m_pInterface->SetResultBuffer(0, 0, matBGR.data);
 
-		return FALSE;
+		return;
 	}
 
-	pRecipe->m_nTemplateCoordinatesX = ptFindResult.x;
-	pRecipe->m_nTemplateCoordinatesY = ptFindResult.y;
+	int ptResult_X = ptFindResult.x + nRectOuter_X;
+	int ptResult_Y = ptFindResult.y + nRectOuter_Y;
 
-	// draw result
-	cv::circle(matBGR, cv::Point(ptFindResult.x + nRectOuter_X, ptFindResult.y + nRectOuter_Y), 3, cv::Scalar(0, 255, 255), cv::FILLED);
+	pRecipe->m_nTemplateCoordinatesX = ptResult_X;
+	pRecipe->m_nTemplateCoordinatesY = ptResult_Y;
 
-	m_pInterface->SetResultBuffer(0, 0, matBGR.data);
+	// draw center pt result
+	cv::circle(matBGR, cv::Point(ptResult_X, ptResult_Y), 3, cv::Scalar(0, 255, 255), cv::FILLED);
 
-	m_pInterface->LocatorTrained();
+	// draw center pt text
+	char ch2[256];
+	sprintf_s(ch2, sizeof(ch2), "(x: %d, y: %d)", ptResult_X, ptResult_Y);
+	cv::putText(matBGR, ch2, cv::Point(ptResult_X + 10, ptResult_Y - 10), cv::FONT_HERSHEY_PLAIN, 1.0, CYAN_COLOR);
 
-	return TRUE;
+	// convert image to RGB format
+	cv::Mat matRGB;
+	cv::cvtColor(matBGR, matRGB, cv::COLOR_BGR2RGB);
+
+	// set result to buffer
+	m_pInterface->SetResultBuffer(0, 0, matRGB.data);
+
+	// inform that locator trained succsess
+	m_pInterface->LocatorTrainComplete(nCamIdx);
 }
 
 void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
@@ -328,16 +342,14 @@ void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 	m_pInterface->InspectComplete(FALSE);
 }
 
-BOOL CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx)
+void CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx)
 {
 	if (matTemplate.empty())
-		return FALSE;
+		return;
 
 	USES_CONVERSION;
 	char chImgTemplatePath[1000] = {};
 	sprintf_s(chImgTemplatePath, "%s%s", W2A(m_pInterface->GetCameraSettingControl(nCamIdx)->m_sTemplateImagePath), "template.png");
 
 	cv::imwrite(chImgTemplatePath, matTemplate);
-
-	return TRUE;
 }

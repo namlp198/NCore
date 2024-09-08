@@ -54,11 +54,11 @@ extern "C"
 
 	__declspec(dllexport) void			                RegCallBackInspectCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete* pFunc);
 												        
-	__declspec(dllexport) void			                RegCallbackLogFunc(CNVisionInspectProcessor* pProcessor, CallbackLogFunc* pFunc);
+	__declspec(dllexport) void			                RegCallBackLogFunc(CNVisionInspectProcessor* pProcessor, CallbackLogFunc* pFunc);
 												        
-	__declspec(dllexport) void			                RegCallbackAlarm(CNVisionInspectProcessor* pProcessor, CallbackAlarm* pFunc);
+	__declspec(dllexport) void			                RegCallBackAlarmFunc(CNVisionInspectProcessor* pProcessor, CallbackAlarmFunc* pFunc);
 												        
-	__declspec(dllexport) void			                RegCallbackLocatorTrainedFunc(CNVisionInspectProcessor* pProcessor, CallbackLocatorTrained* pFunc);
+	__declspec(dllexport) void			                RegCallBackLocatorTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackLocatorTrainComplete* pFunc);
 
 	/************************** Load Setting and Recipe **************************/
 
