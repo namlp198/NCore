@@ -3,8 +3,24 @@
 
 CNVisionInspectProcessor::CNVisionInspectProcessor()
 {
+	m_pCallbackInsCompleteFunc = NULL;
+
+	m_pCallbackLogFunc = NULL;
+
+	m_pCallbackAlarmFunc = NULL;
+
+	m_pCallbackLocatorTrainCompleteFunc = NULL;
+
+
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("VisionSettings\\Settings\\SystemSettings.config");
 	m_csCam1SettingPath = GetCurrentPathApp() + _T("VisionSettings\\Settings\\Camera1Settings.config");
+
+	m_pLogView = new CLogView();
+
+#ifndef _DEBUG
+	m_pLogView->Create(CLogView::IDD);
+	m_pLogView->ShowWindow(SW_SHOW);
+#endif // !_DEBUG
 }
 
 CNVisionInspectProcessor::~CNVisionInspectProcessor()
@@ -438,7 +454,7 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), readRecipe.m_nROI3_PixelCount_Min, 0);
 	recipeFile.GetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), readRecipe.m_nROI3_PixelCount_Max, 0);
 	recipeFile.GetItemValue(_T("ROI3_USE_OFFSET"), readRecipe.m_bROI3UseOffset, 0);
-	recipeFile.GetItemValue(_T("ROI2_USE_LOCATOR"), readRecipe.m_bROI2UseLocator, 0);
+	recipeFile.GetItemValue(_T("ROI3_USE_LOCATOR"), readRecipe.m_bROI3UseLocator, 0);
 	recipeFile.GetItemValue(_T("ROI3_SHOW_GRAPHICS"), readRecipe.m_bROI3ShowGraphics, 0);
 
 	*(pRecipe) = readRecipe;
@@ -894,14 +910,14 @@ void CNVisionInspectProcessor::RegCallbackLogFunc(CallbackLogFunc* pFunc)
 	m_pCallbackLogFunc = pFunc;
 }
 
-void CNVisionInspectProcessor::RegCallbackAlarm(CallbackAlarm* pFunc)
+void CNVisionInspectProcessor::RegCallbackAlarmFunc(CallbackAlarmFunc* pFunc)
 {
-	m_pCallbackAlarm = pFunc;
+	m_pCallbackAlarmFunc = pFunc;
 }
 
-void CNVisionInspectProcessor::RegCallbackLocatorTrainedFunc(CallbackLocatorTrained* pFunc)
+void CNVisionInspectProcessor::RegCallbackLocatorTrainCompleteFunc(CallbackLocatorTrainComplete* pFunc)
 {
-	m_pCallbackLocatorTrainedFunc = pFunc;
+	m_pCallbackLocatorTrainCompleteFunc = pFunc;
 }
 
 void CNVisionInspectProcessor::InspectComplete(BOOL bSetting)
@@ -912,12 +928,14 @@ void CNVisionInspectProcessor::InspectComplete(BOOL bSetting)
 	(m_pCallbackInsCompleteFunc)(bSetting);
 }
 
-void CNVisionInspectProcessor::LocatorTrained()
+void CNVisionInspectProcessor::LocatorTrainComplete(int nCamIdx)
 {
-	if (m_pCallbackLocatorTrainedFunc == NULL)
+	SaveRecipe(m_pNVisionInspectRecipe);
+
+	if (m_pCallbackLocatorTrainCompleteFunc == NULL)
 		return;
 
-	(m_pCallbackLocatorTrainedFunc);
+	(m_pCallbackLocatorTrainCompleteFunc)(nCamIdx);
 }
 
 void CNVisionInspectProcessor::LogMessage(char* strMessage)
@@ -1038,6 +1056,8 @@ BOOL CNVisionInspectProcessor::LoadSimulatorBuffer(int nBuff, int nFrame, CStrin
 	for (int i = 0; i < nCopyHeight; i++)
 		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
 
+	cv::cvtColor(pOpenImage, pOpenImage, cv::COLOR_BGR2RGB);
+
 	m_pSimulatorBuffer[nBuff]->SetFrameImage(nFrame, pOpenImage.data);
 
 	return TRUE;
@@ -1053,6 +1073,8 @@ BOOL CNVisionInspectProcessor::LocatorTool_Train(int nCamIdx)
 	int nCoreIdx = nCamIdx;
 
 	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(pBuffer);
+
+	return TRUE;
 }
 
 BOOL CNVisionInspectProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFrame)
@@ -1064,6 +1086,8 @@ BOOL CNVisionInspectProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFr
 
 	int nCoreIdx = nSimuBuff;
 	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(pBuffer);
+
+	return TRUE;
 }
 
 LPBYTE CNVisionInspectProcessor::GetSimulatorBuffer(int nBuff, int nFrame)
@@ -1072,6 +1096,33 @@ LPBYTE CNVisionInspectProcessor::GetSimulatorBuffer(int nBuff, int nFrame)
 		return NULL;
 
 	return m_pSimulatorBuffer[nBuff]->GetFrameImage(nFrame);
+}
+
+void CNVisionInspectProcessor::AlarmMessage(CString strAlarmMessage)
+{
+	if (m_pCallbackAlarmFunc == NULL)
+		return;
+
+	USES_CONVERSION;
+	char strMsgBuffer[1024] = {};
+	sprintf_s(strMsgBuffer, "%s", W2A(strAlarmMessage));
+
+	(m_pCallbackAlarmFunc)(strMsgBuffer);
+}
+
+void CNVisionInspectProcessor::SystemMessage(const TCHAR* lpstrFormat, ...)
+{
+	va_list list;
+	TCHAR strText[2048] = { 0 };
+
+	va_start(list, lpstrFormat);
+	_vstprintf_s(strText, lpstrFormat, list);
+	va_end(list);
+
+	CString strValue = _T("");
+	strValue.Format(_T("%s"), strText);
+
+	SystemMessage(strValue);
 }
 
 void CNVisionInspectProcessor::SystemMessage(CString strMessage)

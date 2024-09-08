@@ -18,9 +18,9 @@
 #undef TEST_NO_CAMERA
 
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
-typedef void _stdcall CallbackAlarm(char* strAlarmMessage);
+typedef void _stdcall CallbackAlarmFunc(char* strAlarmMessage);
 typedef void _stdcall CallbackInspectComplete(BOOL bSetting);
-typedef void _stdcall CallbackLocatorTrained();
+typedef void _stdcall CallbackLocatorTrainComplete(int nCamIdx);
 
 class AFX_EXT_CLASS CNVisionInspectProcessor : public INVisionInspectHikCamToParent,
 	                                           public INVisionInspectCoreToParent
@@ -68,10 +68,8 @@ public:
 public:
 	void                       RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc);
 	void                       RegCallbackLogFunc(CallbackLogFunc* pFunc);
-	void                       RegCallbackAlarm(CallbackAlarm* pFunc);
-	void                       RegCallbackLocatorTrainedFunc(CallbackLocatorTrained* pFunc);
-	virtual void		       InspectComplete(BOOL bSetting);
-	virtual void               LocatorTrained();
+	void                       RegCallbackAlarmFunc(CallbackAlarmFunc* pFunc);
+	void                       RegCallbackLocatorTrainCompleteFunc(CallbackLocatorTrainComplete* pFunc);
 
 public:
 	void						      LogMessage(char* strMessage);
@@ -93,9 +91,13 @@ public:
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
 
 private:
+	virtual void				      AlarmMessage(CString strAlarmMessage);
+	virtual void				      SystemMessage(const TCHAR* lpstrFormat, ...);
 	void						      SystemMessage(CString strMessage);
 	BOOL                              CreateResultBuffer();
 	BOOL                              CreateSimulatorBuffer();
+	virtual void		              InspectComplete(BOOL bSetting);
+	virtual void                      LocatorTrainComplete(int nCamIdx);
 
 private:
 
@@ -103,9 +105,9 @@ private:
 
 	CallbackLogFunc*                            m_pCallbackLogFunc;
 
-	CallbackAlarm*                              m_pCallbackAlarm;
+	CallbackAlarmFunc*                          m_pCallbackAlarmFunc;
 
-	CallbackLocatorTrained*                     m_pCallbackLocatorTrainedFunc;
+	CallbackLocatorTrainComplete*               m_pCallbackLocatorTrainCompleteFunc;
 
 	// UI						                            
 	CLogView*                                   m_pLogView;

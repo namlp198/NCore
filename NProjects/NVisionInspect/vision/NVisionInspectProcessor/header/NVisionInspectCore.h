@@ -18,6 +18,8 @@
 
 interface INVisionInspectCoreToParent
 {
+	virtual void							SystemMessage(const TCHAR* lpstrFormat, ...) = 0;
+	virtual void							AlarmMessage(CString strAlarmMessage) = 0;
 	virtual CNVisionInspectRecipe*          GetRecipeControl() = 0;
 	virtual CNVisionInspectSystemSetting*   GetSystemSettingControl() = 0;
 	virtual CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
@@ -26,7 +28,7 @@ interface INVisionInspectCoreToParent
 	virtual BOOL                            SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual LPBYTE                          GetSimulatorBuffer(int nBuff, int nFrame) = 0;
 	virtual void                            InspectComplete(BOOL bSetting) = 0;
-	virtual void                            LocatorTrained() = 0;
+	virtual void                            LocatorTrainComplete(int CamIdx) = 0;
 };
 
 class AFX_EXT_CLASS CNVisionInspectCoreThreadData : public CWorkThreadData
@@ -67,11 +69,11 @@ public:
 public:
 	void                       Inspect_Simulation(int nBuff, int nFrame);
 	void                       Inspect_Reality(int nCamIdx, LPBYTE pBuffer);
-	BOOL                       LocatorTool_Train(LPBYTE pBuffer);
+	void                       LocatorTool_Train(LPBYTE pBuffer);
 
 private:
 	void                       ProcessFrame(int nCamIdx, LPBYTE pBuffer);
-	BOOL                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
+	void                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
 
 private:
 

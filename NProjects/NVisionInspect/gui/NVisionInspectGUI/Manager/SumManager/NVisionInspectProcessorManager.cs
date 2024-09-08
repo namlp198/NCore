@@ -19,7 +19,9 @@ namespace NVisionInspectGUI.Manager.SumManager
         public CNVisionInspectRecipe m_NVisionInspectRecipe = new CNVisionInspectRecipe();
         public void Initialize()
         {
-            m_NVisionInspectProcessorDll.RegCallbackLocatorTrainedFunc(InterfaceManager.Instance.CallbackLocatorTrainedFunc);
+            m_NVisionInspectProcessorDll.RegCallBackLocatorTrainCompleteFunc(InterfaceManager.Instance.CallbackLocatorTrainedFunc);
+            m_NVisionInspectProcessorDll.RegCallBackAlarmFunc(InterfaceManager.Instance.CallbackAlarmFunc);
+            m_NVisionInspectProcessorDll.RegCallBackLogFunc(InterfaceManager.Instance.CallbackWriteLogFunc);
             m_NVisionInspectProcessorDll.RegCallBackInspectCompleteFunc(InterfaceManager.Instance.CallbackInsCompleteFunc);
             m_NVisionInspectProcessorDll.Initialize();
         }

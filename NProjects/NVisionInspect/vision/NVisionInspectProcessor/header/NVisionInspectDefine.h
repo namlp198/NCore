@@ -23,4 +23,20 @@
 #define MAX_STRING_SIZE		  256
 #define MAX_STRING_SIZE_RESULT 1000
 
+// Scalar
+#define BLUE_COLOR cv::Scalar(255, 0, 0)
+#define GREEN_COLOR cv::Scalar(0, 255, 0)
+#define RED_COLOR cv::Scalar(0, 0, 255)
+#define PINK_COLOR cv::Scalar(255, 0, 255)
+#define YELLOW_COLOR cv::Scalar(0, 255, 255)
+#define ORANGE_COLOR cv::Scalar(0, 128, 255)
+#define CYAN_COLOR cv::Scalar(255, 255, 0)
+#define BLACK_COLOR cv::Scalar(0, 0, 0)
+#define WHITE_COLOR cv::Scalar(255, 255, 255)
+#define GRAY_COLOR cv::Scalar(128, 128, 128)
+
+#define	PI							3.1415926535897932384626433832795
+#define	RAD2DEG(radian)				((radian*180.0)/PI)
+#define	DEG2RAD(degree)				((degree*PI)/180.0)
+
 typedef enum { InspectStatus_Inspecting, InspectStatus_Stopping, InspectStatus_Busy } emInspectStatus;
