@@ -74,6 +74,11 @@ namespace NVisionInspectGUI.ViewModels
             m_ucSettingView.buffSettingPRO.ModeView = NCore.Wpf.BufferViewerSettingPRO.EnModeView.Color;
             m_ucSettingView.buffSettingPRO.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
 
+            SimulationThread.UpdateUI += SimulationThread_UpdateUI;
+            InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
+            InterfaceManager.LocatorTrainComplete += new InterfaceManager.LocatorTrainComplete_Handler(LocatorTrainComplete);
+            InterfaceManager.AlarmEvent += new InterfaceManager.Alarm_Handler(AlarmHandlerFunc);
+
             this.SaveRecipeCmd = new SaveRecipeCmd();
             this.SaveSettingCmd = new SaveSettingCmd();
             this.SaveImageCmd = new SaveImageCmd();
@@ -91,10 +96,6 @@ namespace NVisionInspectGUI.ViewModels
             m_lstImageSource = EnumUtil.GetEnumDescriptionToListString<EnImageSource>();
             SettingView.cbbImageSource.SelectionChanged += CbbImageSource_SelectionChanged;
             SettingView.cbbImageSource.SelectedIndex = 0;
-
-            SimulationThread.UpdateUI += SimulationThread_UpdateUI;
-            InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
-            InterfaceManager.LocatorTrained += new InterfaceManager.LocatorTrained_Handler(LocatorTrained);
 
             #region IMPLEMENT EVENTS SETTING
 
@@ -114,11 +115,11 @@ namespace NVisionInspectGUI.ViewModels
         private void CbbImageSource_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ComboBox cbb = (ComboBox)sender;
-            if(string.Compare(cbb.SelectedItem.ToString(), "Image") == 0)
+            if (string.Compare(cbb.SelectedItem.ToString(), "Image") == 0)
             {
                 FromImageSource = EnImageSource.FromToImage;
             }
-            else if(string.Compare(cbb.SelectedItem.ToString(), "Camera") == 0)
+            else if (string.Compare(cbb.SelectedItem.ToString(), "Camera") == 0)
             {
                 FromImageSource = EnImageSource.FromToCamera;
             }
@@ -140,7 +141,7 @@ namespace NVisionInspectGUI.ViewModels
             int nNumberOfROI = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nNumberOfROI;
 
             List<string> lstROI = new List<string>();
-            for(int i = 0; i < nNumberOfROI; i++)
+            for (int i = 0; i < nNumberOfROI; i++)
             {
                 lstROI.Add("ROI " + (i + 1));
             }
@@ -151,7 +152,6 @@ namespace NVisionInspectGUI.ViewModels
         {
             throw new NotImplementedException();
         }
-
         private void BuffSettingPRO_SelectTriggerSourceChanged(object sender, RoutedEventArgs e)
         {
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SetTriggerSource(
@@ -176,13 +176,24 @@ namespace NVisionInspectGUI.ViewModels
         }
         private void BuffSettingPRO_TrainLocator(object sender, RoutedEventArgs e)
         {
+            // Rect outside
             NVisionInspectRecipePropertyGrid.TemplateROI_OuterX = (int)SettingView.buffSettingPRO.RectOutSide.X;
             NVisionInspectRecipePropertyGrid.TemplateROI_OuterY = (int)SettingView.buffSettingPRO.RectOutSide.Y;
             NVisionInspectRecipePropertyGrid.TemplateROI_Outer_Width = (int)SettingView.buffSettingPRO.RectOutSide.Width;
             NVisionInspectRecipePropertyGrid.TemplateROI_Outer_Height = (int)SettingView.buffSettingPRO.RectOutSide.Height;
+
+            // Rect inner
+            NVisionInspectRecipePropertyGrid.TemplateROI_InnerX = (int)SettingView.buffSettingPRO.RectInSide.X;
+            NVisionInspectRecipePropertyGrid.TemplateROI_InnerY = (int)SettingView.buffSettingPRO.RectInSide.Y;
+            NVisionInspectRecipePropertyGrid.TemplateROI_Inner_Width = (int)SettingView.buffSettingPRO.RectInSide.Width;
+            NVisionInspectRecipePropertyGrid.TemplateROI_Inner_Height = (int)SettingView.buffSettingPRO.RectInSide.Height;
+
+            SaveRecipeCmd.Execute(this);
+
+            int nBuff = 0;
+            int nFrame = 0;
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LocatorToolSimulator_Train(nBuff, nFrame);
         }
-
-
         #endregion
 
         #region Methods
@@ -293,7 +304,7 @@ namespace NVisionInspectGUI.ViewModels
             cameraSetting_PropertyGrid.DefectImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sDefectImagePath;
             cameraSetting_PropertyGrid.TemplateImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sTemplateImagePath;
 
-            switch(nCamIdx)
+            switch (nCamIdx)
             {
                 case 0:
                     NVisionInspectCamera1SettingsPropertyGrid = cameraSetting_PropertyGrid;
@@ -496,13 +507,19 @@ namespace NVisionInspectGUI.ViewModels
                 string resStr = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult[0].m_sResultString;
             }
         }
-        private async void LocatorTrained()
+        private async void LocatorTrainComplete(int nCamIdx)
         {
             SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(0, 0);
             await SettingView.buffSettingPRO.UpdateImage();
 
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.ReloadRecipe();
+            SettingView.buffSettingPRO.LoadBmpImageAsync(NVisionInspectCamera1SettingsPropertyGrid.TemplateImagePath + "template.png");
+
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
             LoadRecipe();
+        }
+        private void AlarmHandlerFunc(string alarm)
+        {
+            MessageBox.Show(alarm);
         }
         #endregion
 
@@ -595,7 +612,7 @@ namespace NVisionInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_strROISelected, value))
                 {
-                    
+
                 }
             }
         }
@@ -651,7 +668,7 @@ namespace NVisionInspectGUI.ViewModels
             get => m_fromImageSource;
             set
             {
-                if(SetProperty(ref m_fromImageSource, value))
+                if (SetProperty(ref m_fromImageSource, value))
                 {
                     //switch(m_fromImageSource)
                     //{
@@ -691,7 +708,7 @@ namespace NVisionInspectGUI.ViewModels
         public ICommand LocateCmd { get; }
         public ICommand InspectCmd { get; }
         public ICommand ReadCodeCmd { get; }
-        
+
         #endregion
     }
 }

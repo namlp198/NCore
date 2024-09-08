@@ -8,24 +8,34 @@ using System.Threading.Tasks;
 
 namespace NVisionInspectGUI.Manager.Class
 {
+    // Log Message CallBack
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void CallbackLogFunc([MarshalAs(UnmanagedType.LPStr)] string strLogMsg);
+
+    // Alarm CallBack
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void CallbackAlarmFunc([MarshalAs(UnmanagedType.LPStr)] string strAlarm);
+
+    // Inspection Compete CallBack
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void CallbackInsCompleteFunc(int bSetting);
+
+    // Inspection Compete CallBack
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void CallbackLocatorTrainCompleteFunc(int nCamIdx);
+
     public class NVisionInspectProcessorDll
     {
         IntPtr m_NVisionInspectProcessor;
 
+        public static CallbackLogFunc m_RegLogCallBack;
+        public static CallbackAlarmFunc m_RegAlarmCallBack;
         public static CallbackInsCompleteFunc m_RegInsCompleteCallBack;
-        public static CallbackLocatorTrainedFunc m_RegLocatorTrainedCallBack;
+        public static CallbackLocatorTrainCompleteFunc m_RegLocatorTrainCompleteCallBack;
         public NVisionInspectProcessorDll()
         {
             m_NVisionInspectProcessor = CreateNVisionInspectProcessor();
         }
-
-        // Inspection Compete CallBack
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void CallbackInsCompleteFunc(int bSetting);
-
-        // Inspection Compete CallBack
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void CallbackLocatorTrainedFunc();
 
         #region Init and delete
         /// <summary>
@@ -295,6 +305,42 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
+        private static extern void RegCallBackAlarmFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackAlarmFunc callbackPointer);
+        public void RegCallBackAlarmFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackAlarmFunc callbackPointer)
+        {
+            m_RegAlarmCallBack = callbackPointer;
+
+            RegCallBackAlarmFunc(m_NVisionInspectProcessor, m_RegAlarmCallBack);
+        }
+        /**********************************
+       - Register Alarm Message CallBack
+       - Parameter : CallBack Func Pointer
+      **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallBackLogFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackLogFunc callbackPointer);
+        public void RegCallBackLogFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackLogFunc callbackPointer)
+        {
+            m_RegLogCallBack = callbackPointer;
+
+            RegCallBackLogFunc(m_NVisionInspectProcessor, m_RegLogCallBack);
+        }
+        /**********************************
+         - Register System Message CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
         private static extern void RegCallBackInspectCompleteFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCompleteFunc callbackPointer);
         public void RegCallBackInspectCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCompleteFunc callbackPointer)
         {
@@ -312,12 +358,12 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        private static extern void RegCallbackLocatorTrainedFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainedFunc callbackPointer);
-        public void RegCallbackLocatorTrainedFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainedFunc callbackPointer)
+        private static extern void RegCallBackLocatorTrainCompleteFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainCompleteFunc callbackPointer);
+        public void RegCallBackLocatorTrainCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainCompleteFunc callbackPointer)
         {
-            m_RegLocatorTrainedCallBack = callbackPointer;
+            m_RegLocatorTrainCompleteCallBack = callbackPointer;
 
-            RegCallbackLocatorTrainedFunc(m_NVisionInspectProcessor, m_RegLocatorTrainedCallBack);
+            RegCallBackLocatorTrainCompleteFunc(m_NVisionInspectProcessor, m_RegLocatorTrainCompleteCallBack);
         }
         /**********************************
          - Register Locator Trained CallBack
