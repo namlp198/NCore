@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace NpcCore.Wpf.Controls
 {
@@ -132,6 +134,9 @@ namespace NpcCore.Wpf.Controls
         #endregion
 
         #region Event
+        public delegate void MouseMove_Handler(int nX, int nY, int r, int g, int b);
+        public event MouseMove_Handler MouseMoveEndEvent;
+
         public static readonly RoutedEvent SelectedROIEvent = EventManager.RegisterRoutedEvent(
             "SelectedROI",
             RoutingStrategy.Bubble,
@@ -250,6 +255,8 @@ namespace NpcCore.Wpf.Controls
 
         private double _comWidth = 20;
         private double _comOffset = 10;
+
+        private System.Drawing.Bitmap m_bmp;
         #endregion
 
         #region Methods
@@ -801,7 +808,34 @@ namespace NpcCore.Wpf.Controls
         private void ImageEx_MouseMove(object sender, MouseEventArgs e)
         {
             if (!_enableSelectRoiTool && !_enableLocatorTool)
+            {
+                var pointEnd = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
+
+                int nX = (int)(Math.Round(pointEnd.X, MidpointRounding.AwayFromZero));
+                int nY = (int)(Math.Round(pointEnd.Y, MidpointRounding.AwayFromZero));
+
+                if (m_bmp == null)
+                    return;
+
+                if ((nX >= 0) && (nX < m_bmp.Width) && (nY >= 0) && (nY < m_bmp.Height))
+                {
+                    
+                    System.Drawing.Color color = m_bmp.GetPixel(nX, nY);
+                    int r = color.R;
+                    int g = color.G;
+                    int b = color.B;
+                    float hue = color.GetHue();
+                    float saturation = color.GetSaturation();
+                    float brightness = color.GetBrightness();
+
+                    MouseMoveEndEvent?.Invoke(nX, nY, r, g, b);
+
+                    //XY = String.Format("X: {0} Y: {1}", (int)p.X, (int)p.Y);
+                    //RGB = String.Format("R: {0} G: {1} B: {2}", r.ToString(), g.ToString(), b.ToString());
+                    //HSI = String.Format("H: {0} S: {1:0.000} I: {2:0.000}", (int)hue, saturation, brightness);
+                }
                 return;
+            }
             SetHitType(e);
             if (!_drag)
                 return;
@@ -1514,13 +1548,11 @@ namespace NpcCore.Wpf.Controls
             get => _isSelectingRoi;
             set => _isSelectingRoi = value;
         }
-
         public bool EnableSelectPoly
         {
             get => _enableSelectPoly;
             set => _enableSelectPoly = value;
         }
-
         public Point CenterPoint
         {
             get => _centerPoint;
@@ -1531,7 +1563,6 @@ namespace NpcCore.Wpf.Controls
             get => _centerPointReal;
             set => _centerPointReal = value;
         }
-
         public bool Drag
         {
             get => _drag;
@@ -1542,7 +1573,6 @@ namespace NpcCore.Wpf.Controls
             get => _completedSelectRoi;
             set => _completedSelectRoi = value;
         }
-
         public Size DragSize
         {
             get => _dragSize;
@@ -1613,7 +1643,6 @@ namespace NpcCore.Wpf.Controls
             get => _rectRotation;
             set => _rectRotation = value;
         }
-
         public EnToolType ToolType
         {
             get => _toolType;
@@ -1625,7 +1654,6 @@ namespace NpcCore.Wpf.Controls
                 }
             }
         }
-
         public EnGrabMode GrabMode
         {
             get => _grabMode;
@@ -1642,7 +1670,6 @@ namespace NpcCore.Wpf.Controls
                 }
             }
         }
-
         public EnViewMode ViewMode
         {
             get => _viewMode;
@@ -1656,6 +1683,17 @@ namespace NpcCore.Wpf.Controls
                         EnableLocatorTool = false;
                     }
                     this.InvalidateVisual();
+                }
+            }
+        }
+        public System.Drawing.Bitmap BMP
+        {
+            get => m_bmp;
+            set
+            {
+                if(SetProperty(ref m_bmp, value))
+                {
+
                 }
             }
         }
