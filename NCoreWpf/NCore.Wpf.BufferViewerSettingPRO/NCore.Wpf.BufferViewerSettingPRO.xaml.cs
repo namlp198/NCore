@@ -2,6 +2,7 @@
 
 using NpcCore.Wpf.Controls;
 using NpcCore.Wpf.MVVM;
+using Npc.Foundation.Util.Bitmap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,6 +62,12 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         private int m_nFrameWidth = 2448;
         private int m_nFrameHeight = 2048;
         private int m_nFrameIdx = 1;
+        private int m_nXCoorCur = 0;
+        private int m_nYCoorCur = 0;
+        private int m_nB = 0;
+        private int m_nG = 0;
+        private int m_nR = 0;
+        private int m_nGray = 0;
         private const int m_nResolutionX = 96;
         private const int m_nResolutionY = 96;
         private int[] _dataTrain = new int[2]; // Center Point-> element 0: coordinates X, element 1: coordinates Y
@@ -69,6 +76,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         private string m_sFrameSelected = "1";
 
         private BitmapSource m_ucBmpSource;
+        private BitmapImageLoader m_bmpImageLoader = new BitmapImageLoader();
         private BitmapPalette m_palette;
         private IntPtr m_bufferView = IntPtr.Zero;
 
@@ -112,6 +120,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             imageExt_Basic.SaveROIImage += ImageExt_Basic_SaveROIImage;
             imageExt_Basic.TrainLocator += ImageExt_Basic_TrainLocator;
             imageExt_Basic.Fit += ImageExt_Basic_Fit;
+            imageExt_Basic.MouseMoveEndEvent += ImageExt_Basic_MouseMoveEndEvent;
 
             // Try creating a new image with a custom palette.
             List<System.Windows.Media.Color> colors = new List<System.Windows.Media.Color>();
@@ -198,6 +207,72 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             set
             {
                 if (SetProperty(ref m_nCamIdx, value))
+                {
+
+                }
+            }
+        }
+        public int XCoorCur
+        {
+            get => m_nXCoorCur;
+            set
+            {
+                if(SetProperty(ref m_nXCoorCur, value))
+                {
+
+                }
+            }
+        }
+        public int YCoorCur
+        {
+            get => m_nYCoorCur;
+            set
+            {
+                if (SetProperty(ref m_nYCoorCur, value))
+                {
+
+                }
+            }
+        }
+        public int Gray
+        {
+            get => m_nGray;
+            set
+            {
+                if (SetProperty(ref m_nGray, value))
+                {
+
+                }
+            }
+        }
+        public int R
+        {
+            get => m_nR;
+            set
+            {
+                if (SetProperty(ref m_nR, value))
+                {
+
+                }
+            }
+        }
+        public int G
+        {
+            get => m_nG;
+            set
+            {
+                if (SetProperty(ref m_nG, value))
+                {
+
+                }
+            }
+        }
+        public int B
+        {
+            get => m_nB;
+            set
+            {
+                if (SetProperty(ref m_nB, value))
                 {
 
                 }
@@ -427,9 +502,11 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 }
                 else if (m_enModeView == EnModeView.Color)
                 {
-                    BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, m_nResolutionX, m_nResolutionY, PixelFormats.Bgr24, m_palette, m_bufferView, BufferSize, stride: Stride);
+                    BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, m_nResolutionX, m_nResolutionY, PixelFormats.Rgb24, m_palette, m_bufferView, BufferSize, stride: Stride);
                     bmpSrc.Freeze();
                     imageExt_Basic.Dispatcher.Invoke(() => imageExt_Basic.Source = bmpSrc);
+
+                    imageExt_Basic.BMP = GetBitmap(bmpSrc);
                 }
             });
 
@@ -507,6 +584,13 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 GrayscalePalette.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
             Image.Palette = GrayscalePalette;
         }
+        public void LoadBmpImageAsync(string path)
+        {
+            m_bmpImageLoader.LoadFromFileAsync(path, new Action<BitmapImageEx>((BitmapImageEx bmpEx) => 
+            {
+                imageViewer.Source = bmpEx.Image;
+            }));
+        }
         //private Task SetExposureTimeAsync()
         //{
         //    return Task.Run(() =>
@@ -538,11 +622,9 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 return bitmapimage;
             }
         }
-
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);
-
         /// <summary>
         /// Convert Bitmap to ImageSource
         /// </summary>
@@ -564,7 +646,6 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 return null;
             }
         }
-
         public BitmapSource ToBitmapSource(System.Drawing.Bitmap bitmap)
         {
             BitmapData bitmapData = bitmap.LockBits(
@@ -580,6 +661,61 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             bitmap.UnlockBits(bitmapData);
             return bitmapSource;
         }
+        #endregion
+
+        #region Convert Bitmap to ImageSource
+        private Bitmap BitmapSourceToBitmap(BitmapSource srs)
+        {
+            int width = srs.PixelWidth;
+            int height = srs.PixelHeight;
+            int stride = width * ((srs.Format.BitsPerPixel + 7) / 8);
+            IntPtr ptr = IntPtr.Zero;
+            try
+            {
+                ptr = Marshal.AllocHGlobal(height * stride);
+                srs.CopyPixels(new Int32Rect(0, 0, width, height), ptr, height * stride, stride);
+                using (var btm = new System.Drawing.Bitmap(width, height, stride, System.Drawing.Imaging.PixelFormat.Format24bppRgb, ptr))
+                {
+                    // Clone the bitmap so that we can dispose it and
+                    // release the unmanaged memory at ptr
+                    return new System.Drawing.Bitmap(btm);
+                }
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                    Marshal.FreeHGlobal(ptr);
+            }
+        }
+        private Bitmap ConvertToBitmap(BitmapSource bitmapSource)
+        {
+            var width = bitmapSource.PixelWidth;
+            var height = bitmapSource.PixelHeight;
+            var stride = width * ((bitmapSource.Format.BitsPerPixel + 7) / 8);
+            var memoryBlockPointer = Marshal.AllocHGlobal(height * stride);
+            bitmapSource.CopyPixels(new Int32Rect(0, 0, width, height), memoryBlockPointer, height * stride, stride);
+            var bitmap = new Bitmap(width, height, stride, System.Drawing.Imaging.PixelFormat.Format24bppRgb, memoryBlockPointer);
+            return bitmap;
+        }
+        private Bitmap GetBitmap(BitmapSource source)
+        {
+            Bitmap bmp = new Bitmap(
+              source.PixelWidth,
+              source.PixelHeight,
+              System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(
+              new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size),
+              ImageLockMode.WriteOnly,
+              System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            source.CopyPixels(
+              Int32Rect.Empty,
+              data.Scan0,
+              data.Height * data.Stride,
+              data.Stride);
+            bmp.UnlockBits(data);
+            return bmp;
+        }
+
         #endregion
 
         #region Implement INotifyPropertyChanged
@@ -995,6 +1131,16 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         private void ImageExt_Basic_Fit(object sender, RoutedEventArgs e)
         {
             scrollViewerExt_Basic.Reset();
+        }
+        private void ImageExt_Basic_MouseMoveEndEvent(int nX, int nY, int r, int g, int b)
+        {
+            XCoorCur = nX;
+            YCoorCur = nY;
+
+            R = r;
+            G = g;
+            B = b;
+            Gray = (r + g + b) / 3;
         }
         #endregion
 
