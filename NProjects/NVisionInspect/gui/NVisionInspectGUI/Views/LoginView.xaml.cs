@@ -39,5 +39,10 @@ namespace NVisionInspectGUI.Views
                 loginCmd.Execute(this);
             }
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtUser.Focus();
+        }
     }
 }

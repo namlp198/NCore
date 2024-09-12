@@ -547,25 +547,7 @@ namespace NpcCore.Wpf.Controls
             _getROIItem.FontWeight = FontWeights.Regular;
             _getROIItem.FontSize = 12;
 
-            _saveFullImageItem = new MenuItem();
-            _saveFullImageItem.Header = "Save Full Image";
-            _saveFullImageItem.Name = "mnuSaveFullImage";
-            _saveFullImageItem.Click += mnuSaveFullImage_Click;
-            _saveFullImageItem.FontFamily = new FontFamily("Georgia");
-            _saveFullImageItem.FontWeight = FontWeights.Regular;
-            _saveFullImageItem.FontSize = 12;
-
-            _saveROIImageItem = new MenuItem();
-            _saveROIImageItem.Header = "Save ROI Image";
-            _saveROIImageItem.Name = "mnuSaveROIImage";
-            _saveROIImageItem.Click += mnuSaveROIImage_Click;
-            _saveROIImageItem.FontFamily = new FontFamily("Georgia");
-            _saveROIImageItem.FontWeight = FontWeights.Regular;
-            _saveROIImageItem.FontSize = 12;
-
             _ctxMnuRoiMode.Items.Add(_getROIItem);
-            _ctxMnuRoiMode.Items.Add(_saveFullImageItem);
-            _ctxMnuRoiMode.Items.Add(_saveROIImageItem);
             _ctxMnuRoiMode.PlacementTarget = this;
             _ctxMnuRoiMode.IsOpen = false;
         }
@@ -658,6 +640,22 @@ namespace NpcCore.Wpf.Controls
             _locatorMode.FontWeight = FontWeights.Regular;
             _locatorMode.FontSize = 12;
 
+            _saveFullImageItem = new MenuItem();
+            _saveFullImageItem.Header = "Save Full Image";
+            _saveFullImageItem.Name = "mnuSaveFullImage";
+            _saveFullImageItem.Click += mnuSaveFullImage_Click;
+            _saveFullImageItem.FontFamily = new FontFamily("Georgia");
+            _saveFullImageItem.FontWeight = FontWeights.Regular;
+            _saveFullImageItem.FontSize = 12;
+
+            _saveROIImageItem = new MenuItem();
+            _saveROIImageItem.Header = "Save ROI Image";
+            _saveROIImageItem.Name = "mnuSaveROIImage";
+            _saveROIImageItem.Click += mnuSaveROIImage_Click;
+            _saveROIImageItem.FontFamily = new FontFamily("Georgia");
+            _saveROIImageItem.FontWeight = FontWeights.Regular;
+            _saveROIImageItem.FontSize = 12;
+
             // add 2 mode: select Roi and locator into select mode tool item
             _selectModeTool.Items.Add(_selectRoiMode);
             _selectModeTool.Items.Add(_locatorMode);
@@ -668,6 +666,8 @@ namespace NpcCore.Wpf.Controls
             _ctxMnuDefault.Items.Add(_zoomOutItem);
             _ctxMnuDefault.Items.Add(_measureItem);
             _ctxMnuDefault.Items.Add(_selectModeTool);
+            _ctxMnuDefault.Items.Add(_saveFullImageItem);
+            _ctxMnuDefault.Items.Add(_saveROIImageItem);
             _ctxMnuDefault.PlacementTarget = this;
             _ctxMnuDefault.IsOpen = false;
 
@@ -809,13 +809,13 @@ namespace NpcCore.Wpf.Controls
         {
             if (!_enableSelectRoiTool && !_enableLocatorTool)
             {
+                if (m_bmp == null)
+                    return;
+
                 var pointEnd = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
 
                 int nX = (int)(Math.Round(pointEnd.X, MidpointRounding.AwayFromZero));
                 int nY = (int)(Math.Round(pointEnd.Y, MidpointRounding.AwayFromZero));
-
-                if (m_bmp == null)
-                    return;
 
                 if ((nX >= 0) && (nX < m_bmp.Width) && (nY >= 0) && (nY < m_bmp.Height))
                 {

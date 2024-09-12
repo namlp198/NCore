@@ -53,6 +53,7 @@ namespace NVisionInspectGUI.Command.Cmd
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sFullImagePath = MainViewModel.Instance.SettingVM.NVisionInspectCamera1SettingsPropertyGrid.FullImagePath;
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sDefectImagePath = MainViewModel.Instance.SettingVM.NVisionInspectCamera1SettingsPropertyGrid.DefectImagePath;
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sTemplateImagePath = MainViewModel.Instance.SettingVM.NVisionInspectCamera1SettingsPropertyGrid.TemplateImagePath;
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sROIsPath = MainViewModel.Instance.SettingVM.NVisionInspectCamera1SettingsPropertyGrid.ROIsPath;
                     }
 
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SaveCameraSetting(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx], nCamIdx);

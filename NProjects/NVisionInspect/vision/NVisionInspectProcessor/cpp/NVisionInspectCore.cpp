@@ -190,6 +190,8 @@ void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 		return;
 
 	int nCamIdx = 0;
+	int nBuff = 0;
+	int nFrame = 0;
 
 	cv::Mat matGray, matBGR;
 	cv::Mat matSrc(m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight, m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth, CV_8UC3, pBuffer);
@@ -231,8 +233,8 @@ void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 	// make inner ROI, outer ROI and draw
 	cv::Rect rectInner(nRectInner_X, nRectInner_Y, nRectInner_Width, nRectInner_Height);
 	cv::Rect rectOuter(nRectOuter_X, nRectOuter_Y, nRectOuter_Width, nRectOuter_Height);
-	cv::rectangle(matBGR, rectInner, cv::Scalar(0, 255, 0), 2, cv::LINE_AA);
-	cv::rectangle(matBGR, rectOuter, cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
+	cv::rectangle(matBGR, rectInner, GREEN_COLOR, 2, cv::LINE_AA);
+	cv::rectangle(matBGR, rectOuter, BLUE_COLOR, 2, cv::LINE_AA);
 
 	// 3. Find center
 	// Template matching
@@ -267,22 +269,82 @@ void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 	pRecipe->m_nTemplateCoordinatesY = ptResult_Y;
 
 	// draw center pt result
-	cv::circle(matBGR, cv::Point(ptResult_X, ptResult_Y), 3, cv::Scalar(0, 255, 255), cv::FILLED);
+	cv::circle(matBGR, cv::Point(ptResult_X, ptResult_Y), 3, YELLOW_COLOR, cv::FILLED);
 
 	// draw center pt text
 	char ch2[256];
 	sprintf_s(ch2, sizeof(ch2), "(x: %d, y: %d)", ptResult_X, ptResult_Y);
 	cv::putText(matBGR, ch2, cv::Point(ptResult_X + 10, ptResult_Y - 10), cv::FONT_HERSHEY_PLAIN, 1.0, CYAN_COLOR);
 
-	// convert image to RGB format
-	cv::Mat matRGB;
-	cv::cvtColor(matBGR, matRGB, cv::COLOR_BGR2RGB);
-
 	// set result to buffer
-	m_pInterface->SetResultBuffer(0, 0, matRGB.data);
+	m_pInterface->SetResultBuffer(nBuff, nFrame, matBGR.data);
 
 	// inform that locator trained succsess
 	m_pInterface->LocatorTrainComplete(nCamIdx);
+}
+
+void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
+{
+	if (pBuffer == NULL)
+		return;
+
+	if (nCamIdx == -1)
+		return;
+
+	if (nROIIdx == -1)
+		return;
+
+	cv::Mat matGray, matBGR, matROI;
+	cv::Rect rectROI;
+
+	int nWidth = m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth;
+	int nHeight = m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight;
+	cv::Mat matSrc(nHeight, nWidth, CV_8UC3, pBuffer);
+
+	cv::cvtColor(matSrc, matGray, cv::COLOR_BGR2GRAY);
+	matSrc.copyTo(matBGR);
+
+	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
+
+	int nTempCntPt_X = pRecipe->m_nTemplateCoordinatesX;
+	int nTempCntPt_Y = pRecipe->m_nTemplateCoordinatesY;
+
+	switch (nROIIdx)
+	{
+	case 1:
+		if (pRecipe->m_bROI1UseOffset == TRUE)
+		{
+			rectROI.x = nTempCntPt_X + pRecipe->m_nROI1_Offset_X;
+			rectROI.y = nTempCntPt_Y + pRecipe->m_nROI1_Offset_Y;
+			rectROI.width = pRecipe->m_nROI1_Width;
+			rectROI.height = pRecipe->m_nROI1_Height;
+		}
+		else if (pRecipe->m_bROI1UseOffset == FALSE)
+		{
+			rectROI.x = pRecipe->m_nROI1_X;
+			rectROI.y = pRecipe->m_nROI1_Y;
+			rectROI.width = pRecipe->m_nROI1_Width;
+			rectROI.height = pRecipe->m_nROI1_Height;
+		}
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+
+		// more
+	}
+
+	// create ROI
+	matROI = cv::Mat(rectROI.height, rectROI.width, CV_8UC1);
+	for (int i = 0; i < matROI.rows; i++)
+		memcpy(&matROI.data[i * matROI.step1()], &matGray.data[(i + rectROI.y) * matGray.step1() + rectROI.x], matROI.cols);
+
+	SaveROIImage(matROI, nCamIdx, nROIIdx);
+
+	cv::rectangle(matBGR, rectROI, PINK_COLOR, 1, cv::LINE_AA);
+
+	m_pInterface->SetResultBuffer(nCamIdx, 0, matBGR.data);
 }
 
 void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
@@ -352,4 +414,16 @@ void CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx)
 	sprintf_s(chImgTemplatePath, "%s%s", W2A(m_pInterface->GetCameraSettingControl(nCamIdx)->m_sTemplateImagePath), "template.png");
 
 	cv::imwrite(chImgTemplatePath, matTemplate);
+}
+
+void CNVisionInspectCore::SaveROIImage(cv::Mat& matROI, int nCamIdx, int nROIIdx)
+{
+	if (matROI.empty())
+		return;
+
+	USES_CONVERSION;
+	char chROIImagePath[1000] = {};
+	sprintf_s(chROIImagePath, "%s%s_%d%s", W2A(m_pInterface->GetCameraSettingControl(nCamIdx)->m_sROIsPath), "ROI", nROIIdx, ".png");
+
+	cv::imwrite(chROIImagePath, matROI);
 }

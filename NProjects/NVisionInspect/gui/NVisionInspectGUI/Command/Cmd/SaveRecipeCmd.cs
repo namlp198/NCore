@@ -40,6 +40,8 @@ namespace NVisionInspectGUI.Command.Cmd
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_Y;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_Width = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_Width;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_Height = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_Height;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_Offset_X = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_Offset_X;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_Offset_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_Offset_Y;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_AngleRotate = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_AngleRotate;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_GrayThreshold_Min = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_GrayThreshold_Min;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI1_GrayThreshold_Max = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI1_GrayThreshold_Max;
@@ -53,6 +55,8 @@ namespace NVisionInspectGUI.Command.Cmd
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_Y;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_Width = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_Width;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_Height = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_Height;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_Offset_X = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_Offset_X;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_Offset_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_Offset_Y;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_AngleRotate = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_AngleRotate;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_GrayThreshold_Min = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_GrayThreshold_Min;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI2_GrayThreshold_Max = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI2_GrayThreshold_Max;
@@ -66,6 +70,8 @@ namespace NVisionInspectGUI.Command.Cmd
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_Y;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_Width = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_Width;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_Height = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_Height;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_Offset_X = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_Offset_X;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_Offset_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_Offset_Y;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_AngleRotate = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_AngleRotate;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_GrayThreshold_Min = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_GrayThreshold_Min;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_nROI3_GrayThreshold_Max = MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.ROI3_GrayThreshold_Max;

@@ -88,6 +88,7 @@ public:
 	BOOL                              LoadSimulatorBuffer(int nBuff, int nFrame, CString strFilePath);
 	BOOL                              LocatorTool_Train(int nCamIdx);
 	BOOL                              LocatorToolSimulator_Train(int nSimuBuff, int nFrame);
+	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom); /*0: From Image, 1: From Camera*/
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
 
 private:
@@ -148,4 +149,5 @@ private:
 	CString                                     m_csCam1SettingPath;
 											    
 	cv::Mat                                     m_matBGR;
+	cv::Mat                                     m_matRGB;
 };

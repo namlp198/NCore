@@ -71,9 +71,13 @@ public:
 	void                       Inspect_Reality(int nCamIdx, LPBYTE pBuffer);
 	void                       LocatorTool_Train(LPBYTE pBuffer);
 
+public:
+	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+
 private:
 	void                       ProcessFrame(int nCamIdx, LPBYTE pBuffer);
 	void                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
+	void                       SaveROIImage(cv::Mat& matROI, int nCamIdx, int nROIIdx);
 
 private:
 
