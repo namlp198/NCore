@@ -422,6 +422,8 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI1_Y"), readRecipe.m_nROI1_Y, 0);
 	recipeFile.GetItemValue(_T("ROI1_WIDTH"), readRecipe.m_nROI1_Width, 0);
 	recipeFile.GetItemValue(_T("ROI1_HEIGHT"), readRecipe.m_nROI1_Height, 0);
+	recipeFile.GetItemValue(_T("ROI1_OFFSET_X"), readRecipe.m_nROI1_Offset_X, 0);
+	recipeFile.GetItemValue(_T("ROI1_OFFSET_Y"), readRecipe.m_nROI1_Offset_Y, 0);
 	recipeFile.GetItemValue(_T("ROI1_ANGLE_ROTATE"), readRecipe.m_nROI1_AngleRotate, 0);
 	recipeFile.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MIN"), readRecipe.m_nROI1_GrayThreshold_Min, 0);
 	recipeFile.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI1_GrayThreshold_Max, 0);
@@ -435,6 +437,8 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI2_Y"), readRecipe.m_nROI2_Y, 0);
 	recipeFile.GetItemValue(_T("ROI2_WIDTH"), readRecipe.m_nROI2_Width, 0);
 	recipeFile.GetItemValue(_T("ROI2_HEIGHT"), readRecipe.m_nROI2_Height, 0);
+	recipeFile.GetItemValue(_T("ROI2_OFFSET_X"), readRecipe.m_nROI2_Offset_X, 0);
+	recipeFile.GetItemValue(_T("ROI2_OFFSET_Y"), readRecipe.m_nROI2_Offset_Y, 0);
 	recipeFile.GetItemValue(_T("ROI2_ANGLE_ROTATE"), readRecipe.m_nROI2_AngleRotate, 0);
 	recipeFile.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MIN"), readRecipe.m_nROI2_GrayThreshold_Min, 0);
 	recipeFile.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI2_GrayThreshold_Max, 0);
@@ -448,6 +452,8 @@ BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.GetItemValue(_T("ROI3_Y"), readRecipe.m_nROI3_Y, 0);
 	recipeFile.GetItemValue(_T("ROI3_WIDTH"), readRecipe.m_nROI3_Width, 0);
 	recipeFile.GetItemValue(_T("ROI3_HEIGHT"), readRecipe.m_nROI3_Height, 0);
+	recipeFile.GetItemValue(_T("ROI3_OFFSET_X"), readRecipe.m_nROI3_Offset_X, 0);
+	recipeFile.GetItemValue(_T("ROI3_OFFSET_Y"), readRecipe.m_nROI3_Offset_Y, 0);
 	recipeFile.GetItemValue(_T("ROI3_ANGLE_ROTATE"), readRecipe.m_nROI3_AngleRotate, 0);
 	recipeFile.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MIN"), readRecipe.m_nROI3_GrayThreshold_Min, 0);
 	recipeFile.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI3_GrayThreshold_Max, 0);
@@ -571,6 +577,10 @@ BOOL CNVisionInspectProcessor::LoadCameraSettings(CNVisionInspectCameraSetting* 
 	CString csTemplateImagePath = (CString)pRoot->first_node("TemplateImagePath")->value();
 	ZeroMemory(camSettings.m_sTemplateImagePath, sizeof(camSettings.m_sTemplateImagePath));
 	wsprintf(camSettings.m_sTemplateImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csTemplateImagePath);
+
+	CString csROIsPath = (CString)pRoot->first_node("ROIsPath")->value();
+	ZeroMemory(camSettings.m_sROIsPath, sizeof(camSettings.m_sROIsPath));
+	wsprintf(camSettings.m_sROIsPath, _T("%s"), (TCHAR*)(LPCTSTR)csROIsPath);
 
 	*(pCameraSetting) = camSettings;
 
@@ -713,6 +723,8 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("ROI1_Y"), pRecipe->m_nROI1_Y);
 	recipeFile.SetItemValue(_T("ROI1_WIDTH"), pRecipe->m_nROI1_Width);
 	recipeFile.SetItemValue(_T("ROI1_HEIGHT"), pRecipe->m_nROI1_Height);
+	recipeFile.SetItemValue(_T("ROI1_OFFSET_X"), pRecipe->m_nROI1_Offset_X);
+	recipeFile.SetItemValue(_T("ROI1_OFFSET_Y"), pRecipe->m_nROI1_Offset_Y);
 	recipeFile.SetItemValue(_T("ROI1_ANGLE_ROTATE"), pRecipe->m_nROI1_AngleRotate);
 	recipeFile.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MIN"), pRecipe->m_nROI1_GrayThreshold_Min);
 	recipeFile.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI1_GrayThreshold_Max);
@@ -726,6 +738,8 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("ROI2_Y"), pRecipe->m_nROI2_Y);
 	recipeFile.SetItemValue(_T("ROI2_WIDTH"), pRecipe->m_nROI2_Width);
 	recipeFile.SetItemValue(_T("ROI2_HEIGHT"), pRecipe->m_nROI2_Height);
+	recipeFile.SetItemValue(_T("ROI2_OFFSET_X"), pRecipe->m_nROI2_Offset_X);
+	recipeFile.SetItemValue(_T("ROI2_OFFSET_Y"), pRecipe->m_nROI2_Offset_Y);
 	recipeFile.SetItemValue(_T("ROI2_ANGLE_ROTATE"), pRecipe->m_nROI2_AngleRotate);
 	recipeFile.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MIN"), pRecipe->m_nROI2_GrayThreshold_Min);
 	recipeFile.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI2_GrayThreshold_Max);
@@ -739,6 +753,8 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	recipeFile.SetItemValue(_T("ROI3_Y"), pRecipe->m_nROI3_Y);
 	recipeFile.SetItemValue(_T("ROI3_WIDTH"), pRecipe->m_nROI3_Width);
 	recipeFile.SetItemValue(_T("ROI3_HEIGHT"), pRecipe->m_nROI3_Height);
+	recipeFile.SetItemValue(_T("ROI3_OFFSET_X"), pRecipe->m_nROI3_Offset_X);
+	recipeFile.SetItemValue(_T("ROI3_OFFSET_Y"), pRecipe->m_nROI3_Offset_Y);
 	recipeFile.SetItemValue(_T("ROI3_ANGLE_ROTATE"), pRecipe->m_nROI3_AngleRotate);
 	recipeFile.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MIN"), pRecipe->m_nROI3_GrayThreshold_Min);
 	recipeFile.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI3_GrayThreshold_Max);
@@ -867,6 +883,9 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* 
 
 	const char* sTemplateImagePath = W2A(camSetting.m_sTemplateImagePath);
 	pRoot->first_node("TemplateImagePath")->value(sTemplateImagePath);
+
+	const char* sROIsPath = W2A(camSetting.m_sROIsPath);
+	pRoot->first_node("ROIsPath")->value(sROIsPath);
 
 #pragma endregion
 
@@ -1056,8 +1075,6 @@ BOOL CNVisionInspectProcessor::LoadSimulatorBuffer(int nBuff, int nFrame, CStrin
 	for (int i = 0; i < nCopyHeight; i++)
 		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
 
-	cv::cvtColor(pOpenImage, pOpenImage, cv::COLOR_BGR2RGB);
-
 	m_pSimulatorBuffer[nBuff]->SetFrameImage(nFrame, pOpenImage.data);
 
 	return TRUE;
@@ -1086,6 +1103,31 @@ BOOL CNVisionInspectProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFr
 
 	int nCoreIdx = nSimuBuff;
 	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(pBuffer);
+
+	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom)
+{
+	int nSimuBuff = nCamIdx;
+	int nCoreIdx = nCamIdx;
+	int nFrame = 0;
+	LPBYTE pBuffer = NULL;
+
+	switch (nFrom)
+	{
+	case 0:
+		pBuffer = GetSimulatorBuffer(nSimuBuff, nFrame);
+		break;
+	case 1:
+		pBuffer = GetImageBufferHikCam(nCamIdx);
+		break;
+	}
+
+	if (pBuffer == NULL)
+		return FALSE;
+
+	m_pNVisionInspectCore[nCoreIdx]->MakeROI(nCamIdx, nROIIdx, pBuffer);
 
 	return TRUE;
 }

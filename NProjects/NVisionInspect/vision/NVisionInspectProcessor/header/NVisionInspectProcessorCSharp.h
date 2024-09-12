@@ -36,6 +36,8 @@ extern "C"
 												        
 	__declspec(dllexport) bool                          LocatorToolSimulator_Train(CNVisionInspectProcessor* pProcessor, int nSimuBuff, int nFrame);
 
+	__declspec(dllexport) bool                          SelectROI(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nROIIdx, int nFrom);
+
 	/************************** Operation **************************/
 
 	__declspec(dllexport) bool                          InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, BOOL isSimulator);

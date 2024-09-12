@@ -26,4 +26,5 @@ public:
 	TCHAR             m_sFullImagePath[MAX_STRING_SIZE];
 	TCHAR             m_sDefectImagePath[MAX_STRING_SIZE];
 	TCHAR             m_sTemplateImagePath[MAX_STRING_SIZE];
+	TCHAR             m_sROIsPath[MAX_STRING_SIZE];
 };

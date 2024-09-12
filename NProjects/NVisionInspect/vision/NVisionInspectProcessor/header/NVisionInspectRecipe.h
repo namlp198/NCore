@@ -31,6 +31,8 @@ public:
 	int                m_nROI1_Y;
 	int                m_nROI1_Width;
 	int                m_nROI1_Height;
+	int                m_nROI1_Offset_X;
+	int                m_nROI1_Offset_Y;
 	double             m_nROI1_AngleRotate;
 	int                m_nROI1_GrayThreshold_Min;
 	int                m_nROI1_GrayThreshold_Max;
@@ -44,6 +46,8 @@ public:
 	int                m_nROI2_Y;
 	int                m_nROI2_Width;
 	int                m_nROI2_Height;
+	int                m_nROI2_Offset_X;
+	int                m_nROI2_Offset_Y;
 	double             m_nROI2_AngleRotate;
 	int                m_nROI2_GrayThreshold_Min;
 	int                m_nROI2_GrayThreshold_Max;
@@ -57,6 +61,8 @@ public:
 	int                m_nROI3_Y;
 	int                m_nROI3_Width;
 	int                m_nROI3_Height;
+	int                m_nROI3_Offset_X;
+	int                m_nROI3_Offset_Y;
 	double             m_nROI3_AngleRotate;
 	int                m_nROI3_GrayThreshold_Min;
 	int                m_nROI3_GrayThreshold_Max;

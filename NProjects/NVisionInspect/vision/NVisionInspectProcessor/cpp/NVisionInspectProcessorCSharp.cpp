@@ -156,6 +156,16 @@ bool LocatorToolSimulator_Train(CNVisionInspectProcessor* pProcessor, int nSimuB
 	else               return true;
 }
 
+bool SelectROI(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nROIIdx, int nFrom)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SelectROI(nCamIdx, nROIIdx, nFrom);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 bool InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, BOOL isSimulator)
 {
 	if (pProcessor == NULL)
