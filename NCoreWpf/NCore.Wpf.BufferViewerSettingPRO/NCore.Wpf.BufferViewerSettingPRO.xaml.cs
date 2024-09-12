@@ -502,7 +502,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 }
                 else if (m_enModeView == EnModeView.Color)
                 {
-                    BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, m_nResolutionX, m_nResolutionY, PixelFormats.Rgb24, m_palette, m_bufferView, BufferSize, stride: Stride);
+                    BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, m_nResolutionX, m_nResolutionY, PixelFormats.Bgr24, m_palette, m_bufferView, BufferSize, stride: Stride);
                     bmpSrc.Freeze();
                     imageExt_Basic.Dispatcher.Invoke(() => imageExt_Basic.Source = bmpSrc);
 
