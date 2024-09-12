@@ -144,6 +144,15 @@ namespace NVisionInspectGUI.Manager.Class
         extern private static bool LocatorToolSimulator_Train(IntPtr NVisionInspectProcessor, int nSimuBuff, int nFrame);
         public bool LocatorToolSimulator_Train(int nSimuBuff, int nFrame) { return LocatorToolSimulator_Train(m_NVisionInspectProcessor, nSimuBuff, nFrame); }
 
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SelectROI(IntPtr NVisionInspectProcessor, int nCamIdx, int nROIIdx, int nFrom);
+        public bool SelectROI(int nCamIdx, int nROIIdx, int nFrom) { return SelectROI(m_NVisionInspectProcessor, nCamIdx, nROIIdx, nFrom); }
+
         #endregion
 
         #region Load Setting and Recipe

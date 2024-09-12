@@ -34,6 +34,8 @@ namespace NVisionInspectGUI.Models
         public int m_nROI1_Y;
         public int m_nROI1_Width;
         public int m_nROI1_Height;
+        public int m_nROI1_Offset_X;
+        public int m_nROI1_Offset_Y;
         public double m_nROI1_AngleRotate;
         public int m_nROI1_GrayThreshold_Min;
         public int m_nROI1_GrayThreshold_Max;
@@ -47,6 +49,8 @@ namespace NVisionInspectGUI.Models
         public int m_nROI2_Y;
         public int m_nROI2_Width;
         public int m_nROI2_Height;
+        public int m_nROI2_Offset_X;
+        public int m_nROI2_Offset_Y;
         public double m_nROI2_AngleRotate;
         public int m_nROI2_GrayThreshold_Min;
         public int m_nROI2_GrayThreshold_Max;
@@ -60,6 +64,8 @@ namespace NVisionInspectGUI.Models
         public int m_nROI3_Y;
         public int m_nROI3_Width;
         public int m_nROI3_Height;
+        public int m_nROI3_Offset_X;
+        public int m_nROI3_Offset_Y;
         public double m_nROI3_AngleRotate;
         public int m_nROI3_GrayThreshold_Min;
         public int m_nROI3_GrayThreshold_Max;

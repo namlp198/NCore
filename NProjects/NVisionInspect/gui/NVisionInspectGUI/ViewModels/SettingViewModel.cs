@@ -47,6 +47,8 @@ namespace NVisionInspectGUI.ViewModels
         private CNVisionInspectCameraSetting_PropertyGrid m_NVisionInspectCamera1Setting_PropertyGrid = new CNVisionInspectCameraSetting_PropertyGrid();
         private Plc_Delta_Model m_plcDeltaModel = new Plc_Delta_Model();
 
+        private int m_nROIIdx = -1;
+
         private List<string> m_cameraLst = new List<string>();
         private List<string> m_lstImageSource = new List<string>();
         private List<string> m_lstROI = new List<string>();
@@ -106,6 +108,7 @@ namespace NVisionInspectGUI.ViewModels
             SettingView.buffSettingPRO.SetExposureTime += BuffSettingPRO_SetExposureTime;
             SettingView.buffSettingPRO.SetAnalogGain += BuffSettingPRO_SetAnalogGain;
             SettingView.buffSettingPRO.TrainLocator += BuffSettingPRO_TrainLocator;
+            SettingView.buffSettingPRO.ROISelectionDone += BuffSettingPRO_ROISelectionDone;
 
             #endregion
 
@@ -192,8 +195,72 @@ namespace NVisionInspectGUI.ViewModels
 
             int nBuff = 0;
             int nFrame = 0;
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LocatorToolSimulator_Train(nBuff, nFrame);
+            int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+
+            switch (FromImageSource)
+            {
+                case EnImageSource.FromToImage:
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LocatorToolSimulator_Train(nBuff, nFrame);
+                    break;
+                case EnImageSource.FromToCamera:
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LocatorTool_Train(nCamIdx);
+                    break;
+                default:
+                    break;
+            }
         }
+        private async void BuffSettingPRO_ROISelectionDone(object sender, RoutedEventArgs e)
+        {
+            switch (ROIIdx)
+            {
+                case 1:
+                    if(NVisionInspectRecipePropertyGrid.ROI1UseOffset == false)
+                    {
+                        NVisionInspectRecipePropertyGrid.ROI1_X = (int)SettingView.buffSettingPRO.ROISelected.X;
+                        NVisionInspectRecipePropertyGrid.ROI1_Y = (int)SettingView.buffSettingPRO.ROISelected.Y;
+                        NVisionInspectRecipePropertyGrid.ROI1_Width = (int)SettingView.buffSettingPRO.ROISelected.Width;
+                        NVisionInspectRecipePropertyGrid.ROI1_Height = (int)SettingView.buffSettingPRO.ROISelected.Height;
+                        NVisionInspectRecipePropertyGrid.ROI1_AngleRotate = SettingView.buffSettingPRO.AngleRotate;
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+
+            // save recipe
+            SaveRecipeCmd.Execute(null);
+
+            // reload recipe
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+            LoadRecipe();
+
+            // update UI
+            SettingView.propGridRecipe.SelectedObject = NVisionInspectRecipePropertyGrid;
+
+            int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+            int nROIIdx = ROIIdx;
+            int nFrom = (int)FromImageSource;
+
+            if (nCamIdx == -1)
+                return;
+
+            if (nROIIdx == -1)
+                return;
+
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SelectROI(nCamIdx, nROIIdx, nFrom);
+
+            
+            SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nCamIdx, 0);
+            await SettingView.buffSettingPRO.UpdateImage();
+
+            // show ROI Image
+            SettingView.buffSettingPRO.LoadBmpImageAsync(NVisionInspectCamera1SettingsPropertyGrid.ROIsPath + "ROI_" + ROIIdx + ".png");
+        }
+
         #endregion
 
         #region Methods
@@ -303,6 +370,7 @@ namespace NVisionInspectGUI.ViewModels
             cameraSetting_PropertyGrid.FullImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sFullImagePath;
             cameraSetting_PropertyGrid.DefectImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sDefectImagePath;
             cameraSetting_PropertyGrid.TemplateImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sTemplateImagePath;
+            cameraSetting_PropertyGrid.ROIsPath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sROIsPath;
 
             switch (nCamIdx)
             {
@@ -408,6 +476,10 @@ namespace NVisionInspectGUI.ViewModels
                                                       m_NVisionInspectRecipe.m_nROI1_Width;
                 NVisionInspectRecipe_PropertyGrid.ROI1_Height = InterfaceManager.Instance.m_processorManager.
                                                       m_NVisionInspectRecipe.m_nROI1_Height;
+                NVisionInspectRecipe_PropertyGrid.ROI1_Offset_X = InterfaceManager.Instance.m_processorManager.
+                                                      m_NVisionInspectRecipe.m_nROI1_Offset_X;
+                NVisionInspectRecipe_PropertyGrid.ROI1_Offset_Y = InterfaceManager.Instance.m_processorManager.
+                                                      m_NVisionInspectRecipe.m_nROI1_Offset_Y;
                 NVisionInspectRecipe_PropertyGrid.ROI1_AngleRotate = InterfaceManager.Instance.m_processorManager.
                                                       m_NVisionInspectRecipe.m_nROI1_AngleRotate;
                 NVisionInspectRecipe_PropertyGrid.ROI1_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.
@@ -433,6 +505,10 @@ namespace NVisionInspectGUI.ViewModels
                                                       m_NVisionInspectRecipe.m_nROI2_Width;
                 NVisionInspectRecipe_PropertyGrid.ROI2_Height = InterfaceManager.Instance.m_processorManager.
                                                       m_NVisionInspectRecipe.m_nROI2_Height;
+                NVisionInspectRecipe_PropertyGrid.ROI2_Offset_X = InterfaceManager.Instance.m_processorManager.
+                                                     m_NVisionInspectRecipe.m_nROI2_Offset_X;
+                NVisionInspectRecipe_PropertyGrid.ROI2_Offset_Y = InterfaceManager.Instance.m_processorManager.
+                                                      m_NVisionInspectRecipe.m_nROI2_Offset_Y;
                 NVisionInspectRecipe_PropertyGrid.ROI2_AngleRotate = InterfaceManager.Instance.m_processorManager.
                                                       m_NVisionInspectRecipe.m_nROI2_AngleRotate;
                 NVisionInspectRecipe_PropertyGrid.ROI2_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.
@@ -458,6 +534,10 @@ namespace NVisionInspectGUI.ViewModels
                                                       m_NVisionInspectRecipe.m_nROI3_Width;
                 NVisionInspectRecipe_PropertyGrid.ROI3_Height = InterfaceManager.Instance.m_processorManager.
                                                       m_NVisionInspectRecipe.m_nROI3_Height;
+                NVisionInspectRecipe_PropertyGrid.ROI3_Offset_X = InterfaceManager.Instance.m_processorManager.
+                                                      m_NVisionInspectRecipe.m_nROI3_Offset_X;
+                NVisionInspectRecipe_PropertyGrid.ROI3_Offset_Y = InterfaceManager.Instance.m_processorManager.
+                                                      m_NVisionInspectRecipe.m_nROI3_Offset_Y;
                 NVisionInspectRecipe_PropertyGrid.ROI3_AngleRotate = InterfaceManager.Instance.m_processorManager.
                                                       m_NVisionInspectRecipe.m_nROI3_AngleRotate;
                 NVisionInspectRecipe_PropertyGrid.ROI3_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.
@@ -509,13 +589,21 @@ namespace NVisionInspectGUI.ViewModels
         }
         private async void LocatorTrainComplete(int nCamIdx)
         {
-            SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(0, 0);
+            int nBuff = 0;
+            int nFrame = 0;
+
+            SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
             await SettingView.buffSettingPRO.UpdateImage();
 
+            // show Template Image
             SettingView.buffSettingPRO.LoadBmpImageAsync(NVisionInspectCamera1SettingsPropertyGrid.TemplateImagePath + "template.png");
 
+            // reload recipe
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
             LoadRecipe();
+
+            // update UI
+            SettingView.propGridRecipe.SelectedObject = NVisionInspectRecipePropertyGrid;
         }
         private void AlarmHandlerFunc(string alarm)
         {
@@ -612,7 +700,7 @@ namespace NVisionInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_strROISelected, value))
                 {
-
+                    ROIIdx = SettingView.cbbROI.SelectedIndex + 1;
                 }
             }
         }
@@ -658,6 +746,17 @@ namespace NVisionInspectGUI.ViewModels
             set
             {
                 if (!SetProperty(ref m_bSelectedCamera, value))
+                {
+
+                }
+            }
+        }
+        public int ROIIdx
+        {
+            get => m_nROIIdx;
+            set
+            {
+                if(SetProperty(ref m_nROIIdx, value))
                 {
 
                 }

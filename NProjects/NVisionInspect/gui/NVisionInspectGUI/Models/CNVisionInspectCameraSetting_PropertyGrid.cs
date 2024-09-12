@@ -84,5 +84,9 @@ namespace NVisionInspectGUI.Models
         [PropertyOrder(18)]
         [DisplayName("TemplateImagePath")]
         public string TemplateImagePath { get; set; }
+
+        [PropertyOrder(19)]
+        [DisplayName("ROIsPath")]
+        public string ROIsPath { get; set; }
     }
 }

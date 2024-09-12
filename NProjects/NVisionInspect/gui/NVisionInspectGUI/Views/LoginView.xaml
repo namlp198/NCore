@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="LoginView" Height="160" Width="380"
         Background="{DynamicResource RGB_Night_33_41_57}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <ControlTemplate x:Key="lblMainTemp"
                          TargetType="Label">

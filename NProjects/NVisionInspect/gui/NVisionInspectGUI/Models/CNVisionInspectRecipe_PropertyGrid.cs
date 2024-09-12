@@ -118,41 +118,53 @@ namespace NVisionInspectGUI.Models
 
         [Category("ROI 1")]
         [PropertyOrder(5)]
+        [DisplayName("Offset X")]
+        [Description("If Use Offset true then this parameter will be offset for Template Center Pt")]
+        public int ROI1_Offset_X { get; set; }
+
+        [Category("ROI 1")]
+        [PropertyOrder(6)]
+        [DisplayName("Offset Y")]
+        [Description("If Use Offset true then this parameter will be offset for Template Center Pt")]
+        public int ROI1_Offset_Y { get; set; }
+
+        [Category("ROI 1")]
+        [PropertyOrder(7)]
         [DisplayName("Angle Rotate")]
         public double ROI1_AngleRotate { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(6)]
+        [PropertyOrder(8)]
         [DisplayName("Gray Threshold Min")]
         public int ROI1_GrayThreshold_Min { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(7)]
+        [PropertyOrder(9)]
         [DisplayName("Gray Threshold Max")]
         public int ROI1_GrayThreshold_Max { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(8)]
+        [PropertyOrder(10)]
         [DisplayName("Pixel Count Min")]
         public int ROI1_PixelCount_Min { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(9)]
+        [PropertyOrder(11)]
         [DisplayName("Pixel Count Max")]
         public int ROI1_PixelCount_Max { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(10)]
+        [PropertyOrder(12)]
         [DisplayName("Use Offset for XY coordinates?")]
         public bool ROI1UseOffset { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(11)]
+        [PropertyOrder(13)]
         [DisplayName("Use Locator Tool?")]
         public bool ROI1UseLocator { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(12)]
+        [PropertyOrder(14)]
         [DisplayName("Enable Show Graphics ROI1?")]
         public bool ROI1ShowGraphics { get; set; }
 
@@ -181,41 +193,53 @@ namespace NVisionInspectGUI.Models
 
         [Category("ROI 2")]
         [PropertyOrder(5)]
+        [DisplayName("Offset X")]
+        [Description("If Use Offset true then this parameter will be offset for Template Center Pt")]
+        public int ROI2_Offset_X { get; set; }
+
+        [Category("ROI 2")]
+        [PropertyOrder(6)]
+        [DisplayName("Offset Y")]
+        [Description("If Use Offset true then this parameter will be offset for Template Center Pt")]
+        public int ROI2_Offset_Y { get; set; }
+
+        [Category("ROI 2")]
+        [PropertyOrder(7)]
         [DisplayName("Angle Rotate")]
         public double ROI2_AngleRotate { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(6)]
+        [PropertyOrder(8)]
         [DisplayName("Gray Threshold Min")]
         public int ROI2_GrayThreshold_Min { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(7)]
+        [PropertyOrder(9)]
         [DisplayName("Gray Threshold Max")]
         public int ROI2_GrayThreshold_Max { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(8)]
+        [PropertyOrder(10)]
         [DisplayName("Pixel Count Min")]
         public int ROI2_PixelCount_Min { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(9)]
+        [PropertyOrder(11)]
         [DisplayName("Pixel Count Max")]
         public int ROI2_PixelCount_Max { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(10)]
+        [PropertyOrder(12)]
         [DisplayName("Use Offset for XY coordinates?")]
         public bool ROI2UseOffset { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(11)]
+        [PropertyOrder(13)]
         [DisplayName("Use Locator Tool?")]
         public bool ROI2UseLocator { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(12)]
+        [PropertyOrder(14)]
         [DisplayName("Enable Show Graphics ROI2?")]
         public bool ROI2ShowGraphics { get; set; }
 
@@ -244,41 +268,53 @@ namespace NVisionInspectGUI.Models
 
         [Category("ROI 3")]
         [PropertyOrder(5)]
+        [DisplayName("Offset X")]
+        [Description("If Use Offset true then this parameter will be offset for Template Center Pt")]
+        public int ROI3_Offset_X { get; set; }
+
+        [Category("ROI 3")]
+        [PropertyOrder(6)]
+        [DisplayName("Offset Y")]
+        [Description("If Use Offset true then this parameter will be offset for Template Center Pt")]
+        public int ROI3_Offset_Y { get; set; }
+
+        [Category("ROI 3")]
+        [PropertyOrder(7)]
         [DisplayName("Angle Rotate")]
         public double ROI3_AngleRotate { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(6)]
+        [PropertyOrder(8)]
         [DisplayName("Gray Threshold Min")]
         public int ROI3_GrayThreshold_Min { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(7)]
+        [PropertyOrder(9)]
         [DisplayName("Gray Threshold Max")]
         public int ROI3_GrayThreshold_Max { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(8)]
+        [PropertyOrder(10)]
         [DisplayName("Pixel Count Min")]
         public int ROI3_PixelCount_Min { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(9)]
+        [PropertyOrder(11)]
         [DisplayName("Pixel Count Max")]
         public int ROI3_PixelCount_Max { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(10)]
+        [PropertyOrder(12)]
         [DisplayName("Use Offset for XY coordinates?")]
         public bool ROI3UseOffset { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(11)]
+        [PropertyOrder(13)]
         [DisplayName("Use Locator Tool?")]
         public bool ROI3UseLocator { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(12)]
+        [PropertyOrder(14)]
         [DisplayName("Enable Show Graphics ROI3?")]
         public bool ROI3ShowGraphics { get; set; }
     }
