@@ -40,9 +40,11 @@ extern "C"
 
 	/************************** Operation **************************/
 
-	__declspec(dllexport) bool                          InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, BOOL isSimulator);
+	__declspec(dllexport) bool                          InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, int nCamCount);
 												        
 	__declspec(dllexport) bool                          InspectStop(CNVisionInspectProcessor* pProcessor);
+
+	__declspec(dllexport) bool                          Inspect_Simulator(CNVisionInspectProcessor* pProcessor,int nCamCount);
 												        
 	__declspec(dllexport) BYTE*                         GetResultBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame);
 												        
@@ -68,17 +70,14 @@ extern "C"
 
 	__declspec(dllexport) bool                          LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx);
 												        
-	__declspec(dllexport) bool                          LoadRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe);
-												        
-	__declspec(dllexport) bool                          ReloadSystenSettings(CNVisionInspectProcessor* pProcessor);
-												        
-	__declspec(dllexport) bool                          ReloadRecipe(CNVisionInspectProcessor* pProcessor);
+	__declspec(dllexport) bool                          LoadRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe);
+
 
 	/************************** Save Setting and Recipe **************************/
 
 	__declspec(dllexport) bool                          SaveSystemSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting);
 
-	__declspec(dllexport) bool                          SaveCameraSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx);
+	__declspec(dllexport) bool                          SaveCameraSetting(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectCameraSetting* pCamSetting);
 												        
-	__declspec(dllexport) bool                          SaveRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe);
+	__declspec(dllexport) bool                          SaveRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe);
 };

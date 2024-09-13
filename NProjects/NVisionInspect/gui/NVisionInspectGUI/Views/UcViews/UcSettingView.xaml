@@ -26,6 +26,8 @@
             <cvt:EnumBooleanToReverseDoubleMultiConverter x:Key="EnumBooleanToReverseDoubleMultiConverter" />
             <cvt:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
             <cvt:InvertBooleanToOpacityConverter x:Key="InvertBooleanToOpacityConverter"/>
+            <cvt:RecipeIndexToVisibilityConverter x:Key="RecipeIndexToVisibilityConverter" />
+            <cvt:CameraIndexToBooleanConverter x:Key="CameraIndexToBooleanConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -324,176 +326,384 @@
                 <Grid Grid.Column="2">
                     <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
                         <TabItem Header="SYSTEM SETTINGS"
-                                 Width="300"
+                                 Width="220"
                                  Style="{StaticResource TabItemStyle}"
                                  FontSize="18"
                                  FontFamily="Segoe UI"
                                  FontWeight="Bold"
                                  Foreground="Black">
-                            <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
-                                <TabItem Header="System"
-                                         Style="{StaticResource TabItemStyle}"
-                                         FontSize="16"
-                                         FontWeight="SemiBold"
-                                         Foreground="Black"
-                                         Width="200"
-                                         FontFamily="Segoe UI">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition Height="60" />
-                                        </Grid.RowDefinitions>
-                                        <xctk:PropertyGrid x:Name="propGridSystem"
-                                                           Margin="10"
-                                                           FontSize="16"
-                                                           FontWeight="SemiBold"
-                                                           AutoGenerateProperties="True"
-                                                           NameColumnWidth="300"
-                                                           ShowHorizontalScrollBar="True"
-                                                           SelectedObject="{Binding NVisionInspectSystemSettingsPropertyGrid, Mode=TwoWay}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="60" />
+                                </Grid.RowDefinitions>
+                                <xctk:PropertyGrid x:Name="propGridSystem"
+                                                   Margin="10"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   AutoGenerateProperties="True"
+                                                   NameColumnWidth="300"
+                                                   ShowHorizontalScrollBar="True"
+                                                   SelectedObject="{Binding NVisionInspectSystemSettingsPropertyGrid, Mode=TwoWay}">
 
-                                        </xctk:PropertyGrid>
-                                        <!--Button-->
-                                        <Button Grid.Row="2"
-                                                x:Name="btnSaveSystemSetting_PropertyGrid"
-                                                Command="{Binding SaveSettingCmd}"
-                                                CommandParameter="{Binding ElementName=btnSaveSystemSetting_PropertyGrid, Path=Name}"
-                                                Margin="5 5 10 5"
-                                                Width="130"
-                                                HorizontalAlignment="Right"
-                                                Foreground="White"
-                                                Background="{DynamicResource RGB_Cold_77_136_255}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontSize="14"
-                                                               FontWeight="Bold"
-                                                               Text="Save" />
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                    </Grid>
-                                </TabItem>
-                                <TabItem Header="PLC Setting"
-                                         Style="{StaticResource TabItemStyle}"
-                                         FontSize="16"
-                                         FontWeight="SemiBold"
-                                         Foreground="Black"
-                                         Width="200"
-                                         FontFamily="Segoe UI">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition Height="60" />
-                                        </Grid.RowDefinitions>
-                                        <xctk:PropertyGrid x:Name="propGridPlcSetting"
-                                                           Margin="10"
-                                                           FontSize="16"
-                                                           FontWeight="SemiBold"
-                                                           AutoGenerateProperties="True"
-                                                           NameColumnWidth="300"
-                                                           ShowHorizontalScrollBar="True"
-                                                           SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
-
-                                        </xctk:PropertyGrid>
-                                        <!--Button-->
-                                        <Button Grid.Row="2"
-                                                x:Name="btnSavePLCSetting_PropertyGrid"
-                                                Command="{Binding SaveSettingCmd}"
-                                                CommandParameter="{Binding ElementName=btnSavePLCSetting_PropertyGrid, Path=Name}"
-                                                Margin="5 5 10 5"
-                                                Width="130"
-                                                HorizontalAlignment="Right"
-                                                Foreground="White"
-                                                Background="{DynamicResource RGB_Cold_77_136_255}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontSize="14"
-                                                               FontWeight="Bold"
-                                                               Text="Save" />
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                    </Grid>
-                                </TabItem>
-                                <TabItem Header="Light Setting"
-                                         Style="{StaticResource TabItemStyle}"
-                                         FontSize="16"
-                                         FontWeight="SemiBold"
-                                         Foreground="Black"
-                                         Width="200"
-                                         FontFamily="Segoe UI">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition Height="60" />
-                                        </Grid.RowDefinitions>
-                                        <xctk:PropertyGrid x:Name="propGridLightSetting"
-                                                           Margin="10"
-                                                           FontSize="16"
-                                                           FontWeight="SemiBold"
-                                                           AutoGenerateProperties="True"
-                                                           NameColumnWidth="300"
-                                                           ShowHorizontalScrollBar="True"
-                                                           SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
-
-                                        </xctk:PropertyGrid>
-                                        <!--Button-->
-                                        <Button Grid.Row="2"
-                                                x:Name="btnSaveLightSetting_PropertyGrid"
-                                                Command="{Binding SaveSettingCmd}"
-                                                CommandParameter="{Binding ElementName=btnSavePLCSetting_PropertyGrid, Path=Name}"
-                                                Margin="5 5 10 5"
-                                                Width="130"
-                                                HorizontalAlignment="Right"
-                                                Foreground="White"
-                                                Background="{DynamicResource RGB_Cold_77_136_255}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontSize="14"
-                                                               FontWeight="Bold"
-                                                               Text="Save" />
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                    </Grid>
-                                </TabItem>
-                            </TabControl>
+                                </xctk:PropertyGrid>
+                                <!--Button-->
+                                <Button Grid.Row="2"
+                                        x:Name="btnSaveSystemSetting_PropertyGrid"
+                                        Command="{Binding SaveSysSettingCmd}"
+                                        Margin="5 5 10 5"
+                                        Width="130"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Background="{DynamicResource RGB_Cold_77_136_255}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Text="Save" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
                         </TabItem>
                         <TabItem Header="CAMERA SETTINGS"
                                  Style="{StaticResource TabItemStyle}"
                                  FontSize="18"
                                  FontWeight="Bold"
                                  Foreground="Black"
-                                 Width="300"
-                                 FontFamily="Segoe UI">
+                                 Width="220"
+                                 FontFamily="Segoe UI"
+                                 IsEnabled="{Binding ElementName=buffSettingPRO, Path=CameraIndex, Converter={StaticResource CameraIndexToBooleanConverter}}">
                             <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
                                 <TabItem Header="CAMERA 1"
                                          Style="{StaticResource TabItemStyle}"
-                                         FontSize="18"
+                                         FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
                                          Width="300"
-                                         FontFamily="Segoe UI">
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='1'}">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition Height="60" />
                                         </Grid.RowDefinitions>
-                                        <xctk:PropertyGrid x:Name="propGridCameraSetting"
+                                        <xctk:PropertyGrid x:Name="propGridCamera1Setting"
                                                            Margin="10"
                                                            FontSize="16"
                                                            FontWeight="SemiBold"
                                                            AutoGenerateProperties="True"
                                                            NameColumnWidth="300"
                                                            ShowHorizontalScrollBar="True"
-                                                           SelectedObject="{Binding NVisionInspectCamera1SettingsPropertyGrid, Mode=TwoWay}">
+                                                           SelectedObject="{Binding NVICam1Setting_PropGrid, Mode=TwoWay}">
 
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCameraSetting_PropertyGrid"
-                                                Command="{Binding SaveSettingCmd}"
-                                                CommandParameter="{Binding ElementName=btnSaveCameraSetting_PropertyGrid, Path=Name}"
+                                                x:Name="btnSaveCamera1Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 2"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='2'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera2Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam2Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera2Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 3"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='3'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera3Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam3Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera3Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 4"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='4'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera4Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam4Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera4Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 5"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='5'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera5Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam5Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera5Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 6"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='6'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera6Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam6Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera6Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 7"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='7'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera7Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam7Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera7Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="CAMERA 8"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='8'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridCamera8Setting"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVICam8Setting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveCamera8Setting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
                                                 HorizontalAlignment="Right"
@@ -516,27 +726,366 @@
                                  FontSize="18"
                                  FontWeight="Bold"
                                  Foreground="Black"
-                                 Width="300"
+                                 Width="180"
+                                 FontFamily="Segoe UI"
+                                 IsEnabled="{Binding ElementName=buffSettingPRO, Path=CameraIndex, Converter={StaticResource CameraIndexToBooleanConverter}}">
+                            <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                                <TabItem Header="Recipe Cam 1"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='1'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam1"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 2"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='2'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam2"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam2_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 3"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='3'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam3"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam3_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 4"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='4'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam4"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam4_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 5"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='5'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam5"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam5_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 6"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='6'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam6"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam6_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 7"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='7'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam7"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam7_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Recipe Cam 8"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="300"
+                                         FontFamily="Segoe UI"
+                                         Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='8'}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_Cam8"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipePropertyGrid.RecipeCam8_PropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+                        <TabItem Header="PLC SETTING"
+                                 Style="{StaticResource TabItemStyle}"
+                                 FontSize="18"
+                                 FontWeight="SemiBold"
+                                 Foreground="Black"
+                                 Width="200"
                                  FontFamily="Segoe UI">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="60" />
                                 </Grid.RowDefinitions>
-                                <xctk:PropertyGrid x:Name="propGridRecipe"
+                                <xctk:PropertyGrid x:Name="propGridPlcSetting"
                                                    Margin="10"
                                                    FontSize="16"
                                                    FontWeight="SemiBold"
                                                    AutoGenerateProperties="True"
-                                                   NameColumnWidth="450"
-                                                   SelectedObject="{Binding NVisionInspectRecipePropertyGrid, Mode=TwoWay}">
+                                                   NameColumnWidth="300"
+                                                   ShowHorizontalScrollBar="True"
+                                                   SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
 
                                 </xctk:PropertyGrid>
                                 <!--Button-->
-                                <Button Grid.Row="1"
-                                        x:Name="btnSaveRecipe_PropertyGrid"
-                                        Command="{Binding SaveRecipeCmd}"
-                                        CommandParameter="{Binding ElementName=btnSaveRecipe_PropertyGrid, Path=Name}"
+                                <Button Grid.Row="2"
+                                        x:Name="btnSavePLCSetting_PropertyGrid"
+                                        Command="{Binding SavePlcSettingCmd}"
                                         Margin="5 5 10 5"
                                         Width="130"
                                         HorizontalAlignment="Right"
@@ -546,7 +1095,48 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock FontSize="14"
                                                        FontWeight="Bold"
-                                                       Text="Save Recipe" />
+                                                       Text="Save" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="LIGHT SETTING"
+                                 Style="{StaticResource TabItemStyle}"
+                                 FontSize="18"
+                                 FontWeight="SemiBold"
+                                 Foreground="Black"
+                                 Width="200"
+                                 FontFamily="Segoe UI">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="60" />
+                                </Grid.RowDefinitions>
+                                <xctk:PropertyGrid x:Name="propGridLightSetting"
+                                                   Margin="10"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   AutoGenerateProperties="True"
+                                                   NameColumnWidth="300"
+                                                   ShowHorizontalScrollBar="True"
+                                                   SelectedObject="{Binding PlcDeltaModelPropertyGrid, Mode=TwoWay}">
+
+                                </xctk:PropertyGrid>
+                                <!--Button-->
+                                <Button Grid.Row="2"
+                                        x:Name="btnSaveLightSetting_PropertyGrid"
+                                        Command="{Binding SaveLightSettingCmd}"
+                                        Margin="5 5 10 5"
+                                        Width="130"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Background="{DynamicResource RGB_Cold_77_136_255}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Text="Save" />
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>

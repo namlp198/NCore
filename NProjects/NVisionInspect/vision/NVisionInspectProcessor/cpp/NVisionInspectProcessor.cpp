@@ -13,7 +13,6 @@ CNVisionInspectProcessor::CNVisionInspectProcessor()
 
 
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("VisionSettings\\Settings\\SystemSettings.config");
-	m_csCam1SettingPath = GetCurrentPathApp() + _T("VisionSettings\\Settings\\Camera1Settings.config");
 
 	m_pLogView = new CLogView();
 
@@ -37,10 +36,15 @@ BOOL CNVisionInspectProcessor::Initialize()
 	LoadSystemSettings(m_pNVisionInspectSystemSetting);
 
 	// 2. Camera Setting
-	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
+	for (int i = 0; i < m_pNVisionInspectSystemSetting->m_nInspectCameraCount; i++) {
 		if (m_pNVisionInspectCameraSetting[i] != NULL)
 			delete m_pNVisionInspectCameraSetting[i], m_pNVisionInspectCameraSetting[i] = NULL;
 		m_pNVisionInspectCameraSetting[i] = new CNVisionInspectCameraSetting;
+
+		// set camera setting path
+		int nCamIdx = i + 1;
+		m_csCamSettingPath.Format(_T("%sVisionSettings\\Settings\\%s%d%s.%s"), GetCurrentPathApp(), _T("Camera"), nCamIdx, _T("Settings"), _T("config"));
+
 		LoadCameraSettings(m_pNVisionInspectCameraSetting[i]);
 	}
 
@@ -63,11 +67,11 @@ BOOL CNVisionInspectProcessor::Initialize()
 	m_pNVisionInspectRecipe = new CNVisionInspectRecipe;
 
 	// 5. Result
-	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
-		if (m_pNVisionInspectResult[i] != NULL)
-			delete m_pNVisionInspectResult[i], m_pNVisionInspectResult[i] = NULL;
-		m_pNVisionInspectResult[i] = new CNVisionInspectResult;
-	}
+
+	if (m_pNVisionInspectResult != NULL)
+		delete m_pNVisionInspectResult, m_pNVisionInspectResult = NULL;
+	m_pNVisionInspectResult = new CNVisionInspectResult;
+
 
 	// 6. Status
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
@@ -126,9 +130,10 @@ BOOL CNVisionInspectProcessor::Destroy()
 	if (m_pNVisionInspectRecipe != NULL)
 		delete m_pNVisionInspectRecipe, m_pNVisionInspectRecipe = NULL;
 
+	if (m_pNVisionInspectResult != NULL)
+		delete m_pNVisionInspectResult, m_pNVisionInspectResult = NULL;
+
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
-		if (m_pNVisionInspectResult[i] != NULL)
-			delete m_pNVisionInspectResult[i], m_pNVisionInspectResult[i] = NULL;
 
 		if (m_pNVisionInspectStatus[i] != NULL)
 			delete m_pNVisionInspectStatus[i], m_pNVisionInspectStatus[i] = NULL;
@@ -154,26 +159,22 @@ CString CNVisionInspectProcessor::GetCurrentPathApp()
 	return csFolder;
 }
 
-BOOL CNVisionInspectProcessor::InspectStart(int nThreadCount, BOOL bSimulator)
+BOOL CNVisionInspectProcessor::InspectStart(int nThreadCount, int nCamCount)
 {
-	if (bSimulator == TRUE)
+	if (m_pNVisionInspectHikCam == NULL)
+		return FALSE;
+
+	for (int nCamIdx = 0; nCamIdx < nCamCount; nCamIdx++)
 	{
-		int nCoreIdx = 0;
-		int nFrame = 0;
-		m_pNVisionInspectCore[nCoreIdx]->Inspect_Simulation(nCoreIdx, nFrame);
+		m_pNVisionInspectStatus[nCamIdx]->SetStreaming(FALSE);
+		m_pNVisionInspectStatus[nCamIdx]->SetInspectRunning(TRUE);
 
-		return TRUE;
+		m_pNVisionInspectHikCam->SetTriggerMode(nCamIdx, 1);
+		m_pNVisionInspectHikCam->SetTriggerSource(nCamIdx, 1);
+		//m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
+
+		m_pNVisionInspectHikCam->StartGrab(nCamIdx);
 	}
-
-	int nCamIdx = 0;
-	m_pNVisionInspectStatus[nCamIdx]->SetStreaming(FALSE);
-	m_pNVisionInspectStatus[nCamIdx]->SetInspectRunning(TRUE);
-
-	m_pNVisionInspectHikCam->SetTriggerMode(nCamIdx, 1);
-	m_pNVisionInspectHikCam->SetTriggerSource(nCamIdx, 1);
-	//m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
-
-	m_pNVisionInspectHikCam->StartGrab(nCamIdx);
 
 	return TRUE;
 }
@@ -200,6 +201,18 @@ BOOL CNVisionInspectProcessor::Inspect_Reality(int nCamIdx, LPBYTE pBuff)
 
 	int nCoreIdx = 0;
 	m_pNVisionInspectCore[nCoreIdx]->Inspect_Reality(nCamIdx, pBuff);
+
+	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::Inspect_Simulator(int nCamIdx)
+{
+	if (nCamIdx < 0)
+		return FALSE;
+
+	int nCoreIdx = nCamIdx;
+	int nFrame = 0;
+	m_pNVisionInspectCore[nCoreIdx]->Inspect_Simulation(nCamIdx, nCoreIdx, nFrame);
 
 	return TRUE;
 }
@@ -370,115 +383,157 @@ BOOL CNVisionInspectProcessor::LoadSystemSettings(CNVisionInspectSystemSetting* 
 	return TRUE;
 }
 
-BOOL CNVisionInspectProcessor::LoadRecipe(CNVisionInspectRecipe* pRecipe)
+BOOL CNVisionInspectProcessor::LoadRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe)
 {
-	if (pRecipe == NULL)
+	if (m_pNVisionInspectRecipe == NULL)
 		return FALSE;
 
-	CConfig recipeFile;
+	if (nCamIdx < 0)
+		return FALSE;
+
+	nCamIdx += 1;
+
+	CNVisionInspectRecipe readRecipe;
 
 	BOOL bNoFile = FALSE;
-
-	if (recipeFile.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipePath, FileMap_Mode) == FALSE)
-	{
-		CFile pFile;
-		pFile.Open(m_csRecipePath, CFile::modeCreate);
-		pFile.Close();
-
-		bNoFile = TRUE;
-	}
-
 	// Params..
 	CString strParameterKey = _T("");
-
 	CString strValue = _T("");
 	double dValue = 0.0;
 	int nValue = 0;
 
-	CNVisionInspectRecipe readRecipe;
+	// set recipe path
+	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s_%s%d.%s"), GetCurrentPathApp(), m_pNVisionInspectSystemSetting->m_sModelName, _T("Cam"), nCamIdx, _T("cfg"));
 
-	recipeFile.GetItemValue(_T("MAX_CODE_COUNT"), readRecipe.m_nMaxCodeCount, 1);
-	recipeFile.GetItemValue(_T("USE_READCODE"), readRecipe.m_bUseReadCode, 1);
-	recipeFile.GetItemValue(_T("USE_INKJET_CHARACTERS_INSPECT"), readRecipe.m_bUseInkjetCharactersInspect, 1);
-	recipeFile.GetItemValue(_T("USE_ROTATE_ROI"), readRecipe.m_bUseRotateROI, 0);
+	switch (nCamIdx)
+	{
+	case 1:
+	{
+		CConfig recipeFile_Cam1;
+		if (recipeFile_Cam1.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipePath, FileMap_Mode) == FALSE)
+		{
+			CFile pFile;
+			pFile.Open(m_csRecipePath, CFile::modeCreate);
+			pFile.Close();
 
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_OUTER_X"), readRecipe.m_nTemplateROI_OuterX, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_OUTER_Y"), readRecipe.m_nTemplateROI_OuterY, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_OUTER_WIDTH"), readRecipe.m_nTemplateROI_Outer_Width, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_OUTER_HEIGHT"), readRecipe.m_nTemplateROI_Outer_Height, 0);
+			bNoFile = TRUE;
+		}
 
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_INNER_X"), readRecipe.m_nTemplateROI_InnerX, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_INNER_Y"), readRecipe.m_nTemplateROI_InnerY, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_INNER_WIDTH"), readRecipe.m_nTemplateROI_Inner_Width, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ROI_INNER_HEIGHT"), readRecipe.m_nTemplateROI_Inner_Height, 0);
+		recipeFile_Cam1.GetItemValue(_T("MAX_CODE_COUNT"), readRecipe.m_NVisionInspRecipe_Cam1.m_nMaxCodeCount, 1);
+		recipeFile_Cam1.GetItemValue(_T("USE_READCODE"), readRecipe.m_NVisionInspRecipe_Cam1.m_bUseReadCode, 1);
+		recipeFile_Cam1.GetItemValue(_T("USE_INKJET_CHARACTERS_INSPECT"), readRecipe.m_NVisionInspRecipe_Cam1.m_bUseInkjetCharactersInspect, 1);
+		recipeFile_Cam1.GetItemValue(_T("USE_ROTATE_ROI"), readRecipe.m_NVisionInspRecipe_Cam1.m_bUseRotateROI, 0);
+		recipeFile_Cam1.GetItemValue(_T("NUMBER_OF_ROI"), readRecipe.m_NVisionInspRecipe_Cam1.m_nNumberOfROI, 0);
 
-	recipeFile.GetItemValue(_T("TEMPLATE_COORDINATES_X"), readRecipe.m_nTemplateCoordinatesX, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_COORDINATES_Y"), readRecipe.m_nTemplateCoordinatesY, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), readRecipe.m_dTemplateAngleRotate, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_MATCHING_RATE"), readRecipe.m_dTemplateMatchingRate, 0);
-	recipeFile.GetItemValue(_T("TEMPLATE_SHOW_GRAPHICS"), readRecipe.m_bTemplateShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_OUTER_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_OuterX, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_OUTER_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_OuterY, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_OUTER_WIDTH"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Width, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_OUTER_HEIGHT"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Height, 0);
 
-	recipeFile.GetItemValue(_T("ROI1_X"), readRecipe.m_nROI1_X, 0);
-	recipeFile.GetItemValue(_T("ROI1_Y"), readRecipe.m_nROI1_Y, 0);
-	recipeFile.GetItemValue(_T("ROI1_WIDTH"), readRecipe.m_nROI1_Width, 0);
-	recipeFile.GetItemValue(_T("ROI1_HEIGHT"), readRecipe.m_nROI1_Height, 0);
-	recipeFile.GetItemValue(_T("ROI1_OFFSET_X"), readRecipe.m_nROI1_Offset_X, 0);
-	recipeFile.GetItemValue(_T("ROI1_OFFSET_Y"), readRecipe.m_nROI1_Offset_Y, 0);
-	recipeFile.GetItemValue(_T("ROI1_ANGLE_ROTATE"), readRecipe.m_nROI1_AngleRotate, 0);
-	recipeFile.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MIN"), readRecipe.m_nROI1_GrayThreshold_Min, 0);
-	recipeFile.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI1_GrayThreshold_Max, 0);
-	recipeFile.GetItemValue(_T("ROI1_PIXEL_COUNT_MIN"), readRecipe.m_nROI1_PixelCount_Min, 0);
-	recipeFile.GetItemValue(_T("ROI1_PIXEL_COUNT_MAX"), readRecipe.m_nROI1_PixelCount_Max, 0);
-	recipeFile.GetItemValue(_T("ROI1_USE_OFFSET"), readRecipe.m_bROI1UseOffset, 0);
-	recipeFile.GetItemValue(_T("ROI1_USE_LOCATOR"), readRecipe.m_bROI1UseLocator, 0);
-	recipeFile.GetItemValue(_T("ROI1_SHOW_GRAPHICS"), readRecipe.m_bROI1ShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_INNER_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerX, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_INNER_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerY, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_INNER_WIDTH"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Width, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ROI_INNER_HEIGHT"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Height, 0);
 
-	recipeFile.GetItemValue(_T("ROI2_X"), readRecipe.m_nROI2_X, 0);
-	recipeFile.GetItemValue(_T("ROI2_Y"), readRecipe.m_nROI2_Y, 0);
-	recipeFile.GetItemValue(_T("ROI2_WIDTH"), readRecipe.m_nROI2_Width, 0);
-	recipeFile.GetItemValue(_T("ROI2_HEIGHT"), readRecipe.m_nROI2_Height, 0);
-	recipeFile.GetItemValue(_T("ROI2_OFFSET_X"), readRecipe.m_nROI2_Offset_X, 0);
-	recipeFile.GetItemValue(_T("ROI2_OFFSET_Y"), readRecipe.m_nROI2_Offset_Y, 0);
-	recipeFile.GetItemValue(_T("ROI2_ANGLE_ROTATE"), readRecipe.m_nROI2_AngleRotate, 0);
-	recipeFile.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MIN"), readRecipe.m_nROI2_GrayThreshold_Min, 0);
-	recipeFile.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI2_GrayThreshold_Max, 0);
-	recipeFile.GetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), readRecipe.m_nROI2_PixelCount_Min, 0);
-	recipeFile.GetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), readRecipe.m_nROI2_PixelCount_Max, 0);
-	recipeFile.GetItemValue(_T("ROI2_USE_OFFSET"), readRecipe.m_bROI2UseOffset, 0);
-	recipeFile.GetItemValue(_T("ROI2_USE_LOCATOR"), readRecipe.m_bROI2UseLocator, 0);
-	recipeFile.GetItemValue(_T("ROI2_SHOW_GRAPHICS"), readRecipe.m_bROI2ShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_COORDINATES_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_COORDINATES_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), readRecipe.m_NVisionInspRecipe_Cam1.m_dTemplateAngleRotate, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_MATCHING_RATE"), readRecipe.m_NVisionInspRecipe_Cam1.m_dTemplateMatchingRate, 0);
+		recipeFile_Cam1.GetItemValue(_T("TEMPLATE_SHOW_GRAPHICS"), readRecipe.m_NVisionInspRecipe_Cam1.m_bTemplateShowGraphics, 0);
 
-	recipeFile.GetItemValue(_T("ROI3_X"), readRecipe.m_nROI3_X, 0);
-	recipeFile.GetItemValue(_T("ROI3_Y"), readRecipe.m_nROI3_Y, 0);
-	recipeFile.GetItemValue(_T("ROI3_WIDTH"), readRecipe.m_nROI3_Width, 0);
-	recipeFile.GetItemValue(_T("ROI3_HEIGHT"), readRecipe.m_nROI3_Height, 0);
-	recipeFile.GetItemValue(_T("ROI3_OFFSET_X"), readRecipe.m_nROI3_Offset_X, 0);
-	recipeFile.GetItemValue(_T("ROI3_OFFSET_Y"), readRecipe.m_nROI3_Offset_Y, 0);
-	recipeFile.GetItemValue(_T("ROI3_ANGLE_ROTATE"), readRecipe.m_nROI3_AngleRotate, 0);
-	recipeFile.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MIN"), readRecipe.m_nROI3_GrayThreshold_Min, 0);
-	recipeFile.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), readRecipe.m_nROI3_GrayThreshold_Max, 0);
-	recipeFile.GetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), readRecipe.m_nROI3_PixelCount_Min, 0);
-	recipeFile.GetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), readRecipe.m_nROI3_PixelCount_Max, 0);
-	recipeFile.GetItemValue(_T("ROI3_USE_OFFSET"), readRecipe.m_bROI3UseOffset, 0);
-	recipeFile.GetItemValue(_T("ROI3_USE_LOCATOR"), readRecipe.m_bROI3UseLocator, 0);
-	recipeFile.GetItemValue(_T("ROI3_SHOW_GRAPHICS"), readRecipe.m_bROI3ShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_X, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_Y, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_WIDTH"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_Width, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_HEIGHT"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_Height, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_OFFSET_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_Offset_X, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_OFFSET_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_Offset_Y, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_ANGLE_ROTATE"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_AngleRotate, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_USE_OFFSET"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI1UseOffset, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_USE_LOCATOR"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI1UseLocator, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_SHOW_GRAPHICS"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI1ShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MIN"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_GrayThreshold_Min, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_GrayThreshold_Max, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_PIXEL_COUNT_MIN"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_PixelCount_Min, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI1_PIXEL_COUNT_MAX"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI1_PixelCount_Max, 0);
 
-	*(pRecipe) = readRecipe;
+		recipeFile_Cam1.GetItemValue(_T("ROI2_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_X, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_Y, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_WIDTH"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_Width, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_HEIGHT"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_Height, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_OFFSET_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_Offset_X, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_OFFSET_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_Offset_Y, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_ANGLE_ROTATE"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_AngleRotate, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_USE_OFFSET"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI2UseOffset, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_USE_LOCATOR"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI2UseLocator, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_SHOW_GRAPHICS"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI2ShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MIN"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_GrayThreshold_Min, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_GrayThreshold_Max, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_PixelCount_Min, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI2_PixelCount_Max, 0);
+
+		recipeFile_Cam1.GetItemValue(_T("ROI3_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_X, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_Y, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_WIDTH"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_Width, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_HEIGHT"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_Height, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_OFFSET_X"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_Offset_X, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_OFFSET_Y"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_Offset_Y, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_ANGLE_ROTATE"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_AngleRotate, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_USE_OFFSET"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI3UseOffset, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_USE_LOCATOR"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI3UseLocator, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_SHOW_GRAPHICS"), readRecipe.m_NVisionInspRecipe_Cam1.m_bROI3ShowGraphics, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MIN"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_GrayThreshold_Min, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_GrayThreshold_Max, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_PixelCount_Min, 0);
+		recipeFile_Cam1.GetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), readRecipe.m_NVisionInspRecipe_Cam1.m_nROI3_PixelCount_Max, 0);
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
+	}
+
+	*(m_pNVisionInspectRecipe) = readRecipe;
+	*(pRecipe) = *(m_pNVisionInspectRecipe);
 
 	return TRUE;
 }
 
 BOOL CNVisionInspectProcessor::LoadCameraSettings(CNVisionInspectCameraSetting* pCameraSetting)
 {
-	if (m_csCam1SettingPath.IsEmpty())
+	if (m_csCamSettingPath.IsEmpty())
 	{
 		AfxMessageBox(_T("Camera setting Path cannot empty!"));
 		return FALSE;
 	}
 
 	CFileFind finder;
-	BOOL bRecipeExist = finder.FindFile(m_csCam1SettingPath);
-	if (m_csCam1SettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	BOOL bRecipeExist = finder.FindFile(m_csCamSettingPath);
+	if (m_csCamSettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
 	{
 		CString msg = _T("Camera setting file no exist, check again");
 		AfxMessageBox(msg);
@@ -490,7 +545,7 @@ BOOL CNVisionInspectProcessor::LoadCameraSettings(CNVisionInspectCameraSetting* 
 	// convert path
 	USES_CONVERSION;
 	char chCamSettingPath[1024] = {};
-	sprintf_s(chCamSettingPath, "%s", W2A(m_csCam1SettingPath));
+	sprintf_s(chCamSettingPath, "%s", W2A(m_csCamSettingPath));
 
 	// 1. init xml manager
 	XMLFile* m_pXmlFile;
@@ -540,7 +595,6 @@ BOOL CNVisionInspectProcessor::LoadCameraSettings(CNVisionInspectCameraSetting* 
 	camSettings.m_nFrameHeight = std::stoi(pRoot->first_node("FrameHeight")->value());
 	camSettings.m_nFrameDepth = std::stoi(pRoot->first_node("FrameDepth")->value());
 	camSettings.m_nMaxFrameCount = std::stoi(pRoot->first_node("MaxFrameCount")->value());
-	camSettings.m_nNumberOfROI = std::stoi(pRoot->first_node("NumberOfROI")->value());
 
 	CString csCameraName = (CString)pRoot->first_node("CameraName")->value();
 	ZeroMemory(camSettings.m_sCameraName, sizeof(camSettings.m_sCameraName));
@@ -671,24 +725,20 @@ BOOL CNVisionInspectProcessor::SaveSystemSetting(CNVisionInspectSystemSetting* p
 	return TRUE;
 }
 
-BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
+BOOL CNVisionInspectProcessor::SaveRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe)
 {
 	if (pRecipe == NULL)
 		return FALSE;
 
-	CConfig recipeFile;
+	if (nCamIdx < 0)
+		return FALSE;
+
+	nCamIdx += 1; // because the cam index start from 0 , the name file start from 1.
+
+	// set recipe path
+	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s_%s%d.%s"), GetCurrentPathApp(), m_pNVisionInspectSystemSetting->m_sModelName, _T("Cam"), nCamIdx, _T("cfg"));
 
 	BOOL bNoFile = FALSE;
-
-	if (recipeFile.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipePath, FileMap_Mode) == FALSE)
-	{
-		CFile pFile;
-		pFile.Open(m_csRecipePath, CFile::modeCreate);
-		pFile.Close();
-
-		bNoFile = TRUE;
-	}
-
 	// Params..
 	CString strParameterKey;
 
@@ -696,90 +746,141 @@ BOOL CNVisionInspectProcessor::SaveRecipe(CNVisionInspectRecipe* pRecipe)
 	CString strValue = _T("");
 	int		nValue = 0;
 
-	USES_CONVERSION;
+	switch (nCamIdx)
+	{
+	case 1:
+	{
+		CConfig recipeFile_Cam1;
 
-	recipeFile.SetItemValue(_T("MAX_CODE_COUNT"), pRecipe->m_nMaxCodeCount);
-	recipeFile.SetItemValue(_T("USE_READCODE"), pRecipe->m_bUseReadCode);
-	recipeFile.SetItemValue(_T("USE_INKJET_CHARACTERS_INSPECT"), pRecipe->m_bUseInkjetCharactersInspect);
-	recipeFile.SetItemValue(_T("USE_ROTATE_ROI"), pRecipe->m_bUseRotateROI);
+		if (recipeFile_Cam1.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipePath, FileMap_Mode) == FALSE)
+		{
+			CFile pFile;
+			pFile.Open(m_csRecipePath, CFile::modeCreate);
+			pFile.Close();
 
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_OUTER_X"), pRecipe->m_nTemplateROI_OuterX);
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_OUTER_Y"), pRecipe->m_nTemplateROI_OuterY);
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_OUTER_WIDTH"), pRecipe->m_nTemplateROI_Outer_Width);
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_OUTER_HEIGHT"), pRecipe->m_nTemplateROI_Outer_Height);
+			bNoFile = TRUE;
+		}
 
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_INNER_X"), pRecipe->m_nTemplateROI_InnerX);
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_INNER_Y"), pRecipe->m_nTemplateROI_InnerY);
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_INNER_WIDTH"), pRecipe->m_nTemplateROI_Inner_Width);
-	recipeFile.SetItemValue(_T("TEMPLATE_ROI_INNER_HEIGHT"), pRecipe->m_nTemplateROI_Inner_Height);
-	recipeFile.SetItemValue(_T("TEMPLATE_SHOW_GRAPHICS"), pRecipe->m_bTemplateShowGraphics);
+		USES_CONVERSION;
 
-	recipeFile.SetItemValue(_T("TEMPLATE_COORDINATES_X"), pRecipe->m_nTemplateCoordinatesX);
-	recipeFile.SetItemValue(_T("TEMPLATE_COORDINATES_Y"), pRecipe->m_nTemplateCoordinatesY);
-	recipeFile.SetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), pRecipe->m_dTemplateAngleRotate);
-	recipeFile.SetItemValue(_T("TEMPLATE_MATCHING_RATE"), pRecipe->m_dTemplateMatchingRate);
+		recipeFile_Cam1.SetItemValue(_T("MAX_CODE_COUNT"), pRecipe->m_NVisionInspRecipe_Cam1.m_nMaxCodeCount);
+		recipeFile_Cam1.SetItemValue(_T("USE_READCODE"), pRecipe->m_NVisionInspRecipe_Cam1.m_bUseReadCode);
+		recipeFile_Cam1.SetItemValue(_T("USE_INKJET_CHARACTERS_INSPECT"), pRecipe->m_NVisionInspRecipe_Cam1.m_bUseInkjetCharactersInspect);
+		recipeFile_Cam1.SetItemValue(_T("USE_ROTATE_ROI"), pRecipe->m_NVisionInspRecipe_Cam1.m_bUseRotateROI);
+		recipeFile_Cam1.SetItemValue(_T("NUMBER_OF_ROI"), pRecipe->m_NVisionInspRecipe_Cam1.m_nNumberOfROI);
 
-	recipeFile.SetItemValue(_T("ROI1_X"), pRecipe->m_nROI1_X);
-	recipeFile.SetItemValue(_T("ROI1_Y"), pRecipe->m_nROI1_Y);
-	recipeFile.SetItemValue(_T("ROI1_WIDTH"), pRecipe->m_nROI1_Width);
-	recipeFile.SetItemValue(_T("ROI1_HEIGHT"), pRecipe->m_nROI1_Height);
-	recipeFile.SetItemValue(_T("ROI1_OFFSET_X"), pRecipe->m_nROI1_Offset_X);
-	recipeFile.SetItemValue(_T("ROI1_OFFSET_Y"), pRecipe->m_nROI1_Offset_Y);
-	recipeFile.SetItemValue(_T("ROI1_ANGLE_ROTATE"), pRecipe->m_nROI1_AngleRotate);
-	recipeFile.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MIN"), pRecipe->m_nROI1_GrayThreshold_Min);
-	recipeFile.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI1_GrayThreshold_Max);
-	recipeFile.SetItemValue(_T("ROI1_PIXEL_COUNT_MIN"), pRecipe->m_nROI1_PixelCount_Min);
-	recipeFile.SetItemValue(_T("ROI1_PIXEL_COUNT_MAX"), pRecipe->m_nROI1_PixelCount_Max);
-	recipeFile.SetItemValue(_T("ROI1_USE_OFFSET"), pRecipe->m_bROI1UseOffset);
-	recipeFile.SetItemValue(_T("ROI1_USE_LOCATOR"), pRecipe->m_bROI1UseLocator);
-	recipeFile.SetItemValue(_T("ROI1_SHOW_GRAPHICS"), pRecipe->m_bROI1ShowGraphics);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_OUTER_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_OuterX);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_OUTER_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_OuterY);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_OUTER_WIDTH"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Width);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_OUTER_HEIGHT"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Height);
 
-	recipeFile.SetItemValue(_T("ROI2_X"), pRecipe->m_nROI2_X);
-	recipeFile.SetItemValue(_T("ROI2_Y"), pRecipe->m_nROI2_Y);
-	recipeFile.SetItemValue(_T("ROI2_WIDTH"), pRecipe->m_nROI2_Width);
-	recipeFile.SetItemValue(_T("ROI2_HEIGHT"), pRecipe->m_nROI2_Height);
-	recipeFile.SetItemValue(_T("ROI2_OFFSET_X"), pRecipe->m_nROI2_Offset_X);
-	recipeFile.SetItemValue(_T("ROI2_OFFSET_Y"), pRecipe->m_nROI2_Offset_Y);
-	recipeFile.SetItemValue(_T("ROI2_ANGLE_ROTATE"), pRecipe->m_nROI2_AngleRotate);
-	recipeFile.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MIN"), pRecipe->m_nROI2_GrayThreshold_Min);
-	recipeFile.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI2_GrayThreshold_Max);
-	recipeFile.SetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), pRecipe->m_nROI2_PixelCount_Min);
-	recipeFile.SetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), pRecipe->m_nROI2_PixelCount_Max);
-	recipeFile.SetItemValue(_T("ROI2_USE_OFFSET"), pRecipe->m_bROI2UseOffset);
-	recipeFile.SetItemValue(_T("ROI2_USE_LOCATOR"), pRecipe->m_bROI2UseLocator);
-	recipeFile.SetItemValue(_T("ROI2_SHOW_GRAPHICS"), pRecipe->m_bROI2ShowGraphics);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_INNER_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerX);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_INNER_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerY);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_INNER_WIDTH"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Width);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ROI_INNER_HEIGHT"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Height);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_SHOW_GRAPHICS"), pRecipe->m_NVisionInspRecipe_Cam1.m_bTemplateShowGraphics);
 
-	recipeFile.SetItemValue(_T("ROI3_X"), pRecipe->m_nROI3_X);
-	recipeFile.SetItemValue(_T("ROI3_Y"), pRecipe->m_nROI3_Y);
-	recipeFile.SetItemValue(_T("ROI3_WIDTH"), pRecipe->m_nROI3_Width);
-	recipeFile.SetItemValue(_T("ROI3_HEIGHT"), pRecipe->m_nROI3_Height);
-	recipeFile.SetItemValue(_T("ROI3_OFFSET_X"), pRecipe->m_nROI3_Offset_X);
-	recipeFile.SetItemValue(_T("ROI3_OFFSET_Y"), pRecipe->m_nROI3_Offset_Y);
-	recipeFile.SetItemValue(_T("ROI3_ANGLE_ROTATE"), pRecipe->m_nROI3_AngleRotate);
-	recipeFile.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MIN"), pRecipe->m_nROI3_GrayThreshold_Min);
-	recipeFile.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), pRecipe->m_nROI3_GrayThreshold_Max);
-	recipeFile.SetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), pRecipe->m_nROI3_PixelCount_Min);
-	recipeFile.SetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), pRecipe->m_nROI3_PixelCount_Max);
-	recipeFile.SetItemValue(_T("ROI3_USE_OFFSET"), pRecipe->m_bROI3UseOffset);
-	recipeFile.SetItemValue(_T("ROI3_USE_LOCATOR"), pRecipe->m_bROI3UseLocator);
-	recipeFile.SetItemValue(_T("ROI3_SHOW_GRAPHICS"), pRecipe->m_bROI3ShowGraphics);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_COORDINATES_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_COORDINATES_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_ANGLE_ROTATE"), pRecipe->m_NVisionInspRecipe_Cam1.m_dTemplateAngleRotate);
+		recipeFile_Cam1.SetItemValue(_T("TEMPLATE_MATCHING_RATE"), pRecipe->m_NVisionInspRecipe_Cam1.m_dTemplateMatchingRate);
+
+		recipeFile_Cam1.SetItemValue(_T("ROI1_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_X);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Y);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_WIDTH"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Width);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_HEIGHT"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Height);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_OFFSET_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Offset_X);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_OFFSET_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Offset_Y);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_ANGLE_ROTATE"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_AngleRotate);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MIN"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_GrayThreshold_Min);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_GRAY_THRESHOLD_MAX"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_GrayThreshold_Max);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_PIXEL_COUNT_MIN"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_PixelCount_Min);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_PIXEL_COUNT_MAX"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_PixelCount_Max);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_USE_OFFSET"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI1UseOffset);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_USE_LOCATOR"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI1UseLocator);
+		recipeFile_Cam1.SetItemValue(_T("ROI1_SHOW_GRAPHICS"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI1ShowGraphics);
+
+		recipeFile_Cam1.SetItemValue(_T("ROI2_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_X);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Y);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_WIDTH"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Width);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_HEIGHT"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Height);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_OFFSET_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Offset_X);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_OFFSET_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Offset_Y);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_ANGLE_ROTATE"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_AngleRotate);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MIN"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_GrayThreshold_Min);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_GrayThreshold_Max);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_PixelCount_Min);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_PixelCount_Max);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_USE_OFFSET"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI2UseOffset);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_USE_LOCATOR"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI2UseLocator);
+		recipeFile_Cam1.SetItemValue(_T("ROI2_SHOW_GRAPHICS"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI2ShowGraphics);
+
+		recipeFile_Cam1.SetItemValue(_T("ROI3_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_X);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Y);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_WIDTH"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Width);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_HEIGHT"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Height);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_OFFSET_X"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Offset_X);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_OFFSET_Y"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Offset_Y);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_ANGLE_ROTATE"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_AngleRotate);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MIN"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_GrayThreshold_Min);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_GRAY_THRESHOLD_MAX"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_GrayThreshold_Max);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_PIXEL_COUNT_MIN"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_PixelCount_Min);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_PIXEL_COUNT_MAX"), pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_PixelCount_Max);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_USE_OFFSET"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI3UseOffset);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_USE_LOCATOR"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI3UseLocator);
+		recipeFile_Cam1.SetItemValue(_T("ROI3_SHOW_GRAPHICS"), pRecipe->m_NVisionInspRecipe_Cam1.m_bROI3ShowGraphics);
+
+		recipeFile_Cam1.WriteToFile();
+
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
+	}
 
 	*(m_pNVisionInspectRecipe) = *pRecipe;
-
-	recipeFile.WriteToFile();
 }
 
-BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* pCameraSetting, int nCamIdx)
+BOOL CNVisionInspectProcessor::SaveCameraSettings(int nCamIdx, CNVisionInspectCameraSetting* pCameraSetting)
 {
-	if (m_csCam1SettingPath.IsEmpty())
+	// set camera setting path
+	m_csCamSettingPath.Format(_T("%sVisionSettings\\Settings\\%s%d%s.%s"), GetCurrentPathApp(), _T("Camera"), nCamIdx, _T("Settings"), _T("config"));
+
+	if (m_csCamSettingPath.IsEmpty())
 	{
 		AfxMessageBox(_T("Camera setting Path cannot empty!"));
 		return FALSE;
 	}
 
 	CFileFind finder;
-	BOOL bRecipeExist = finder.FindFile(m_csCam1SettingPath);
-	if (m_csCam1SettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	BOOL bRecipeExist = finder.FindFile(m_csCamSettingPath);
+	if (m_csCamSettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
 	{
 		CString msg = _T("Camera setting file no exist, check again");
 		AfxMessageBox(msg);
@@ -793,7 +894,7 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* 
 	// convert path
 	USES_CONVERSION;
 	char chCamSettingPath[1024] = {};
-	sprintf_s(chCamSettingPath, "%s", W2A(m_csCam1SettingPath));
+	sprintf_s(chCamSettingPath, "%s", W2A(m_csCamSettingPath));
 
 	XMLDocument_2 xmlDoc;
 	std::string error;
@@ -852,11 +953,6 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* 
 	const char* sMaxFrameCount = W2A(csMaxFrameCount);
 	pRoot->first_node("MaxFrameCount")->value(sMaxFrameCount);
 
-	CString csNumberOfROI;
-	csNumberOfROI.Format(_T("%d"), camSetting.m_nNumberOfROI);
-	const char* sNumberOfROI = W2A(csNumberOfROI);
-	pRoot->first_node("NumberOfROI")->value(sNumberOfROI);
-
 	const char* sCameraName = W2A(camSetting.m_sCameraName);
 	pRoot->first_node("CameraName")->value(sCameraName);
 
@@ -901,24 +997,6 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(CNVisionInspectCameraSetting* 
 	return TRUE;
 }
 
-BOOL CNVisionInspectProcessor::ReloadSystemSetting()
-{
-	if (m_pNVisionInspectSystemSetting == NULL)
-		return FALSE;
-
-	BOOL bRet = LoadSystemSettings(m_pNVisionInspectSystemSetting);
-	return bRet;
-}
-
-BOOL CNVisionInspectProcessor::ReloadRecipe()
-{
-	if (m_pNVisionInspectRecipe == NULL)
-		return FALSE;
-
-	BOOL bRet = LoadRecipe(m_pNVisionInspectRecipe);
-	return bRet;
-}
-
 void CNVisionInspectProcessor::RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc)
 {
 	m_pCallbackInsCompleteFunc = pFunc;
@@ -939,17 +1017,17 @@ void CNVisionInspectProcessor::RegCallbackLocatorTrainCompleteFunc(CallbackLocat
 	m_pCallbackLocatorTrainCompleteFunc = pFunc;
 }
 
-void CNVisionInspectProcessor::InspectComplete(BOOL bSetting)
+void CNVisionInspectProcessor::InspectComplete(int nCamIdx, BOOL bSetting)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
 		return;
 
-	(m_pCallbackInsCompleteFunc)(bSetting);
+	(m_pCallbackInsCompleteFunc)(nCamIdx, bSetting);
 }
 
 void CNVisionInspectProcessor::LocatorTrainComplete(int nCamIdx)
 {
-	SaveRecipe(m_pNVisionInspectRecipe);
+	SaveRecipe(nCamIdx, m_pNVisionInspectRecipe);
 
 	if (m_pCallbackLocatorTrainCompleteFunc == NULL)
 		return;
@@ -1002,9 +1080,9 @@ BOOL CNVisionInspectProcessor::SetResultBuffer(int nBuff, int nFrame, BYTE* buff
 
 BOOL CNVisionInspectProcessor::GetInspectionResult(int nCoreIdx, CNVisionInspectResult* pNVisionInspRes)
 {
-	CSingleLock localLock(&m_csInspResult[nCoreIdx]);
+	CSingleLock localLock(&m_csInspResult);
 	localLock.Lock();
-	*(pNVisionInspRes) = *(m_pNVisionInspectResult[nCoreIdx]);
+	*(pNVisionInspRes) = *(m_pNVisionInspectResult);
 
 	localLock.Unlock();
 	return TRUE;
@@ -1089,7 +1167,7 @@ BOOL CNVisionInspectProcessor::LocatorTool_Train(int nCamIdx)
 
 	int nCoreIdx = nCamIdx;
 
-	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(pBuffer);
+	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(nCamIdx, pBuffer);
 
 	return TRUE;
 }
@@ -1102,7 +1180,8 @@ BOOL CNVisionInspectProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFr
 		return FALSE;
 
 	int nCoreIdx = nSimuBuff;
-	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(pBuffer);
+	int nCamIdx = nSimuBuff;
+	m_pNVisionInspectCore[nCoreIdx]->LocatorTool_Train(nCamIdx, pBuffer);
 
 	return TRUE;
 }
@@ -1198,7 +1277,7 @@ BOOL CNVisionInspectProcessor::CreateResultBuffer()
 	DWORD dwFrameSize = 0;
 	DWORD64 dwTotalFrameCount = 0;
 
-	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	for (int i = 0; i < m_pNVisionInspectSystemSetting->m_nInspectCameraCount; i++)
 	{
 		DWORD dwFrameWidth = (DWORD)m_pNVisionInspectCameraSetting[i]->m_nFrameWidth;
 		DWORD dwFrameHeight = (DWORD)m_pNVisionInspectCameraSetting[i]->m_nFrameHeight;
@@ -1261,7 +1340,7 @@ BOOL CNVisionInspectProcessor::CreateSimulatorBuffer()
 
 	DWORD64 dwTotalFrameCount = 0;
 
-	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	for (int i = 0; i < m_pNVisionInspectSystemSetting->m_nInspectCameraCount; i++)
 	{
 		DWORD dwFrameWidth = (DWORD)m_pNVisionInspectCameraSetting[i]->m_nFrameWidth;
 		DWORD dwFrameHeight = (DWORD)m_pNVisionInspectCameraSetting[i]->m_nFrameHeight;

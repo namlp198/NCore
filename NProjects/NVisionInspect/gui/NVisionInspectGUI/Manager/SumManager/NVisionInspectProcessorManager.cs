@@ -1,6 +1,7 @@
 ﻿using NVisionInspectGUI.Commons;
 using NVisionInspectGUI.Manager.Class;
 using NVisionInspectGUI.Models;
+using NVisionInspectGUI.Models.Recipe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,18 @@ namespace NVisionInspectGUI.Manager.SumManager
     {
         public NVisionInspectProcessorDll m_NVisionInspectProcessorDll = new NVisionInspectProcessorDll();
 
-        public CNVisionInspectResult[] m_NVisionInspectResult = new CNVisionInspectResult[Defines.MAX_CAMERA_INSPECT_COUNT];
+        // Camera setting
         public CNVisionInspectCameraSetting[] m_NVisionInspectCamSetting = new CNVisionInspectCameraSetting[Defines.MAX_CAMERA_INSPECT_COUNT];
+        
+        // System setting
         public CNVisionInspectSystemSetting m_NVisionInspectSysSettings = new CNVisionInspectSystemSetting();
+
+        // Recipe
         public CNVisionInspectRecipe m_NVisionInspectRecipe = new CNVisionInspectRecipe();
+
+        // result
+        public CNVisionInspectResult m_NVisionInspectResult = new CNVisionInspectResult();
+
         public void Initialize()
         {
             m_NVisionInspectProcessorDll.RegCallBackLocatorTrainCompleteFunc(InterfaceManager.Instance.CallbackLocatorTrainedFunc);

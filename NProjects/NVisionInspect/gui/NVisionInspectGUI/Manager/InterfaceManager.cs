@@ -15,7 +15,7 @@ namespace NVisionInspectGUI.Manager
         public delegate void Alarm_Handler(string alarm);
         public static event Alarm_Handler AlarmEvent;
 
-        public delegate void InspectionComplete_Handler(int bSetting);
+        public delegate void InspectionComplete_Handler(int nCamIdx, int bSetting);
         public static event InspectionComplete_Handler InspectionComplete;
 
         public delegate void LocatorTrainComplete_Handler(int nCamIdx);
@@ -38,9 +38,9 @@ namespace NVisionInspectGUI.Manager
         }
         #endregion
 
-        public void CallbackInsCompleteFunc(int bSetting)
+        public void CallbackInsCompleteFunc(int nCamIdx, int bSetting)
         {
-            InspectionComplete(bSetting);
+            InspectionComplete(nCamIdx, bSetting);
         }
 
         public void CallbackLocatorTrainedFunc(int nCamIdx)

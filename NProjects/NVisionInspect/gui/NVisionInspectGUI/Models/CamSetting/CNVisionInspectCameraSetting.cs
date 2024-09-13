@@ -19,7 +19,6 @@ namespace NVisionInspectGUI.Models
         public int m_nFrameHeight;
         public int m_nFrameDepth;
         public int m_nMaxFrameCount;
-        public int m_nNumberOfROI;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
         public string m_sCameraName;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]

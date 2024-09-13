@@ -34,7 +34,9 @@ namespace NVisionInspectGUI.Command.Cmd
             else
             {
                 MainViewModel.Instance.InspectRunning = true;
-                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(1, 0);
+                int nThreadCount = 1;
+                int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nCamCount);
 
                 MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Auto;
                 MainViewModel.Instance.MainView.tbMachineMode.Text = "MANUAL";

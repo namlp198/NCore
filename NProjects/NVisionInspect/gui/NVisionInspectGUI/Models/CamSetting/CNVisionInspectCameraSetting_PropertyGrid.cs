@@ -10,7 +10,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace NVisionInspectGUI.Models
 {
-    [DisplayName("Recipe Settings")]
+    [DisplayName("Cam Settings")]
     public class CNVisionInspectCameraSetting_PropertyGrid
     {
         [PropertyOrder(1)]
@@ -46,46 +46,42 @@ namespace NVisionInspectGUI.Models
         public int MaxFrameCount { get; set; }
 
         [PropertyOrder(9)]
-        [DisplayName("Number Of ROI")]
-        public int NumberOfROI { get; set; }
-
-        [PropertyOrder(10)]
         [DisplayName("Camera Name")]
         public string CameraName { get; set; }
 
-        [PropertyOrder(11)]
+        [PropertyOrder(10)]
         [DisplayName("Interface Type")]
         public string InterfaceType { get; set; }
 
-        [PropertyOrder(12)]
+        [PropertyOrder(11)]
         [DisplayName("Sensor Type")]
         public string SensorType { get; set; }
 
-        [PropertyOrder(13)]
+        [PropertyOrder(12)]
         [DisplayName("Manufacturer")]
         public string Manufacturer { get; set; }
 
-        [PropertyOrder(14)]
+        [PropertyOrder(13)]
         [DisplayName("SerialNumber")]
         public string SerialNumber { get; set; }
 
-        [PropertyOrder(15)]
+        [PropertyOrder(14)]
         [DisplayName("Model")]
         public string Model { get; set; }
 
-        [PropertyOrder(16)]
+        [PropertyOrder(15)]
         [DisplayName("FullImagePath")]
         public string FullImagePath { get; set; }
 
-        [PropertyOrder(17)]
+        [PropertyOrder(16)]
         [DisplayName("DefectImagePath")]
         public string DefectImagePath { get; set; }
 
-        [PropertyOrder(18)]
+        [PropertyOrder(17)]
         [DisplayName("TemplateImagePath")]
         public string TemplateImagePath { get; set; }
 
-        [PropertyOrder(19)]
+        [PropertyOrder(18)]
         [DisplayName("ROIsPath")]
         public string ROIsPath { get; set; }
     }

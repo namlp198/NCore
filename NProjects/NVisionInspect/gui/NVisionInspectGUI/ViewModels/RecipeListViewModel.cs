@@ -95,19 +95,17 @@ namespace NVisionInspectGUI.ViewModels
                     InterfaceManager.Instance.m_processorManager.
                         m_NVisionInspectProcessorDll.SaveSystemSetting(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings);
 
-                    // Reload system setting and recipe vision core
-                    InterfaceManager.Instance.m_processorManager.
-                       m_NVisionInspectProcessorDll.ReloadSystenSettings();
-                    InterfaceManager.Instance.m_processorManager.
-                       m_NVisionInspectProcessorDll.ReloadRecipe();
-
-                    // Reload system setting and recipe GUI
-                    InterfaceManager.Instance.m_processorManager.
-                       m_NVisionInspectProcessorDll.LoadSystemSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings);
+                    // Reload system setting
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSystemSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings);
                     MainViewModel.Instance.SettingVM.LoadSystemSettings();
-                    InterfaceManager.Instance.m_processorManager.
-                       m_NVisionInspectProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
-                    MainViewModel.Instance.SettingVM.LoadRecipe();
+
+                    // Reload recipe
+                    int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
+                    for (int nCamIdx = 0; nCamIdx < nCamCount; nCamIdx++)
+                    {
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nCamIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+                        MainViewModel.Instance.SettingVM.LoadRecipe(nCamIdx);
+                    }
 
                     MainViewModel.Instance.RecipeName = RecipeSelected.RecipeName;
                     MessageBox.Show("Load Recipe Success!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);

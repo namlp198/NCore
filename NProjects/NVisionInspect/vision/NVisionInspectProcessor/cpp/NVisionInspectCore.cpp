@@ -95,7 +95,7 @@ void CNVisionInspectCore::RunningThread_INSPECT(int nThreadIndex)
 
 	m_bRunningThread[nThreadIndex] = FALSE;
 
-	m_pInterface->InspectComplete(FALSE);
+	//m_pInterface->InspectComplete(FALSE);
 }
 
 void CNVisionInspectCore::StopThread()
@@ -124,7 +124,7 @@ void CNVisionInspectCore::StartThread(int nThreadCount)
 	}
 }
 
-void CNVisionInspectCore::Inspect_Simulation(int nBuff, int nFrame)
+void CNVisionInspectCore::Inspect_Simulation(int nCamIdx, int nBuff, int nFrame)
 {
 	LPBYTE pBuff = m_pInterface->GetSimulatorBuffer(nBuff, nFrame);
 
@@ -144,19 +144,28 @@ void CNVisionInspectCore::Inspect_Simulation(int nBuff, int nFrame)
 	BOOL bRet = FALSE;
 	CString csRet;
 
+	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
+	CNVisionInspectResult* pResult = m_pInterface->GetResultControl();
+
 	auto barcodes = ReadBarcodes(matSrc);
 
 	if (!barcodes.empty())
 	{
-		if (barcodes.size() == m_pInterface->GetRecipeControl()->m_nMaxCodeCount)
+		switch (nCamIdx)
 		{
-			bRet = TRUE;
-		}
-		else
-		{
-			bRet = FALSE;
-		}
+		case 1:
+			if (barcodes.size() == pRecipe->m_NVisionInspRecipe_Cam1.m_nMaxCodeCount)
+			{
+				bRet = TRUE;
+			}
+			else
+			{
+				bRet = FALSE;
+			}
 
+			break;
+		}
+		
 		std::string sRet;
 		const char* const delim = ";";
 		for (auto& barcode : barcodes) {
@@ -171,12 +180,46 @@ void CNVisionInspectCore::Inspect_Simulation(int nBuff, int nFrame)
 
 	m_pInterface->SetResultBuffer(0, 0, matResult.data);
 
-	m_pInterface->GetResultControl(nBuff)->m_bInspectCompleted = TRUE;
-	m_pInterface->GetResultControl(nBuff)->m_bResultStatus = bRet;
-	ZeroMemory(m_pInterface->GetResultControl(nBuff)->m_sResultString, sizeof(m_pInterface->GetResultControl(nBuff)->m_sResultString));
-	wsprintf(m_pInterface->GetResultControl(nBuff)->m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
-
-	m_pInterface->InspectComplete(TRUE);
+	switch (nCamIdx)
+	{
+	case 1:
+	{
+		pResult->m_NVisionInspRes_Cam1.m_bInspectCompleted = TRUE;
+		pResult->m_NVisionInspRes_Cam1.m_bResultStatus = bRet;
+		ZeroMemory(pResult->m_NVisionInspRes_Cam1.m_sResultString, sizeof(pResult->m_NVisionInspRes_Cam1.m_sResultString));
+		wsprintf(pResult->m_NVisionInspRes_Cam1.m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
+	}
+	m_pInterface->InspectComplete(nCamIdx, TRUE);
 }
 
 void CNVisionInspectCore::Inspect_Reality(int nCamIdx, LPBYTE pBuffer)
@@ -184,35 +227,83 @@ void CNVisionInspectCore::Inspect_Reality(int nCamIdx, LPBYTE pBuffer)
 	ProcessFrame(nCamIdx, pBuffer);
 }
 
-void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
+void CNVisionInspectCore::LocatorTool_Train(int nCamIdx, LPBYTE pBuffer)
 {
 	if (pBuffer == NULL)
 		return;
 
-	int nCamIdx = 0;
+	CNVisionInspectCameraSetting* pCamSetting = m_pInterface->GetCameraSettingControl(nCamIdx);
+	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
+
 	int nBuff = 0;
 	int nFrame = 0;
 
 	cv::Mat matGray, matBGR;
-	cv::Mat matSrc(m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight, m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth, CV_8UC3, pBuffer);
+	cv::Mat matSrc(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC3, pBuffer);
 
 	cv::cvtColor(matSrc, matGray, cv::COLOR_BGR2GRAY);
 	matSrc.copyTo(matBGR);
 
 	//cv::imshow("gray", matGray);
 
-	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
+	int nRectInner_X = 0;
+	int nRectInner_Y = 0;
+	int nRectInner_Width = 0;
+	int nRectInner_Height = 0;
 
-	int nRectInner_X = pRecipe->m_nTemplateROI_InnerX;
-	int nRectInner_Y = pRecipe->m_nTemplateROI_InnerY;
-	int nRectInner_Width = pRecipe->m_nTemplateROI_Inner_Width;
-	int nRectInner_Height = pRecipe->m_nTemplateROI_Inner_Height;
+	int nRectOuter_X = 0;
+	int nRectOuter_Y = 0;
+	int nRectOuter_Width = 0;
+	int nRectOuter_Height = 0;
 
-	int nRectOuter_X = pRecipe->m_nTemplateROI_OuterX;
-	int nRectOuter_Y = pRecipe->m_nTemplateROI_OuterY;
-	int nRectOuter_Width = pRecipe->m_nTemplateROI_Outer_Width;
-	int nRectOuter_Height = pRecipe->m_nTemplateROI_Outer_Height;
+	double dMatchingRateLimit = 0.0;
 
+	switch (nCamIdx)
+	{
+	case 1:
+	{
+		nRectInner_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerX;
+		nRectInner_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerY;
+		nRectInner_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Width;
+		nRectInner_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Height;
+
+		nRectOuter_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_OuterX;
+		nRectOuter_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_OuterY;
+		nRectOuter_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Width;
+		nRectOuter_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Height;
+
+		dMatchingRateLimit = pRecipe->m_NVisionInspRecipe_Cam1.m_dTemplateMatchingRate;
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
+	}
 
 	// 2. Get image template
 	cv::Mat imgTemplate(nRectInner_Height, nRectInner_Width, CV_8UC1);
@@ -252,8 +343,6 @@ void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 	ptFindResult.y = float(ptLeftTop.y) + (imgTemplate.rows / 2.0);
 	dMatchingRate = dMatchingRate * 100.0;
 
-	double dMatchingRateLimit = pRecipe->m_dTemplateMatchingRate;
-
 	if (dMatchingRate < dMatchingRateLimit)
 	{
 		cv::putText(matBGR, "Can't Find Template", cv::Point(matBGR.rows - 20, 80), cv::FONT_HERSHEY_SIMPLEX, 2.0, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
@@ -265,8 +354,43 @@ void CNVisionInspectCore::LocatorTool_Train(LPBYTE pBuffer)
 	int ptResult_X = ptFindResult.x + nRectOuter_X;
 	int ptResult_Y = ptFindResult.y + nRectOuter_Y;
 
-	pRecipe->m_nTemplateCoordinatesX = ptResult_X;
-	pRecipe->m_nTemplateCoordinatesY = ptResult_Y;
+	switch (nCamIdx)
+	{
+	case 1:
+	{
+		pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX = ptResult_X;
+		pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY = ptResult_Y;
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
+	}
 
 	// draw center pt result
 	cv::circle(matBGR, cv::Point(ptResult_X, ptResult_Y), 3, YELLOW_COLOR, cv::FILLED);
@@ -306,33 +430,142 @@ void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
 
 	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
 
-	int nTempCntPt_X = pRecipe->m_nTemplateCoordinatesX;
-	int nTempCntPt_Y = pRecipe->m_nTemplateCoordinatesY;
+	int nROI_X = 0;
+	int nROI_Y = 0;
+	int nROI_OffsetX = 0;
+	int nROI_OffsetY = 0;
+	int nROI_Width = 0;
+	int nROI_Height = 0;
+	int nTempCntPt_X = 0;
+	int nTempCntPt_Y = 0;
 
-	switch (nROIIdx)
+	BOOL bROI_UseOffset = FALSE;
+
+	switch (nCamIdx)
 	{
 	case 1:
-		if (pRecipe->m_bROI1UseOffset == TRUE)
-		{
-			rectROI.x = nTempCntPt_X + pRecipe->m_nROI1_Offset_X;
-			rectROI.y = nTempCntPt_Y + pRecipe->m_nROI1_Offset_Y;
-			rectROI.width = pRecipe->m_nROI1_Width;
-			rectROI.height = pRecipe->m_nROI1_Height;
-		}
-		else if (pRecipe->m_bROI1UseOffset == FALSE)
-		{
-			rectROI.x = pRecipe->m_nROI1_X;
-			rectROI.y = pRecipe->m_nROI1_Y;
-			rectROI.width = pRecipe->m_nROI1_Width;
-			rectROI.height = pRecipe->m_nROI1_Height;
-		}
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
+	{
+		nTempCntPt_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX;
+		nTempCntPt_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY;
 
+		switch (nROIIdx)
+		{
+		case 1:
+		{
+			nROI_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Width;
+			nROI_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Height;
+			bROI_UseOffset = pRecipe->m_NVisionInspRecipe_Cam1.m_bROI1UseOffset;
+
+			if (bROI_UseOffset == TRUE)
+			{
+				nROI_OffsetX = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Offset_X;
+				nROI_OffsetY = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Offset_Y;
+				
+				rectROI.x = nTempCntPt_X + nROI_OffsetX;
+				rectROI.y = nTempCntPt_Y + nROI_OffsetY;
+				rectROI.width = nROI_Width;
+				rectROI.height = nROI_Height;
+			}
+			else if (bROI_UseOffset == FALSE)
+			{
+				nROI_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_X;
+				nROI_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI1_Y;
+
+				rectROI.x = nROI_X;
+				rectROI.y = nROI_Y;
+				rectROI.width = nROI_Width;
+				rectROI.height = nROI_Height;
+			}
+			break;
+		}
+		case 2:
+		{
+			nROI_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Width;
+			nROI_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Height;
+			bROI_UseOffset = pRecipe->m_NVisionInspRecipe_Cam1.m_bROI2UseOffset;
+
+			if (bROI_UseOffset == TRUE)
+			{
+				nROI_OffsetX = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Offset_X;
+				nROI_OffsetY = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Offset_Y;
+
+				rectROI.x = nTempCntPt_X + nROI_OffsetX;
+				rectROI.y = nTempCntPt_Y + nROI_OffsetY;
+				rectROI.width = nROI_Width;
+				rectROI.height = nROI_Height;
+			}
+			else if (bROI_UseOffset == FALSE)
+			{
+				nROI_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_X;
+				nROI_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI2_Y;
+
+				rectROI.x = nROI_X;
+				rectROI.y = nROI_Y;
+				rectROI.width = nROI_Width;
+				rectROI.height = nROI_Height;
+			}
+			break;
+		}
+		case 3:
+		{
+			nROI_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Width;
+			nROI_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Height;
+			bROI_UseOffset = pRecipe->m_NVisionInspRecipe_Cam1.m_bROI3UseOffset;
+
+			if (bROI_UseOffset == TRUE)
+			{
+				nROI_OffsetX = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Offset_X;
+				nROI_OffsetY = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Offset_Y;
+
+				rectROI.x = nTempCntPt_X + nROI_OffsetX;
+				rectROI.y = nTempCntPt_Y + nROI_OffsetY;
+				rectROI.width = nROI_Width;
+				rectROI.height = nROI_Height;
+			}
+			else if (bROI_UseOffset == FALSE)
+			{
+				nROI_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_X;
+				nROI_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nROI3_Y;
+
+				rectROI.x = nROI_X;
+				rectROI.y = nROI_Y;
+				rectROI.width = nROI_Width;
+				rectROI.height = nROI_Height;
+			}
+			break;
+		}
 		// more
+		}
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
 	}
 
 	// create ROI
@@ -369,17 +602,55 @@ void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 	BOOL bRet = FALSE;
 	CString csRet;
 
+	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
+	CNVisionInspectResult* pResult = m_pInterface->GetResultControl();
+
 	auto barcodes = ReadBarcodes(matSrc);
 
 	if (!barcodes.empty())
 	{
-		if (barcodes.size() == m_pInterface->GetRecipeControl()->m_nMaxCodeCount)
+		switch (nCamIdx)
 		{
-			bRet = TRUE;
+		case 1:
+		{
+			if (barcodes.size() == pRecipe->m_NVisionInspRecipe_Cam1.m_nMaxCodeCount)
+			{
+				bRet = TRUE;
+			}
+			else
+			{
+				bRet = FALSE;
+			}
+			break;
 		}
-		else
+		case 2:
 		{
-			bRet = FALSE;
+			break;
+		}
+		case 3:
+		{
+			break;
+		}
+		case 4:
+		{
+			break;
+		}
+		case 5:
+		{
+			break;
+		}
+		case 6:
+		{
+			break;
+		}
+		case 7:
+		{
+			break;
+		}
+		case 8:
+		{
+			break;
+		}
 		}
 
 		std::string sRet;
@@ -396,12 +667,47 @@ void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 
 	m_pInterface->SetResultBuffer(nCamIdx, 0, matResult.data); // cause the buffer just have a frame should be frame index = 0
 
-	m_pInterface->GetResultControl(nCamIdx)->m_bInspectCompleted = TRUE;
-	m_pInterface->GetResultControl(nCamIdx)->m_bResultStatus = bRet;
-	ZeroMemory(m_pInterface->GetResultControl(nCamIdx)->m_sResultString, sizeof(m_pInterface->GetResultControl(nCamIdx)->m_sResultString));
-	wsprintf(m_pInterface->GetResultControl(nCamIdx)->m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
+	switch (nCamIdx)
+	{
+	case 1:
+	{
+		pResult->m_NVisionInspRes_Cam1.m_bInspectCompleted = TRUE;
+		pResult->m_NVisionInspRes_Cam1.m_bResultStatus = bRet;
+		ZeroMemory(pResult->m_NVisionInspRes_Cam1.m_sResultString, sizeof(pResult->m_NVisionInspRes_Cam1.m_sResultString));
+		wsprintf(pResult->m_NVisionInspRes_Cam1.m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
+		break;
+	}
+	case 2:
+	{
+		break;
+	}
+	case 3:
+	{
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	case 5:
+	{
+		break;
+	}
+	case 6:
+	{
+		break;
+	}
+	case 7:
+	{
+		break;
+	}
+	case 8:
+	{
+		break;
+	}
+	}
 
-	m_pInterface->InspectComplete(FALSE);
+	m_pInterface->InspectComplete(nCamIdx, FALSE);
 }
 
 void CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx)

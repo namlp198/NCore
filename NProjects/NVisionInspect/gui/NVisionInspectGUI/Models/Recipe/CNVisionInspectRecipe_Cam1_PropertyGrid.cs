@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using Npc.Foundation.Base;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace NVisionInspectGUI.Models
+namespace NVisionInspectGUI.Models.Recipe
 {
-    [DisplayName("Recipe Settings")]
-    public class CNVisionInspectRecipe_PropertyGrid : ModelBase
+    [DisplayName("Recipe Cam1 Settings")]
+    public class CNVisionInspectRecipe_Cam1_PropertyGrid : ModelBase
     {
         [DisplayName("Enable Read Code Tool?")]
         [Description("If true then the program can detect Code 1D and 2D")]
@@ -25,6 +25,9 @@ namespace NVisionInspectGUI.Models
 
         [DisplayName("Max Code Count")]
         public int MaxCodeCount { get; set; }
+
+        [DisplayName("Number of ROI Cam1")]
+        public int NumberOfROI { get; set; }
 
         // params ROI of Template Matching
         [Category("Params Template Matching")]
@@ -135,38 +138,38 @@ namespace NVisionInspectGUI.Models
 
         [Category("ROI 1")]
         [PropertyOrder(8)]
-        [DisplayName("Gray Threshold Min")]
-        public int ROI1_GrayThreshold_Min { get; set; }
-
-        [Category("ROI 1")]
-        [PropertyOrder(9)]
-        [DisplayName("Gray Threshold Max")]
-        public int ROI1_GrayThreshold_Max { get; set; }
-
-        [Category("ROI 1")]
-        [PropertyOrder(10)]
-        [DisplayName("Pixel Count Min")]
-        public int ROI1_PixelCount_Min { get; set; }
-
-        [Category("ROI 1")]
-        [PropertyOrder(11)]
-        [DisplayName("Pixel Count Max")]
-        public int ROI1_PixelCount_Max { get; set; }
-
-        [Category("ROI 1")]
-        [PropertyOrder(12)]
         [DisplayName("Use Offset for XY coordinates?")]
         public bool ROI1UseOffset { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(13)]
+        [PropertyOrder(9)]
         [DisplayName("Use Locator Tool?")]
         public bool ROI1UseLocator { get; set; }
 
         [Category("ROI 1")]
-        [PropertyOrder(14)]
+        [PropertyOrder(10)]
         [DisplayName("Enable Show Graphics ROI1?")]
         public bool ROI1ShowGraphics { get; set; }
+
+        [Category("ROI 1")]
+        [PropertyOrder(11)]
+        [DisplayName("Gray Threshold Min")]
+        public int ROI1_GrayThreshold_Min { get; set; }
+
+        [Category("ROI 1")]
+        [PropertyOrder(12)]
+        [DisplayName("Gray Threshold Max")]
+        public int ROI1_GrayThreshold_Max { get; set; }
+
+        [Category("ROI 1")]
+        [PropertyOrder(13)]
+        [DisplayName("Pixel Count Min")]
+        public int ROI1_PixelCount_Min { get; set; }
+
+        [Category("ROI 1")]
+        [PropertyOrder(14)]
+        [DisplayName("Pixel Count Max")]
+        public int ROI1_PixelCount_Max { get; set; }
 
         // ROI 2
         [Category("ROI 2")]
@@ -210,38 +213,38 @@ namespace NVisionInspectGUI.Models
 
         [Category("ROI 2")]
         [PropertyOrder(8)]
-        [DisplayName("Gray Threshold Min")]
-        public int ROI2_GrayThreshold_Min { get; set; }
-
-        [Category("ROI 2")]
-        [PropertyOrder(9)]
-        [DisplayName("Gray Threshold Max")]
-        public int ROI2_GrayThreshold_Max { get; set; }
-
-        [Category("ROI 2")]
-        [PropertyOrder(10)]
-        [DisplayName("Pixel Count Min")]
-        public int ROI2_PixelCount_Min { get; set; }
-
-        [Category("ROI 2")]
-        [PropertyOrder(11)]
-        [DisplayName("Pixel Count Max")]
-        public int ROI2_PixelCount_Max { get; set; }
-
-        [Category("ROI 2")]
-        [PropertyOrder(12)]
         [DisplayName("Use Offset for XY coordinates?")]
         public bool ROI2UseOffset { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(13)]
+        [PropertyOrder(9)]
         [DisplayName("Use Locator Tool?")]
         public bool ROI2UseLocator { get; set; }
 
         [Category("ROI 2")]
-        [PropertyOrder(14)]
+        [PropertyOrder(10)]
         [DisplayName("Enable Show Graphics ROI2?")]
         public bool ROI2ShowGraphics { get; set; }
+
+        [Category("ROI 2")]
+        [PropertyOrder(11)]
+        [DisplayName("Gray Threshold Min")]
+        public int ROI2_GrayThreshold_Min { get; set; }
+
+        [Category("ROI 2")]
+        [PropertyOrder(12)]
+        [DisplayName("Gray Threshold Max")]
+        public int ROI2_GrayThreshold_Max { get; set; }
+
+        [Category("ROI 2")]
+        [PropertyOrder(13)]
+        [DisplayName("Pixel Count Min")]
+        public int ROI2_PixelCount_Min { get; set; }
+
+        [Category("ROI 2")]
+        [PropertyOrder(14)]
+        [DisplayName("Pixel Count Max")]
+        public int ROI2_PixelCount_Max { get; set; }
 
         // ROI 3
         [Category("ROI 3")]
@@ -285,37 +288,37 @@ namespace NVisionInspectGUI.Models
 
         [Category("ROI 3")]
         [PropertyOrder(8)]
-        [DisplayName("Gray Threshold Min")]
-        public int ROI3_GrayThreshold_Min { get; set; }
-
-        [Category("ROI 3")]
-        [PropertyOrder(9)]
-        [DisplayName("Gray Threshold Max")]
-        public int ROI3_GrayThreshold_Max { get; set; }
-
-        [Category("ROI 3")]
-        [PropertyOrder(10)]
-        [DisplayName("Pixel Count Min")]
-        public int ROI3_PixelCount_Min { get; set; }
-
-        [Category("ROI 3")]
-        [PropertyOrder(11)]
-        [DisplayName("Pixel Count Max")]
-        public int ROI3_PixelCount_Max { get; set; }
-
-        [Category("ROI 3")]
-        [PropertyOrder(12)]
         [DisplayName("Use Offset for XY coordinates?")]
         public bool ROI3UseOffset { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(13)]
+        [PropertyOrder(9)]
         [DisplayName("Use Locator Tool?")]
         public bool ROI3UseLocator { get; set; }
 
         [Category("ROI 3")]
-        [PropertyOrder(14)]
+        [PropertyOrder(10)]
         [DisplayName("Enable Show Graphics ROI3?")]
         public bool ROI3ShowGraphics { get; set; }
+
+        [Category("ROI 3")]
+        [PropertyOrder(11)]
+        [DisplayName("Gray Threshold Min")]
+        public int ROI3_GrayThreshold_Min { get; set; }
+
+        [Category("ROI 3")]
+        [PropertyOrder(12)]
+        [DisplayName("Gray Threshold Max")]
+        public int ROI3_GrayThreshold_Max { get; set; }
+
+        [Category("ROI 3")]
+        [PropertyOrder(13)]
+        [DisplayName("Pixel Count Min")]
+        public int ROI3_PixelCount_Min { get; set; }
+
+        [Category("ROI 3")]
+        [PropertyOrder(14)]
+        [DisplayName("Pixel Count Max")]
+        public int ROI3_PixelCount_Max { get; set; }
     }
 }
