@@ -19,12 +19,12 @@
 
 typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarmFunc(char* strAlarmMessage);
-typedef void _stdcall CallbackInspectComplete(BOOL bSetting);
+typedef void _stdcall CallbackInspectComplete(int nCamIdx, BOOL bSetting);
 typedef void _stdcall CallbackLocatorTrainComplete(int nCamIdx);
 
 class AFX_EXT_CLASS CNVisionInspectProcessor : public INVisionInspectHikCamToParent,
 	                                           public INVisionInspectCoreToParent
-{ 
+{
 public:
 	CNVisionInspectProcessor();
 	~CNVisionInspectProcessor();
@@ -37,13 +37,14 @@ public:
 	virtual      CNVisionInspectRecipe*          GetRecipeControl() { return m_pNVisionInspectRecipe; }
 	virtual      CNVisionInspectSystemSetting*   GetSystemSettingControl() { return m_pNVisionInspectSystemSetting; }
 	virtual      CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) { return m_pNVisionInspectCameraSetting[nCamIdx]; };
-	virtual      CNVisionInspectResult*          GetResultControl(int nCoreIdx) { return m_pNVisionInspectResult[nCoreIdx]; }
+	virtual      CNVisionInspectResult*          GetResultControl() { return m_pNVisionInspectResult; }
 	virtual      CNVisionInspectStatus*          GetStatusControl(int nCoreIdx) { return m_pNVisionInspectStatus[nCoreIdx]; }
 
 public:
-	BOOL                       InspectStart(int nThreadCount, BOOL bSimulator);
+	BOOL                       InspectStart(int nThreadCount, int nCamCount);
 	BOOL                       InspectStop();
 	BOOL                       Inspect_Reality(int nCamIdx, LPBYTE pBuff);
+	BOOL                       Inspect_Simulator(int nCamIdx);
 	BOOL                       SetTriggerMode(int nCamIdx, int nMode);
 	BOOL                       SetTriggerSource(int nCamIdx, int nSource);
 	BOOL                       SetExposureTime(int nCamIdx, double dExpTime);
@@ -56,14 +57,11 @@ public:
 
 public:
 	BOOL                       LoadSystemSettings(CNVisionInspectSystemSetting* pSystemSetting);
-	BOOL                       LoadRecipe(CNVisionInspectRecipe* pRecipe);
+	BOOL                       LoadRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe);
 	BOOL                       LoadCameraSettings(CNVisionInspectCameraSetting* pCameraSetting);
 	BOOL                       SaveSystemSetting(CNVisionInspectSystemSetting* pSystemSetting);
-	BOOL                       SaveRecipe(CNVisionInspectRecipe* pRecipe);
-	BOOL                       SaveCameraSettings(CNVisionInspectCameraSetting* pCameraSetting, int nCamIdx);
-
-	BOOL                       ReloadSystemSetting();
-	BOOL                       ReloadRecipe();
+	BOOL                       SaveRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe);
+	BOOL                       SaveCameraSettings(int nCamIdx, CNVisionInspectCameraSetting* pCameraSetting);
 
 public:
 	void                       RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc);
@@ -97,7 +95,7 @@ private:
 	void						      SystemMessage(CString strMessage);
 	BOOL                              CreateResultBuffer();
 	BOOL                              CreateSimulatorBuffer();
-	virtual void		              InspectComplete(BOOL bSetting);
+	virtual void		              InspectComplete(int nCamIdx, BOOL bSetting);
 	virtual void                      LocatorTrainComplete(int nCamIdx);
 
 private:
@@ -113,26 +111,26 @@ private:
 	// UI						                            
 	CLogView*                                   m_pLogView;
 
-	// Core
-	CNVisionInspectCore*                        m_pNVisionInspectCore[MAX_CAMERA_INSPECT_COUNT];
-
 	// System Setting			                   
 	CNVisionInspectSystemSetting*               m_pNVisionInspectSystemSetting;
 
 	// Recipe					               
 	CNVisionInspectRecipe*                      m_pNVisionInspectRecipe;
 
+	// Result					               
+	CNVisionInspectResult*                      m_pNVisionInspectResult;
+
+	// Basler cam				               
+	CNVisionInspect_HikCam*                     m_pNVisionInspectHikCam;
+
 	// Camera Setting
 	CNVisionInspectCameraSetting*               m_pNVisionInspectCameraSetting[MAX_CAMERA_INSPECT_COUNT];
-
-	// Result					               
-	CNVisionInspectResult*                      m_pNVisionInspectResult[MAX_CAMERA_INSPECT_COUNT];
 
 	// Status
 	CNVisionInspectStatus*                      m_pNVisionInspectStatus[MAX_CAMERA_INSPECT_COUNT];
 
-	// Basler cam				               
-	CNVisionInspect_HikCam*                     m_pNVisionInspectHikCam;
+	// Core
+	CNVisionInspectCore*                        m_pNVisionInspectCore[MAX_CAMERA_INSPECT_COUNT];
 
 	// Buffer Image
 	CSharedMemoryBuffer*                        m_pSimulatorBuffer[MAX_CAMERA_INSPECT_COUNT];
@@ -141,12 +139,12 @@ private:
 	CSharedMemoryBuffer*                        m_pResultBuffer[MAX_CAMERA_INSPECT_COUNT];
 
 	// Result						                        
-	CCriticalSection                            m_csInspResult[MAX_CAMERA_INSPECT_COUNT];
+	CCriticalSection                            m_csInspResult;
 
 	// system settings file path	           
 	CString                                     m_csSysSettingsPath;
 	CString                                     m_csRecipePath;
-	CString                                     m_csCam1SettingPath;
+	CString                                     m_csCamSettingPath;
 											    
 	cv::Mat                                     m_matBGR;
 	cv::Mat                                     m_matRGB;

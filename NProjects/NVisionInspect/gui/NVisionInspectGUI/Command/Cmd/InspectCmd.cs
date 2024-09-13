@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using NVisionInspectGUI.ViewModels;
 
 namespace NVisionInspectGUI.Command.Cmd
 {
@@ -14,7 +15,9 @@ namespace NVisionInspectGUI.Command.Cmd
         public InspectCmd() { }
         public override void Execute(object parameter)
         {
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(1, 1);
+            int nThreadCount = 1;
+            int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nCamCount);
         }
     }
 }

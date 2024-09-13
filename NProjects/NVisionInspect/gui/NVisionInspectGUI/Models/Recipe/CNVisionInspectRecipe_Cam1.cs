@@ -5,15 +5,16 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NVisionInspectGUI.Models
+namespace NVisionInspectGUI.Models.Recipe
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct CNVisionInspectRecipe
+    public struct CNVisionInspectRecipe_Cam1
     {
         public int m_bUseReadCode;
         public int m_bUseInkjetCharactersInspect;
         public int m_bUseRotateROI;
         public int m_nMaxCodeCount;
+        public int m_nNumberOfROI;
         // params ROI of Template Matching
         public int m_nTemplateROI_OuterX;
         public int m_nTemplateROI_OuterY;
@@ -37,13 +38,13 @@ namespace NVisionInspectGUI.Models
         public int m_nROI1_Offset_X;
         public int m_nROI1_Offset_Y;
         public double m_nROI1_AngleRotate;
+        public int m_bROI1UseOffset;
+        public int m_bROI1UseLocator;
+        public int m_bROI1ShowGraphics;
         public int m_nROI1_GrayThreshold_Min;
         public int m_nROI1_GrayThreshold_Max;
         public int m_nROI1_PixelCount_Min;
         public int m_nROI1_PixelCount_Max;
-        public int m_bROI1UseOffset;
-        public int m_bROI1UseLocator;
-        public int m_bROI1ShowGraphics;
         // ROI2
         public int m_nROI2_X;
         public int m_nROI2_Y;
@@ -52,13 +53,13 @@ namespace NVisionInspectGUI.Models
         public int m_nROI2_Offset_X;
         public int m_nROI2_Offset_Y;
         public double m_nROI2_AngleRotate;
+        public int m_bROI2UseOffset;
+        public int m_bROI2UseLocator;
+        public int m_bROI2ShowGraphics;
         public int m_nROI2_GrayThreshold_Min;
         public int m_nROI2_GrayThreshold_Max;
         public int m_nROI2_PixelCount_Min;
         public int m_nROI2_PixelCount_Max;
-        public int m_bROI2UseOffset;
-        public int m_bROI2UseLocator;
-        public int m_bROI2ShowGraphics;
         // ROI3
         public int m_nROI3_X;
         public int m_nROI3_Y;
@@ -67,12 +68,12 @@ namespace NVisionInspectGUI.Models
         public int m_nROI3_Offset_X;
         public int m_nROI3_Offset_Y;
         public double m_nROI3_AngleRotate;
+        public int m_bROI3UseOffset;
+        public int m_bROI3UseLocator;
+        public int m_bROI3ShowGraphics;
         public int m_nROI3_GrayThreshold_Min;
         public int m_nROI3_GrayThreshold_Max;
         public int m_nROI3_PixelCount_Min;
         public int m_nROI3_PixelCount_Max;
-        public int m_bROI3UseOffset;
-        public int m_bROI3UseLocator;
-        public int m_bROI3ShowGraphics;
     }
 }

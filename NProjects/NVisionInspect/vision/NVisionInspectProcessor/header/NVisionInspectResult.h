@@ -1,14 +1,68 @@
 #pragma once
 #include "NVisionInspectDefine.h"
 
+struct CNVisionInspectResult_Cam1
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+	TCHAR m_sResultString[MAX_STRING_SIZE_RESULT];
+};
+struct CNVisionInspectResult_Cam2
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+struct CNVisionInspectResult_Cam3
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+struct CNVisionInspectResult_Cam4
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+struct CNVisionInspectResult_Cam5
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+struct CNVisionInspectResult_Cam6
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+struct CNVisionInspectResult_Cam7
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+struct CNVisionInspectResult_Cam8
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+};
+
 class AFX_EXT_CLASS CNVisionInspectResult
 {
 public:
 	CNVisionInspectResult(void);
 	~CNVisionInspectResult(void);
-
 public:
-	BOOL m_bResultStatus;
-	BOOL m_bInspectCompleted;
-	TCHAR m_sResultString[MAX_STRING_SIZE_RESULT];
+	CNVisionInspectResult_Cam1 m_NVisionInspRes_Cam1;
+	CNVisionInspectResult_Cam2 m_NVisionInspRes_Cam2;
+	CNVisionInspectResult_Cam3 m_NVisionInspRes_Cam3;
+	CNVisionInspectResult_Cam4 m_NVisionInspRes_Cam4;
+	CNVisionInspectResult_Cam5 m_NVisionInspRes_Cam5;
+	CNVisionInspectResult_Cam6 m_NVisionInspRes_Cam6;
+	CNVisionInspectResult_Cam7 m_NVisionInspRes_Cam7;
+	CNVisionInspectResult_Cam8 m_NVisionInspRes_Cam8;
 };

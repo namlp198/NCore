@@ -1,7 +1,9 @@
 ﻿using NVisionInspectGUI.Models;
+using NVisionInspectGUI.Models.Recipe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +20,7 @@ namespace NVisionInspectGUI.Manager.Class
 
     // Inspection Compete CallBack
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate void CallbackInsCompleteFunc(int bSetting);
+    public delegate void CallbackInsCompleteFunc(int nCamIdx, int bSetting);
 
     // Inspection Compete CallBack
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -78,8 +80,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool InspectStart(IntPtr NVisionInspectProcessor, int nThreadCount, int isSimulator);
-        public bool InspectStart(int nThreadCount, int isSimulator) { return InspectStart(m_NVisionInspectProcessor, nThreadCount, isSimulator); }
+        extern private static bool InspectStart(IntPtr NVisionInspectProcessor, int nThreadCount, int nCamCount);
+        public bool InspectStart(int nThreadCount, int nCamCount) { return InspectStart(m_NVisionInspectProcessor, nThreadCount, nCamCount); }
         /**********************************
          - Inspection Ready / Start
          - Parameter : Inspection Cavity
@@ -92,6 +94,20 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool InspectStop(IntPtr NVisionInspectProcessor);
         public bool InspectStop() { return InspectStop(m_NVisionInspectProcessor); }
+
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool Inspect_Simulator(IntPtr NVisionInspectProcessor, int nCamIdx);
+        public bool Inspect_Simulator(int nCamIdx) { return Inspect_Simulator(m_NVisionInspectProcessor, nCamIdx); }
+        /**********************************
+         - Inspection Simulator
+         - Parameter : Inspection Cam Index
+        **********************************/
 
 
 #if DEBUG
@@ -196,44 +212,17 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool LoadRecipe(IntPtr NVisionInspectProcessor, IntPtr pRecipe);
-        public bool LoadRecipe(ref CNVisionInspectRecipe pRecipe)
+        extern private static bool LoadRecipe(IntPtr NVisionInspectProcessor, int nCamIdx, IntPtr pRecipe);
+        public bool LoadRecipe(int nCamIdx, ref CNVisionInspectRecipe pRecipe)
         {
             CNVisionInspectRecipe recipe = new CNVisionInspectRecipe();
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipe));
             Marshal.StructureToPtr(recipe, pPointer, false);
-            bool bRet = LoadRecipe(m_NVisionInspectProcessor, pPointer);
+            bool bRet = LoadRecipe(m_NVisionInspectProcessor, nCamIdx, pPointer);
             pRecipe = (CNVisionInspectRecipe)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectRecipe));
 
             return bRet;
         }
-
-
-#if DEBUG
-        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        extern private static bool ReloadSystenSettings(IntPtr NVisionInspectProcessor);
-        public bool ReloadSystenSettings()
-        {
-            bool bRet = ReloadSystenSettings(m_NVisionInspectProcessor);
-            return bRet;
-        }
-
-
-#if DEBUG
-        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        extern private static bool ReloadRecipe(IntPtr NVisionInspectProcessor);
-        public bool ReloadRecipe()
-        {
-            bool bRet = ReloadRecipe(m_NVisionInspectProcessor);
-            return bRet;
-        }
-
 
         #endregion
 
@@ -259,12 +248,12 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SaveCameraSetting(IntPtr NVisionInspectProcessor, IntPtr pSysSetting, int nCamIdx);
-        public bool SaveCameraSetting(ref CNVisionInspectCameraSetting camSetting, int nCamIdx)
+        extern private static bool SaveCameraSetting(IntPtr NVisionInspectProcessor, int nCamIdx, IntPtr pSysSetting);
+        public bool SaveCameraSetting(int nCamIdx, ref CNVisionInspectCameraSetting camSetting)
         {
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(camSetting));
             Marshal.StructureToPtr(camSetting, pPointer, false);
-            bool bRet = SaveCameraSetting(m_NVisionInspectProcessor, pPointer, nCamIdx);
+            bool bRet = SaveCameraSetting(m_NVisionInspectProcessor, nCamIdx, pPointer);
 
             return bRet;
         }
@@ -275,12 +264,12 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SaveRecipe(IntPtr NVisionInspectProcessor, IntPtr pRecipe);
-        public bool SaveRecipe(ref CNVisionInspectRecipe pRecipe)
+        extern private static bool SaveRecipe(IntPtr NVisionInspectProcessor, int nCamIdx, IntPtr pRecipe);
+        public bool SaveRecipe(int nCamIdx, ref CNVisionInspectRecipe pRecipe)
         {
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pRecipe));
             Marshal.StructureToPtr(pRecipe, pPointer, false);
-            bool bRet = SaveRecipe(m_NVisionInspectProcessor, pPointer);
+            bool bRet = SaveRecipe(m_NVisionInspectProcessor, nCamIdx, pPointer);
 
             return bRet;
         }

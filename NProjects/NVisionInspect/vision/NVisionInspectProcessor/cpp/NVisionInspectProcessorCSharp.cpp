@@ -166,12 +166,12 @@ bool SelectROI(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nROIIdx, i
 	else               return true;
 }
 
-bool InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, BOOL isSimulator)
+bool InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, int nCamCount)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->InspectStart(nThreadCount, isSimulator);
+	BOOL bRet = pProcessor->InspectStart(nThreadCount, nCamCount);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
@@ -182,6 +182,16 @@ bool InspectStop(CNVisionInspectProcessor* pProcessor)
 		return false;
 
 	BOOL bRet = pProcessor->InspectStop();
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool Inspect_Simulator(CNVisionInspectProcessor* pProcessor, int nCamCount)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->Inspect_Simulator(nCamCount);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
@@ -274,35 +284,14 @@ bool LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCam
 	return true;
 }
 
-bool LoadRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe)
+bool LoadRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	pProcessor->LoadRecipe(pProcessor->GetRecipeControl());
+	pProcessor->LoadRecipe(nCamIdx, pRecipe);
 
-	*(pRecipe) = *(pProcessor->GetRecipeControl());
 	return true;
-}
-
-bool ReloadSystenSettings(CNVisionInspectProcessor* pProcessor)
-{
-	if (pProcessor == NULL)
-		return false;
-
-	BOOL bRet = pProcessor->ReloadSystemSetting();
-	if (bRet == FALSE) return false;
-	else               return true;
-}
-
-bool ReloadRecipe(CNVisionInspectProcessor* pProcessor)
-{
-	if (pProcessor == NULL)
-		return false;
-
-	BOOL bRet = pProcessor->ReloadRecipe();
-	if (bRet == FALSE) return false;
-	else               return true;
 }
 
 bool SaveSystemSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting)
@@ -315,22 +304,22 @@ bool SaveSystemSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectSyst
 	else               return true;
 }
 
-bool SaveCameraSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx)
+bool SaveCameraSetting(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectCameraSetting* pCamSetting)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->SaveCameraSettings(pCamSetting, nCamIdx);
+	BOOL bRet = pProcessor->SaveCameraSettings(nCamIdx, pCamSetting);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
 
-bool SaveRecipe(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe* pRecipe)
+bool SaveRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->SaveRecipe(pRecipe);
+	BOOL bRet = pProcessor->SaveRecipe(nCamIdx, pRecipe);
 	if (bRet == FALSE) return false;
 	else               return true;
 }

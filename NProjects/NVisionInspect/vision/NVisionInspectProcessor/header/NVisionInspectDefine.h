@@ -2,7 +2,7 @@
 
 #pragma once
 
-#define MAX_CAMERA_INSPECT_COUNT 1
+#define MAX_CAMERA_INSPECT_COUNT 8
 #define MAX_THREAD_COUNT 1
 #define MAX_IMAGE_BUFFER 10
 
@@ -19,7 +19,6 @@
 
 #define MAX_ROI_INSPECT 3
 
-#define NUMBER_OF_SET_INSPECT 1
 #define MAX_STRING_SIZE		  256
 #define MAX_STRING_SIZE_RESULT 1000
 

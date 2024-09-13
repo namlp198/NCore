@@ -62,7 +62,10 @@ namespace NVisionInspectGUI.ViewModels
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSystemSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings);
             SettingVM.LoadSystemSettings();
 
+            // read number of camera inspect
             int nNumberOfCamInsp = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nInspectCameraCount;
+            SettingVM.CameraCount = nNumberOfCamInsp;
+
             List<string> lstCameras = new List<string>();
             for (int nCamIdx = 0; nCamIdx < nNumberOfCamInsp; nCamIdx++)
             {
@@ -71,20 +74,21 @@ namespace NVisionInspectGUI.ViewModels
 
                 string sCamera = "Cam " + (nCamIdx + 1) + "";
                 lstCameras.Add(sCamera);
+
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nCamIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+                SettingVM.LoadRecipe(nCamIdx);
             }
 
             SettingVM.SettingView.buffSettingPRO.CameraList = lstCameras;
-
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
-            SettingVM.LoadRecipe();
-
             SettingVM.LoadPlcSettings();
 
             if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation == 0)
             {
                 RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
                 SettingVM.SetAllParamPlcDelta();
-                if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(1,0))
+                int nThreadCount = 1;
+                int nCamCount = SettingVM.CameraCount;
+                if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nCamCount))
                 {
                     InspectRunning = true;
                 }

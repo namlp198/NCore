@@ -34,6 +34,6 @@ namespace NVisionInspectGUI.Commons
         public const int NUMBER_OF_SET_INSPECT = 1;
         public const int MAX_STRING_SIZE = 256;
         public const int MAX_STRING_SIZE_RESULT = 1000;
-        public const int MAX_CAMERA_INSPECT_COUNT = 1;
+        public const int MAX_CAMERA_INSPECT_COUNT = 8;
     }
 }
