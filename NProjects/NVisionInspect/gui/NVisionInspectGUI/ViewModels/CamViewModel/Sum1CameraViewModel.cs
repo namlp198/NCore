@@ -18,18 +18,17 @@ using System.Windows;
 using System.IO;
 using System.Threading;
 using NCore.Wpf.BufferViewerSimple;
+using NVisionInspectGUI.Views.CamView;
 
 namespace NVisionInspectGUI.ViewModels
 {
-    public class Sum1CameraViewModel : ViewModelBase
+    public class Sum1CameraViewModel : ViewModelBase, ISumCamVM
     {
         #region variables
         private static readonly object _lockObj = new object();
+        private int m_nIndex = 1;
         private readonly Dispatcher _dispatcher;
         private UcSum1CameraView m_ucSum1CameraView;
-        private int m_nIndex = 1;
-        private IOManager_PLC_LS m_Plc_LS = new IOManager_PLC_LS();
-        private IOManager_PLC_Delta_DVP m_Plc_Delta = new IOManager_PLC_Delta_DVP();
         #endregion
 
         #region Constructor
@@ -38,11 +37,14 @@ namespace NVisionInspectGUI.ViewModels
             _dispatcher = dispatcher;
             m_ucSum1CameraView = sum1CameraView;
 
+            int nWidthCam1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameWidth;
+            int nHeightCam1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameHeight;
+
             m_ucSum1CameraView.buffCam.CameraIndex = 0;
             m_ucSum1CameraView.buffCam.ModeView = ModeView.Color;
-            m_ucSum1CameraView.buffCam.CameraName = "[Cam 1 - Read Code]";
-            m_ucSum1CameraView.buffCam.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
-            //_sumCameraView.buffCam.ShowDetail += BuffCam_ShowDetail;
+            m_ucSum1CameraView.buffCam.CameraName = "[Cam 1]";
+            m_ucSum1CameraView.buffCam.SetParamsModeColor(nWidthCam1, nHeightCam1);
+            m_ucSum1CameraView.buffCam.ShowDetail += BuffCam1_ShowDetail;
 
             InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
         }
@@ -50,17 +52,6 @@ namespace NVisionInspectGUI.ViewModels
 
         #region Properties
         public UcSum1CameraView Sum1CameraView { get { return m_ucSum1CameraView; } }
-
-        public IOManager_PLC_LS Plc_LS
-        {
-            get => m_Plc_LS;
-            set => m_Plc_LS = value;
-        }
-        public IOManager_PLC_Delta_DVP Plc_Delta_DVP
-        {
-            get => m_Plc_Delta;
-            set => m_Plc_Delta = value;
-        }
         #endregion
 
         #region Methods
@@ -82,20 +73,20 @@ namespace NVisionInspectGUI.ViewModels
                         if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
                         {
                             Sum1CameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
-                            m_Plc_Delta.StartAddressBitM += 1; // Out Y3
-                            m_Plc_Delta.SetOutputPlc(true);
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM += 1; // Out Y3
+                            MainViewModel.Instance.Plc_Delta_DVP.SetOutputPlc(true);
                             Thread.Sleep(5);
-                            m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
 
                             MainViewModel.Instance.RunVM.ResultVM.CountOK++;
                         }
                         else
                         {
                             Sum1CameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
-                            m_Plc_Delta.StartAddressBitM += 0; // Out Y2
-                            m_Plc_Delta.SetOutputPlc(true);
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM += 0; // Out Y2
+                            MainViewModel.Instance.Plc_Delta_DVP.SetOutputPlc(true);
                             Thread.Sleep(5);
-                            m_Plc_Delta.StartAddressBitM = 2048; // reset bit M to init value
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
 
                             MainViewModel.Instance.RunVM.ResultVM.CountNG++;
                         }
@@ -164,21 +155,25 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
-        //private async void BuffCam_ShowDetail(object sender, System.Windows.RoutedEventArgs e)
-        //{
-        //    UcShowDetail ucShowDetail = new UcShowDetail();
-        //    ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam1_Frame1.CameraIndex;
-        //    ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam1_Frame1.CameraName;
-        //    ucShowDetail.buffVS.ModeView = ModeView.Color;
-        //    ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
-        //    MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
-        //    if (_sumCameraView.buffTopCam1_Frame1.BufferView != IntPtr.Zero)
-        //    {
-        //        ucShowDetail.buffVS.BufferView = _sumCameraView.buffTopCam1_Frame1.BufferView;
-        //        ucShowDetail.buffVS.InspectResult = _sumCameraView.buffTopCam1_Frame1.InspectResult;
-        //        await ucShowDetail.buffVS.UpdateImage();
-        //    }
-        //}
+        private async void BuffCam1_ShowDetail(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int nWidth = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameWidth;
+            int nHeight = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameHeight;
+
+            UcShowDetail ucShowDetail = new UcShowDetail();
+            ucShowDetail.buffVS.CameraIndex = m_ucSum1CameraView.buffCam.CameraIndex;
+            ucShowDetail.buffVS.CameraName = m_ucSum1CameraView.buffCam.CameraName;
+            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.SetParamsModeColor(nWidth, nHeight);
+            MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
+
+            if (m_ucSum1CameraView.buffCam.BufferView != IntPtr.Zero)
+            {
+                ucShowDetail.buffVS.BufferView = m_ucSum1CameraView.buffCam.BufferView;
+                ucShowDetail.buffVS.InspectResult = m_ucSum1CameraView.buffCam.InspectResult;
+                await ucShowDetail.buffVS.UpdateImage();
+            }
+        }
 
         #endregion
     }

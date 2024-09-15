@@ -15,8 +15,8 @@ namespace NVisionInspectGUI.Models
     public class CNVisionInspectSystemSetting_PropertyGrid : ModelBase
     {
         [PropertyOrder(1)]
-        [DisplayName("Inspect Camera Count")]
-        public int InspectCameraCount { get; set; }
+        [DisplayName("Number Of Inspection Camera")]
+        public int NumberOfInspectionCamera { get; set; }
 
         [PropertyOrder(2)]
         [DisplayName("Use Simulation ?")]

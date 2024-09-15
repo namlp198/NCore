@@ -11,7 +11,8 @@ namespace NVisionInspectGUI.Models
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectSystemSetting
     {
-        public int m_nInspectCameraCount;
+        public int m_nNumberOfInspectionCamera;
+        public int m_nNumberOfBrand;
         public int m_bSimulation;
         public int m_bByPass;
         public int m_bTestMode;
@@ -19,5 +20,7 @@ namespace NVisionInspectGUI.Models
         public string m_sModelName;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
         public string m_sModelList;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
+        public string m_sCameras;
     }
 }

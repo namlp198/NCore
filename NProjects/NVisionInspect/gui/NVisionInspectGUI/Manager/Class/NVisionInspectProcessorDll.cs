@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -92,8 +93,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool InspectStop(IntPtr NVisionInspectProcessor);
-        public bool InspectStop() { return InspectStop(m_NVisionInspectProcessor); }
+        extern private static bool InspectStop(IntPtr NVisionInspectProcessor, int nCamCount);
+        public bool InspectStop(int nCamCount) { return InspectStop(m_NVisionInspectProcessor, nCamCount); }
 
 
 
@@ -212,13 +213,13 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool LoadRecipe(IntPtr NVisionInspectProcessor, int nCamIdx, IntPtr pRecipe);
-        public bool LoadRecipe(int nCamIdx, ref CNVisionInspectRecipe pRecipe)
+        extern private static bool LoadRecipe(IntPtr NVisionInspectProcessor, int nCamCount, IntPtr pRecipe);
+        public bool LoadRecipe(int nCamCount, ref CNVisionInspectRecipe pRecipe)
         {
             CNVisionInspectRecipe recipe = new CNVisionInspectRecipe();
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipe));
             Marshal.StructureToPtr(recipe, pPointer, false);
-            bool bRet = LoadRecipe(m_NVisionInspectProcessor, nCamIdx, pPointer);
+            bool bRet = LoadRecipe(m_NVisionInspectProcessor, nCamCount, pPointer);
             pRecipe = (CNVisionInspectRecipe)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectRecipe));
 
             return bRet;
