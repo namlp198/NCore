@@ -39,10 +39,12 @@ public:
 	virtual      CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) { return m_pNVisionInspectCameraSetting[nCamIdx]; };
 	virtual      CNVisionInspectResult*          GetResultControl() { return m_pNVisionInspectResult; }
 	virtual      CNVisionInspectStatus*          GetStatusControl(int nCoreIdx) { return m_pNVisionInspectStatus[nCoreIdx]; }
+	             CNVisionInspect_HikCam*         GetHikCamControl() { return m_pNVisionInspectHikCam; }
+				 std::vector<int>                GetVecCameras() { return m_vecCameras; }
 
 public:
 	BOOL                       InspectStart(int nThreadCount, int nCamCount);
-	BOOL                       InspectStop();
+	BOOL                       InspectStop(int nCamCount);
 	BOOL                       Inspect_Reality(int nCamIdx, LPBYTE pBuff);
 	BOOL                       Inspect_Simulator(int nCamIdx);
 	BOOL                       SetTriggerMode(int nCamIdx, int nMode);
@@ -57,7 +59,7 @@ public:
 
 public:
 	BOOL                       LoadSystemSettings(CNVisionInspectSystemSetting* pSystemSetting);
-	BOOL                       LoadRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe);
+	BOOL                       LoadRecipe(int nCamCount, CNVisionInspectRecipe* pRecipe);
 	BOOL                       LoadCameraSettings(CNVisionInspectCameraSetting* pCameraSetting);
 	BOOL                       SaveSystemSetting(CNVisionInspectSystemSetting* pSystemSetting);
 	BOOL                       SaveRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe);
@@ -78,9 +80,6 @@ public:
 	LPBYTE                            GetResultBuffer(int nBuff, int nFrame);
 	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff);
 	BOOL                              GetInspectionResult(int nCoreIdx, CNVisionInspectResult* pReadCodeInspRes);
-
-
-	CNVisionInspect_HikCam*           GetHikCamControl() { return m_pNVisionInspectHikCam; }
 	LPBYTE                            GetImageBufferHikCam(int nCamIdx);
 
 	BOOL                              LoadSimulatorBuffer(int nBuff, int nFrame, CString strFilePath);
@@ -148,4 +147,6 @@ private:
 											    
 	cv::Mat                                     m_matBGR;
 	cv::Mat                                     m_matRGB;
+
+	std::vector<int>                            m_vecCameras; /*pos 0: number of Hik Cam, pos 1: number of Basler Cam*/
 };

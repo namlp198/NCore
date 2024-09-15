@@ -101,11 +101,8 @@ namespace NVisionInspectGUI.ViewModels
 
                     // Reload recipe
                     int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
-                    for (int nCamIdx = 0; nCamIdx < nCamCount; nCamIdx++)
-                    {
-                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nCamIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
-                        MainViewModel.Instance.SettingVM.LoadRecipe(nCamIdx);
-                    }
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nCamCount, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+                    MainViewModel.Instance.SettingVM.LoadRecipe(nCamCount);
 
                     MainViewModel.Instance.RecipeName = RecipeSelected.RecipeName;
                     MessageBox.Show("Load Recipe Success!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);

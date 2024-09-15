@@ -17,6 +17,9 @@ using System.Diagnostics;
 using System.Windows;
 using System.IO;
 using System.Threading;
+using NVisionInspectGUI.Views.CamView;
+using NVisionInspectGUI.Views.UcViews;
+using System.Security.Principal;
 
 namespace NVisionInspectGUI.ViewModels
 {
@@ -32,8 +35,7 @@ namespace NVisionInspectGUI.ViewModels
         #endregion
 
         #region Constructor
-        public MainViewModel(Dispatcher dispatcher, MainView mainView, 
-                             RunViewModel runVM, SettingViewModel settingVM)
+        public MainViewModel(Dispatcher dispatcher, MainView mainView, SettingViewModel settingVM)
         {
             // construct a instance of MainViewModel
             if (_instance == null) _instance = this;
@@ -41,7 +43,6 @@ namespace NVisionInspectGUI.ViewModels
 
             _dispatcher = dispatcher;
             m_ucMainView = mainView;
-            m_runVM = runVM;
             m_settingVM = settingVM;
 
             m_columnNameList = new List<string>() { "A", "B", "C", "D", "E", "F" };
@@ -63,8 +64,10 @@ namespace NVisionInspectGUI.ViewModels
             SettingVM.LoadSystemSettings();
 
             // read number of camera inspect
-            int nNumberOfCamInsp = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nInspectCameraCount;
+            int nNumberOfCamInsp = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nNumberOfInspectionCamera;
             SettingVM.CameraCount = nNumberOfCamInsp;
+
+            AddSumCamViewToRunView(nNumberOfCamInsp);
 
             List<string> lstCameras = new List<string>();
             for (int nCamIdx = 0; nCamIdx < nNumberOfCamInsp; nCamIdx++)
@@ -74,21 +77,20 @@ namespace NVisionInspectGUI.ViewModels
 
                 string sCamera = "Cam " + (nCamIdx + 1) + "";
                 lstCameras.Add(sCamera);
-
-                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nCamIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
-                SettingVM.LoadRecipe(nCamIdx);
             }
+
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nNumberOfCamInsp, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+            SettingVM.LoadRecipe(nNumberOfCamInsp);
 
             SettingVM.SettingView.buffSettingPRO.CameraList = lstCameras;
             SettingVM.LoadPlcSettings();
 
             if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation == 0)
             {
-                RunVM.SumCamVM.Plc_Delta_DVP.Initialize();
+                Plc_Delta_DVP.Initialize();
                 SettingVM.SetAllParamPlcDelta();
                 int nThreadCount = 1;
-                int nCamCount = SettingVM.CameraCount;
-                if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nCamCount))
+                if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nNumberOfCamInsp))
                 {
                     InspectRunning = true;
                 }
@@ -127,9 +129,22 @@ namespace NVisionInspectGUI.ViewModels
 
         private ExcelParser m_excelParser = new ExcelParser();
         private List<string> m_columnNameList;
+
+        private IOManager_PLC_LS m_Plc_LS = new IOManager_PLC_LS();
+        private IOManager_PLC_Delta_DVP m_Plc_Delta = new IOManager_PLC_Delta_DVP();
         #endregion
 
         #region Properties
+        public IOManager_PLC_LS Plc_LS
+        {
+            get => m_Plc_LS;
+            set => m_Plc_LS = value;
+        }
+        public IOManager_PLC_Delta_DVP Plc_Delta_DVP
+        {
+            get => m_Plc_Delta;
+            set => m_Plc_Delta = value;
+        }
         public eMachineMode MachineMode
         {
             get => m_machineMode;
@@ -242,32 +257,26 @@ namespace NVisionInspectGUI.ViewModels
         #endregion
 
         #region AllViewModel
-        private RunViewModel m_runVM;
-        public RunViewModel RunVM { get => m_runVM; private set { } }
-
+        private RunViewModel<ISumCamVM> m_runVM;
+        public RunViewModel<ISumCamVM> RunVM { get => m_runVM; set => m_runVM = value; }
         private SettingViewModel m_settingVM;
         public SettingViewModel SettingVM { get => m_settingVM; private set { } }
         #endregion
 
         #region Methods
-        void StartAppExcel()
+        private void StartAppExcel()
         {
             KillAppExcel();
             OpenExcelResultFile();
         }
-        void KillAppExcel()
+        private void KillAppExcel()
         {
             foreach (var process in Process.GetProcessesByName("EXCEL"))
             {
                 process.Kill();
             }
         }
-        public string ExcelFilePath
-        {
-            get;
-            set;
-        }
-        void OpenExcelResultFile()
+        private void OpenExcelResultFile()
         {
             try
             {
@@ -285,6 +294,209 @@ namespace NVisionInspectGUI.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+        private void AddSumCamViewToRunView(int nCamCount)
+        {
+            if (nCamCount < 1)
+                return;
+
+            switch (nCamCount)
+            {
+                case 1:
+                    {
+                        UcSum1CameraView sum1CameraView = new UcSum1CameraView();
+                        Sum1CameraViewModel sum1CameraVM = new Sum1CameraViewModel(sum1CameraView.Dispatcher, sum1CameraView);
+                        sum1CameraView.DataContext = sum1CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum1CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum1CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 2:
+                    {
+                        UcSum2CameraView sum2CameraView = new UcSum2CameraView();
+                        Sum2CameraViewModel sum2CameraVM = new Sum2CameraViewModel(sum2CameraView.Dispatcher, sum2CameraView);
+                        sum2CameraView.DataContext = sum2CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum2CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum2CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 3:
+                    {
+                        UcSum3CameraView sum3CameraView = new UcSum3CameraView();
+                        Sum3CameraViewModel sum3CameraVM = new Sum3CameraViewModel(sum3CameraView.Dispatcher, sum3CameraView);
+                        sum3CameraView.DataContext = sum3CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum3CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum3CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 4:
+                    {
+                        UcSum4CameraView sum4CameraView = new UcSum4CameraView();
+                        Sum4CameraViewModel sum4CameraVM = new Sum4CameraViewModel(sum4CameraView.Dispatcher, sum4CameraView);
+                        sum4CameraView.DataContext = sum4CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum4CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum4CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 5:
+                    {
+                        UcSum5CameraView sum5CameraView = new UcSum5CameraView();
+                        Sum5CameraViewModel sum5CameraVM = new Sum5CameraViewModel(sum5CameraView.Dispatcher, sum5CameraView);
+                        sum5CameraView.DataContext = sum5CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum5CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum5CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 6:
+                    {
+                        UcSum6CameraView sum6CameraView = new UcSum6CameraView();
+                        Sum6CameraViewModel sum6CameraVM = new Sum6CameraViewModel(sum6CameraView.Dispatcher, sum6CameraView);
+                        sum6CameraView.DataContext = sum6CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum6CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum6CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 7:
+                    {
+                        UcSum7CameraView sum7CameraView = new UcSum7CameraView();
+                        Sum7CameraViewModel sum7CameraVM = new Sum7CameraViewModel(sum7CameraView.Dispatcher, sum7CameraView);
+                        sum7CameraView.DataContext = sum7CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum7CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum7CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                case 8:
+                    {
+                        UcSum8CameraView sum8CameraView = new UcSum8CameraView();
+                        Sum8CameraViewModel sum8CameraVM = new Sum8CameraViewModel(sum8CameraView.Dispatcher, sum8CameraView);
+                        sum8CameraView.DataContext = sum8CameraVM;
+
+                        UcResultView resultView = new UcResultView();
+                        ResultViewModel resultVM = new ResultViewModel(resultView.Dispatcher, resultView);
+                        resultView.DataContext = resultVM;
+
+                        UcRunView runView = new UcRunView();
+                        RunViewModel<ISumCamVM> runVM = new RunViewModel<ISumCamVM>(runView.Dispatcher, runView);
+                        runView.DataContext = runVM;
+
+                        runVM.SumCamVM = sum8CameraVM;
+                        runVM.ResultVM = resultVM;
+
+                        runView.contentCamView.Content = sum8CameraView;
+                        runView.contentResult.Content = resultView;
+
+                        MainView.contentMain.Content = runView;
+                        RunVM = runVM;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         private Task ExcelTemplateInput(List<ExcelTemplateModel> excelTemplateModels, string sheetName, int cellStartWrite)
@@ -361,6 +573,11 @@ namespace NVisionInspectGUI.ViewModels
         public void OpenFolder(string folderPath)
         {
             System.Diagnostics.Process.Start("explorer.exe", @folderPath);
+        }
+        public string ExcelFilePath
+        {
+            get;
+            set;
         }
         #endregion
 

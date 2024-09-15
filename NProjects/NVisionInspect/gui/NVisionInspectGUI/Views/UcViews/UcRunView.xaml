@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="{DynamicResource RGB_Night_33_41_57}">
+             Background="{DynamicResource RGB_Night_39_42_49}">
     <UserControl.Resources>
         <SolidColorBrush x:Key="BackgroundBrush"
                          Color="#2e3d5a" />
@@ -112,18 +112,18 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <ContentControl Grid.Column="0"
-                            Margin="2 2 0 2"
+                            Margin="0 2 0 0"
                             Name="contentCamView" />
         </Grid>
 
         <!--separator-->
         <Grid Grid.Column="1"
-              Margin="0 2 0 2"
+              Margin="0 5 0 2"
               Background="White"></Grid>
 
         <Grid Grid.Column="2">
             <ContentControl Grid.Row="0"
-                            Margin="2"
+                            Margin="0 2 0 0"
                             x:Name="contentResult" />
         </Grid>
     </Grid>

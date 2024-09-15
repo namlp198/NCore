@@ -31,16 +31,14 @@ CNVisionInspect_HikCam::~CNVisionInspect_HikCam()
 
 BOOL CNVisionInspect_HikCam::Initialize()
 {
-	CNVisionInspectSystemSetting* pSysSetting = m_pInterface->GetSystemSettingControl();
-
-	int nCamCount = pSysSetting->m_nInspectCameraCount;
+	int nHikCamCount = m_pInterface->GetVecCameras().at(0); /*pos 0: number of Hik Cam*/
 
 	std::vector<CFrameGrabberParam> grabberParam;
-	grabberParam.resize(nCamCount);
+	grabberParam.resize(nHikCamCount);
 
 	//CFrameGrabberParam grabberParam[nCamCount];
 
-	for (int i = 0; i < nCamCount; i++)
+	for (int i = 0; i < nHikCamCount; i++)
 	{
 		grabberParam[i].SetParam_GrabberPort((CString)m_pInterface->GetCameraSettingControl(i)->m_sSerialNumber);
 		grabberParam[i].SetParam_FrameWidth(m_pInterface->GetCameraSettingControl(i)->m_nFrameWidth);
@@ -51,7 +49,7 @@ BOOL CNVisionInspect_HikCam::Initialize()
 		grabberParam[i].SetParam_FrameCount(m_pInterface->GetCameraSettingControl(i)->m_nMaxFrameCount);
 	}
 
-	for (int nCamIdx = 0; nCamIdx < nCamCount; nCamIdx++)
+	for (int nCamIdx = 0; nCamIdx < nHikCamCount; nCamIdx++)
 	{
 		// Image Buffer
 		if (m_pCameraImageBuffer[nCamIdx] != NULL)

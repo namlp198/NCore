@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:NCore.Wpf.BufferViewerSimple"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600"
-             Background="{DynamicResource RGB_Night_39_42_49}">
+             Background="{DynamicResource RGB_Night_42_45_52}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

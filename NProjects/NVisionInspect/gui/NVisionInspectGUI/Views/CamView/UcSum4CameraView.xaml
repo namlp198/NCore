@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="NVisionInspectGUI.Views.CamView.UcSum4CameraView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NVisionInspectGUI.Views.UcViews"
+             xmlns:Cvt="clr-namespace:NCore.Wpf.BufferViewerSimple.Converters;assembly=NCore.Wpf.BufferViewerSimple"
+             xmlns:Ctrls="clr-namespace:NCore.Wpf.BufferViewerSimple;assembly=NCore.Wpf.BufferViewerSimple"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="1"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--Separator-->
+        <Grid Grid.Column="1"
+              Grid.Row="0"
+              Grid.RowSpan="3"
+              Margin="0 1 0 1"
+              Background="White">
+
+        </Grid>
+
+        <!--Separator-->
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Grid.ColumnSpan="3"
+              Margin="1 0 1 0"
+              Background="White">
+
+        </Grid>
+
+        <Border Grid.Column="0"
+                Grid.Row="0">
+            <Ctrls:BufferViewerSimple Name="buffCam1" />
+
+        </Border>
+
+        <Border Grid.Column="2"
+                Grid.Row="0">
+            <Ctrls:BufferViewerSimple Name="buffCam2" />
+
+        </Border>
+
+        <Border Grid.Column="0"
+                Grid.Row="2">
+            <Ctrls:BufferViewerSimple Name="buffCam3" />
+
+        </Border>
+
+        <Border Grid.Column="2"
+                Grid.Row="2">
+            <Ctrls:BufferViewerSimple Name="buffCam4" />
+
+        </Border>
+    </Grid>
+</UserControl>

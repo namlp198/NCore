@@ -50,7 +50,7 @@
             </Grid>
         </ControlTemplate>
     </UserControl.Resources>
-    <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+    <TabControl Background="{DynamicResource RGB_Night_39_42_49}">
         <TabItem Header="RESULT"
                  Style="{StaticResource TabItemStyle}"
                  FontSize="14"
@@ -130,15 +130,15 @@
                             BorderThickness="1"
                             BorderBrush="White">
                         <StackPanel Orientation="Horizontal">
-                            <Label Margin="2 2 10 2"
+                            <!--<Label Margin="2 2 10 2"
                                    Content="STATISTICS"
                                    Foreground="White"
                                    Background="{DynamicResource DarkColor_1}"
                                    VerticalContentAlignment="Center"
                                    FontSize="16"
                                    FontWeight="Bold"
-                                   Width="100" />
-                            <TextBlock Margin="10 2 2 2"
+                                   Width="100" />-->
+                            <TextBlock Margin="30 2 2 2"
                                        Text="TOTAL"
                                        Foreground="White"
                                        TextAlignment="Center"

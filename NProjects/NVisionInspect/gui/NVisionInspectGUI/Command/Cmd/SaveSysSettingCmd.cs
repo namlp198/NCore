@@ -15,7 +15,7 @@ namespace NVisionInspectGUI.Command.Cmd
         public SaveSysSettingCmd() { }
         public override void Execute(object parameter)
         {
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nInspectCameraCount = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.InspectCameraCount;
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nNumberOfInspectionCamera = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.NumberOfInspectionCamera;
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.Simulation == true ? 1 : 0;
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bByPass = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.ByPass == true ? 1 : 0;
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bTestMode = MainViewModel.Instance.SettingVM.NVisionInspectSystemSettingsPropertyGrid.TestMode == true ? 1 : 0;

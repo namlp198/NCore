@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NVisionInspectGUI.Views.UcViews
+namespace NVisionInspectGUI.Views.CamView
 {
     /// <summary>
     /// Interaction logic for Uc1CameraView.xaml
     /// </summary>
-    public partial class UcSum1CameraView : UserControl
+    public partial class UcSum5CameraView : UserControl
     {
-        public UcSum1CameraView()
+        public UcSum5CameraView()
         {
             InitializeComponent();
         }

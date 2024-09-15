@@ -149,6 +149,7 @@
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
     <Compile Include="Command\Cmd\InitializeCmd.cs" />
+    <Compile Include="Command\Cmd\NextPrevImageCmd.cs" />
     <Compile Include="Command\Cmd\LoginCmd.cs" />
     <Compile Include="Command\Cmd\ReadCodeCmd.cs" />
     <Compile Include="Command\Cmd\SaveLightSettingCmd.cs" />
@@ -207,6 +208,13 @@
     <Compile Include="Models\Plc_Delta_Model.cs" />
     <Compile Include="Models\Plc_LS_Model.cs" />
     <Compile Include="Models\RecipeList_MapToDataGrid_Model.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum8CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum7CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum6CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum5CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum4CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum3CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum2CameraViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RecipeListViewModel.cs" />
@@ -214,7 +222,28 @@
     <Compile Include="ViewModels\ResultViewModel.cs" />
     <Compile Include="ViewModels\RunViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />
-    <Compile Include="ViewModels\Sum1CameraViewModel.cs" />
+    <Compile Include="ViewModels\CamViewModel\Sum1CameraViewModel.cs" />
+    <Compile Include="Views\CamView\UcSum8CameraView.xaml.cs">
+      <DependentUpon>UcSum8CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CamView\UcSum7CameraView.xaml.cs">
+      <DependentUpon>UcSum7CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CamView\UcSum6CameraView.xaml.cs">
+      <DependentUpon>UcSum6CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CamView\UcSum5CameraView.xaml.cs">
+      <DependentUpon>UcSum5CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CamView\UcSum4CameraView.xaml.cs">
+      <DependentUpon>UcSum4CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CamView\UcSum3CameraView.xaml.cs">
+      <DependentUpon>UcSum3CameraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CamView\UcSum2CameraView.xaml.cs">
+      <DependentUpon>UcSum2CameraView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -230,7 +259,7 @@
     <Compile Include="Views\UcViews\UcShowDetail.xaml.cs">
       <DependentUpon>UcShowDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UcViews\UcSum1CameraView.xaml.cs">
+    <Compile Include="Views\CamView\UcSum1CameraView.xaml.cs">
       <DependentUpon>UcSum1CameraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UcViews\UcResultView.xaml.cs">
@@ -256,6 +285,34 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\CamView\UcSum8CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CamView\UcSum7CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CamView\UcSum6CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CamView\UcSum5CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CamView\UcSum4CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CamView\UcSum3CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CamView\UcSum2CameraView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -276,7 +333,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UcViews\UcSum1CameraView.xaml">
+    <Page Include="Views\CamView\UcSum1CameraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

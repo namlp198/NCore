@@ -15,15 +15,22 @@ namespace NVisionInspectGUI.Command.Cmd
         public SelectMachineModeCmd() { }
         public override void Execute(object parameter)
         {
+            if (parameter == null)
+                return;
+
             string machineMode = parameter as string;
-            if(MainViewModel.Instance.MachineMode == Commons.eMachineMode.MachineMode_Auto &&
+
+            int nThreadCount = 1;
+            int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
+
+            if (MainViewModel.Instance.MachineMode == Commons.eMachineMode.MachineMode_Auto &&
                 string.Compare(machineMode.ToUpper(), "MANUAL") == 0)
             {
                 if(MessageBox.Show("Change to Manual Mode?", "Alarm", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                    
                     MainViewModel.Instance.InspectRunning = false;
-                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStop();
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStop(nCamCount);
 
                     MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Manual;
                     MainViewModel.Instance.MainView.tbMachineMode.Text = "RUN";
@@ -34,8 +41,6 @@ namespace NVisionInspectGUI.Command.Cmd
             else
             {
                 MainViewModel.Instance.InspectRunning = true;
-                int nThreadCount = 1;
-                int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nCamCount);
 
                 MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Auto;

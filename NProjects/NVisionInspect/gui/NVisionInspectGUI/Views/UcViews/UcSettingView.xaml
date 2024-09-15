@@ -214,6 +214,7 @@
                             Margin="5 0 0 0"
                             x:Name="btnLoadImage"
                             Command="{Binding LoadImageCmd}"
+                            CommandParameter="{Binding ElementName=btnLoadImage, Path=Name}"
                             Width="60">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
@@ -232,6 +233,63 @@
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{DynamicResource IMG_Load_Img_2}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Margin="5 0 0 0"
+                            x:Name="btnLoadAllImage"
+                            Command="{Binding LoadImageCmd}"
+                            CommandParameter="{Binding ElementName=btnLoadAllImage, Path=Name}"
+                            Width="100"
+                            Height="35">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                        <Button.Opacity>
+                            <MultiBinding Converter="{StaticResource EnumBooleanToReverseDoubleMultiConverter}"
+                                          Mode="OneWay">
+                                <Binding Path="FromImageSource" />
+                                <Binding Path="IsSelectedCamera" />
+                            </MultiBinding>
+                        </Button.Opacity>
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Load All Image"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Margin="5 0 0 0"
+                            x:Name="btnPrevImage"
+                            IsEnabled="{Binding ElementName=btnLoadAllImage, Path=IsEnabled}"
+                            Command="{Binding NextPrevCmd}"
+                            CommandParameter="{Binding ElementName=btnPrevImage, Path=Name}"
+                            Width="50">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_PrevBtn_1}"
+                                       Margin="3" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Background="WhiteSmoke"
+                            Margin="5 0 0 0"
+                            x:Name="btnNextImage"
+                            IsEnabled="{Binding ElementName=btnLoadAllImage, Path=IsEnabled}"
+                            Command="{Binding NextPrevCmd}"
+                            CommandParameter="{Binding ElementName=btnNextImage, Path=Name}"
+                            Width="50">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_NextBtn_1}"
                                        Margin="3" />
                             </StackPanel>
                         </Button.Content>
@@ -380,7 +438,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='1'}">
                                     <Grid>
@@ -423,7 +481,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='2'}">
                                     <Grid>
@@ -466,7 +524,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='3'}">
                                     <Grid>
@@ -509,7 +567,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='4'}">
                                     <Grid>
@@ -552,7 +610,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='5'}">
                                     <Grid>
@@ -595,7 +653,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='6'}">
                                     <Grid>
@@ -638,7 +696,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='7'}">
                                     <Grid>
@@ -681,7 +739,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="120"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='8'}">
                                     <Grid>
@@ -735,7 +793,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='1'}">
                                     <Grid>
@@ -776,7 +834,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='2'}">
                                     <Grid>
@@ -817,7 +875,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='3'}">
                                     <Grid>
@@ -858,7 +916,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='4'}">
                                     <Grid>
@@ -899,7 +957,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='5'}">
                                     <Grid>
@@ -940,7 +998,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='6'}">
                                     <Grid>
@@ -981,7 +1039,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='7'}">
                                     <Grid>
@@ -1022,7 +1080,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="300"
+                                         Width="130"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='8'}">
                                     <Grid>

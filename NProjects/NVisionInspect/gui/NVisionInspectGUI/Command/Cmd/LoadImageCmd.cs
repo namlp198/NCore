@@ -17,7 +17,23 @@ namespace NVisionInspectGUI.Command.Cmd
         }
         public override void Execute(object parameter)
         {
-            InterfaceManager.Instance.m_simulationThread.LoadImage();
+            if (parameter == null)
+                return;
+
+            string btn = parameter as string;
+
+            int nCamIdx = MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.CameraIndex;
+            int nBuff = nCamIdx;
+            int nFrame = 0;
+
+            if (btn.CompareTo("btnLoadImage") == 0)
+            {
+                InterfaceManager.Instance.m_simulationThread.LoadImage(nCamIdx, nBuff, nFrame);
+            }
+            else if(btn.CompareTo("btnLoadAllImage") == 0)
+            {
+                InterfaceManager.Instance.m_simulationThread.LoadAllImage(nCamIdx, nBuff, nFrame);
+            }
         }
     }
 }

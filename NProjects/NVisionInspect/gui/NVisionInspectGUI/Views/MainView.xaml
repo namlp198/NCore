@@ -11,7 +11,7 @@
         Title="MainView"
         Height="1080"
         Width="1920"
-        Background="{DynamicResource RGB_Night_33_41_57}"
+        Background="{DynamicResource RGB_Night_39_42_49}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
     <i:Interaction.Triggers>
@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
         <ToolBar Grid.Row="0"
                  Margin="1"
-                 Background="{DynamicResource RGB_Night_46_61_90}">
+                 Background="{DynamicResource RGB_Night_39_42_49}">
             <Button Margin="5"
                     Width="120"
                     Name="btnInit"
@@ -48,7 +48,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Separator Margin="3" />
+            <Separator Margin="2" />
             <Button Margin="5"
                     Width="120"
                     Name="btnMachineMode"
@@ -71,14 +71,14 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Separator Margin="3" />
+            <Separator Margin="2" />
             <Button Margin="5"
                     Width="120"
                     Name="btnMain"
                     Command="{Binding SelectRunViewCmd}">
                 <Button.Content>
                     <StackPanel Orientation="Vertical">
-                        <Image Source="{DynamicResource IMG_NoNavigation}"
+                        <Image Source="{DynamicResource IMG_Scan_Pcb_Profile}"
                                Margin="8 4 8 0"
                                Width="35"
                                Height="35" />
@@ -92,7 +92,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Separator Margin="3" />
+            <Separator Margin="2" />
             <Button Margin="5"
                     Width="120"
                     Name="btnSelectRecipe"
@@ -114,7 +114,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Separator Margin="3" />
+            <Separator Margin="2" />
             <Button Margin="5"
                     Width="120"
                     Name="btnSettings"
@@ -136,7 +136,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Separator Margin="3" />
+            <Separator Margin="2" />
             <Button Margin="5"
                     Width="130"
                     Name="btnReport"
@@ -158,7 +158,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Separator Margin="3" />
+            <Separator Margin="2" />
             <Button Margin="5"
                     Name="btnLogin"
                     Command="{Binding ShowLoginViewCmd}"
