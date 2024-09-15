@@ -21,6 +21,7 @@ interface INVisionInspectHikCamToParent
 	virtual CNVisionInspectCameraSetting*       GetCameraSettingControl(int nCamIdx) = 0;
 	virtual CNVisionInspectStatus*              GetStatusControl(int nCoreIdx) = 0;
 	virtual BOOL                                SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual std::vector<int>                    GetVecCameras() = 0;
 };
 
 class AFX_EXT_CLASS CNVisionInspect_HikCam : public IFrameGrabber2Parent

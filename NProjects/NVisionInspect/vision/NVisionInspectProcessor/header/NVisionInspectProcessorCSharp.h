@@ -42,7 +42,7 @@ extern "C"
 
 	__declspec(dllexport) bool                          InspectStart(CNVisionInspectProcessor* pProcessor, int nThreadCount, int nCamCount);
 												        
-	__declspec(dllexport) bool                          InspectStop(CNVisionInspectProcessor* pProcessor);
+	__declspec(dllexport) bool                          InspectStop(CNVisionInspectProcessor* pProcessor, int nCamCount);
 
 	__declspec(dllexport) bool                          Inspect_Simulator(CNVisionInspectProcessor* pProcessor,int nCamCount);
 												        
@@ -70,7 +70,7 @@ extern "C"
 
 	__declspec(dllexport) bool                          LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx);
 												        
-	__declspec(dllexport) bool                          LoadRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe);
+	__declspec(dllexport) bool                          LoadRecipe(CNVisionInspectProcessor* pProcessor, int nCamCount, CNVisionInspectRecipe* pRecipe);
 
 
 	/************************** Save Setting and Recipe **************************/
