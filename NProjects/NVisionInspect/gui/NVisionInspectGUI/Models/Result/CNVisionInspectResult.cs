@@ -21,6 +21,8 @@ namespace NVisionInspectGUI.Models
     {
         public int m_bResultStatus;
         public int m_bInspectCompleted;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE_RESULT)]
+        public string m_sResultString;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectResult_Cam3

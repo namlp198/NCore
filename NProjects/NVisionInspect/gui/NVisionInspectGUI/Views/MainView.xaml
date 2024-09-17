@@ -13,7 +13,8 @@
         Width="1920"
         Background="{DynamicResource RGB_Night_39_42_49}"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        Closed="Window_Closed">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCmd}" />

@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 namespace NVisionInspectGUI.Commons
 {
     public enum eMachineMode { MachineMode_Auto, MachineMode_Manual }
+    public enum emCameraBrand
+    {
+        CameraBrand_Hik = 0,
+        CameraBrand_Basler,
+        CameraBrand_Jai,
+        CameraBrand_IRayple
+    }
     public enum eUserLevel
     {
         UserLevel_Operator,
