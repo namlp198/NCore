@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "NVisionInspect_HikCam.h"
+#include "NVisionInspect_BaslerCam.h"
 
-CNVisionInspect_HikCam::CNVisionInspect_HikCam(INVisionInspectHikCamToParent* pInterface)
+CNVisionInspect_BaslerCam::CNVisionInspect_BaslerCam(INVisionInspectBaslerCamToParent* pInterface)
 {
 	m_pInterface = pInterface;
 
@@ -24,21 +24,21 @@ CNVisionInspect_HikCam::CNVisionInspect_HikCam(INVisionInspectHikCamToParent* pI
 	}
 }
 
-CNVisionInspect_HikCam::~CNVisionInspect_HikCam()
+CNVisionInspect_BaslerCam::~CNVisionInspect_BaslerCam()
 {
 	Destroy();
 }
 
-BOOL CNVisionInspect_HikCam::Initialize()
+BOOL CNVisionInspect_BaslerCam::Initialize()
 {
-	int nHikCamCount = m_pInterface->GetVecCameras().at(0); /*pos 0: number of Hik Cam*/
+	int nbaslerCamCount = m_pInterface->GetVecCameras().at(1); /*pos 1: number of Basler Cam*/
 
 	std::vector<CFrameGrabberParam> grabberParam;
-	grabberParam.resize(nHikCamCount);
+	grabberParam.resize(nbaslerCamCount);
 
 	//CFrameGrabberParam grabberParam[nCamCount];
 
-	for (int i = 0; i < nHikCamCount; i++)
+	for (int i = 0; i < nbaslerCamCount; i++)
 	{
 		grabberParam[i].SetParam_GrabberPort((CString)m_pInterface->GetCameraSettingControl(i)->m_sSerialNumber);
 		grabberParam[i].SetParam_FrameWidth(m_pInterface->GetCameraSettingControl(i)->m_nFrameWidth);
@@ -49,7 +49,7 @@ BOOL CNVisionInspect_HikCam::Initialize()
 		grabberParam[i].SetParam_FrameCount(m_pInterface->GetCameraSettingControl(i)->m_nMaxFrameCount);
 	}
 
-	for (int nCamIdx = 0; nCamIdx < nHikCamCount; nCamIdx++)
+	for (int nCamIdx = 0; nCamIdx < nbaslerCamCount; nCamIdx++)
 	{
 		// Image Buffer
 		if (m_pCameraImageBuffer[nCamIdx] != NULL)
@@ -73,11 +73,11 @@ BOOL CNVisionInspect_HikCam::Initialize()
 		DWORD64 dw64Size_TopCam = (DWORD64)dwFrameCount * dwFrameSize;
 
 		CString strMemory;
-		strMemory.Format(_T("%s_%d"), "BufferHikCam", nCamIdx);
+		strMemory.Format(_T("%s_%d"), "BufferBaslerCam", nCamIdx);
 		m_pCameraImageBuffer[nCamIdx]->CreateSharedMemory(strMemory, dw64Size_TopCam);
 
 		// Camera
-		m_pCamera[nCamIdx] = new CFrameGrabber_MVS_GigE(nCamIdx, this);
+		m_pCamera[nCamIdx] = new CFrameGrabber_BaslerCam_New(nCamIdx, this);
 
 		int nRetryCount = 1;
 		BOOL bCamConnection = FALSE;
@@ -106,7 +106,7 @@ BOOL CNVisionInspect_HikCam::Initialize()
 	}
 }
 
-BOOL CNVisionInspect_HikCam::Destroy()
+BOOL CNVisionInspect_BaslerCam::Destroy()
 {
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
 	{
@@ -134,7 +134,7 @@ BOOL CNVisionInspect_HikCam::Destroy()
 	return TRUE;
 }
 
-BOOL CNVisionInspect_HikCam::GetCamStatus()
+BOOL CNVisionInspect_BaslerCam::GetCamStatus()
 {
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
 	{
@@ -145,7 +145,7 @@ BOOL CNVisionInspect_HikCam::GetCamStatus()
 	return TRUE;
 }
 
-LPBYTE CNVisionInspect_HikCam::GetBufferImage(int nCamIdx)
+LPBYTE CNVisionInspect_BaslerCam::GetBufferImage(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return NULL;
@@ -162,8 +162,7 @@ LPBYTE CNVisionInspect_HikCam::GetBufferImage(int nCamIdx)
 
 	return m_pCameraImageBuffer[nCamIdx]->GetFrameImage(nCurrentFrameIdx);
 }
-
-BOOL CNVisionInspect_HikCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
+BOOL CNVisionInspect_BaslerCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return FALSE;
@@ -189,7 +188,7 @@ BOOL CNVisionInspect_HikCam::GetBufferImage(int nCamIdx, LPBYTE pBuffer)
 	return TRUE;
 }
 
-BOOL CNVisionInspect_HikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
+BOOL CNVisionInspect_BaslerCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return FALSE;
@@ -239,7 +238,7 @@ BOOL CNVisionInspect_HikCam::GetGrabBufferImage(int nCamIdx, LPBYTE pBuffer)
 	return TRUE;
 }
 
-CSharedMemoryBuffer* CNVisionInspect_HikCam::GetSharedMemoryBuffer(int nCamIdx)
+CSharedMemoryBuffer* CNVisionInspect_BaslerCam::GetSharedMemoryBuffer(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return NULL;
@@ -247,7 +246,7 @@ CSharedMemoryBuffer* CNVisionInspect_HikCam::GetSharedMemoryBuffer(int nCamIdx)
 	return m_pCameraImageBuffer[nCamIdx];
 }
 
-int CNVisionInspect_HikCam::PopInspectWaitFrame(int nGrabberIdx)
+int CNVisionInspect_BaslerCam::PopInspectWaitFrame(int nGrabberIdx)
 {
 	int nProcessFrame = 0;
 
@@ -264,7 +263,7 @@ int CNVisionInspect_HikCam::PopInspectWaitFrame(int nGrabberIdx)
 	return nProcessFrame;
 }
 
-BOOL CNVisionInspect_HikCam::SetFrameWaitProcess(int nCamIdx)
+BOOL CNVisionInspect_BaslerCam::SetFrameWaitProcess(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return NULL;
@@ -295,7 +294,7 @@ BOOL CNVisionInspect_HikCam::SetFrameWaitProcess(int nCamIdx)
 	return TRUE;
 }
 
-LPBYTE CNVisionInspect_HikCam::GetFrameWaitProcess(int nCamIdx, int nFrame)
+LPBYTE CNVisionInspect_BaslerCam::GetFrameWaitProcess(int nCamIdx, int nFrame)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return NULL;
@@ -311,7 +310,13 @@ LPBYTE CNVisionInspect_HikCam::GetFrameWaitProcess(int nCamIdx, int nFrame)
 	localLock.Unlock();
 }
 
-int CNVisionInspect_HikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
+void CNVisionInspect_BaslerCam::RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam)
+{
+	m_pParam = pParam;
+	m_pReceivedImgCallback = callback;
+}
+
+int CNVisionInspect_BaslerCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameIndex, const BYTE* pBuffer, DWORD64 dwBufferSize)
 {
 	if (nGrabberIndex < 0 || MAX_CAMERA_INSPECT_COUNT <= nGrabberIndex)
 		return -1;
@@ -337,10 +342,10 @@ int CNVisionInspect_HikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameInde
 	m_cameraCurrentFrameIdx[nGrabberIndex] = nNextFrameIdx;
 
 	int nCoreIdx = nGrabberIndex;
-	if (m_pInterface->GetStatusControl(nCoreIdx)->GetStreaming() == FALSE 
+	if (m_pInterface->GetStatusControl(nCoreIdx)->GetStreaming() == FALSE
 		&& m_pInterface->GetStatusControl(nCoreIdx)->GetInspectRunning() == TRUE)
 	{
-		m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nNextFrameIdx, CameraBrand_Hik, m_pParam);
+		m_pReceivedImgCallback((LPBYTE)pBuffer, nGrabberIndex, nNextFrameIdx, CameraBrand_Basler, m_pParam);
 
 		return TRUE;
 	}
@@ -365,12 +370,12 @@ int CNVisionInspect_HikCam::IFG2P_FrameGrabbed(int nGrabberIndex, int nFrameInde
 	return TRUE;
 }
 
-int CNVisionInspect_HikCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)
+int CNVisionInspect_BaslerCam::IFG2P_GetFrameBuffer(int nGrabberIndex, int nFrameIndex, BYTE* pBuffer, DWORD64 dwBufferSize)
 {
 	return -1;
 }
 
-int CNVisionInspect_HikCam::StartGrab(int nCamIdx)
+int CNVisionInspect_BaslerCam::StartGrab(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -381,7 +386,7 @@ int CNVisionInspect_HikCam::StartGrab(int nCamIdx)
 	return m_pCamera[nCamIdx]->StartGrab();
 }
 
-int CNVisionInspect_HikCam::StopGrab(int nCamIdx)
+int CNVisionInspect_BaslerCam::StopGrab(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -392,7 +397,7 @@ int CNVisionInspect_HikCam::StopGrab(int nCamIdx)
 	return m_pCamera[nCamIdx]->StopGrab();
 }
 
-int CNVisionInspect_HikCam::SoftwareTrigger(int nCamIdx)
+int CNVisionInspect_BaslerCam::SoftwareTrigger(int nCamIdx)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -401,15 +406,15 @@ int CNVisionInspect_HikCam::SoftwareTrigger(int nCamIdx)
 		return 0;
 
 	int nMode, nSource;
-	m_pCamera[nCamIdx]->GetTriggerMode(nMode);
-	m_pCamera[nCamIdx]->GetTriggerSource(nSource);
+	nMode = m_pCamera[nCamIdx]->GetTriggerMode().GetIntValue();
+	nSource = m_pCamera[nCamIdx]->GetTriggerSource().GetIntValue();
 	if (nMode == 0 && nSource == 1)
 		return 0;
 
 	return m_pCamera[nCamIdx]->SendTrigger();
 }
 
-int CNVisionInspect_HikCam::SetTriggerMode(int nCamIdx, int nMode)
+int CNVisionInspect_BaslerCam::SetTriggerMode(int nCamIdx, int nMode)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -417,10 +422,10 @@ int CNVisionInspect_HikCam::SetTriggerMode(int nCamIdx, int nMode)
 	if (m_pCamera[nCamIdx] == NULL)
 		return 0;
 
-	m_pCamera[nCamIdx]->SetTriggerMode(nMode);
+	return m_pCamera[nCamIdx]->SetTriggerMode(nMode);
 }
 
-int CNVisionInspect_HikCam::SetTriggerSource(int nCamIdx, int nSource)
+int CNVisionInspect_BaslerCam::SetTriggerSource(int nCamIdx, int nSource)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -428,10 +433,10 @@ int CNVisionInspect_HikCam::SetTriggerSource(int nCamIdx, int nSource)
 	if (m_pCamera[nCamIdx] == NULL)
 		return 0;
 
-	m_pCamera[nCamIdx]->SetTriggerSource(nSource);
+	return m_pCamera[nCamIdx]->SetTriggerSource(nSource);
 }
 
-int CNVisionInspect_HikCam::SetExposureTime(int nCamIdx, double dExpTime)
+int CNVisionInspect_BaslerCam::SetExposureTime(int nCamIdx, double dExpTime)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -442,7 +447,7 @@ int CNVisionInspect_HikCam::SetExposureTime(int nCamIdx, double dExpTime)
 	return m_pCamera[nCamIdx]->SetExposureTime(dExpTime);
 }
 
-int CNVisionInspect_HikCam::SetAnalogGain(int nCamIdx, double dGain)
+int CNVisionInspect_BaslerCam::SetAnalogGain(int nCamIdx, double dGain)
 {
 	if (nCamIdx < 0 || MAX_CAMERA_INSPECT_COUNT <= nCamIdx)
 		return 0;
@@ -451,10 +456,4 @@ int CNVisionInspect_HikCam::SetAnalogGain(int nCamIdx, double dGain)
 		return 0;
 
 	return m_pCamera[nCamIdx]->SetAnalogGain(dGain);
-}
-
-void CNVisionInspect_HikCam::RegisterReceivedImageCallback(ReceivedImageCallback* callback, LPVOID pParam)
-{
-	m_pReceivedImgCallback = callback;
-	m_pParam = pParam;
 }

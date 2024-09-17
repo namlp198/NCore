@@ -186,12 +186,12 @@ bool InspectStop(CNVisionInspectProcessor* pProcessor, int nCamCount)
 	else               return true;
 }
 
-bool Inspect_Simulator(CNVisionInspectProcessor* pProcessor, int nCamCount)
+bool Inspect_Simulator(CNVisionInspectProcessor* pProcessor, emCameraBrand camBrand, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->Inspect_Simulator(nCamCount);
+	BOOL bRet = pProcessor->Inspect_Simulator(camBrand, nCamIdx);
 	if (bRet == FALSE) return false;
 	else               return true;
 }

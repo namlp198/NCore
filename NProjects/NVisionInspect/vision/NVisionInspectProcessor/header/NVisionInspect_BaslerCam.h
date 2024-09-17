@@ -2,7 +2,7 @@
 
 #include "FrameGrabber.h"
 #include "FrameGrabberParam.h"
-#include "FrameGrabber_MVS_GigE.h"
+#include "FrameGrabber_BaslerCam_New.h"
 #include "SharedMemoryBuffer.h"
 #include <queue>
 #include "NVisionInspectRecipe.h"
@@ -14,21 +14,21 @@
 
 typedef void __stdcall ReceivedImageCallback(LPVOID pBuffer, int nGrabberIndex, int nNextFrameIdx, emCameraBrand camBrand, LPVOID pParam);
 
-interface INVisionInspectHikCamToParent
+interface INVisionInspectBaslerCamToParent
 {
-	virtual CNVisionInspectRecipe*              GetRecipeControl() = 0;
-	virtual CNVisionInspectSystemSetting*       GetSystemSettingControl() = 0;
-	virtual CNVisionInspectCameraSetting*       GetCameraSettingControl(int nCamIdx) = 0;
-	virtual CNVisionInspectStatus*              GetStatusControl(int nCoreIdx) = 0;
-	virtual BOOL                                SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
-	virtual std::vector<int>                    GetVecCameras() = 0;
+	virtual CNVisionInspectRecipe*               GetRecipeControl() = 0;
+	virtual CNVisionInspectSystemSetting*        GetSystemSettingControl() = 0;
+	virtual CNVisionInspectCameraSetting*        GetCameraSettingControl(int nCamIdx) = 0;
+	virtual CNVisionInspectStatus*               GetStatusControl(int nCoreIdx) = 0;
+	virtual BOOL                                 SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual std::vector<int>                     GetVecCameras() = 0;
 };
 
-class AFX_EXT_CLASS CNVisionInspect_HikCam : public IFrameGrabber2Parent
+class AFX_EXT_CLASS CNVisionInspect_BaslerCam : public IFrameGrabber2Parent
 {
 public:
-	CNVisionInspect_HikCam(INVisionInspectHikCamToParent* pInterface);
-	~CNVisionInspect_HikCam();
+	CNVisionInspect_BaslerCam(INVisionInspectBaslerCamToParent* pInterface);
+	~CNVisionInspect_BaslerCam();
 
 public:
 	BOOL                            Initialize();
@@ -68,7 +68,7 @@ public:
 
 private:
 
-	INVisionInspectHikCamToParent*             m_pInterface;
+	INVisionInspectBaslerCamToParent*          m_pInterface;
 
 	// callback
 	ReceivedImageCallback*                     m_pReceivedImgCallback;
@@ -76,7 +76,7 @@ private:
 
 	// Area Camera
 	BOOL                                       m_bCamera_ConnectStatus[MAX_CAMERA_INSPECT_COUNT];
-	CFrameGrabber_MVS_GigE*                    m_pCamera[MAX_CAMERA_INSPECT_COUNT];
+	CFrameGrabber_BaslerCam_New*               m_pCamera[MAX_CAMERA_INSPECT_COUNT];
 
 	CCriticalSection                           m_csCameraFrameIdx[MAX_CAMERA_INSPECT_COUNT];
 

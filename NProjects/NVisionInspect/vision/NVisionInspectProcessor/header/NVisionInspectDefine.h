@@ -39,3 +39,10 @@
 #define	DEG2RAD(degree)				((degree*PI)/180.0)
 
 typedef enum { InspectStatus_Inspecting, InspectStatus_Stopping, InspectStatus_Busy } emInspectStatus;
+typedef enum
+{
+	CameraBrand_Hik = 0,
+	CameraBrand_Basler,
+	CameraBrand_Jai,
+	CameraBrand_IRayple
+} emCameraBrand;

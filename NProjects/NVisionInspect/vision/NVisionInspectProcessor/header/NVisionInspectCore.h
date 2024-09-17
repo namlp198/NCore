@@ -21,11 +21,12 @@ interface INVisionInspectCoreToParent
 	virtual void							SystemMessage(const TCHAR* lpstrFormat, ...) = 0;
 	virtual void							AlarmMessage(CString strAlarmMessage) = 0;
 	virtual CNVisionInspectRecipe*          GetRecipeControl() = 0;
+	virtual std::vector<int>                GetVecCameras() = 0;
 
 	virtual CNVisionInspectSystemSetting*   GetSystemSettingControl() = 0;
 	virtual CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
 	virtual CNVisionInspectResult*          GetResultControl() = 0;
-	virtual CNVisionInspectStatus*          GetStatusControl(int nCoreIdx) = 0;
+	virtual CNVisionInspectStatus*          GetStatusControl(int nCamIdx) = 0;
 	virtual BOOL                            SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual LPBYTE                          GetSimulatorBuffer(int nBuff, int nFrame) = 0;
 	virtual void                            InspectComplete(int nCamIdx, BOOL bSetting) = 0;
@@ -68,15 +69,26 @@ public:
 	void StartThread(int nThreadCount);
 
 public:
-	void                       Inspect_Simulation(int nCamIdx, int nBuff, int nFrame);
-	void                       Inspect_Reality(int nCamIdx, LPBYTE pBuffer);
+	void                       Inspect_Simulation(emCameraBrand camBrand, int nCamIdx, int nBuff, int nFrame);
+	void                       Inspect_Reality(emCameraBrand camBrand, int nCamIdx, LPBYTE pBuffer);
 	void                       LocatorTool_Train(int nCamIdx, LPBYTE pBuffer);
 
 public:
 	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
 
+	// Process Hik Cam
 private:
 	void                       ProcessFrame(int nCamIdx, LPBYTE pBuffer);
+	void                       ProcessFrame_Cam1(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam2(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam3(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam4(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam5(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam6(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam7(LPBYTE pBuffer);
+	void                       ProcessFrame_Cam8(LPBYTE pBuffer);
+
+private:
 	void                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
 	void                       SaveROIImage(cv::Mat& matROI, int nCamIdx, int nROIIdx);
 

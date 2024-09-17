@@ -44,7 +44,7 @@ extern "C"
 												        
 	__declspec(dllexport) bool                          InspectStop(CNVisionInspectProcessor* pProcessor, int nCamCount);
 
-	__declspec(dllexport) bool                          Inspect_Simulator(CNVisionInspectProcessor* pProcessor,int nCamCount);
+	__declspec(dllexport) bool                          Inspect_Simulator(CNVisionInspectProcessor* pProcessor, emCameraBrand camBrand, int nCamIdx);
 												        
 	__declspec(dllexport) BYTE*                         GetResultBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame);
 												        
