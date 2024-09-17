@@ -134,7 +134,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Camera_MVS\include;$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)Libraries\RapidXML;$(SolutionDir)Libraries\tbb\include;$(SolutionDir)Libraries\zxing-cpp\src;..\NVisionInspectProcessor;..\NVisionInspectProcessor\header;..\NVisionInspectProcessor\header\Tools\Camera\Hik;..\NVisionInspectProcessor\header\Tools\ConfigFile;..\NVisionInspectProcessor\header\Tools\Lighting;..\NVisionInspectProcessor\header\Tools\Log;..\NVisionInspectProcessor\header\Tools\Network;..\NVisionInspectProcessor\header\Tools\ThreadPool;..\NVisionInspectProcessor\header\Tools\Time;..\NVisionInspectProcessor\header\Tools\View</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Camera_MVS\include;$(SolutionDir)Libraries\Camera_Basler\include;$(SolutionDir)Libraries\opencv480_CUDA\include;$(SolutionDir)Libraries\RapidXML;$(SolutionDir)Libraries\tbb\include;$(SolutionDir)Libraries\zxing-cpp\src;..\NVisionInspectProcessor;..\NVisionInspectProcessor\header;..\NVisionInspectProcessor\header\Tools\Camera;..\NVisionInspectProcessor\header\Tools\Camera\Hik;..\NVisionInspectProcessor\header\Tools\Camera\Basler;..\NVisionInspectProcessor\header\Tools\ConfigFile;..\NVisionInspectProcessor\header\Tools\Lighting;..\NVisionInspectProcessor\header\Tools\Log;..\NVisionInspectProcessor\header\Tools\Network;..\NVisionInspectProcessor\header\Tools\ThreadPool;..\NVisionInspectProcessor\header\Tools\Time;..\NVisionInspectProcessor\header\Tools\View</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -144,7 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\RapidXML;$(SolutionDir)Libraries\tbb\lib;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)Libraries\zxing-cpp\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\Camera_MVS\lib;$(SolutionDir)Libraries\Camera_Basler\lib\x64;$(SolutionDir)Libraries\RapidXML;$(SolutionDir)Libraries\tbb\lib;$(SolutionDir)Libraries\opencv480_CUDA\x64\vc17\lib;$(SolutionDir)Libraries\zxing-cpp\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -158,9 +158,12 @@
     <ClInclude Include="header\NVisionInspectResult.h" />
     <ClInclude Include="header\NVisionInspectStatus.h" />
     <ClInclude Include="header\NVisionInspectSystemSetting.h" />
+    <ClInclude Include="header\NVisionInspect_BaslerCam.h" />
     <ClInclude Include="header\NVisionInspect_HikCam.h" />
-    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber.h" />
-    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabberParam.h" />
+    <ClInclude Include="header\Tools\Camera\Basler\FrameGrabber_BaslerCam_New.h" />
+    <ClInclude Include="header\Tools\Camera\Basler\PylonStringHelpers.h" />
+    <ClInclude Include="header\Tools\Camera\FrameGrabber.h" />
+    <ClInclude Include="header\Tools\Camera\FrameGrabberParam.h" />
     <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber_MVS_GigE.h" />
     <ClInclude Include="header\Tools\Camera\Hik\MvCamera.h" />
     <ClInclude Include="header\Tools\ConfigFile\BasedConfig.h" />
@@ -214,8 +217,11 @@
     <ClCompile Include="cpp\NVisionInspectResult.cpp" />
     <ClCompile Include="cpp\NVisionInspectStatus.cpp" />
     <ClCompile Include="cpp\NVisionInspectSystemSetting.cpp" />
+    <ClCompile Include="cpp\NVisionInspect_BaslerCam.cpp" />
     <ClCompile Include="cpp\NVisionInspect_HikCam.cpp" />
-    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Basler\FrameGrabber_BaslerCam_New.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\Basler\PylonStringHelpers.cpp" />
+    <ClCompile Include="cpp\Tools\Camera\FrameGrabber.cpp" />
     <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp" />
     <ClCompile Include="cpp\Tools\Camera\Hik\MvCamera.cpp" />
     <ClCompile Include="cpp\Tools\Camera\Hik\M_FrameGrabber.cpp" />

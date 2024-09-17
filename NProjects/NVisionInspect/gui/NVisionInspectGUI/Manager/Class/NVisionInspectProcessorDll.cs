@@ -1,4 +1,5 @@
-﻿using NVisionInspectGUI.Models;
+﻿using NVisionInspectGUI.Commons;
+using NVisionInspectGUI.Models;
 using NVisionInspectGUI.Models.Recipe;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace NVisionInspectGUI.Manager.Class
 
         #region Init and delete
         /// <summary>
-        /// Create a pointer the read code processor
+        /// Create a pointer the NVisionInspect processor
         /// </summary>
         /// <returns></returns>
 #if DEBUG
@@ -103,8 +104,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool Inspect_Simulator(IntPtr NVisionInspectProcessor, int nCamIdx);
-        public bool Inspect_Simulator(int nCamIdx) { return Inspect_Simulator(m_NVisionInspectProcessor, nCamIdx); }
+        extern private static bool Inspect_Simulator(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
+        public bool Inspect_Simulator(int nCamBrand, int nCamIdx) { return Inspect_Simulator(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
         /**********************************
          - Inspection Simulator
          - Parameter : Inspection Cam Index

@@ -71,8 +71,33 @@
 #pragma comment(lib, "ZXing.lib")
 
 #pragma comment(lib, "MvCameraControl.lib")
-//#pragma comment(lib, "RapidXML_Release.lib")
 #pragma comment(lib, "RapidXML_Release_New.lib")
+
+#ifdef _DEBUG
+#pragma comment(lib, "GCBase_MD_VC141_v3_1_Basler_pylon.lib")
+#pragma comment(lib, "GenApi_MD_VC141_v3_1_Basler_pylon.lib")
+#pragma comment(lib, "PylonBase_v7_4.lib")
+#pragma comment(lib, "PylonC.lib")
+#pragma comment(lib, "PylonC_v7_4.lib")
+#pragma comment(lib, "PylonDataProcessing_v1_3.lib")
+#pragma comment(lib, "PylonGUI_v7_4.lib")
+#pragma comment(lib, "PylonUtility_v7_4.lib")
+#else
+#pragma comment(lib, "GCBase_MD_VC141_v3_1_Basler_pylon.lib")
+#pragma comment(lib, "GenApi_MD_VC141_v3_1_Basler_pylon.lib")
+#pragma comment(lib, "PylonBase_v7_4.lib")
+#pragma comment(lib, "PylonC.lib")
+#pragma comment(lib, "PylonC_v7_4.lib")
+#pragma comment(lib, "PylonDataProcessing_v1_3.lib")
+#pragma comment(lib, "PylonGUI_v7_4.lib")
+#pragma comment(lib, "PylonUtility_v7_4.lib")
+#endif
+
+// Include files to use the pylon API.
+#include <pylon/PylonIncludes.h>
+
+// Make the string converter from this project available globally.
+#include "PylonStringHelpers.h"
 
 #pragma comment(lib, "tbb.lib")
 #pragma comment(lib, "tbbmalloc.lib")

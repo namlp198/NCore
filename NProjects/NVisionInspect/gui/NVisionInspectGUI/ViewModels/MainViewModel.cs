@@ -67,8 +67,6 @@ namespace NVisionInspectGUI.ViewModels
             int nNumberOfCamInsp = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nNumberOfInspectionCamera;
             SettingVM.CameraCount = nNumberOfCamInsp;
 
-            AddSumCamViewToRunView(nNumberOfCamInsp);
-
             List<string> lstCameras = new List<string>();
             for (int nCamIdx = 0; nCamIdx < nNumberOfCamInsp; nCamIdx++)
             {
@@ -78,6 +76,8 @@ namespace NVisionInspectGUI.ViewModels
                 string sCamera = "Cam " + (nCamIdx + 1) + "";
                 lstCameras.Add(sCamera);
             }
+
+            AddSumCamViewToRunView(nNumberOfCamInsp);
 
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nNumberOfCamInsp, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
             SettingVM.LoadRecipe(nNumberOfCamInsp);
@@ -111,6 +111,7 @@ namespace NVisionInspectGUI.ViewModels
         #region Destructor
         ~MainViewModel() 
         {
+            
         }
         #endregion
 

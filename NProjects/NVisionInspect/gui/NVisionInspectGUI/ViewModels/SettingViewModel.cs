@@ -215,18 +215,16 @@ namespace NVisionInspectGUI.ViewModels
         }
         private void BuffSettingPRO_TrainLocator(object sender, RoutedEventArgs e)
         {
-            int nBuff = 0;
-            int nFrame = 0;
             int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+            int nBuff = nCamIdx;
+            int nFrame = 0;
 
             if (nCamIdx < 0)
                 return;
 
-            nCamIdx += 1;
-
             switch (nCamIdx)
             {
-                case 1:
+                case 0:
                     // Rect outside
                     NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_OuterX = (int)SettingView.buffSettingPRO.RectOutSide.X;
                     NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_OuterY = (int)SettingView.buffSettingPRO.RectOutSide.Y;
@@ -239,6 +237,8 @@ namespace NVisionInspectGUI.ViewModels
                     NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_Inner_Width = (int)SettingView.buffSettingPRO.RectInSide.Width;
                     NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_Inner_Height = (int)SettingView.buffSettingPRO.RectInSide.Height;
                     break;
+                case 1:
+                    break;
                 case 2:
                     break;
                 case 3:
@@ -250,8 +250,6 @@ namespace NVisionInspectGUI.ViewModels
                 case 6:
                     break;
                 case 7:
-                    break;
-                case 8:
                     break;
             }
 
@@ -623,6 +621,74 @@ namespace NVisionInspectGUI.ViewModels
                         }
                         break;
                     case 1:
+                        {
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.UseReadCode = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bUseReadCode == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.UseInkjetCharactersInspect = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bUseInkjetCharactersInspect == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.UseRotateROI = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bUseRotateROI == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.MaxCodeCount = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nMaxCodeCount;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.NumberOfROI = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nNumberOfROI;
+                            // Params Template Matching 
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_OuterX = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_OuterX;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_OuterY = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_OuterY;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_Outer_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_Outer_Width;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_Outer_Height = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_Outer_Height;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_InnerX = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_InnerX;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_InnerY = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_InnerY;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_Inner_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_Inner_Width;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateROI_Inner_Height = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateROI_Inner_Height;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateCoordinatesX = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateCoordinatesX;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateCoordinatesY = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nTemplateCoordinatesY;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateAngleRotate = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_dTemplateAngleRotate;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateMatchingRate = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_dTemplateMatchingRate;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.TemplateShowGraphics = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bTemplateShowGraphics == 1 ? true : false;
+                            // ROI 1                    
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_X;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_Y;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_Width;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_Height = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_Height;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_Offset_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_Offset_X;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_Offset_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_Offset_Y;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_AngleRotate = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_AngleRotate;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1UseOffset = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI1UseOffset == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1UseLocator = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI1UseLocator == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1ShowGraphics = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI1ShowGraphics == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_GrayThreshold_Min;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_GrayThreshold_Max;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_PixelCount_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_PixelCount_Min;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_PixelCount_Max;
+                                                        
+                            // ROI 2                    
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_X;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_Y;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_Width;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_Height = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_Height;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_Offset_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_Offset_X;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_Offset_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_Offset_Y;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_AngleRotate = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_AngleRotate;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2UseOffset = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI2UseOffset == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2UseLocator = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI2UseLocator == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2ShowGraphics = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI2ShowGraphics == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_GrayThreshold_Min;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_GrayThreshold_Max;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_PixelCount_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_PixelCount_Min;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_PixelCount_Max;
+                                                        
+                            // ROI 3                    
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_X;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Y;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Width;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_Height = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Height;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_Offset_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Offset_X;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_Offset_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Offset_Y;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_AngleRotate = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_AngleRotate;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3UseOffset = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI3UseOffset == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3UseLocator = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI3UseLocator == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3ShowGraphics = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_bROI3ShowGraphics == 1 ? true : false;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_GrayThreshold_Min;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_GrayThreshold_Max;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_PixelCount_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_PixelCount_Min;
+                            NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_PixelCount_Max;
+                        }
                         break;
                     case 2:
                         break;
@@ -690,7 +756,7 @@ namespace NVisionInspectGUI.ViewModels
         }
         private async void LocatorTrainComplete(int nCamIdx)
         {
-            int nBuff = 0;
+            int nBuff = nCamIdx;
             int nFrame = 0;
 
             SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);

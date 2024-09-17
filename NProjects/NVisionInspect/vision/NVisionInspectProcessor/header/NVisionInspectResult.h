@@ -13,6 +13,7 @@ struct CNVisionInspectResult_Cam2
 public:
 	BOOL m_bResultStatus;
 	BOOL m_bInspectCompleted;
+	TCHAR m_sResultString[MAX_STRING_SIZE_RESULT];
 };
 struct CNVisionInspectResult_Cam3
 {

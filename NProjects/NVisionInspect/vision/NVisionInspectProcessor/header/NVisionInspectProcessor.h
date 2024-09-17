@@ -5,6 +5,8 @@
 #include "NVisionInspect_HikCam.h"
 #include "NVisionInspectCore.h"
 
+#include "NVisionInspect_BaslerCam.h"
+
 #include "SharedMemoryBuffer.h"
 #include "LogView.h"
 #include "Config.h"
@@ -23,6 +25,7 @@ typedef void _stdcall CallbackInspectComplete(int nCamIdx, BOOL bSetting);
 typedef void _stdcall CallbackLocatorTrainComplete(int nCamIdx);
 
 class AFX_EXT_CLASS CNVisionInspectProcessor : public INVisionInspectHikCamToParent,
+	                                           public INVisionInspectBaslerCamToParent,
 	                                           public INVisionInspectCoreToParent
 {
 public:
@@ -38,15 +41,15 @@ public:
 	virtual      CNVisionInspectSystemSetting*   GetSystemSettingControl() { return m_pNVisionInspectSystemSetting; }
 	virtual      CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) { return m_pNVisionInspectCameraSetting[nCamIdx]; };
 	virtual      CNVisionInspectResult*          GetResultControl() { return m_pNVisionInspectResult; }
-	virtual      CNVisionInspectStatus*          GetStatusControl(int nCoreIdx) { return m_pNVisionInspectStatus[nCoreIdx]; }
+	virtual      CNVisionInspectStatus*          GetStatusControl(int nCamIdx) { return m_pNVisionInspectStatus[nCamIdx]; }
 	             CNVisionInspect_HikCam*         GetHikCamControl() { return m_pNVisionInspectHikCam; }
 				 std::vector<int>                GetVecCameras() { return m_vecCameras; }
 
 public:
 	BOOL                       InspectStart(int nThreadCount, int nCamCount);
 	BOOL                       InspectStop(int nCamCount);
-	BOOL                       Inspect_Reality(int nCamIdx, LPBYTE pBuff);
-	BOOL                       Inspect_Simulator(int nCamIdx);
+	BOOL                       Inspect_Reality(emCameraBrand camBrand, int nCamIdx, LPBYTE pBuff);
+	BOOL                       Inspect_Simulator(emCameraBrand camBrand, int nCamIdx);
 	BOOL                       SetTriggerMode(int nCamIdx, int nMode);
 	BOOL                       SetTriggerSource(int nCamIdx, int nSource);
 	BOOL                       SetExposureTime(int nCamIdx, double dExpTime);
@@ -54,8 +57,8 @@ public:
 	BOOL                       SaveImage(int nCamIdx);
 
 
-	/*static void              ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, LPVOID param);
-	void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, LPVOID pBuffer);*/
+	static void                ReceivedImageCallback(LPVOID pBuffer, int nGrabberIdx, int nFrameIdx, emCameraBrand camBrand, LPVOID param);
+	void                       ReceivedImageCallbackEx(int nGrabberIdx, int nFrameIdx, emCameraBrand camBrand, LPVOID pBuffer);
 
 public:
 	BOOL                       LoadSystemSettings(CNVisionInspectSystemSetting* pSystemSetting);
@@ -119,8 +122,11 @@ private:
 	// Result					               
 	CNVisionInspectResult*                      m_pNVisionInspectResult;
 
-	// Basler cam				               
+	// Hik cam				               
 	CNVisionInspect_HikCam*                     m_pNVisionInspectHikCam;
+
+	// Basler cam				               
+	CNVisionInspect_BaslerCam*                  m_pNVisionInspectBaslerCam;
 
 	// Camera Setting
 	CNVisionInspectCameraSetting*               m_pNVisionInspectCameraSetting[MAX_CAMERA_INSPECT_COUNT];

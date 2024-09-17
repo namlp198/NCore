@@ -69,7 +69,7 @@ namespace NVisionInspectGUI.ViewModels
 
                 switch (nCamIdx)
                 {
-                    case 1:
+                    case 0:
                         if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
                         {
                             Sum1CameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
@@ -137,20 +137,6 @@ namespace NVisionInspectGUI.ViewModels
                                 }
                             }
                         }
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                    case 8:
                         break;
                 }
             }

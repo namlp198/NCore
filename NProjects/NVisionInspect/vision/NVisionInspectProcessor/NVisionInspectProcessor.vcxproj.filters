@@ -73,6 +73,12 @@
     <Filter Include="Source Files\Tools\ThreadPool">
       <UniqueIdentifier>{693058a5-6e5a-4d42-9862-e7586caef1ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools\Camera\Basler">
+      <UniqueIdentifier>{43e71c37-ef84-4d01-97df-f6745dd51fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Camera\Basler">
+      <UniqueIdentifier>{f7ee2f61-e613-46c8-be44-34f55e123e33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -84,13 +90,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber.h">
-      <Filter>Header Files\Tools\Camera\Hik</Filter>
-    </ClInclude>
     <ClInclude Include="header\Tools\Camera\Hik\FrameGrabber_MVS_GigE.h">
-      <Filter>Header Files\Tools\Camera\Hik</Filter>
-    </ClInclude>
-    <ClInclude Include="header\Tools\Camera\Hik\FrameGrabberParam.h">
       <Filter>Header Files\Tools\Camera\Hik</Filter>
     </ClInclude>
     <ClInclude Include="header\Tools\Camera\Hik\MvCamera.h">
@@ -243,13 +243,25 @@
     <ClInclude Include="header\ZXingOpenCV.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\Tools\Camera\FrameGrabber.h">
+      <Filter>Header Files\Tools\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\FrameGrabberParam.h">
+      <Filter>Header Files\Tools\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Basler\FrameGrabber_BaslerCam_New.h">
+      <Filter>Header Files\Tools\Camera\Basler</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Tools\Camera\Basler\PylonStringHelpers.h">
+      <Filter>Header Files\Tools\Camera\Basler</Filter>
+    </ClInclude>
+    <ClInclude Include="header\NVisionInspect_BaslerCam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber.cpp">
-      <Filter>Source Files\Tools\Camera\Hik</Filter>
     </ClCompile>
     <ClCompile Include="cpp\Tools\Camera\Hik\FrameGrabber_MVS_GigE.cpp">
       <Filter>Source Files\Tools\Camera\Hik</Filter>
@@ -390,6 +402,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\NVisionInspectSystemSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\FrameGrabber.cpp">
+      <Filter>Source Files\Tools\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Basler\FrameGrabber_BaslerCam_New.cpp">
+      <Filter>Source Files\Tools\Camera\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Camera\Basler\PylonStringHelpers.cpp">
+      <Filter>Source Files\Tools\Camera\Basler</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\NVisionInspect_BaslerCam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
