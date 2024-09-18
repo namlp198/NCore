@@ -319,7 +319,7 @@
                                FontWeight="SemiBold"
                                VerticalContentAlignment="Center"
                                ItemsSource="{Binding CameraList}"
-                               SelectedItem="{Binding CameraName}" />
+                               SelectedItem="{Binding CameraSelected, Mode=TwoWay}" />
 
                     <TextBlock Grid.Column="2"
                                Text="Frame"

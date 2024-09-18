@@ -73,6 +73,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         private int[] _dataTrain = new int[2]; // Center Point-> element 0: coordinates X, element 1: coordinates Y
 
         private string m_sCamName = "[unknown]";
+        private string m_sCamSelected = string.Empty;
         private string m_sFrameSelected = "1";
 
         private BitmapSource m_ucBmpSource;
@@ -362,6 +363,17 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             set
             {
                 if (SetProperty(ref m_sCamName, value))
+                {
+
+                }
+            }
+        }
+        public string CameraSelected
+        {
+            get => m_sCamSelected;
+            set
+            {
+                if (SetProperty(ref m_sCamSelected, value))
                 {
 
                 }
