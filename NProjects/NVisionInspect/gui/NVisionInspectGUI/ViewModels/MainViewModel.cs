@@ -73,7 +73,9 @@ namespace NVisionInspectGUI.ViewModels
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadCameraSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx], nCamIdx);
                 SettingVM.LoadCamerasSetting(nCamIdx);
 
-                string sCamera = "Cam " + (nCamIdx + 1) + "";
+                string sCamType = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_sManufacturer;
+
+                string sCamera = "Cam " + (nCamIdx + 1) + " - " + sCamType;
                 lstCameras.Add(sCamera);
             }
 

@@ -60,16 +60,19 @@ namespace NVisionInspectGUI.ViewModels
             if (bSetting == 0)
             {
                 int nCoreIdx = nCamIdx;
-                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
-
-                Sum1CameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(0, 0);
-                await Sum1CameraView.buffCam.UpdateImage();
-
-                MainViewModel.Instance.RunVM.ResultVM.CountTotal++;
+                int nBuff = nCamIdx;
+                int nFrame = 0;
 
                 switch (nCamIdx)
                 {
                     case 0:
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
+
+                        Sum1CameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
+                        await Sum1CameraView.buffCam.UpdateImage();
+
+                        MainViewModel.Instance.RunVM.ResultVM.CountTotal++;
+
                         if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
                         {
                             Sum1CameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
@@ -90,10 +93,10 @@ namespace NVisionInspectGUI.ViewModels
 
                             MainViewModel.Instance.RunVM.ResultVM.CountNG++;
                         }
-                        string resStr = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_sResultString;
-                        if (!resStr.IsNullOrEmpty())
+                        string resStr_1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_sResultString;
+                        if (!resStr_1.IsNullOrEmpty())
                         {
-                            if (resStr.IndexOf(";") == -1)
+                            if (resStr_1.IndexOf(";") == -1)
                             {
                                 // record to csv file
                                 List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
@@ -101,7 +104,7 @@ namespace NVisionInspectGUI.ViewModels
 
                                 excelModel.Id = m_nIndex;
                                 excelModel.ProductName = "PRODUCT_TEST";
-                                excelModel.ProductCode = resStr;
+                                excelModel.ProductCode = resStr_1;
                                 excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
                                 excelModel.Judgement = "OK_TEST";
                                 excelModel.Note = "TEST";
@@ -115,7 +118,7 @@ namespace NVisionInspectGUI.ViewModels
                             }
                             else
                             {
-                                string[] arrStr = resStr.Split(new char[] { ';' });
+                                string[] arrStr = resStr_1.Split(new char[] { ';' });
                                 for (int i = 0; i < arrStr.Length; i++)
                                 {
                                     // record to database

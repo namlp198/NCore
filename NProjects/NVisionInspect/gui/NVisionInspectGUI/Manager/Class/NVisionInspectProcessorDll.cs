@@ -378,8 +378,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool ContinuousGrabHikCam(IntPtr NVisionInspectProcessor, int nCamIdx);
-        public bool ContinuousGrabHikCam(int nCamIdx) { return ContinuousGrabHikCam(m_NVisionInspectProcessor, nCamIdx); }
+        extern private static bool ContinuousGrab(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
+        public bool ContinuousGrab(int nCamBrand, int nCamIdx) { return ContinuousGrab(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
 
 
 #if DEBUG
@@ -387,8 +387,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SingleGrabHikCam(IntPtr NVisionInspectProcessor, int nCamIdx);
-        public bool SingleGrabHikCam(int nCamIdx) { return SingleGrabHikCam(m_NVisionInspectProcessor, nCamIdx); }
+        extern private static bool StopGrab(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
+        public bool StopGrab(int nCamBrand, int nCamIdx) { return StopGrab(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
 
 
 #if DEBUG
@@ -396,17 +396,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool StopGrabHikCam(IntPtr NVisionInspectProcessor, int nCamIdx);
-        public bool StopGrabHikCam(int nCamIdx) { return StopGrabHikCam(m_NVisionInspectProcessor, nCamIdx); }
-
-
-#if DEBUG
-        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        extern private static IntPtr GetImageBufferHikCam(IntPtr NVisionInspectProcessor, int nCamIdx);
-        public IntPtr GetImageBufferHikCam(int nCamIdx) { return GetImageBufferHikCam(m_NVisionInspectProcessor, nCamIdx); }
+        extern private static IntPtr GetImageBuffer(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
+        public IntPtr GetImageBuffer(int nCamBrand, int nCamIdx) { return GetImageBuffer(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
 
 
 #if DEBUG

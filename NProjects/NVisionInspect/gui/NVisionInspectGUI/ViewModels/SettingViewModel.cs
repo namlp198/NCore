@@ -26,6 +26,7 @@ using NCore.Wpf.BufferViewerSettingPRO;
 using Npc.Foundation.Util;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Windows.Controls;
+using System.Runtime.InteropServices;
 
 namespace NVisionInspectGUI.ViewModels
 {
@@ -63,6 +64,7 @@ namespace NVisionInspectGUI.ViewModels
         private List<string> m_cameraLst = new List<string>();
         private List<string> m_lstImageSource = new List<string>();
         private List<string> m_lstROI = new List<string>();
+        private List<int> m_lstNumberOfCamBrand = new List<int>();
 
         private string m_strDisplayImagePath_Live = "/NpcCore.Wpf;component/Resources/Images/live_camera.png";
         private string m_strDisplayImagePath_StartAcq = "/NpcCore.Wpf;component/Resources/Images/btn_start_50.png";
@@ -74,6 +76,7 @@ namespace NVisionInspectGUI.ViewModels
         private bool m_bSelectedCamera = false;
 
         private EnImageSource m_fromImageSource = EnImageSource.FromToCamera;
+        private emCameraBrand m_cameraBrandSelected = emCameraBrand.CameraBrand_Hik;
 
         #endregion
 
@@ -164,6 +167,7 @@ namespace NVisionInspectGUI.ViewModels
                     nNumberOfROI = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_nNumberOfROI;
                     break;
                 case 1:
+                    nNumberOfROI = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nNumberOfROI;
                     break;
                 case 2:
                     break;
@@ -185,7 +189,34 @@ namespace NVisionInspectGUI.ViewModels
                 lstROI.Add("ROI " + (i + 1));
             }
 
-            ListROI = lstROI;
+            ROIList = lstROI;
+
+            // fine camera brand selecting
+            string strCamSelected = SettingView.buffSettingPRO.CameraSelected;
+            int nPos = strCamSelected.IndexOf("-") + 2;
+            int nLength = strCamSelected.Length - nPos;
+
+            string strCamBrand = strCamSelected.Substring(nPos, nLength);
+
+            if (strCamBrand.IsNullOrEmpty())
+                return;
+
+            if(string.Compare(strCamBrand, "Hik") == 0)
+            {
+                CameraBrandSelected = emCameraBrand.CameraBrand_Hik;
+            }
+            else if(string.Compare(strCamBrand, "Basler") == 0)
+            {
+                CameraBrandSelected = emCameraBrand.CameraBrand_Basler;
+            }
+            else if (string.Compare(strCamBrand, "Jai") == 0)
+            {
+                CameraBrandSelected = emCameraBrand.CameraBrand_Jai;
+            }
+
+            int nWidth = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nFrameWidth;
+            int nHeight= InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nFrameHeight;
+            SettingView.buffSettingPRO.SetParamsModeColor(nWidth, nHeight);
         }
         private void BuffSettingPRO_SelectFrameChanged(object sender, RoutedEventArgs e)
         {
@@ -373,6 +404,26 @@ namespace NVisionInspectGUI.ViewModels
 
                 NVisionInspectSystemSettingsPropertyGrid = cNVisionInspSystemSetting_PropertyGrid;
             }
+            m_lstNumberOfCamBrand.Clear();
+            List<int> lstCamBrandCount = new List<int>();
+
+            string strCameras = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sCameras;
+            int nHikCamCount = 0;
+            int nBaslerCamCount = 0;
+
+            int nPosHikCam = strCameras.IndexOf("Hik") + 4;
+            int nPosBaslerCam= strCameras.IndexOf("Basler") + 7;
+
+            string sPosHikCamCount = strCameras.Substring(nPosHikCam, 1);
+            string sPosBaslerCamCount = strCameras.Substring(nPosBaslerCam, 1);
+
+            int.TryParse(sPosHikCamCount, out nHikCamCount);
+            int.TryParse(sPosBaslerCamCount, out nBaslerCamCount);
+
+            lstCamBrandCount.Add(nHikCamCount);
+            lstCamBrandCount.Add(nBaslerCamCount);
+
+            NumberOfCamBrandList = lstCamBrandCount;
         }
         /// <summary>
         /// Load Plc Settings
@@ -656,7 +707,7 @@ namespace NVisionInspectGUI.ViewModels
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_GrayThreshold_Max;
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_PixelCount_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_PixelCount_Min;
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI1_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI1_PixelCount_Max;
-                                                        
+
                             // ROI 2                    
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_X;
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_Y;
@@ -672,7 +723,7 @@ namespace NVisionInspectGUI.ViewModels
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_GrayThreshold_Max;
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_PixelCount_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_PixelCount_Min;
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI2_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_PixelCount_Max;
-                                                        
+
                             // ROI 3                    
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_X;
                             NVIRecipe_PropGrid.RecipeCam2_PropertyGrid.ROI3_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Y;
@@ -823,7 +874,7 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
-        public List<string> ListFromImageSource
+        public List<string> FromImageSourceList
         {
             get => m_lstImageSource;
             set
@@ -834,12 +885,23 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
-        public List<string> ListROI
+        public List<string> ROIList
         {
             get => m_lstROI;
             set
             {
                 if (SetProperty(ref m_lstROI, value))
+                {
+
+                }
+            }
+        }
+        public List<int> NumberOfCamBrandList
+        {
+            get => m_lstNumberOfCamBrand;
+            set
+            {
+                if (SetProperty(ref m_lstNumberOfCamBrand, value))
                 {
 
                 }
@@ -992,7 +1054,7 @@ namespace NVisionInspectGUI.ViewModels
             get => m_nROIIdx;
             set
             {
-                if(SetProperty(ref m_nROIIdx, value))
+                if (SetProperty(ref m_nROIIdx, value))
                 {
 
                 }
@@ -1003,7 +1065,7 @@ namespace NVisionInspectGUI.ViewModels
             get => m_nCameraCount;
             set
             {
-                if(SetProperty(ref m_nCameraCount, value))
+                if (SetProperty(ref m_nCameraCount, value))
                 {
 
                 }
@@ -1037,6 +1099,17 @@ namespace NVisionInspectGUI.ViewModels
                     //        SettingView.btnLoadImage.Opacity = 0.3;
                     //        break;
                     //}
+                }
+            }
+        }
+        public emCameraBrand CameraBrandSelected
+        {
+            get => m_cameraBrandSelected;
+            set
+            {
+                if (SetProperty(ref m_cameraBrandSelected, value))
+                {
+                    
                 }
             }
         }

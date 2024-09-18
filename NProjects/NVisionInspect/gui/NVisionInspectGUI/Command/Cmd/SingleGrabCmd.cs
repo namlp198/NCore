@@ -1,4 +1,5 @@
-﻿using NVisionInspectGUI.ViewModels;
+﻿using NVisionInspectGUI.Commons;
+using NVisionInspectGUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,11 @@ namespace NVisionInspectGUI.Command.Cmd
         public SingleGrabCmd() { }
         public override void Execute(object parameter)
         {
+            emCameraBrand camBrand = MainViewModel.Instance.SettingVM.CameraBrandSelected;
+
             MainViewModel.Instance.SettingVM.SettingView.Dispatcher.BeginInvoke(new Action(() =>
             {
-               MainViewModel.Instance.SettingVM.CameraStreamingController.SingleGrab();
+               MainViewModel.Instance.SettingVM.CameraStreamingController.SingleGrab(camBrand);
             }));
         }
     }
