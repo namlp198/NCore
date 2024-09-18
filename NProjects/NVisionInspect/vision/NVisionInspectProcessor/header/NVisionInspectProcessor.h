@@ -43,6 +43,7 @@ public:
 	virtual      CNVisionInspectResult*          GetResultControl() { return m_pNVisionInspectResult; }
 	virtual      CNVisionInspectStatus*          GetStatusControl(int nCamIdx) { return m_pNVisionInspectStatus[nCamIdx]; }
 	             CNVisionInspect_HikCam*         GetHikCamControl() { return m_pNVisionInspectHikCam; }
+				 CNVisionInspect_BaslerCam*      GetBaslerCamControl() { return m_pNVisionInspectBaslerCam; }
 				 std::vector<int>                GetVecCameras() { return m_vecCameras; }
 
 public:
@@ -84,6 +85,7 @@ public:
 	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff);
 	BOOL                              GetInspectionResult(int nCoreIdx, CNVisionInspectResult* pReadCodeInspRes);
 	LPBYTE                            GetImageBufferHikCam(int nCamIdx);
+	LPBYTE                            GetImageBufferBaslerCam(int nCamIdx);
 
 	BOOL                              LoadSimulatorBuffer(int nBuff, int nFrame, CString strFilePath);
 	BOOL                              LocatorTool_Train(int nCamIdx);

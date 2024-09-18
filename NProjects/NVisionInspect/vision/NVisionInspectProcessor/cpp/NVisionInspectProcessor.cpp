@@ -119,6 +119,9 @@ BOOL CNVisionInspectProcessor::Destroy()
 	if (m_pNVisionInspectHikCam != NULL)
 		delete m_pNVisionInspectHikCam, m_pNVisionInspectHikCam = NULL;
 
+	if (m_pNVisionInspectBaslerCam != NULL)
+		delete m_pNVisionInspectBaslerCam, m_pNVisionInspectBaslerCam = NULL;
+
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
 	{
 		if (m_pResultBuffer[i] != NULL)
@@ -179,16 +182,35 @@ BOOL CNVisionInspectProcessor::InspectStart(int nThreadCount, int nCamCount)
 	if (nCamCount < 1)
 		return FALSE;
 
-	for (int nCamIdx = 0; nCamIdx < nCamCount; nCamIdx++)
-	{
-		m_pNVisionInspectStatus[nCamIdx]->SetStreaming(FALSE);
-		m_pNVisionInspectStatus[nCamIdx]->SetInspectRunning(TRUE);
+	int nHikCamCount = m_vecCameras.at(0);
+	int nBaslerCamCount = m_vecCameras.at(1);
 
-		m_pNVisionInspectHikCam->SetTriggerMode(nCamIdx, 1);
-		m_pNVisionInspectHikCam->SetTriggerSource(nCamIdx, 1);
+	// Run all Hik Cam
+	for (int nHikCamIdx = 0; nHikCamIdx < nHikCamCount; nHikCamIdx++)
+	{
+		m_pNVisionInspectStatus[nHikCamIdx]->SetStreaming(FALSE);
+		m_pNVisionInspectStatus[nHikCamIdx]->SetInspectRunning(TRUE);
+
+		m_pNVisionInspectHikCam->SetTriggerMode(nHikCamIdx, 1);
+		m_pNVisionInspectHikCam->SetTriggerSource(nHikCamIdx, 1);
 		//m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
 
-		m_pNVisionInspectHikCam->StartGrab(nCamIdx);
+		m_pNVisionInspectHikCam->StartGrab(nHikCamIdx);
+	}
+
+	// Run all Basler Cam
+	for (int nBaslerCamIdx = 0; nBaslerCamIdx < nBaslerCamCount; nBaslerCamIdx++)
+	{
+		int nBaslerCamStatusIdx = nBaslerCamIdx + nHikCamCount;
+
+		m_pNVisionInspectStatus[nBaslerCamStatusIdx]->SetStreaming(FALSE);
+		m_pNVisionInspectStatus[nBaslerCamStatusIdx]->SetInspectRunning(TRUE);
+
+		m_pNVisionInspectBaslerCam->SetTriggerMode(nBaslerCamIdx, 1);
+		m_pNVisionInspectBaslerCam->SetTriggerSource(nBaslerCamIdx, 1);
+		//m_pNVisionInspectBaslerCam->SetExposureTime(0, 35.0);
+
+		m_pNVisionInspectBaslerCam->StartGrab(nBaslerCamIdx);
 	}
 
 	return TRUE;
@@ -202,16 +224,35 @@ BOOL CNVisionInspectProcessor::InspectStop(int nCamCount)
 	if (nCamCount < 1)
 		return FALSE;
 
-	for (int nCamIdx = 0; nCamIdx < nCamCount; nCamIdx++)
+	int nHikCamCount = m_vecCameras.at(0);
+	int nBaslerCamCount = m_vecCameras.at(1);
+
+	// Stop all Hik Cam
+	for (int nHikCamIdx = 0; nHikCamIdx < nHikCamCount; nHikCamIdx++)
 	{
-		m_pNVisionInspectStatus[nCamIdx]->SetStreaming(TRUE);
-		m_pNVisionInspectStatus[nCamIdx]->SetInspectRunning(FALSE);
+		m_pNVisionInspectStatus[nHikCamIdx]->SetStreaming(TRUE);
+		m_pNVisionInspectStatus[nHikCamIdx]->SetInspectRunning(FALSE);
 
-		m_pNVisionInspectHikCam->StopGrab(0);
+		m_pNVisionInspectHikCam->SetTriggerMode(nHikCamIdx, 0);
+		m_pNVisionInspectHikCam->SetTriggerSource(nHikCamIdx, 0);
+		//m_pReadCodeBaslerCam->SetExposureTime(0, 35.0);
 
-		m_pNVisionInspectHikCam->SetTriggerMode(0, 0);
-		m_pNVisionInspectHikCam->SetTriggerSource(0, 0);
-		//m_pReadCodeBaslerCam->SetExposureTime(0, m_pReadCodeCameraSetting[0]->m_nExposureTime);
+		m_pNVisionInspectHikCam->StopGrab(nHikCamIdx);
+	}
+
+	// Stop all Basler Cam
+	for (int nBaslerCamIdx = 0; nBaslerCamIdx < nBaslerCamCount; nBaslerCamIdx++)
+	{
+		int nBaslerCamStatusIdx = nBaslerCamIdx + nHikCamCount;
+
+		m_pNVisionInspectStatus[nBaslerCamStatusIdx]->SetStreaming(TRUE);
+		m_pNVisionInspectStatus[nBaslerCamStatusIdx]->SetInspectRunning(FALSE);
+
+		m_pNVisionInspectBaslerCam->SetTriggerMode(nBaslerCamIdx, 0);
+		m_pNVisionInspectBaslerCam->SetTriggerSource(nBaslerCamIdx, 0);
+		//m_pNVisionInspectBaslerCam->SetExposureTime(0, 35.0);
+
+		m_pNVisionInspectBaslerCam->StopGrab(nBaslerCamIdx);
 	}
 
 	return TRUE;
@@ -1216,10 +1257,40 @@ LPBYTE CNVisionInspectProcessor::GetImageBufferHikCam(int nCamIdx)
 
 	LPBYTE pImageBuff = m_pNVisionInspectHikCam->GetBufferImage(nCamIdx);
 
+	if (pImageBuff == NULL)
+		return NULL;
+
 	if (m_pNVisionInspectCameraSetting[nCamIdx]->m_nChannels == 1)
 	{
 		int nWidth = m_pNVisionInspectCameraSetting[nCamIdx]->m_nFrameWidth;
 		int nHeight = m_pNVisionInspectCameraSetting[nCamIdx]->m_nFrameHeight;
+		cv::Mat matGray(nHeight, nWidth, CV_8UC1, pImageBuff);
+
+		cv::cvtColor(matGray, m_matBGR, cv::COLOR_GRAY2BGR);
+
+		return m_matBGR.data;
+	}
+
+	return pImageBuff;
+}
+
+LPBYTE CNVisionInspectProcessor::GetImageBufferBaslerCam(int nCamIdx)
+{
+	if (m_pNVisionInspectBaslerCam == NULL)
+		return NULL;
+
+	LPBYTE pImageBuff = m_pNVisionInspectBaslerCam->GetBufferImage(nCamIdx);
+
+	if (pImageBuff == NULL)
+		return NULL;
+
+	int nHikCamCount = m_vecCameras.at(0);
+	int nBaslerCamSettingIdx = nCamIdx + nHikCamCount;
+
+	if (m_pNVisionInspectCameraSetting[nBaslerCamSettingIdx]->m_nChannels == 1)
+	{
+		int nWidth = m_pNVisionInspectCameraSetting[nBaslerCamSettingIdx]->m_nFrameWidth;
+		int nHeight = m_pNVisionInspectCameraSetting[nBaslerCamSettingIdx]->m_nFrameHeight;
 		cv::Mat matGray(nHeight, nWidth, CV_8UC1, pImageBuff);
 
 		cv::cvtColor(matGray, m_matBGR, cv::COLOR_GRAY2BGR);

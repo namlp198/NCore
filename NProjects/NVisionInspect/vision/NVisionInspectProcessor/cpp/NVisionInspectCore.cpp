@@ -623,7 +623,7 @@ void CNVisionInspectCore::ProcessFrame_Cam2(LPBYTE pBuffer)
 		return;
 
 	int nCamIdx = 1;
-	int nFrame = 1;
+	int nFrame = 0;
 
 	CNVisionInspectCameraSetting* pCamSetting = m_pInterface->GetCameraSettingControl(nCamIdx);
 	CNVisionInspectStatus* pStatus = m_pInterface->GetStatusControl(nCamIdx);
@@ -635,10 +635,6 @@ void CNVisionInspectCore::ProcessFrame_Cam2(LPBYTE pBuffer)
 
 	DWORD dFrameSize = pCamSetting->m_nFrameHeight * pCamSetting->m_nFrameWidth * pCamSetting->m_nChannels;
 	memcpy(matSrc.data, (LPBYTE)pBuffer, dFrameSize);
-
-	/*char pathSaveImage[200] = { };
-	sprintf_s(pathSaveImage, "%s%s_%d.bmp", "D:\\entry\\NCore\\NProjects\\ReadCodeMachine\\bin\\SaveImages\\", "Code_", nNextFrameIdx);
-	cv::imwrite(pathSaveImage, matSrc);*/
 
 	cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
 
@@ -669,6 +665,10 @@ void CNVisionInspectCore::ProcessFrame_Cam2(LPBYTE pBuffer)
 		}
 		csRet = (CString)sRet.c_str();
 	}
+
+	/*char pathSaveImage[200] = { };
+	sprintf_s(pathSaveImage, "%s%s_%d.bmp", "D:\\entry\\NCore\\NProjects\\NVisionInspect\\bin\\VisionSettings\\SaveImage\\FullImage\\Cam2\\", "ImageBasler", nCamIdx);
+	cv::imwrite(pathSaveImage, matResult);*/
 
 	m_pInterface->SetResultBuffer(nCamIdx, nFrame, matResult.data); // cause the buffer just have a frame should be frame index = 0
 

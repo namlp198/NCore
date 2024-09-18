@@ -54,7 +54,7 @@
                                    Width="120" 
                                    IsEnabled="{Binding IsStartedAcq, Converter={StaticResource InvertBooleanConverter}}"
                                    Opacity="{Binding IsStartedAcq, Converter={StaticResource InvertBooleanToOpacityConverter}}"
-                                   ItemsSource="{Binding ListFromImageSource}"/>
+                                   ItemsSource="{Binding FromImageSourceList}"/>
                     </DockPanel>
                     <Separator Margin="3"/>
                     <DockPanel>
@@ -69,7 +69,7 @@
                                    FontSize="14"
                                    FontWeight="Bold"
                                    Width="80"
-                                   ItemsSource="{Binding ListROI}"
+                                   ItemsSource="{Binding ROIList}"
                                    SelectedItem="{Binding ROISelected, Mode=TwoWay}"/>
                     </DockPanel>
                     <Separator Margin="3"/>

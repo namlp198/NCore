@@ -78,17 +78,167 @@ namespace NVisionInspectGUI.ViewModels
         #endregion
 
         #region Methods
-        private void InspectionComplete(int nCamIdx, int bSetting)
+        private async void InspectionComplete(int nCamIdx, int bSetting)
         {
             if (bSetting == 0)
             {
                 int nCoreIdx = nCamIdx;
-               
+                int nBuff = nCamIdx;
+                int nFrame = 0;
+
                 switch (nCamIdx)
                 {
                     case 0:
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
+
+                        Sum4CameraView.buffCam1.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
+                        await Sum4CameraView.buffCam1.UpdateImage();
+
+                        MainViewModel.Instance.RunVM.ResultVM.CountTotal++;
+
+                        if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
+                        {
+                            Sum4CameraView.buffCam1.InspectResult = EInspectResult.InspectResult_OK;
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM += 1; // Out Y3
+                            MainViewModel.Instance.Plc_Delta_DVP.SetOutputPlc(true);
+                            Thread.Sleep(5);
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
+
+                            MainViewModel.Instance.RunVM.ResultVM.CountOK++;
+                        }
+                        else
+                        {
+                            Sum4CameraView.buffCam1.InspectResult = EInspectResult.InspectResult_NG;
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM += 0; // Out Y2
+                            MainViewModel.Instance.Plc_Delta_DVP.SetOutputPlc(true);
+                            Thread.Sleep(5);
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
+
+                            MainViewModel.Instance.RunVM.ResultVM.CountNG++;
+                        }
+                        string resStr_1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_sResultString;
+                        if (!resStr_1.IsNullOrEmpty())
+                        {
+                            if (resStr_1.IndexOf(";") == -1)
+                            {
+                                // record to csv file
+                                List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
+                                ExcelTemplateModel excelModel = new ExcelTemplateModel();
+
+                                excelModel.Id = m_nIndex;
+                                excelModel.ProductName = "PRODUCT_TEST";
+                                excelModel.ProductCode = resStr_1;
+                                excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
+                                excelModel.Judgement = "OK_TEST";
+                                excelModel.Note = "TEST";
+
+                                excelTemplateModels.Add(excelModel);
+                                Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                                //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+
+                                m_nIndex++;
+                            }
+                            else
+                            {
+                                string[] arrStr = resStr_1.Split(new char[] { ';' });
+                                for (int i = 0; i < arrStr.Length; i++)
+                                {
+                                    // record to database
+                                    List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
+                                    ExcelTemplateModel excelModel = new ExcelTemplateModel();
+                                    excelModel.Id = m_nIndex;
+                                    excelModel.ProductName = "PRODUCT_TEST";
+                                    excelModel.ProductCode = arrStr[i];
+                                    excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
+                                    excelModel.Judgement = "OK_TEST";
+                                    excelModel.Note = "TEST";
+
+                                    excelTemplateModels.Add(excelModel);
+                                    Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                                    //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+
+                                    m_nIndex++;
+                                }
+                            }
+                        }
                         break;
                     case 1:
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
+
+                        Sum4CameraView.buffCam2.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
+                        await Sum4CameraView.buffCam2.UpdateImage();
+
+                        MainViewModel.Instance.RunVM.ResultVM.CountTotal++;
+
+                        if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam2.m_bResultStatus == 1)
+                        {
+                            Sum4CameraView.buffCam2.InspectResult = EInspectResult.InspectResult_OK;
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM += 1; // Out Y3
+                            MainViewModel.Instance.Plc_Delta_DVP.SetOutputPlc(true);
+                            Thread.Sleep(5);
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
+
+                            MainViewModel.Instance.RunVM.ResultVM.CountOK++;
+                        }
+                        else
+                        {
+                            Sum4CameraView.buffCam2.InspectResult = EInspectResult.InspectResult_NG;
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM += 0; // Out Y2
+                            MainViewModel.Instance.Plc_Delta_DVP.SetOutputPlc(true);
+                            Thread.Sleep(5);
+                            MainViewModel.Instance.Plc_Delta_DVP.StartAddressBitM = 2048; // reset bit M to init value
+
+                            MainViewModel.Instance.RunVM.ResultVM.CountNG++;
+                        }
+                        string resStr_2 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam2.m_sResultString;
+                        if (!resStr_2.IsNullOrEmpty())
+                        {
+                            if (resStr_2.IndexOf(";") == -1)
+                            {
+                                // record to csv file
+                                List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
+                                ExcelTemplateModel excelModel = new ExcelTemplateModel();
+
+                                excelModel.Id = m_nIndex;
+                                excelModel.ProductName = "PRODUCT_TEST";
+                                excelModel.ProductCode = resStr_2;
+                                excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
+                                excelModel.Judgement = "OK_TEST";
+                                excelModel.Note = "TEST";
+
+                                excelTemplateModels.Add(excelModel);
+                                Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                                //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+
+                                m_nIndex++;
+                            }
+                            else
+                            {
+                                string[] arrStr = resStr_2.Split(new char[] { ';' });
+                                for (int i = 0; i < arrStr.Length; i++)
+                                {
+                                    // record to database
+                                    List<ExcelTemplateModel> excelTemplateModels = new List<ExcelTemplateModel>();
+                                    ExcelTemplateModel excelModel = new ExcelTemplateModel();
+                                    excelModel.Id = m_nIndex;
+                                    excelModel.ProductName = "PRODUCT_TEST";
+                                    excelModel.ProductCode = arrStr[i];
+                                    excelModel.Date = DateTime.Now.ToString("dd-MM-yyyy HH:mm::ss");
+                                    excelModel.Judgement = "OK_TEST";
+                                    excelModel.Note = "TEST";
+
+                                    excelTemplateModels.Add(excelModel);
+                                    Csv_Manager.Instance.WriteNewModelToCsv(excelTemplateModels);
+
+                                    //SQLite_Manager.Instance.InsertData(excelModel, "Test_Excel");
+
+                                    m_nIndex++;
+                                }
+                            }
+                        }
                         break;
                     case 2:
                         break;
