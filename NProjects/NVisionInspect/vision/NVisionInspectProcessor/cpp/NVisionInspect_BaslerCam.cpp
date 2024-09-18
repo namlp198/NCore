@@ -31,6 +31,7 @@ CNVisionInspect_BaslerCam::~CNVisionInspect_BaslerCam()
 
 BOOL CNVisionInspect_BaslerCam::Initialize()
 {
+	int nHikCamCount = m_pInterface->GetVecCameras().at(0);
 	int nbaslerCamCount = m_pInterface->GetVecCameras().at(1); /*pos 1: number of Basler Cam*/
 
 	std::vector<CFrameGrabberParam> grabberParam;
@@ -40,17 +41,21 @@ BOOL CNVisionInspect_BaslerCam::Initialize()
 
 	for (int i = 0; i < nbaslerCamCount; i++)
 	{
-		grabberParam[i].SetParam_GrabberPort((CString)m_pInterface->GetCameraSettingControl(i)->m_sSerialNumber);
-		grabberParam[i].SetParam_FrameWidth(m_pInterface->GetCameraSettingControl(i)->m_nFrameWidth);
-		grabberParam[i].SetParam_FrameHeight(m_pInterface->GetCameraSettingControl(i)->m_nFrameHeight);
-		grabberParam[i].SetParam_FrameWidthStep(m_pInterface->GetCameraSettingControl(i)->m_nFrameWidth);
-		grabberParam[i].SetParam_FrameDepth(m_pInterface->GetCameraSettingControl(i)->m_nFrameDepth);
-		grabberParam[i].SetParam_FrameChannels(m_pInterface->GetCameraSettingControl(i)->m_nChannels);
-		grabberParam[i].SetParam_FrameCount(m_pInterface->GetCameraSettingControl(i)->m_nMaxFrameCount);
+		int nBaslerCamSettingIdx = nHikCamCount + i;
+
+		grabberParam[i].SetParam_GrabberPort((CString)m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_sSerialNumber);
+		grabberParam[i].SetParam_FrameWidth(m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nFrameWidth);
+		grabberParam[i].SetParam_FrameHeight(m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nFrameHeight);
+		grabberParam[i].SetParam_FrameWidthStep(m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nFrameWidth);
+		grabberParam[i].SetParam_FrameDepth(m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nFrameDepth);
+		grabberParam[i].SetParam_FrameChannels(m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nChannels);
+		grabberParam[i].SetParam_FrameCount(m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nMaxFrameCount);
 	}
 
 	for (int nCamIdx = 0; nCamIdx < nbaslerCamCount; nCamIdx++)
 	{
+		int nBaslerCamSettingIdx = nHikCamCount + nCamIdx;
+
 		// Image Buffer
 		if (m_pCameraImageBuffer[nCamIdx] != NULL)
 		{
@@ -59,10 +64,10 @@ BOOL CNVisionInspect_BaslerCam::Initialize()
 			m_pCameraImageBuffer[nCamIdx] = NULL;
 		}
 
-		DWORD dwFrameWidth = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameWidth;
-		DWORD dwFrameHeight = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nFrameHeight;
-		DWORD dwFrameCount = (DWORD)m_pInterface->GetCameraSettingControl(nCamIdx)->m_nMaxFrameCount;
-		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * m_pInterface->GetCameraSettingControl(nCamIdx)->m_nChannels;
+		DWORD dwFrameWidth = (DWORD)m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nFrameWidth;
+		DWORD dwFrameHeight = (DWORD)m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nFrameHeight;
+		DWORD dwFrameCount = (DWORD)m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nMaxFrameCount;
+		DWORD dwFrameSize = dwFrameWidth * dwFrameHeight * m_pInterface->GetCameraSettingControl(nBaslerCamSettingIdx)->m_nChannels;
 
 		m_pCameraImageBuffer[nCamIdx] = new CSharedMemoryBuffer;
 		m_pCameraImageBuffer[nCamIdx]->SetFrameWidth(dwFrameWidth);

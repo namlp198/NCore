@@ -14,13 +14,11 @@ extern "C"
 
 	/************************** Hik Cam **************************/
 
-	__declspec(dllexport) bool                          ContinuousGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx);
+	__declspec(dllexport) bool                          ContinuousGrab(CNVisionInspectProcessor* pProcessor,emCameraBrand camBrand, int nCamIdx);
 												        
-	__declspec(dllexport) bool                          SingleGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx);
+	__declspec(dllexport) bool                          StopGrab(CNVisionInspectProcessor* pProcessor,emCameraBrand camBrand, int nCamIdx);
 												        
-	__declspec(dllexport) bool                          StopGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx);
-												        
-	__declspec(dllexport) BYTE*                         GetImageBufferHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx);
+	__declspec(dllexport) BYTE*                         GetImageBuffer(CNVisionInspectProcessor* pProcessor,emCameraBrand camBrand, int nCamIdx);
 												        
 	__declspec(dllexport) bool                          SetTriggerMode(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nMode);
 												        

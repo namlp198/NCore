@@ -25,65 +25,89 @@ bool Initialize(CNVisionInspectProcessor* pProcessor)
 	else               return true;
 }
 
-bool ContinuousGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
+bool ContinuousGrab(CNVisionInspectProcessor* pProcessor, emCameraBrand camBrand, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return false;
 
+	int retVal = 0;
 	int nCoreIdx = nCamIdx;
 	
-	CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
-	if (pHikCam == NULL)
-		return false;
-
-	int retVal = pHikCam->StartGrab(nCamIdx);
+	switch (camBrand)
+	{
+	case CameraBrand_Hik:
+	{
+		CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
+		if (pHikCam == NULL)
+			return false;
+		retVal = pHikCam->StartGrab(nCamIdx);
+	}
+		break;
+	case CameraBrand_Basler:
+	{
+		CNVisionInspect_BaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
+		if (pBaslerCam == NULL)
+			return false;
+		retVal = pBaslerCam->StartGrab(nCamIdx);
+	}
+		break;
+	case CameraBrand_Jai:
+		break;
+	case CameraBrand_IRayple:
+		break;
+	}
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }
 
-bool SingleGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
+bool StopGrab(CNVisionInspectProcessor* pProcessor, emCameraBrand camBrand, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return false;
-
-	int nCoreIdx = nCamIdx;
 	
-	CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
-	if (pHikCam == NULL)
-		return false;
-
-	int retVal = pHikCam->StartGrab(nCamIdx);
-	if (retVal == 0) return false;
-	else if (retVal == 1) return true;
-
-	/*int retVal = pHikCam->SoftwareTrigger(nCamIdx);
-	if (retVal == 0) return false;
-	else if (retVal == 1) return true;*/
-}
-
-bool StopGrabHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
-{
-	if (pProcessor == NULL)
-		return false;
-	
+	int retVal = 0;
 	int nCoreIdx = nCamIdx;
 
-	CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
-	if (pHikCam == NULL)
-		return false;
-
-	int retVal = pHikCam->StopGrab(nCamIdx);
+	switch (camBrand)
+	{
+	case CameraBrand_Hik:
+	{
+		CNVisionInspect_HikCam* pHikCam = pProcessor->GetHikCamControl();
+		if (pHikCam == NULL)
+			return false;
+		retVal = pHikCam->StopGrab(nCamIdx);
+	}
+	break;
+	case CameraBrand_Basler:
+	{
+		CNVisionInspect_BaslerCam* pBaslerCam = pProcessor->GetBaslerCamControl();
+		if (pBaslerCam == NULL)
+			return false;
+		retVal = pBaslerCam->StopGrab(nCamIdx);
+	}
+	break;
+	case CameraBrand_Jai:
+		break;
+	case CameraBrand_IRayple:
+		break;
+	}
 
 	if (retVal == 0) return false;
 	else if (retVal == 1) return true;
 }
 
-BYTE* GetImageBufferHikCam(CNVisionInspectProcessor* pProcessor, int nCamIdx)
+BYTE* GetImageBuffer(CNVisionInspectProcessor* pProcessor, emCameraBrand camBrand, int nCamIdx)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
-	return pProcessor->GetImageBufferHikCam(nCamIdx);
+	switch (camBrand)
+	{
+	case CameraBrand_Hik: return pProcessor->GetImageBufferHikCam(nCamIdx); break;
+	case CameraBrand_Basler: return pProcessor->GetImageBufferBaslerCam(nCamIdx); break;
+	case CameraBrand_Jai: break;
+	case CameraBrand_IRayple: break;
+	}
 }
 
 bool SetTriggerMode(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nMode)
