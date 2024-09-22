@@ -227,6 +227,7 @@ namespace NpcCore.Wpf.Controls
         private bool _drag;
         private bool _completedSelectRoi;
         private bool _enableSelectRoiTool;
+        private bool _enableInspectTool;
         private bool _isSelectingRoi;
         private bool _enableRotate;
         private bool _enableLocatorTool;
@@ -493,6 +494,7 @@ namespace NpcCore.Wpf.Controls
             InitContextMenuRoiMode();
             InitContextMenuDefault();
             InitContextMenuLocator();
+            InitContextMenuInspecTools();
 
             this.MouseDown += ImageEx_MouseDown;
             this.MouseMove += ImageEx_MouseMove;
@@ -515,21 +517,35 @@ namespace NpcCore.Wpf.Controls
         // context menu in Locator tool
         private ContextMenu _ctxMnuLocator;
 
+        // context menu inspect tools
+        private ContextMenu _ctxMnuInspectTool;
+
         // Get roi and save image
         private MenuItem _getROIItem;
-        private MenuItem _saveFullImageItem;
-        private MenuItem _saveROIImageItem;
 
         // default mode
         private MenuItem _fitItem;
-        private MenuItem _zoomInItem;
-        private MenuItem _zoomOutItem;
         private MenuItem _measureItem;
         private MenuItem _selectModeTool;
         private MenuItem _selectRoiMode;
         private MenuItem _selectRectItem;
         private MenuItem _selectPolyItem;
         private MenuItem _locatorMode;
+        private MenuItem _saveFullImageItem;
+        private MenuItem _saveROIImageItem;
+
+        // inspect tools
+        private MenuItem _calibration2DItem;
+        private MenuItem _colorSpaceItem;
+        private MenuItem _countPixelItem;
+        private MenuItem _countBlobItem;
+        private MenuItem _findLineItem;
+        private MenuItem _findCircleItem;
+        private MenuItem _pcaItem;
+        private MenuItem _trainOcrItem;
+        private MenuItem _ocrItem;
+        private MenuItem _templateRotateItem;
+
 
         // the chooses in locator contextmenu
         private MenuItem _trainItem;
@@ -540,7 +556,7 @@ namespace NpcCore.Wpf.Controls
             _ctxMnuRoiMode = new ContextMenu();
 
             _getROIItem = new MenuItem();
-            _getROIItem.Header = "Get ROI";
+            _getROIItem.Header = "Select ROI";
             _getROIItem.Name = "mnuGetROI";
             _getROIItem.Click += mnuGetROI_Click;
             _getROIItem.FontFamily = new FontFamily("Georgia");
@@ -548,8 +564,6 @@ namespace NpcCore.Wpf.Controls
             _getROIItem.FontSize = 12;
 
             _ctxMnuRoiMode.Items.Add(_getROIItem);
-            _ctxMnuRoiMode.PlacementTarget = this;
-            _ctxMnuRoiMode.IsOpen = false;
         }
         private void InitContextMenuDefault()
         {
@@ -562,31 +576,6 @@ namespace NpcCore.Wpf.Controls
             _fitItem.FontFamily = new FontFamily("Georgia");
             _fitItem.FontWeight = FontWeights.Regular;
             _fitItem.FontSize = 12;
-
-            _zoomInItem = new MenuItem();
-            _zoomInItem.Header = "Zoom in";
-            _zoomInItem.Name = "mnuZoomIn";
-            _zoomInItem.Click += mnuZoomIn_Click;
-            _zoomInItem.FontFamily = new FontFamily("Georgia");
-            _zoomInItem.FontWeight = FontWeights.Regular;
-            _zoomInItem.FontSize = 12;
-
-            _zoomOutItem = new MenuItem();
-            _zoomOutItem.Header = "Zoom out";
-            _zoomOutItem.Name = "mnuZoomOut";
-            _zoomOutItem.Click += mnuZoomOut_Click;
-            _zoomOutItem.FontFamily = new FontFamily("Georgia");
-            _zoomOutItem.FontWeight = FontWeights.Regular;
-            _zoomOutItem.FontSize = 12;
-
-            // measure item
-            _measureItem = new MenuItem();
-            _measureItem.Header = "Measure";
-            _measureItem.Name = "mnuMeasure";
-            _measureItem.Click += mnuMeasure_Click;
-            _measureItem.FontFamily = new FontFamily("Georgia");
-            _measureItem.FontWeight = FontWeights.Regular;
-            _measureItem.FontSize = 12;
 
             // select mode tool item
             _selectModeTool = new MenuItem();
@@ -630,7 +619,6 @@ namespace NpcCore.Wpf.Controls
             _selectRoiMode.Items.Add(_selectRectItem);
             _selectRoiMode.Items.Add(_selectPolyItem);
 
-
             // locator mode
             _locatorMode = new MenuItem();
             _locatorMode.Header = "Locator";
@@ -640,6 +628,16 @@ namespace NpcCore.Wpf.Controls
             _locatorMode.FontWeight = FontWeights.Regular;
             _locatorMode.FontSize = 12;
 
+            // measure item
+            _measureItem = new MenuItem();
+            _measureItem.Header = "Measure";
+            _measureItem.Name = "mnuMeasure";
+            _measureItem.Click += mnuMeasure_Click;
+            _measureItem.FontFamily = new FontFamily("Georgia");
+            _measureItem.FontWeight = FontWeights.Regular;
+            _measureItem.FontSize = 12;
+
+            // save Image
             _saveFullImageItem = new MenuItem();
             _saveFullImageItem.Header = "Save Full Image";
             _saveFullImageItem.Name = "mnuSaveFullImage";
@@ -660,12 +658,10 @@ namespace NpcCore.Wpf.Controls
             _selectModeTool.Items.Add(_selectRoiMode);
             _selectModeTool.Items.Add(_locatorMode);
 
-
             _ctxMnuDefault.Items.Add(_fitItem);
-            _ctxMnuDefault.Items.Add(_zoomInItem);
-            _ctxMnuDefault.Items.Add(_zoomOutItem);
-            _ctxMnuDefault.Items.Add(_measureItem);
             _ctxMnuDefault.Items.Add(_selectModeTool);
+
+            _ctxMnuDefault.Items.Add(_measureItem);
             _ctxMnuDefault.Items.Add(_saveFullImageItem);
             _ctxMnuDefault.Items.Add(_saveROIImageItem);
             _ctxMnuDefault.PlacementTarget = this;
@@ -689,26 +685,126 @@ namespace NpcCore.Wpf.Controls
             _ctxMnuLocator.PlacementTarget = this;
             _ctxMnuLocator.IsOpen = false;
         }
+        private void InitContextMenuInspecTools()
+        {
+            _ctxMnuInspectTool = new ContextMenu();
 
+            // Calibration
+            _calibration2DItem = new MenuItem();
+            _calibration2DItem.Header = "Calibration 2D";
+            _calibration2DItem.Name = "mnuCalibration";
+            _calibration2DItem.Click += mnuCalibration_Click;
+            _calibration2DItem.FontFamily = new FontFamily("Georgia");
+            _calibration2DItem.FontWeight = FontWeights.Regular;
+            _calibration2DItem.FontSize = 12;
+
+            // Color Space
+            _colorSpaceItem = new MenuItem();
+            _colorSpaceItem.Header = "Color Space (HSV)";
+            _colorSpaceItem.Name = "mnuColorSpace";
+            _colorSpaceItem.Click += mnuColorSpace_Click;
+            _colorSpaceItem.FontFamily = new FontFamily("Georgia");
+            _colorSpaceItem.FontWeight = FontWeights.Regular;
+            _colorSpaceItem.FontSize = 12;
+
+            // Count pixel
+            _countPixelItem = new MenuItem();
+            _countPixelItem.Header = "Count Pixel";
+            _countPixelItem.Name = "mnuCntPixel";
+            _countPixelItem.Click += mnuCntPixel_Click;
+            _countPixelItem.FontFamily = new FontFamily("Georgia");
+            _countPixelItem.FontWeight = FontWeights.Regular;
+            _countPixelItem.FontSize = 12;
+
+            // Count blob
+            _countBlobItem = new MenuItem();
+            _countBlobItem.Header = "Count Blob";
+            _countBlobItem.Name = "mnuCntBlob";
+            _countBlobItem.Click += mnuCntBlob_Click;
+            _countBlobItem.FontFamily = new FontFamily("Georgia");
+            _countBlobItem.FontWeight = FontWeights.Regular;
+            _countBlobItem.FontSize = 12;
+
+            // Find line
+            _findLineItem = new MenuItem();
+            _findLineItem.Header = "Find Line";
+            _findLineItem.Name = "mnuFindLine";
+            _findLineItem.Click += mnuFindLine_Click;
+            _findLineItem.FontFamily = new FontFamily("Georgia");
+            _findLineItem.FontWeight = FontWeights.Regular;
+            _findLineItem.FontSize = 12;
+
+            // Find Circle
+            _findCircleItem = new MenuItem();
+            _findCircleItem.Header = "Find Circle";
+            _findCircleItem.Name = "mnuFindCircle";
+            _findCircleItem.Click += mnuFindCircle_Click;
+            _findCircleItem.FontFamily = new FontFamily("Georgia");
+            _findCircleItem.FontWeight = FontWeights.Regular;
+            _findCircleItem.FontSize = 12;
+
+            // PCA
+            _pcaItem = new MenuItem();
+            _pcaItem.Header = "PCA";
+            _pcaItem.Name = "mnuPCA";
+            _pcaItem.Click += mnuPCA_Click;
+            _pcaItem.FontFamily = new FontFamily("Georgia");
+            _pcaItem.FontWeight = FontWeights.Regular;
+            _pcaItem.FontSize = 12;
+
+            // Train OCR
+            _trainOcrItem = new MenuItem();
+            _trainOcrItem.Header = "Train OCR";
+            _trainOcrItem.Name = "mnuTrainOCR";
+            _trainOcrItem.Click += mnuTrainOCR_Click;
+            _trainOcrItem.FontFamily = new FontFamily("Georgia");
+            _trainOcrItem.FontWeight = FontWeights.Regular;
+            _trainOcrItem.FontSize = 12;
+
+            // OCR
+            _ocrItem = new MenuItem();
+            _ocrItem.Header = "OCR";
+            _ocrItem.Name = "mnuOCR";
+            _ocrItem.Click += mnuOCR_Click;
+            _ocrItem.FontFamily = new FontFamily("Georgia");
+            _ocrItem.FontWeight = FontWeights.Regular;
+            _ocrItem.FontSize = 12;
+
+            // Template Rotate
+            _templateRotateItem = new MenuItem();
+            _templateRotateItem.Header = "Template Rotate";
+            _templateRotateItem.Name = "mnuTemplateRotate";
+            _templateRotateItem.Click += mnuTemplateRotate_Click;
+            _templateRotateItem.FontFamily = new FontFamily("Georgia");
+            _templateRotateItem.FontWeight = FontWeights.Regular;
+            _templateRotateItem.FontSize = 12;
+
+            _ctxMnuInspectTool.Items.Add(_calibration2DItem);
+            _ctxMnuInspectTool.Items.Add(_colorSpaceItem);
+            _ctxMnuInspectTool.Items.Add(_countPixelItem);
+            _ctxMnuInspectTool.Items.Add(_countBlobItem);
+            _ctxMnuInspectTool.Items.Add(_findLineItem);
+            _ctxMnuInspectTool.Items.Add(_findCircleItem);
+            _ctxMnuInspectTool.Items.Add(_pcaItem);
+            _ctxMnuInspectTool.Items.Add(_trainOcrItem);
+            _ctxMnuInspectTool.Items.Add(_ocrItem);
+            _ctxMnuInspectTool.Items.Add(_templateRotateItem);
+
+            _ctxMnuInspectTool.PlacementTarget = this;
+            _ctxMnuInspectTool.IsOpen = false;
+        }
+
+        #region Functions Handle Event for MenuItem Default
         private void mnuFit_Click(object sender, RoutedEventArgs e)
         {
             //this.Reset();
             //this.InvalidateVisual();
             RaiseEvent(new RoutedEventArgs(FitEvent, this));
         }
-        private void mnuZoomOut_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Just press Zoom out");
-        }
-        private void mnuZoomIn_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Just press Zoom in");
-        }
         private void mnuMeasure_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Just press measure");
         }
-
         private void mnuLocator_Click(object sender, RoutedEventArgs e)
         {
             EnableLocatorTool = true;
@@ -718,7 +814,6 @@ namespace NpcCore.Wpf.Controls
             EnableLocatorTool = false;
             RaiseEvent(new RoutedEventArgs(TrainLocatorEvent, this));
         }
-
         private void mnuSelectRect_Click(object sender, RoutedEventArgs e)
         {
             _selectPolyItem.IsChecked = false;
@@ -727,12 +822,6 @@ namespace NpcCore.Wpf.Controls
         private void mnuSelectPolygon_Click(object sender, RoutedEventArgs e)
         {
             _selectRectItem.IsChecked = false;
-        }
-
-        private void mnuGetROI_Click(object sender, RoutedEventArgs e)
-        {
-            EnableSelectRoiTool = false;
-            RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
         }
         private void mnuSaveFullImage_Click(object sender, RoutedEventArgs e)
         {
@@ -744,13 +833,72 @@ namespace NpcCore.Wpf.Controls
             EnableSelectRoiTool = false;
             RaiseEvent(new RoutedEventArgs(SaveROIImageEvent, this));
         }
+        #endregion
+        #region Functions Handle Event for ROI
+        private void mnuGetROI_Click(object sender, RoutedEventArgs e)
+        {
+            EnableSelectRoiTool = false;
+            EnableInspectTool = true;
+            RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuCalibration_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuColorSpace_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuCntPixel_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuCntBlob_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuFindLine_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuFindCircle_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuPCA_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuTrainOCR_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuOCR_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        private void mnuTemplateRotate_Click(object sender, RoutedEventArgs e)
+        {
+            EnableInspectTool = false;
+            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+        }
+        #endregion
 
         #endregion
 
         #region Handle Event
         private void ImageEx_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableSelectRoiTool && !_enableLocatorTool)
+            if (!_enableSelectRoiTool && !_enableLocatorTool && !_enableInspectTool)
             {
                 _ctxMnuDefault.IsOpen = true;
                 return;
@@ -765,13 +913,17 @@ namespace NpcCore.Wpf.Controls
             // Mouse point in Rectangle's space. 
             var point = mat.Transform(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
 
-            if (_rect.Contains(point) && _enableSelectRoiTool && !_enableLocatorTool)
+            if (_rect.Contains(point) && _enableSelectRoiTool && !_enableLocatorTool && !_enableInspectTool)
             {
                 _ctxMnuRoiMode.IsOpen = true;
             }
-            else if (_rect.Contains(point) && !_enableSelectRoiTool && _enableLocatorTool)
+            else if (_rect.Contains(point) && !_enableSelectRoiTool && _enableLocatorTool && !_enableInspectTool)
             {
                 _ctxMnuLocator.IsOpen = true;
+            }
+            else if (_rect.Contains(point) && !_enableSelectRoiTool && !_enableLocatorTool && _enableInspectTool)
+            {
+                _ctxMnuInspectTool.IsOpen = true;
             }
         }
         private void ImageEx_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -1535,6 +1687,17 @@ namespace NpcCore.Wpf.Controls
                     ToolType = EnToolType.ToolType_SelectRoiTool;
 
                     this.InvalidateVisual();
+                }
+            }
+        }
+        public bool EnableInspectTool
+        {
+            get => _enableInspectTool;
+            set
+            {
+                if (SetProperty(ref _enableInspectTool, value))
+                {
+
                 }
             }
         }
