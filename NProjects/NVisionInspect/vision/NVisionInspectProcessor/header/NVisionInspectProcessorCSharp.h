@@ -12,7 +12,7 @@ extern "C"
 
 	__declspec(dllexport) bool                          Initialize(CNVisionInspectProcessor* pProcessor);
 
-	/************************** Hik Cam **************************/
+	/************************** Camera **************************/
 
 	__declspec(dllexport) bool                          ContinuousGrab(CNVisionInspectProcessor* pProcessor,emCameraBrand camBrand, int nCamIdx);
 												        
@@ -46,11 +46,15 @@ extern "C"
 												        
 	__declspec(dllexport) BYTE*                         GetResultBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame);
 												        
-	__declspec(dllexport) bool                          GetInspectionResult(CNVisionInspectProcessor* pProcessor, int nCoreIdx, CNVisionInspectResult* pReadCodepResult);
-												        
+	__declspec(dllexport) bool                          GetInspectionResult(CNVisionInspectProcessor* pProcessor,  CNVisionInspectResult* pNVisionInsppResult);
+
+	__declspec(dllexport) bool                          GetInspectToolResult_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectResult_FakeCam* pNVisionInsppRes_FakeCam);
+
 	__declspec(dllexport) bool                          LoadSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath);
 												        
 	__declspec(dllexport) BYTE*                         GetSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame);
+
+	__declspec(dllexport) void                          CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool);
 
 	/************************** Callback **************************/
 
@@ -62,13 +66,19 @@ extern "C"
 												        
 	__declspec(dllexport) void			                RegCallBackLocatorTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackLocatorTrainComplete* pFunc);
 
+	__declspec(dllexport) void			                RegCallbackInspComplete_FakeCamFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete_FakeCam* pFunc);
+
 	/************************** Load Setting and Recipe **************************/
 
 	__declspec(dllexport) bool                          LoadSystemSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting);
 
 	__declspec(dllexport) bool                          LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCameraSetting* pCamSetting, int nCamIdx);
+
+	__declspec(dllexport) bool                          LoadFakeCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspect_FakeCameraSetting* pFakeCamSetting);
 												        
 	__declspec(dllexport) bool                          LoadRecipe(CNVisionInspectProcessor* pProcessor, int nCamCount, CNVisionInspectRecipe* pRecipe);
+
+	__declspec(dllexport) bool                          LoadRecipe_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe_FakeCam* pFakeCamRecipe);
 
 
 	/************************** Save Setting and Recipe **************************/
@@ -76,6 +86,10 @@ extern "C"
 	__declspec(dllexport) bool                          SaveSystemSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting);
 
 	__declspec(dllexport) bool                          SaveCameraSetting(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectCameraSetting* pCamSetting);
+
+	__declspec(dllexport) bool                          SaveFakeCameraSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspect_FakeCameraSetting* pFakeCamSetting);
 												        
 	__declspec(dllexport) bool                          SaveRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe);
+
+	__declspec(dllexport) bool                          SaveRecipe_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe_FakeCam* pRecipeFakeCam);
 };

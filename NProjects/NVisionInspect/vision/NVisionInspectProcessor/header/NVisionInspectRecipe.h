@@ -156,6 +156,23 @@ struct CNVisionInspectRecipe_Cam7
 struct CNVisionInspectRecipe_Cam8
 {
 };
+struct CNVisionInspectRecipe_CountPixel
+{
+	int                m_nCountPixel_ROI_X;
+	int                m_nCountPixel_ROI_Y;
+	int                m_nCountPixel_ROI_Width;
+	int                m_nCountPixel_ROI_Height;
+	int                m_nCountPixel_ROI_Offset_X;
+	int                m_nCountPixel_ROI_Offset_Y;
+	double             m_nCountPixel_ROI_AngleRotate;
+	int                m_nCountPixel_GrayThreshold_Min;
+	int                m_nCountPixel_GrayThreshold_Max;
+	int                m_nCountPixel_PixelCount_Min;
+	int                m_nCountPixel_PixelCount_Max;
+	BOOL               m_bCountPixel_ShowGraphics;
+	BOOL               m_bCountPixel_UseOffset;
+	BOOL               m_bCountPixel_UseLocator;
+};
 
 class AFX_EXT_CLASS CNVisionInspectRecipe
 {
@@ -171,4 +188,12 @@ public:
 	CNVisionInspectRecipe_Cam6 m_NVisionInspRecipe_Cam6;
 	CNVisionInspectRecipe_Cam7 m_NVisionInspRecipe_Cam7;
 	CNVisionInspectRecipe_Cam8 m_NVisionInspRecipe_Cam8;
+};
+class AFX_EXT_CLASS CNVisionInspectRecipe_FakeCam
+{
+public:
+	CNVisionInspectRecipe_FakeCam(void);
+	~CNVisionInspectRecipe_FakeCam(void);
+public:
+	CNVisionInspectRecipe_CountPixel m_NVisionInspectRecipe_CountPixel;
 };

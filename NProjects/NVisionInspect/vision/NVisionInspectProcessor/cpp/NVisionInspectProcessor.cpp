@@ -11,6 +11,8 @@ CNVisionInspectProcessor::CNVisionInspectProcessor()
 
 	m_pCallbackLocatorTrainCompleteFunc = NULL;
 
+	m_pCallbackInspComplete_FakeCamFunc = NULL;
+
 
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("VisionSettings\\Settings\\SystemSettings.config");
 
@@ -36,6 +38,7 @@ BOOL CNVisionInspectProcessor::Initialize()
 	LoadSystemSettings(m_pNVisionInspectSystemSetting);
 
 	// 2. Camera Setting
+	
 	for (int i = 0; i < m_pNVisionInspectSystemSetting->m_nNumberOfInspectionCamera; i++) {
 		if (m_pNVisionInspectCameraSetting[i] != NULL)
 			delete m_pNVisionInspectCameraSetting[i], m_pNVisionInspectCameraSetting[i] = NULL;
@@ -47,6 +50,15 @@ BOOL CNVisionInspectProcessor::Initialize()
 
 		LoadCameraSettings(m_pNVisionInspectCameraSetting[i]);
 	}
+	
+
+	// Load Fake Cam Setting
+	if (m_pNVisionInspect_FakeCamSetting != NULL)
+		delete m_pNVisionInspect_FakeCamSetting, m_pNVisionInspect_FakeCamSetting = NULL;
+	m_pNVisionInspect_FakeCamSetting = new CNVisionInspect_FakeCameraSetting;
+
+	LoadFakeCameraSettings(m_pNVisionInspect_FakeCamSetting);
+
 
 	// 3. Create Result Buffer and simulator buffer
 
@@ -67,11 +79,18 @@ BOOL CNVisionInspectProcessor::Initialize()
 	m_pNVisionInspectRecipe = new CNVisionInspectRecipe;
 
 	// 5. Result
-
 	if (m_pNVisionInspectResult != NULL)
 		delete m_pNVisionInspectResult, m_pNVisionInspectResult = NULL;
 	m_pNVisionInspectResult = new CNVisionInspectResult;
 
+	// Fake cam
+	if (m_pNVisionInspectRecipe_FakeCam != NULL)
+		delete m_pNVisionInspectRecipe_FakeCam, m_pNVisionInspectRecipe_FakeCam = NULL;
+	m_pNVisionInspectRecipe_FakeCam = new CNVisionInspectRecipe_FakeCam;
+
+	if (m_pNVisionInspectResult_FakeCam != NULL)
+		delete m_pNVisionInspectResult_FakeCam, m_pNVisionInspectResult_FakeCam = NULL;
+	m_pNVisionInspectResult_FakeCam = new CNVisionInspectResult_FakeCam;
 
 	// 6. Status
 	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++) {
@@ -159,6 +178,16 @@ BOOL CNVisionInspectProcessor::Destroy()
 		if (m_pNVisionInspectCameraSetting[i] != NULL)
 			delete m_pNVisionInspectCameraSetting[i], m_pNVisionInspectCameraSetting[i] = NULL;
 	}
+
+	// Release Fake Cam
+	if (m_pNVisionInspect_FakeCamSetting != NULL)
+		delete m_pNVisionInspect_FakeCamSetting, m_pNVisionInspect_FakeCamSetting = NULL;
+
+	if (m_pNVisionInspectRecipe_FakeCam != NULL)
+		delete m_pNVisionInspectRecipe_FakeCam, m_pNVisionInspectRecipe_FakeCam = NULL;
+
+	if (m_pNVisionInspectResult_FakeCam != NULL)
+		delete m_pNVisionInspectResult_FakeCam, m_pNVisionInspectResult_FakeCam = NULL;
 
 	return TRUE;
 }
@@ -452,7 +481,7 @@ BOOL CNVisionInspectProcessor::LoadSystemSettings(CNVisionInspectSystemSetting* 
 
 	CString strPosHik = (CString)csCameras.GetAt(csCameras.FindOneOf(_T("Hik")) + 4);
 	CString strPosBasler = (CString)csCameras.GetAt(csCameras.FindOneOf(_T("Basler")) + 7);
-	
+
 	m_vecCameras.resize(sysSettings.m_nNumberOfBrand);
 	m_vecCameras.at(0) = (_ttoi(strPosHik)); // Pos 0: number of Hik Cam
 	m_vecCameras.at(1) = (_ttoi(strPosBasler)); // Pos 1: number of Basler Cam
@@ -635,7 +664,7 @@ BOOL CNVisionInspectProcessor::LoadRecipe(int nCamCount, CNVisionInspectRecipe* 
 			recipeFile_Cam2.GetItemValue(_T("ROI2_GRAY_THRESHOLD_MAX"), readRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_GrayThreshold_Max, 0);
 			recipeFile_Cam2.GetItemValue(_T("ROI2_PIXEL_COUNT_MIN"), readRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_PixelCount_Min, 0);
 			recipeFile_Cam2.GetItemValue(_T("ROI2_PIXEL_COUNT_MAX"), readRecipe.m_NVisionInspRecipe_Cam2.m_nROI2_PixelCount_Max, 0);
-						  
+
 			recipeFile_Cam2.GetItemValue(_T("ROI3_X"), readRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_X, 0);
 			recipeFile_Cam2.GetItemValue(_T("ROI3_Y"), readRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Y, 0);
 			recipeFile_Cam2.GetItemValue(_T("ROI3_WIDTH"), readRecipe.m_NVisionInspRecipe_Cam2.m_nROI3_Width, 0);
@@ -681,6 +710,55 @@ BOOL CNVisionInspectProcessor::LoadRecipe(int nCamCount, CNVisionInspectRecipe* 
 
 	*(m_pNVisionInspectRecipe) = readRecipe;
 	*(pRecipe) = *(m_pNVisionInspectRecipe);
+
+	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::LoadRecipe_FakeCam(CNVisionInspectRecipe_FakeCam* pRecipeFakeCam)
+{
+	if (m_pNVisionInspectRecipe_FakeCam == NULL)
+		return FALSE;
+
+	CNVisionInspectRecipe_FakeCam readRecipeFakeCam;
+
+	BOOL bNoFile = FALSE;
+	// Params..
+	CString strParameterKey = _T("");
+	CString strValue = _T("");
+	double dValue = 0.0;
+	int nValue = 0;
+
+	// Set recipe fake cam path
+	m_csRecipeFakeCamPath.Format(_T("%sVisionSettings\\FakeCam\\Recipe\\%s_%s.%s"), GetCurrentPathApp(), _T("NVisionRecipe"), _T("FakeCam"), _T("cfg"));
+
+	CConfig recipeFile_FakeCam;
+	if (recipeFile_FakeCam.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipeFakeCamPath, FileMap_Mode) == FALSE)
+	{
+		CFile pFile;
+		pFile.Open(m_csRecipeFakeCamPath, CFile::modeCreate);
+		pFile.Close();
+
+		bNoFile = TRUE;
+	}
+
+	// COUNT PIXEL
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_X"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_X, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_Y"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Y, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_WIDTH"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Width, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_HEIGHT"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Height, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_OFFSET_X"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Offset_X, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_OFFSET_Y"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Offset_Y, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_ANGLE_ROTATE"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_AngleRotate, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_GRAY_THRESHOLD_MIN"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_GrayThreshold_Min, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_GRAY_THRESHOLD_MAX"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_GrayThreshold_Max, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_PIXEL_COUNT_MIN"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_PixelCount_Min, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_PIXEL_COUNT_MAX"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_PixelCount_Max, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_SHOW_GRAPHICS"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_bCountPixel_ShowGraphics, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_USE_LOCATOR"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseLocator, 1);
+	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_USE_OFFSET"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseOffset, 1);
+
+	*(m_pNVisionInspectRecipe_FakeCam) = readRecipeFakeCam;
+	*(pRecipeFakeCam) = *(m_pNVisionInspectRecipe_FakeCam);
 
 	return TRUE;
 }
@@ -799,6 +877,101 @@ BOOL CNVisionInspectProcessor::LoadCameraSettings(CNVisionInspectCameraSetting* 
 	wsprintf(camSettings.m_sROIsPath, _T("%s"), (TCHAR*)(LPCTSTR)csROIsPath);
 
 	*(pCameraSetting) = camSettings;
+
+	::DisposeXMLFile(m_pXmlFile);
+	::DisposeXMLObject(m_pXmlDoc);
+
+	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::LoadFakeCameraSettings(CNVisionInspect_FakeCameraSetting* pFakeCameraSetting)
+{
+	if (pFakeCameraSetting == NULL)
+		return FALSE;
+
+	m_csFakeCamSettingPath.Format(_T("%sVisionSettings\\FakeCam\\Setting\\%s.%s"), GetCurrentPathApp(), _T("FakeCameraSettings"), _T("config"));
+
+	if (m_csFakeCamSettingPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Fake Camera setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csFakeCamSettingPath);
+	if (m_csFakeCamSettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Camera setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CNVisionInspect_FakeCameraSetting fakeCamSettings;
+
+	// convert path
+	USES_CONVERSION;
+	char chFakeCamSettingPath[1024] = {};
+	sprintf_s(chFakeCamSettingPath, "%s", W2A(m_csFakeCamSettingPath));
+
+	// 1. init xml manager
+	XMLFile* m_pXmlFile;
+	XMLDocument_2* m_pXmlDoc;
+	std::string error;
+
+	// 2. Open file
+	m_pXmlFile = ::OpenXMLFile(chFakeCamSettingPath, error);
+	if (!m_pXmlFile)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		return FALSE;
+	}
+
+	// 3. Create xml doc
+	m_pXmlDoc = ::CreateXMLFromFile(m_pXmlFile, error);
+	if (!m_pXmlDoc)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		return FALSE;
+	}
+
+	// 4. Find root: Configurations
+	XMLElement* pRoot = ::FirstOrDefaultElement(m_pXmlDoc, "FakeCameraSettings", error);
+	if (!pRoot)
+	{
+		AfxMessageBox((CString)(error.c_str()));
+		::DisposeXMLFile(m_pXmlFile);
+		::DisposeXMLObject(m_pXmlDoc);
+		return FALSE;
+	}
+
+	fakeCamSettings.m_nChannels = std::stoi(pRoot->first_node("Channels")->value());
+	fakeCamSettings.m_nFrameWidth = std::stoi(pRoot->first_node("FrameWidth")->value());
+	fakeCamSettings.m_nFrameHeight = std::stoi(pRoot->first_node("FrameHeight")->value());
+	fakeCamSettings.m_nFrameDepth = std::stoi(pRoot->first_node("FrameDepth")->value());
+	fakeCamSettings.m_nMaxFrameCount = std::stoi(pRoot->first_node("MaxFrameCount")->value());
+
+	CString csCameraName = (CString)pRoot->first_node("CameraName")->value();
+	ZeroMemory(fakeCamSettings.m_sCameraName, sizeof(fakeCamSettings.m_sCameraName));
+	wsprintf(fakeCamSettings.m_sCameraName, _T("%s"), (TCHAR*)(LPCTSTR)csCameraName);
+
+	CString csFullImagePath = (CString)pRoot->first_node("FullImagePath")->value();
+	ZeroMemory(fakeCamSettings.m_sFullImagePath, sizeof(fakeCamSettings.m_sFullImagePath));
+	wsprintf(fakeCamSettings.m_sFullImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csFullImagePath);
+
+	CString csDefectImagePath = (CString)pRoot->first_node("DefectImagePath")->value();
+	ZeroMemory(fakeCamSettings.m_sDefectImagePath, sizeof(fakeCamSettings.m_sDefectImagePath));
+	wsprintf(fakeCamSettings.m_sDefectImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csDefectImagePath);
+
+	CString csTemplateImagePath = (CString)pRoot->first_node("TemplateImagePath")->value();
+	ZeroMemory(fakeCamSettings.m_sTemplateImagePath, sizeof(fakeCamSettings.m_sTemplateImagePath));
+	wsprintf(fakeCamSettings.m_sTemplateImagePath, _T("%s"), (TCHAR*)(LPCTSTR)csTemplateImagePath);
+
+	CString csROIsPath = (CString)pRoot->first_node("ROIsPath")->value();
+	ZeroMemory(fakeCamSettings.m_sROIsPath, sizeof(fakeCamSettings.m_sROIsPath));
+	wsprintf(fakeCamSettings.m_sROIsPath, _T("%s"), (TCHAR*)(LPCTSTR)csROIsPath);
+
+	*(pFakeCameraSetting) = fakeCamSettings;
 
 	::DisposeXMLFile(m_pXmlFile);
 	::DisposeXMLObject(m_pXmlDoc);
@@ -1029,6 +1202,54 @@ BOOL CNVisionInspectProcessor::SaveRecipe(int nCamIdx, CNVisionInspectRecipe* pR
 	*(m_pNVisionInspectRecipe) = *pRecipe;
 }
 
+BOOL CNVisionInspectProcessor::SaveRecipe_FakeCam(CNVisionInspectRecipe_FakeCam* pRecipeFakeCam)
+{
+	if (pRecipeFakeCam == NULL)
+		return FALSE;
+
+	// Set recipe fake cam path
+	m_csRecipeFakeCamPath.Format(_T("%sVisionSettings\\FakeCam\\Recipe\\%s_%s.%s"), GetCurrentPathApp(), _T("NVisionRecipe"), _T("FakeCam"), _T("cfg"));
+
+	BOOL bNoFile = FALSE;
+	// Params..
+	CString strParameterKey;
+
+	char	strChar[1024] = {};
+	CString strValue = _T("");
+	int		nValue = 0;
+
+	CConfig recipeFile_FakeCam;
+
+	if (recipeFile_FakeCam.SetRegiConfig(NULL, NULL, (TCHAR*)(LPCTSTR)m_csRecipeFakeCamPath, FileMap_Mode) == FALSE)
+	{
+		CFile pFile;
+		pFile.Open(m_csRecipeFakeCamPath, CFile::modeCreate);
+		pFile.Close();
+
+		bNoFile = TRUE;
+	}
+
+	USES_CONVERSION;
+
+	// COUNT PIXEL
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_X"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_X);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_Y"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Y);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_WIDTH"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Width);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_HEIGHT"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Height);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_ANGLE_ROTATE"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_AngleRotate);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_GRAY_THRESHOLD_MIN"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_GrayThreshold_Min);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_GRAY_THRESHOLD_MAX"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_GrayThreshold_Max);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_PIXEL_COUNT_MIN"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_PixelCount_Min);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_PIXEL_COUNT_MAX"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_PixelCount_Max);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_SHOW_GRAPHICS"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_bCountPixel_ShowGraphics);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_USE_LOCATOR"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseLocator);
+	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_USE_OFFSET"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseOffset);
+
+	recipeFile_FakeCam.WriteToFile();
+
+	*(m_pNVisionInspectRecipe_FakeCam) = *pRecipeFakeCam;
+}
+
 BOOL CNVisionInspectProcessor::SaveCameraSettings(int nCamIdx, CNVisionInspectCameraSetting* pCameraSetting)
 {
 	// set camera setting path
@@ -1159,6 +1380,106 @@ BOOL CNVisionInspectProcessor::SaveCameraSettings(int nCamIdx, CNVisionInspectCa
 	return TRUE;
 }
 
+BOOL CNVisionInspectProcessor::SaveFakeCameraSettings(CNVisionInspect_FakeCameraSetting* pFakeCameraSetting)
+{
+	if (m_csFakeCamSettingPath.IsEmpty())
+	{
+		AfxMessageBox(_T("Camera setting Path cannot empty!"));
+		return FALSE;
+	}
+
+	CFileFind finder;
+	BOOL bRecipeExist = finder.FindFile(m_csFakeCamSettingPath);
+	if (m_csFakeCamSettingPath.Right(6).CompareNoCase(_T("config")) != 0 && bRecipeExist == FALSE)
+	{
+		CString msg = _T("Fake Camera setting file no exist, check again");
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	CNVisionInspect_FakeCameraSetting fakecamSetting;
+	fakecamSetting = *(pFakeCameraSetting);
+	*(m_pNVisionInspect_FakeCamSetting) = *(pFakeCameraSetting);
+
+	// convert path
+	USES_CONVERSION;
+	char chFakeCamSettingPath[1024] = {};
+	sprintf_s(chFakeCamSettingPath, "%s", W2A(m_csFakeCamSettingPath));
+
+	XMLDocument_2 xmlDoc;
+	std::string error;
+
+	std::ifstream fs(chFakeCamSettingPath, std::ios::in | std::ios::out);
+	std::string inputXml;
+	std::string line;
+	while (std::getline(fs, line))
+	{
+		inputXml += line;
+	}
+	std::vector<char> buffer(inputXml.begin(), inputXml.end());
+	buffer.push_back('\0');
+	xmlDoc.parse<rapidxml::parse_full | rapidxml::parse_no_data_nodes>(&buffer[0]);
+
+	rapidxml::xml_node<>* pRoot = xmlDoc.first_node("FakeCameraSettings");
+
+	// Write data
+
+#pragma region Write data 
+
+	CString csChannels;
+	csChannels.Format(_T("%d"), fakecamSetting.m_nChannels);
+	const char* sChannels = W2A(csChannels);
+	pRoot->first_node("Channels")->value(sChannels);
+
+	CString csFrameWidth;
+	csFrameWidth.Format(_T("%d"), fakecamSetting.m_nFrameWidth);
+	const char* sFrameWidth = W2A(csFrameWidth);
+	pRoot->first_node("FrameWidth")->value(sFrameWidth);
+
+	CString csFrameHeight;
+	csFrameHeight.Format(_T("%d"), fakecamSetting.m_nFrameHeight);
+	const char* sFrameHeight = W2A(csFrameHeight);
+	pRoot->first_node("FrameHeight")->value(sFrameHeight);
+
+	CString csFrameDepth;
+	csFrameDepth.Format(_T("%d"), fakecamSetting.m_nFrameDepth);
+	const char* sFrameDepth = W2A(csFrameDepth);
+	pRoot->first_node("FrameDepth")->value(sFrameDepth);
+
+	CString csMaxFrameCount;
+	csMaxFrameCount.Format(_T("%d"), fakecamSetting.m_nMaxFrameCount);
+	const char* sMaxFrameCount = W2A(csMaxFrameCount);
+	pRoot->first_node("MaxFrameCount")->value(sMaxFrameCount);
+
+	const char* sCameraName = W2A(fakecamSetting.m_sCameraName);
+	pRoot->first_node("CameraName")->value(sCameraName);
+
+	const char* sFullImagePath = W2A(fakecamSetting.m_sFullImagePath);
+	pRoot->first_node("FullImagePath")->value(sFullImagePath);
+
+	const char* sDefectImagePath = W2A(fakecamSetting.m_sDefectImagePath);
+	pRoot->first_node("DefectImagePath")->value(sDefectImagePath);
+
+	const char* sTemplateImagePath = W2A(fakecamSetting.m_sTemplateImagePath);
+	pRoot->first_node("TemplateImagePath")->value(sTemplateImagePath);
+
+	const char* sROIsPath = W2A(fakecamSetting.m_sROIsPath);
+	pRoot->first_node("ROIsPath")->value(sROIsPath);
+
+#pragma endregion
+
+	// Convert the modified XML back to a string
+	std::string data;
+	rapidxml::print(std::back_inserter(data), xmlDoc);
+
+	std::ofstream file;
+	file.open(chFakeCamSettingPath);
+	file << data;
+	file.close();
+
+	return TRUE;
+}
+
 void CNVisionInspectProcessor::RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc)
 {
 	m_pCallbackInsCompleteFunc = pFunc;
@@ -1179,6 +1500,11 @@ void CNVisionInspectProcessor::RegCallbackLocatorTrainCompleteFunc(CallbackLocat
 	m_pCallbackLocatorTrainCompleteFunc = pFunc;
 }
 
+void CNVisionInspectProcessor::RegCallbackInspComplete_FakeCamFunc(CallbackInspectComplete_FakeCam* pFunc)
+{
+	m_pCallbackInspComplete_FakeCamFunc = pFunc;
+}
+
 void CNVisionInspectProcessor::InspectComplete(int nCamIdx, BOOL bSetting)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
@@ -1195,6 +1521,14 @@ void CNVisionInspectProcessor::LocatorTrainComplete(int nCamIdx)
 		return;
 
 	(m_pCallbackLocatorTrainCompleteFunc)(nCamIdx);
+}
+
+void CNVisionInspectProcessor::InspectComplete_FakeCam(emInspectTool eInspTool)
+{
+	if (m_pCallbackInspComplete_FakeCamFunc == NULL)
+		return;
+
+	(m_pCallbackInspComplete_FakeCamFunc)(eInspTool);
 }
 
 void CNVisionInspectProcessor::LogMessage(char* strMessage)
@@ -1240,11 +1574,21 @@ BOOL CNVisionInspectProcessor::SetResultBuffer(int nBuff, int nFrame, BYTE* buff
 	return m_pResultBuffer[nBuff]->SetFrameImage(nFrame, buff);
 }
 
-BOOL CNVisionInspectProcessor::GetInspectionResult(int nCoreIdx, CNVisionInspectResult* pNVisionInspRes)
+BOOL CNVisionInspectProcessor::GetInspectionResult(CNVisionInspectResult* pNVisionInspRes)
 {
 	CSingleLock localLock(&m_csInspResult);
 	localLock.Lock();
 	*(pNVisionInspRes) = *(m_pNVisionInspectResult);
+
+	localLock.Unlock();
+	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::GetInspectToolResult_FakeCam(CNVisionInspectResult_FakeCam* pNVisionInspRes_FakeCam)
+{
+	CSingleLock localLock(&m_csInspToolResult_FakeCam);
+	localLock.Lock();
+	*(pNVisionInspRes_FakeCam) = *(m_pNVisionInspectResult_FakeCam);
 
 	localLock.Unlock();
 	return TRUE;
@@ -1409,6 +1753,33 @@ LPBYTE CNVisionInspectProcessor::GetSimulatorBuffer(int nBuff, int nFrame)
 		return NULL;
 
 	return m_pSimulatorBuffer[nBuff]->GetFrameImage(nFrame);
+}
+
+void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool)
+{
+	switch (inspTool)
+	{
+	case InspectTool_CountPixel:
+		break;
+	case InspectTool_CountBlob:
+		break;
+	case InspectTool_Calib:
+		break;
+	case InspectTool_ColorSpace:
+		break;
+	case InspectTool_FindLine:
+		break;
+	case InspectTool_FindCircle:
+		break;
+	case InspectTool_PCA:
+		break;
+	case InspectTool_TrainOCR:
+		break;
+	case InspectTool_OCR:
+		break;
+	case InspectTool_TemplateMatchingRotate:
+		break;
+	}
 }
 
 void CNVisionInspectProcessor::AlarmMessage(CString strAlarmMessage)

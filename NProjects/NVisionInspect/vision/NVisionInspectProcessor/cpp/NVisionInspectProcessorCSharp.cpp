@@ -228,12 +228,22 @@ BYTE* GetResultBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFram
 	return pProcessor->GetResultBuffer(nBuff, nFrame);
 }
 
-bool GetInspectionResult(CNVisionInspectProcessor* pProcessor, int nCoreIdx, CNVisionInspectResult* pReadCodepResult)
+bool GetInspectionResult(CNVisionInspectProcessor* pProcessor, CNVisionInspectResult* pNVisionInsppResult)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->GetInspectionResult(nCoreIdx, pReadCodepResult);
+	BOOL bRet = pProcessor->GetInspectionResult(pNVisionInsppResult);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool GetInspectToolResult_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectResult_FakeCam* pNVisionInsppRes_FakeCam)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->GetInspectToolResult_FakeCam(pNVisionInsppRes_FakeCam);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
@@ -256,6 +266,14 @@ BYTE* GetSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nF
 		return NULL;
 
 	return pProcessor->GetSimulatorBuffer(nBuff, nFrame);
+}
+
+void CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->CallInspectTool(inspTool);
 }
 
 void RegCallBackInspectCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete* pFunc)
@@ -290,6 +308,14 @@ void RegCallBackLocatorTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, C
 	pProcessor->RegCallbackLocatorTrainCompleteFunc(pFunc);
 }
 
+void RegCallbackInspComplete_FakeCamFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete_FakeCam* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackInspComplete_FakeCamFunc(pFunc);
+}
+
 bool LoadSystemSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting)
 {
 	if (pProcessor == NULL)
@@ -308,12 +334,31 @@ bool LoadCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectCam
 	return true;
 }
 
+bool LoadFakeCameraSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspect_FakeCameraSetting* pFakeCamSetting)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	*(pFakeCamSetting) = *(pProcessor->GetFakeCameraSettingControl());
+	return true;
+}
+
 bool LoadRecipe(CNVisionInspectProcessor* pProcessor, int nCamCount, CNVisionInspectRecipe* pRecipe)
 {
 	if (pProcessor == NULL)
 		return false;
 
 	BOOL bRet = pProcessor->LoadRecipe(nCamCount, pRecipe);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool LoadRecipe_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe_FakeCam* pFakeCamRecipe)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->LoadRecipe_FakeCam(pFakeCamRecipe);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
@@ -338,12 +383,32 @@ bool SaveCameraSetting(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisi
 	else               return true;
 }
 
+bool SaveFakeCameraSetting(CNVisionInspectProcessor* pProcessor, CNVisionInspect_FakeCameraSetting* pFakeCamSetting)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SaveFakeCameraSettings(pFakeCamSetting);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 bool SaveRecipe(CNVisionInspectProcessor* pProcessor, int nCamIdx, CNVisionInspectRecipe* pRecipe)
 {
 	if (pProcessor == NULL)
 		return false;
 
 	BOOL bRet = pProcessor->SaveRecipe(nCamIdx, pRecipe);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool SaveRecipe_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectRecipe_FakeCam* pRecipeFakeCam)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SaveRecipe_FakeCam(pRecipeFakeCam);
 	if (bRet == FALSE) return false;
 	else               return true;
 }

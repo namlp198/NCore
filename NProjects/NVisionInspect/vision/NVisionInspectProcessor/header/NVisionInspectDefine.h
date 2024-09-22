@@ -46,3 +46,18 @@ typedef enum
 	CameraBrand_Jai,
 	CameraBrand_IRayple
 } emCameraBrand;
+
+typedef enum
+{
+	InspectTool_Locator =0,
+	InspectTool_CountPixel = 1,
+	InspectTool_CountBlob = 2,
+	InspectTool_Calib = 3,
+	InspectTool_ColorSpace = 4,
+	InspectTool_FindLine = 5,
+	InspectTool_FindCircle = 6,
+	InspectTool_PCA = 7,
+	InspectTool_TrainOCR = 8,
+	InspectTool_OCR = 9,
+	InspectTool_TemplateMatchingRotate = 10,
+} emInspectTool;
