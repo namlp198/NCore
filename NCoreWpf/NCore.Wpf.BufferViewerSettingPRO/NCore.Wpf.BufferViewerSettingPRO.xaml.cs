@@ -29,9 +29,9 @@ using System.Windows.Shapes;
 
 namespace NCore.Wpf.BufferViewerSettingPRO
 {
-    public enum EnModeView { Mono, Color }
-    public enum EnInspectResult { InspectResult_UNKNOWN, InspectResult_OK, InspectResult_NG }
-    public enum EnTriggerMode
+    public enum emModeView { Mono, Color }
+    public enum emInspectResult { InspectResult_UNKNOWN, InspectResult_OK, InspectResult_NG }
+    public enum emTriggerMode
     {
         [Description("Internal")]
         TriggerMode_Internal = 0,
@@ -40,7 +40,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         [Description("Count")]
         TriggerMode_Count
     }
-    public enum EnTriggerSource
+    public enum emTriggerSource
     {
         [Description("Software")]
         TriggerSource_Software = 0,
@@ -89,10 +89,10 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         private bool m_bStreamming = false;
 
         // enums
-        private EnModeView m_enModeView = EnModeView.Mono;
-        private EnInspectResult m_enInspectResult = EnInspectResult.InspectResult_UNKNOWN;
-        private EnTriggerMode m_enTriggerMode = EnTriggerMode.TriggerMode_Internal;
-        private EnTriggerSource m_enTriggerSource = EnTriggerSource.TriggerSource_Software;
+        private emModeView m_enModeView = emModeView.Mono;
+        private emInspectResult m_enInspectResult = emInspectResult.InspectResult_UNKNOWN;
+        private emTriggerMode m_enTriggerMode = emTriggerMode.TriggerMode_Internal;
+        private emTriggerSource m_enTriggerSource = emTriggerSource.TriggerSource_Software;
 
         // list
         private List<string> m_lstCamera = new List<string>();
@@ -139,8 +139,8 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             m_lstFrame.Add(1);
             m_sFrameSelected = m_lstFrame[0].ToString();
 
-            m_lstTriggerMode = GetEnumDescriptionToListString<EnTriggerMode>();
-            m_lstTriggerSource = GetEnumDescriptionToListString<EnTriggerSource>();
+            m_lstTriggerMode = GetEnumDescriptionToListString<emTriggerMode>();
+            m_lstTriggerSource = GetEnumDescriptionToListString<emTriggerSource>();
 
             //SetExposureTimeCmd = new AsyncRelayCommand(async () => { await SetExposureTimeAsync(); }, new Action<Exception>((Exception ex) => { MessageBox.Show(ex.Message); }));
         }
@@ -313,7 +313,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             get => m_dMatchingRate;
             set { if (SetProperty(ref m_dMatchingRate, value)) { } }
         }
-        public EnModeView ModeView
+        public emModeView ModeView
         {
             get { return m_enModeView; }
             set
@@ -324,7 +324,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 }
             }
         }
-        public EnInspectResult InspectResult
+        public emInspectResult InspectResult
         {
             get => m_enInspectResult;
             set
@@ -335,7 +335,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 }
             }
         }
-        public EnTriggerMode TriggerMode
+        public emTriggerMode TriggerMode
         {
             get => m_enTriggerMode;
             set
@@ -346,7 +346,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 }
             }
         }
-        public EnTriggerSource TriggerSource
+        public emTriggerSource TriggerSource
         {
             get => m_enTriggerSource;
             set
@@ -473,7 +473,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 if (m_bufferView == IntPtr.Zero)
                     return;
 
-                if (m_enModeView == EnModeView.Mono)
+                if (m_enModeView == emModeView.Mono)
                 {
                     // create "empty" all zeros 24bpp bitmap object
                     Bitmap bmp = new Bitmap(m_nFrameWidth, m_nFrameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
@@ -512,7 +512,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                         imageExt_Basic.Source = bmpSrc;
                     });
                 }
-                else if (m_enModeView == EnModeView.Color)
+                else if (m_enModeView == emModeView.Color)
                 {
                     BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, m_nResolutionX, m_nResolutionY, PixelFormats.Bgr24, m_palette, m_bufferView, BufferSize, stride: Stride);
                     bmpSrc.Freeze();
@@ -1078,15 +1078,15 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         {
             if (string.Compare(m_lstTriggerMode[cbbTriggerMode.SelectedIndex], "Internal") == 0)
             {
-                TriggerMode = EnTriggerMode.TriggerMode_Internal;
+                TriggerMode = emTriggerMode.TriggerMode_Internal;
             }
             else if (string.Compare(m_lstTriggerMode[cbbTriggerMode.SelectedIndex], "External") == 0)
             {
-                TriggerMode = EnTriggerMode.TriggerMode_External;
+                TriggerMode = emTriggerMode.TriggerMode_External;
             }
             else
             {
-                TriggerMode = EnTriggerMode.TriggerMode_Count;
+                TriggerMode = emTriggerMode.TriggerMode_Count;
             }
 
             RaiseEvent(new RoutedEventArgs(SelectTriggerModeChangedEvent, this));
@@ -1096,15 +1096,15 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         {
             if (string.Compare(m_lstTriggerSource[cbbTriggerSource.SelectedIndex], "Software") == 0)
             {
-                TriggerSource = EnTriggerSource.TriggerSource_Software;
+                TriggerSource = emTriggerSource.TriggerSource_Software;
             }
             else if (string.Compare(m_lstTriggerSource[cbbTriggerSource.SelectedIndex], "Hardware") == 0)
             {
-                TriggerSource = EnTriggerSource.TriggerSource_Hardware;
+                TriggerSource = emTriggerSource.TriggerSource_Hardware;
             }
             else
             {
-                TriggerSource = EnTriggerSource.TriggerSource_Count;
+                TriggerSource = emTriggerSource.TriggerSource_Count;
             }
             RaiseEvent(new RoutedEventArgs(SelectTriggerSourceChangedEvent, this));
         }

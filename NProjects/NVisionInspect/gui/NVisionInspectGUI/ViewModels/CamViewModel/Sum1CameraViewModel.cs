@@ -66,7 +66,7 @@ namespace NVisionInspectGUI.ViewModels
                 switch (nCamIdx)
                 {
                     case 0:
-                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
 
                         Sum1CameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
                         await Sum1CameraView.buffCam.UpdateImage();

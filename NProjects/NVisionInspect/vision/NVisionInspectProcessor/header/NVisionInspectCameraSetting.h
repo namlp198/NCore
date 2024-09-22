@@ -26,3 +26,21 @@ public:
 	TCHAR             m_sTemplateImagePath[MAX_STRING_SIZE];
 	TCHAR             m_sROIsPath[MAX_STRING_SIZE];
 };
+
+class AFX_EXT_CLASS CNVisionInspect_FakeCameraSetting
+{
+public:
+	CNVisionInspect_FakeCameraSetting(void);
+	~CNVisionInspect_FakeCameraSetting(void);
+public:
+	int               m_nChannels;
+	int               m_nFrameWidth;
+	int               m_nFrameHeight;
+	int               m_nFrameDepth;
+	int               m_nMaxFrameCount;
+	TCHAR             m_sCameraName[MAX_STRING_SIZE];
+	TCHAR             m_sFullImagePath[MAX_STRING_SIZE];
+	TCHAR             m_sDefectImagePath[MAX_STRING_SIZE];
+	TCHAR             m_sTemplateImagePath[MAX_STRING_SIZE];
+	TCHAR             m_sROIsPath[MAX_STRING_SIZE];
+};

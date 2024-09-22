@@ -23,7 +23,7 @@ namespace NVisionInspectGUI.Command.Cmd
             int nThreadCount = 1;
             int nCamCount = MainViewModel.Instance.SettingVM.CameraCount;
 
-            if (MainViewModel.Instance.MachineMode == Commons.eMachineMode.MachineMode_Auto &&
+            if (MainViewModel.Instance.MachineMode == Commons.emMachineMode.MachineMode_Auto &&
                 string.Compare(machineMode.ToUpper(), "MANUAL") == 0)
             {
                 if(MessageBox.Show("Change to Manual Mode?", "Alarm", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -32,7 +32,7 @@ namespace NVisionInspectGUI.Command.Cmd
                     MainViewModel.Instance.InspectRunning = false;
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStop(nCamCount);
 
-                    MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Manual;
+                    MainViewModel.Instance.MachineMode = Commons.emMachineMode.MachineMode_Manual;
                     MainViewModel.Instance.MainView.tbMachineMode.Text = "RUN";
                     MainViewModel.Instance.MainView.tbShowMachineMode.Text = "[MANUAL MODE]"; 
                     MainViewModel.Instance.DisplayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_forward.png";
@@ -43,7 +43,7 @@ namespace NVisionInspectGUI.Command.Cmd
                 MainViewModel.Instance.InspectRunning = true;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.InspectStart(nThreadCount, nCamCount);
 
-                MainViewModel.Instance.MachineMode = Commons.eMachineMode.MachineMode_Auto;
+                MainViewModel.Instance.MachineMode = Commons.emMachineMode.MachineMode_Auto;
                 MainViewModel.Instance.MainView.tbMachineMode.Text = "MANUAL";
                 MainViewModel.Instance.MainView.tbShowMachineMode.Text = "[AUTO MODE]";
                 MainViewModel.Instance.DisplayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";

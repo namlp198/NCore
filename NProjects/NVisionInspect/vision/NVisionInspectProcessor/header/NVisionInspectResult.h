@@ -52,6 +52,16 @@ public:
 	BOOL m_bInspectCompleted;
 };
 
+#pragma region Fake Camera
+struct CNVisionInspectResult_CountPixel 
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+	float m_fNumberOfPixel;
+};
+#pragma endregion
+
 class AFX_EXT_CLASS CNVisionInspectResult
 {
 public:
@@ -66,4 +76,12 @@ public:
 	CNVisionInspectResult_Cam6 m_NVisionInspRes_Cam6;
 	CNVisionInspectResult_Cam7 m_NVisionInspRes_Cam7;
 	CNVisionInspectResult_Cam8 m_NVisionInspRes_Cam8;
+};
+class AFX_EXT_CLASS CNVisionInspectResult_FakeCam
+{
+public:
+	CNVisionInspectResult_FakeCam(void);
+	~CNVisionInspectResult_FakeCam(void);
+public:
+	CNVisionInspectResult_CountPixel m_NVisonInspectResCntPxl;
 };

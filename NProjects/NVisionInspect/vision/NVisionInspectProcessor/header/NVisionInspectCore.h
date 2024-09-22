@@ -18,19 +18,23 @@
 
 interface INVisionInspectCoreToParent
 {
-	virtual void							SystemMessage(const TCHAR* lpstrFormat, ...) = 0;
-	virtual void							AlarmMessage(CString strAlarmMessage) = 0;
-	virtual CNVisionInspectRecipe*          GetRecipeControl() = 0;
-	virtual std::vector<int>                GetVecCameras() = 0;
+	virtual void							       SystemMessage(const TCHAR* lpstrFormat, ...) = 0;
+	virtual void							       AlarmMessage(CString strAlarmMessage) = 0;
+	virtual std::vector<int>                       GetVecCameras() = 0;
 
-	virtual CNVisionInspectSystemSetting*   GetSystemSettingControl() = 0;
-	virtual CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) = 0;
-	virtual CNVisionInspectResult*          GetResultControl() = 0;
-	virtual CNVisionInspectStatus*          GetStatusControl(int nCamIdx) = 0;
-	virtual BOOL                            SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
-	virtual LPBYTE                          GetSimulatorBuffer(int nBuff, int nFrame) = 0;
-	virtual void                            InspectComplete(int nCamIdx, BOOL bSetting) = 0;
-	virtual void                            LocatorTrainComplete(int CamIdx) = 0;
+	virtual CNVisionInspectRecipe*                 GetRecipeControl() = 0;
+	virtual CNVisionInspectRecipe_FakeCam*         GetRecipe_FakeCamControl() = 0;
+	virtual CNVisionInspectSystemSetting*          GetSystemSettingControl() = 0;
+	virtual CNVisionInspectCameraSetting*          GetCameraSettingControl(int nCamIdx) = 0;
+	virtual CNVisionInspect_FakeCameraSetting*     GetFakeCameraSettingControl() = 0;
+	virtual CNVisionInspectResult*                 GetResultControl() = 0;
+	virtual CNVisionInspectResult_FakeCam*         GetResult_FakeCamControl() = 0;
+	virtual CNVisionInspectStatus*                 GetStatusControl(int nCamIdx) = 0;
+	virtual BOOL                                   SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual LPBYTE                                 GetSimulatorBuffer(int nBuff, int nFrame) = 0;
+	virtual void                                   InspectComplete(int nCamIdx, BOOL bSetting) = 0;
+	virtual void                                   LocatorTrainComplete(int CamIdx) = 0;
+	virtual void                                   InspectComplete_FakeCam(emInspectTool eInspTool) = 0;
 };
 
 class AFX_EXT_CLASS CNVisionInspectCoreThreadData : public CWorkThreadData

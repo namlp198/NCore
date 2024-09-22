@@ -18,6 +18,9 @@ namespace NVisionInspectGUI.Manager
         public delegate void InspectionComplete_Handler(int nCamIdx, int bSetting);
         public static event InspectionComplete_Handler InspectionComplete;
 
+        public delegate void InspectComplete_FakeCam_Handler(int nInspTool);
+        public static event InspectComplete_FakeCam_Handler InspectComplete_FakeCam;
+
         public delegate void LocatorTrainComplete_Handler(int nCamIdx);
         public static event LocatorTrainComplete_Handler LocatorTrainComplete;
 
@@ -41,6 +44,11 @@ namespace NVisionInspectGUI.Manager
         public void CallbackInsCompleteFunc(int nCamIdx, int bSetting)
         {
             InspectionComplete(nCamIdx, bSetting);
+        }
+
+        public void CallbackInsComplete_FakeCamFunc(int nInspTool)
+        {
+            InspectComplete_FakeCam?.Invoke(nInspTool);
         }
 
         public void CallbackLocatorTrainedFunc(int nCamIdx)

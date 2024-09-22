@@ -23,6 +23,7 @@ typedef void _stdcall CallbackLogFunc(char* strLogMsg);
 typedef void _stdcall CallbackAlarmFunc(char* strAlarmMessage);
 typedef void _stdcall CallbackInspectComplete(int nCamIdx, BOOL bSetting);
 typedef void _stdcall CallbackLocatorTrainComplete(int nCamIdx);
+typedef void _stdcall CallbackInspectComplete_FakeCam(emInspectTool inspTool);
 
 class AFX_EXT_CLASS CNVisionInspectProcessor : public INVisionInspectHikCamToParent,
 	                                           public INVisionInspectBaslerCamToParent,
@@ -37,14 +38,17 @@ public:
 	BOOL         Destroy();
 	CString      GetCurrentPathApp();
 
-	virtual      CNVisionInspectRecipe*          GetRecipeControl() { return m_pNVisionInspectRecipe; }
-	virtual      CNVisionInspectSystemSetting*   GetSystemSettingControl() { return m_pNVisionInspectSystemSetting; }
-	virtual      CNVisionInspectCameraSetting*   GetCameraSettingControl(int nCamIdx) { return m_pNVisionInspectCameraSetting[nCamIdx]; };
-	virtual      CNVisionInspectResult*          GetResultControl() { return m_pNVisionInspectResult; }
-	virtual      CNVisionInspectStatus*          GetStatusControl(int nCamIdx) { return m_pNVisionInspectStatus[nCamIdx]; }
-	             CNVisionInspect_HikCam*         GetHikCamControl() { return m_pNVisionInspectHikCam; }
-				 CNVisionInspect_BaslerCam*      GetBaslerCamControl() { return m_pNVisionInspectBaslerCam; }
-				 std::vector<int>                GetVecCameras() { return m_vecCameras; }
+	virtual      CNVisionInspectRecipe*                GetRecipeControl() { return m_pNVisionInspectRecipe; }
+	virtual      CNVisionInspectRecipe_FakeCam*        GetRecipe_FakeCamControl() { return m_pNVisionInspectRecipe_FakeCam; }
+	virtual      CNVisionInspectSystemSetting*         GetSystemSettingControl() { return m_pNVisionInspectSystemSetting; }
+	virtual      CNVisionInspectCameraSetting*         GetCameraSettingControl(int nCamIdx) { return m_pNVisionInspectCameraSetting[nCamIdx]; };
+	virtual      CNVisionInspect_FakeCameraSetting*    GetFakeCameraSettingControl() { return m_pNVisionInspect_FakeCamSetting; };
+	virtual      CNVisionInspectResult*                GetResultControl() { return m_pNVisionInspectResult; }
+	virtual      CNVisionInspectResult_FakeCam*        GetResult_FakeCamControl() { return m_pNVisionInspectResult_FakeCam; }
+	virtual      CNVisionInspectStatus*                GetStatusControl(int nCamIdx) { return m_pNVisionInspectStatus[nCamIdx]; }
+	             CNVisionInspect_HikCam*               GetHikCamControl() { return m_pNVisionInspectHikCam; }
+				 CNVisionInspect_BaslerCam*            GetBaslerCamControl() { return m_pNVisionInspectBaslerCam; }
+				 std::vector<int>                      GetVecCameras() { return m_vecCameras; }
 
 public:
 	BOOL                       InspectStart(int nThreadCount, int nCamCount);
@@ -64,16 +68,22 @@ public:
 public:
 	BOOL                       LoadSystemSettings(CNVisionInspectSystemSetting* pSystemSetting);
 	BOOL                       LoadRecipe(int nCamCount, CNVisionInspectRecipe* pRecipe);
+	BOOL                       LoadRecipe_FakeCam(CNVisionInspectRecipe_FakeCam* pRecipeFakeCam);
 	BOOL                       LoadCameraSettings(CNVisionInspectCameraSetting* pCameraSetting);
+	BOOL                       LoadFakeCameraSettings(CNVisionInspect_FakeCameraSetting* pFakeCameraSetting);
+
 	BOOL                       SaveSystemSetting(CNVisionInspectSystemSetting* pSystemSetting);
 	BOOL                       SaveRecipe(int nCamIdx, CNVisionInspectRecipe* pRecipe);
+	BOOL                       SaveRecipe_FakeCam(CNVisionInspectRecipe_FakeCam* pRecipeFakeCam);
 	BOOL                       SaveCameraSettings(int nCamIdx, CNVisionInspectCameraSetting* pCameraSetting);
+	BOOL                       SaveFakeCameraSettings(CNVisionInspect_FakeCameraSetting* pFakeCameraSetting);
 
 public:
 	void                       RegCallbackInsCompleteFunc(CallbackInspectComplete* pFunc);
 	void                       RegCallbackLogFunc(CallbackLogFunc* pFunc);
 	void                       RegCallbackAlarmFunc(CallbackAlarmFunc* pFunc);
 	void                       RegCallbackLocatorTrainCompleteFunc(CallbackLocatorTrainComplete* pFunc);
+	void                       RegCallbackInspComplete_FakeCamFunc(CallbackInspectComplete_FakeCam* pFunc);
 
 public:
 	void						      LogMessage(char* strMessage);
@@ -83,7 +93,8 @@ public:
 public:
 	LPBYTE                            GetResultBuffer(int nBuff, int nFrame);
 	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff);
-	BOOL                              GetInspectionResult(int nCoreIdx, CNVisionInspectResult* pReadCodeInspRes);
+	BOOL                              GetInspectionResult(CNVisionInspectResult* pNVisionInspRes);
+	BOOL                              GetInspectToolResult_FakeCam(CNVisionInspectResult_FakeCam* pInspRes_FakeCam);
 	LPBYTE                            GetImageBufferHikCam(int nCamIdx);
 	LPBYTE                            GetImageBufferBaslerCam(int nCamIdx);
 
@@ -93,6 +104,8 @@ public:
 	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom); /*0: From Image, 1: From Camera*/
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
 
+	void                              CallInspectTool(emInspectTool inspTool);
+
 private:
 	virtual void				      AlarmMessage(CString strAlarmMessage);
 	virtual void				      SystemMessage(const TCHAR* lpstrFormat, ...);
@@ -101,6 +114,7 @@ private:
 	BOOL                              CreateSimulatorBuffer();
 	virtual void		              InspectComplete(int nCamIdx, BOOL bSetting);
 	virtual void                      LocatorTrainComplete(int nCamIdx);
+	virtual void                      InspectComplete_FakeCam(emInspectTool eInspTool);
 
 private:
 
@@ -112,6 +126,8 @@ private:
 
 	CallbackLocatorTrainComplete*               m_pCallbackLocatorTrainCompleteFunc;
 
+	CallbackInspectComplete_FakeCam*            m_pCallbackInspComplete_FakeCamFunc;
+
 	// UI						                            
 	CLogView*                                   m_pLogView;
 
@@ -120,9 +136,11 @@ private:
 
 	// Recipe					               
 	CNVisionInspectRecipe*                      m_pNVisionInspectRecipe;
+	CNVisionInspectRecipe_FakeCam*              m_pNVisionInspectRecipe_FakeCam;
 
 	// Result					               
 	CNVisionInspectResult*                      m_pNVisionInspectResult;
+	CNVisionInspectResult_FakeCam*              m_pNVisionInspectResult_FakeCam;
 
 	// Hik cam				               
 	CNVisionInspect_HikCam*                     m_pNVisionInspectHikCam;
@@ -132,6 +150,7 @@ private:
 
 	// Camera Setting
 	CNVisionInspectCameraSetting*               m_pNVisionInspectCameraSetting[MAX_CAMERA_INSPECT_COUNT];
+	CNVisionInspect_FakeCameraSetting*          m_pNVisionInspect_FakeCamSetting;
 
 	// Status
 	CNVisionInspectStatus*                      m_pNVisionInspectStatus[MAX_CAMERA_INSPECT_COUNT];
@@ -147,11 +166,14 @@ private:
 
 	// Result						                        
 	CCriticalSection                            m_csInspResult;
+	CCriticalSection                            m_csInspToolResult_FakeCam;
 
 	// system settings file path	           
 	CString                                     m_csSysSettingsPath;
 	CString                                     m_csRecipePath;
+	CString                                     m_csRecipeFakeCamPath;
 	CString                                     m_csCamSettingPath;
+	CString                                     m_csFakeCamSettingPath;
 											    
 	cv::Mat                                     m_matBGR;
 	cv::Mat                                     m_matRGB;

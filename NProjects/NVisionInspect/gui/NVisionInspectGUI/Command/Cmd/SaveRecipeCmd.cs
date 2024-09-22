@@ -23,6 +23,31 @@ namespace NVisionInspectGUI.Command.Cmd
             if (nCamIdx < 0)
                 return;
 
+            // Fake Cam
+            if(nCamIdx == 8)
+            {
+                // COUNT PIXEL
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_X = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_X;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Y;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Width = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Width;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Height = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Height;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Offset_X = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Offset_X;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Offset_Y = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Offset_Y;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_AngleRotate = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_AngleRotate;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_GrayThreshold_Min = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_GrayThreshold_Min;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_GrayThreshold_Max = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_GrayThreshold_Max;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_PixelCount_Min = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_PixelCount_Min;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_PixelCount_Max = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_PixelCount_Max;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_ShowGraphics = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ShowGraphics == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseOffset = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_UseOffset == true ? 1 : 0;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseLocator = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_UseLocator == true ? 1 : 0;
+
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.
+                SaveRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
+
+                return;
+            }
+
             switch(nCamIdx)
             {
                 case 0:

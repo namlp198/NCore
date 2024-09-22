@@ -433,12 +433,54 @@
                                  FontFamily="Segoe UI"
                                  IsEnabled="{Binding ElementName=buffSettingPRO, Path=CameraIndex, Converter={StaticResource CameraIndexToBooleanConverter}}">
                             <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
+                                <TabItem Header="FAKE CAM"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="110"
+                                         FontFamily="Segoe UI">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridFakeCamSettings"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="300"
+                                                           ShowHorizontalScrollBar="True"
+                                                           SelectedObject="{Binding NVIFakeCamSetting_PropGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="2"
+                                                x:Name="btnSaveFakeCamSetting_PropertyGrid"
+                                                Command="{Binding SaveCamSettingCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
                                 <TabItem Header="CAMERA 1"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='1'}">
                                     <Grid>
@@ -481,7 +523,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='2'}">
                                     <Grid>
@@ -524,7 +566,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='3'}">
                                     <Grid>
@@ -567,7 +609,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='4'}">
                                     <Grid>
@@ -610,7 +652,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='5'}">
                                     <Grid>
@@ -653,7 +695,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='6'}">
                                     <Grid>
@@ -696,7 +738,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='7'}">
                                     <Grid>
@@ -739,7 +781,7 @@
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="120"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='8'}">
                                     <Grid>
@@ -788,12 +830,52 @@
                                  FontFamily="Segoe UI"
                                  IsEnabled="{Binding ElementName=buffSettingPRO, Path=CameraIndex, Converter={StaticResource CameraIndexToBooleanConverter}}">
                             <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
-                                <TabItem Header="Recipe Cam 1"
+                                <TabItem Header="RCP FAKECAM"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
                                          Width="130"
+                                         FontFamily="Segoe UI">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <xctk:PropertyGrid x:Name="propGridRecipe_FakeCam"
+                                                           Margin="10"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           AutoGenerateProperties="True"
+                                                           NameColumnWidth="450"
+                                                           SelectedObject="{Binding NVisionInspectRecipeFakeCamPropertyGrid, Mode=TwoWay}">
+
+                                        </xctk:PropertyGrid>
+                                        <!--Button-->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding SaveRecipeCmd}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
+                                                Margin="5 5 10 5"
+                                                Width="130"
+                                                HorizontalAlignment="Right"
+                                                Foreground="White"
+                                                Background="{DynamicResource RGB_Cold_77_136_255}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Text="Save Recipe" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="RCP CAM1"
+                                         Style="{StaticResource TabItemStyle}"
+                                         FontSize="16"
+                                         FontWeight="Bold"
+                                         Foreground="Black"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='1'}">
                                     <Grid>
@@ -829,12 +911,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 2"
+                                <TabItem Header="RCP CAM2"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='2'}">
                                     <Grid>
@@ -870,12 +952,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 3"
+                                <TabItem Header="RCP CAM3"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='3'}">
                                     <Grid>
@@ -911,12 +993,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 4"
+                                <TabItem Header="RCP CAM4"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='4'}">
                                     <Grid>
@@ -952,12 +1034,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 5"
+                                <TabItem Header="RCP CAM5"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='5'}">
                                     <Grid>
@@ -993,12 +1075,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 6"
+                                <TabItem Header="RCP CAM6"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='6'}">
                                     <Grid>
@@ -1034,12 +1116,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 7"
+                                <TabItem Header="RCP CAM7"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='7'}">
                                     <Grid>
@@ -1075,12 +1157,12 @@
                                         </Button>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="Recipe Cam 8"
+                                <TabItem Header="RCP CAM8"
                                          Style="{StaticResource TabItemStyle}"
                                          FontSize="16"
                                          FontWeight="Bold"
                                          Foreground="Black"
-                                         Width="130"
+                                         Width="110"
                                          FontFamily="Segoe UI"
                                          Visibility="{Binding CameraCount, Converter={StaticResource RecipeIndexToVisibilityConverter}, ConverterParameter='8'}">
                                     <Grid>

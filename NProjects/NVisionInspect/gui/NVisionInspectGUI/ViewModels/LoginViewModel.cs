@@ -30,7 +30,7 @@ namespace NVisionInspectGUI.ViewModels
         private string m_sSuperAdmin = "superadmin";
         private string m_sSuperPassword = "1234";
 
-        private eLoginStatus m_loginStatus;
+        private emLoginStatus m_loginStatus;
 
         private readonly Dispatcher _dispatcher;
         private LoginView _loginView;
@@ -42,7 +42,7 @@ namespace NVisionInspectGUI.ViewModels
 
             this.LoginCmd = new LoginCmd(this);
         }
-        public eLoginStatus LoginStatus
+        public emLoginStatus LoginStatus
         {
             get => m_loginStatus;
             set => m_loginStatus = value;

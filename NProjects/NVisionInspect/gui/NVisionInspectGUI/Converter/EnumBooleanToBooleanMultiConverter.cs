@@ -15,11 +15,11 @@ namespace NVisionInspectGUI.Converter
         {
             if (value != null)
             {
-                if (((EnImageSource)value[0] == EnImageSource.FromToCamera) && ((bool)value[1]) == true)
+                if (((emImageSource)value[0] == emImageSource.FromToCamera) && ((bool)value[1]) == true)
                 {
                     return true;
                 }
-                else if (((EnImageSource)value[0] == EnImageSource.FromToImage) || ((bool)value[1]) == false)
+                else if (((emImageSource)value[0] == emImageSource.FromToImage) || ((bool)value[1]) == false)
                 {
                     return false;
                 }
@@ -45,11 +45,11 @@ namespace NVisionInspectGUI.Converter
         {
             if (value != null)
             {
-                if (((EnImageSource)value[0] == EnImageSource.FromToCamera) && ((bool)value[1]) == true)
+                if (((emImageSource)value[0] == emImageSource.FromToCamera) && ((bool)value[1]) == true)
                 {
                     return false;
                 }
-                else if (((EnImageSource)value[0] == EnImageSource.FromToImage))
+                else if (((emImageSource)value[0] == emImageSource.FromToImage))
                 {
                     return true;
                 }
@@ -76,11 +76,11 @@ namespace NVisionInspectGUI.Converter
         {
             if (value != null)
             {
-                if (((EnImageSource)value[0] == EnImageSource.FromToCamera) && ((bool)value[1]) == true)
+                if (((emImageSource)value[0] == emImageSource.FromToCamera) && ((bool)value[1]) == true)
                 {
                     return 1.0;
                 }
-                else if (((EnImageSource)value[0] == EnImageSource.FromToImage) || ((bool)value[1]) == false)
+                else if (((emImageSource)value[0] == emImageSource.FromToImage) || ((bool)value[1]) == false)
                 {
                     return 0.3;
                 }
@@ -106,11 +106,11 @@ namespace NVisionInspectGUI.Converter
         {
             if (value != null)
             {
-                if (((EnImageSource)value[0] == EnImageSource.FromToCamera) && ((bool)value[1]) == true)
+                if (((emImageSource)value[0] == emImageSource.FromToCamera) && ((bool)value[1]) == true)
                 {
                     return 0.3;
                 }
-                else if (((EnImageSource)value[0] == EnImageSource.FromToImage) || ((bool)value[1]) == false)
+                else if (((emImageSource)value[0] == emImageSource.FromToImage) || ((bool)value[1]) == false)
                 {
                     return 1.0;
                 }
