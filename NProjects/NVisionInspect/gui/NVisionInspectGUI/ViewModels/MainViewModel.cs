@@ -67,6 +67,7 @@ namespace NVisionInspectGUI.ViewModels
             int nNumberOfCamInsp = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nNumberOfInspectionCamera;
             SettingVM.CameraCount = nNumberOfCamInsp;
 
+            // Read camera list from camera setting
             List<string> lstCameras = new List<string>();
             for (int nCamIdx = 0; nCamIdx < nNumberOfCamInsp; nCamIdx++)
             {
@@ -81,12 +82,26 @@ namespace NVisionInspectGUI.ViewModels
 
             AddSumCamViewToRunView(nNumberOfCamInsp);
 
+            // Load Recipe
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nNumberOfCamInsp, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
             SettingVM.LoadRecipe(nNumberOfCamInsp);
 
+            // Load Recipe Fake Cam
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
+            SettingVM.LoadRecipe_FakeCam();
+
+            // Load Fake Camera Setting
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadFakeCameraSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting);
+            SettingVM.LoadFakeCameraSetting();
+
+            // Add Fake Cam in the end of list camera
+            lstCameras.Add("Fake Camera");
+
+            // Load Camera List to Combobox
             SettingVM.SettingView.buffSettingPRO.CameraList = lstCameras;
             SettingVM.LoadPlcSettings();
 
+            // Init PLC and start inspect
             if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation == 0)
             {
                 Plc_Delta_DVP.Initialize();
@@ -122,8 +137,8 @@ namespace NVisionInspectGUI.ViewModels
         private MainView m_ucMainView;
         public MainView MainView { get => m_ucMainView; private set { } }
 
-        private eMachineMode m_machineMode = eMachineMode.MachineMode_Auto;
-        private eUserLevel m_userLevel = eUserLevel.UserLevel_Operator;
+        private emMachineMode m_machineMode = emMachineMode.MachineMode_Auto;
+        private emUserLevel m_userLevel = emUserLevel.UserLevel_Operator;
         private bool m_bInspRunning = false;
         private bool m_bEnableSetting = false;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
@@ -148,7 +163,7 @@ namespace NVisionInspectGUI.ViewModels
             get => m_Plc_Delta;
             set => m_Plc_Delta = value;
         }
-        public eMachineMode MachineMode
+        public emMachineMode MachineMode
         {
             get => m_machineMode;
             set
@@ -158,21 +173,21 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
-        public eUserLevel UserLevel
+        public emUserLevel UserLevel
         {
             get => m_userLevel;
             set
             {
                 if (SetProperty(ref m_userLevel, value))
                 {
-                    if ((m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin) && m_bInspRunning == false)
+                    if ((m_userLevel == emUserLevel.UserLevel_Admin || m_userLevel == emUserLevel.UserLevel_SuperAdmin) && m_bInspRunning == false)
                     {
                         EnableSetting = true;
                         m_ucMainView.btnSelectRecipe.Opacity = 1.0;
                         m_ucMainView.btnReport.Opacity = 1.0;
                         m_ucMainView.btnSettings.Opacity = 1.0;
                     }
-                    else if (m_userLevel == eUserLevel.UserLevel_Operator)
+                    else if (m_userLevel == emUserLevel.UserLevel_Operator)
                     {
                         EnableSetting = false;
                         m_ucMainView.btnSelectRecipe.Opacity = 0.3;
@@ -229,14 +244,14 @@ namespace NVisionInspectGUI.ViewModels
                         m_ucMainView.btnReport.Opacity = 0.3;
                         m_ucMainView.btnSettings.Opacity = 0.3;
                     }
-                    else if (m_bInspRunning == false && (m_userLevel == eUserLevel.UserLevel_Admin || m_userLevel == eUserLevel.UserLevel_SuperAdmin))
+                    else if (m_bInspRunning == false && (m_userLevel == emUserLevel.UserLevel_Admin || m_userLevel == emUserLevel.UserLevel_SuperAdmin))
                     {
                         EnableSetting = true;
                         m_ucMainView.btnSelectRecipe.Opacity = 1.0;
                         m_ucMainView.btnReport.Opacity = 1.0;
                         m_ucMainView.btnSettings.Opacity = 1.0;
                     }
-                    else if (m_bInspRunning == false && m_userLevel == eUserLevel.UserLevel_Operator)
+                    else if (m_bInspRunning == false && m_userLevel == emUserLevel.UserLevel_Operator)
                     {
                         EnableSetting = false;
                         m_ucMainView.btnSelectRecipe.Opacity = 0.3;

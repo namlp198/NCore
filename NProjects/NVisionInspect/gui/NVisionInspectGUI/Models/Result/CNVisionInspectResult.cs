@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NVisionInspectGUI.Commons;
 
-namespace NVisionInspectGUI.Models
+namespace NVisionInspectGUI.Models.Result
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectResult_Cam1

@@ -181,8 +181,12 @@
     <Compile Include="Manager\InterfaceManager.cs" />
     <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\NVisionInspectProcessorManager.cs" />
+    <Compile Include="Models\FakeCam\Setting\CNVisionInspect_FakeCameraSetting_PropertyGrid.cs" />
+    <Compile Include="Models\FakeCam\Setting\CNVisionInspect_FakeCameraSetting.cs" />
     <Compile Include="Models\CamSetting\CNVisionInspectCameraSetting.cs" />
     <Compile Include="Models\CamSetting\CNVisionInspectCameraSetting_PropertyGrid.cs" />
+    <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_FakeCam_PropertyGrid.cs" />
+    <Compile Include="Models\FakeCam\Result\CNVisionInspectResult_FakeCam.cs" />
     <Compile Include="Models\Recipe\CNVisionInspectRecipe_Cam1.cs" />
     <Compile Include="Models\Recipe\CNVisionInspectRecipe.cs" />
     <Compile Include="Models\Recipe\CNVisionInspectRecipe_Cam1_PropertyGrid.cs" />
@@ -201,6 +205,8 @@
     <Compile Include="Models\Recipe\CNVisionInspectRecipe_Cam3_PropertyGrid.cs" />
     <Compile Include="Models\Recipe\CNVisionInspectRecipe_Cam2_PropertyGrid.cs" />
     <Compile Include="Models\Recipe\CNVisionInspectRecipe_PropertyGrid.cs" />
+    <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_FakeCam.cs" />
+    <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_CountPixel.cs" />
     <Compile Include="Models\Result\CNVisionInspectResult.cs" />
     <Compile Include="Models\CNVisionInspectSystemSetting.cs" />
     <Compile Include="Models\CNVisionInspectSystemSetting_PropertyGrid.cs" />

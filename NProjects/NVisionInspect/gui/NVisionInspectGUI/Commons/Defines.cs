@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NVisionInspectGUI.Commons
 {
-    public enum eMachineMode { MachineMode_Auto, MachineMode_Manual }
+    public enum emMachineMode { MachineMode_Auto, MachineMode_Manual }
     public enum emCameraBrand
     {
         CameraBrand_Hik = 0,
@@ -16,13 +16,27 @@ namespace NVisionInspectGUI.Commons
         CameraBrand_Jai,
         CameraBrand_IRayple
     }
-    public enum eUserLevel
+    public enum emInspectTool
+    {
+        InspectTool_Locator = 0,
+        InspectTool_CountPixel = 1,
+        InspectTool_CountBlob = 2,
+        InspectTool_Calib = 3,
+        InspectTool_ColorSpace = 4,
+        InspectTool_FindLine = 5,
+        InspectTool_FindCircle = 6,
+        InspectTool_PCA = 7,
+        InspectTool_TrainOCR = 8,
+        InspectTool_OCR = 9,
+        InspectTool_TemplateMatchingRotate = 10,
+    }
+    public enum emUserLevel
     {
         UserLevel_Operator,
         UserLevel_Admin,
         UserLevel_SuperAdmin
     }
-    public enum eLoginStatus
+    public enum emLoginStatus
     {
         LoginStatus_Success,
         LoginStatus_Failed

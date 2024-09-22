@@ -1,6 +1,10 @@
 ﻿using NVisionInspectGUI.Commons;
 using NVisionInspectGUI.Models;
+using NVisionInspectGUI.Models.FakeCam.Recipe;
+using NVisionInspectGUI.Models.FakeCam.Result;
+using NVisionInspectGUI.Models.FakeCam.Setting;
 using NVisionInspectGUI.Models.Recipe;
+using NVisionInspectGUI.Models.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +28,13 @@ namespace NVisionInspectGUI.Manager.Class
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void CallbackInsCompleteFunc(int nCamIdx, int bSetting);
 
-    // Inspection Compete CallBack
+    // Locator Train CallBack
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void CallbackLocatorTrainCompleteFunc(int nCamIdx);
+
+    // Insp Complete Fake Cam CallBack
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void CallbackInsComplete_FakeCamFunc(int nInspTool);
 
     public class NVisionInspectProcessorDll
     {
@@ -36,6 +44,7 @@ namespace NVisionInspectGUI.Manager.Class
         public static CallbackAlarmFunc m_RegAlarmCallBack;
         public static CallbackInsCompleteFunc m_RegInsCompleteCallBack;
         public static CallbackLocatorTrainCompleteFunc m_RegLocatorTrainCompleteCallBack;
+        public static CallbackInsComplete_FakeCamFunc m_RegInsComplete_FakeCamCallBack;
         public NVisionInspectProcessorDll()
         {
             m_NVisionInspectProcessor = CreateNVisionInspectProcessor();
@@ -171,6 +180,15 @@ namespace NVisionInspectGUI.Manager.Class
         extern private static bool SelectROI(IntPtr NVisionInspectProcessor, int nCamIdx, int nROIIdx, int nFrom);
         public bool SelectROI(int nCamIdx, int nROIIdx, int nFrom) { return SelectROI(m_NVisionInspectProcessor, nCamIdx, nROIIdx, nFrom); }
 
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool CallInspectTool(IntPtr NVisionInspectProcessor, int nInspTool);
+        public void CallInspectTool(int nInspTool) { CallInspectTool(m_NVisionInspectProcessor, nInspTool); }
+
         #endregion
 
         #region Load Setting and Recipe
@@ -190,6 +208,7 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+
 
 #if DEBUG
         [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -214,6 +233,24 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
+        extern private static bool LoadFakeCameraSettings(IntPtr NVisionInspectProcessor, IntPtr pFakeCamSetting);
+        public bool LoadFakeCameraSettings(ref CNVisionInspect_FakeCameraSetting fakeCamSetting)
+        {
+            CNVisionInspect_FakeCameraSetting settings = new CNVisionInspect_FakeCameraSetting();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(settings));
+            Marshal.StructureToPtr(settings, pPointer, false);
+            bool bRet = LoadFakeCameraSettings(m_NVisionInspectProcessor, pPointer);
+            fakeCamSetting = (CNVisionInspect_FakeCameraSetting)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspect_FakeCameraSetting));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
         extern private static bool LoadRecipe(IntPtr NVisionInspectProcessor, int nCamCount, IntPtr pRecipe);
         public bool LoadRecipe(int nCamCount, ref CNVisionInspectRecipe pRecipe)
         {
@@ -222,6 +259,24 @@ namespace NVisionInspectGUI.Manager.Class
             Marshal.StructureToPtr(recipe, pPointer, false);
             bool bRet = LoadRecipe(m_NVisionInspectProcessor, nCamCount, pPointer);
             pRecipe = (CNVisionInspectRecipe)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectRecipe));
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadRecipe_FakeCam(IntPtr NVisionInspectProcessor, IntPtr pRecipeFakeCam);
+        public bool LoadRecipe_FakeCam(ref CNVisionInspectRecipe_FakeCam pRecipeFakeCam)
+        {
+            CNVisionInspectRecipe_FakeCam recipe = new CNVisionInspectRecipe_FakeCam();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipe));
+            Marshal.StructureToPtr(recipe, pPointer, false);
+            bool bRet = LoadRecipe_FakeCam(m_NVisionInspectProcessor, pPointer);
+            pRecipeFakeCam = (CNVisionInspectRecipe_FakeCam)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectRecipe_FakeCam));
 
             return bRet;
         }
@@ -250,12 +305,28 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SaveCameraSetting(IntPtr NVisionInspectProcessor, int nCamIdx, IntPtr pSysSetting);
+        extern private static bool SaveCameraSetting(IntPtr NVisionInspectProcessor, int nCamIdx, IntPtr pCamSetting);
         public bool SaveCameraSetting(int nCamIdx, ref CNVisionInspectCameraSetting camSetting)
         {
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(camSetting));
             Marshal.StructureToPtr(camSetting, pPointer, false);
             bool bRet = SaveCameraSetting(m_NVisionInspectProcessor, nCamIdx, pPointer);
+
+            return bRet;
+        }
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveFakeCameraSetting(IntPtr NVisionInspectProcessor, IntPtr pFakeCamSetting);
+        public bool SaveFakeCameraSetting(ref CNVisionInspect_FakeCameraSetting fakeCamSetting)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(fakeCamSetting));
+            Marshal.StructureToPtr(fakeCamSetting, pPointer, false);
+            bool bRet = SaveFakeCameraSetting(m_NVisionInspectProcessor, pPointer);
 
             return bRet;
         }
@@ -276,6 +347,22 @@ namespace NVisionInspectGUI.Manager.Class
             return bRet;
         }
 
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SaveRecipe_FakeCam(IntPtr NVisionInspectProcessor, IntPtr pRecipeFakeCam);
+        public bool SaveRecipe_FakeCam(ref CNVisionInspectRecipe_FakeCam pRecipeFakeCam)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(pRecipeFakeCam));
+            Marshal.StructureToPtr(pRecipeFakeCam, pPointer, false);
+            bool bRet = SaveRecipe_FakeCam(m_NVisionInspectProcessor, pPointer);
+
+            return bRet;
+        }
+
         #endregion
 
         #region Get Results
@@ -284,18 +371,35 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool GetInspectionResult(IntPtr NVisionInspectProcessor, int nCoreIdx, IntPtr InspResults);
-        public bool GetInspectionResult(int nCoreIdx, ref CNVisionInspectResult InspResults)
+        extern private static bool GetInspectionResult(IntPtr NVisionInspectProcessor, IntPtr InspResults);
+        public bool GetInspectionResult(ref CNVisionInspectResult InspResults)
         {
             CNVisionInspectResult inspRes = new CNVisionInspectResult();
             IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(inspRes));
             Marshal.StructureToPtr(inspRes, pPointer, false);
-            bool bRet = GetInspectionResult(m_NVisionInspectProcessor, nCoreIdx, pPointer);
+            bool bRet = GetInspectionResult(m_NVisionInspectProcessor, pPointer);
             InspResults = (CNVisionInspectResult)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectResult));
 
             return bRet;
         }
 
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool GetInspectToolResult_FakeCam(IntPtr NVisionInspectProcessor, IntPtr pInspRes_FakeCam);
+        public bool GetInspectToolResult_FakeCam(ref CNVisionInspectResult_FakeCam inspResult_FakeCam)
+        {
+            CNVisionInspectResult_FakeCam inspRes = new CNVisionInspectResult_FakeCam();
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(inspRes));
+            Marshal.StructureToPtr(inspRes, pPointer, false);
+            bool bRet = GetInspectToolResult_FakeCam(m_NVisionInspectProcessor, pPointer);
+            inspResult_FakeCam = (CNVisionInspectResult_FakeCam)Marshal.PtrToStructure(pPointer, typeof(CNVisionInspectResult_FakeCam));
+
+            return bRet;
+        }
 
         #endregion
 
@@ -369,9 +473,27 @@ namespace NVisionInspectGUI.Manager.Class
          - Register Locator Trained CallBack
          - Parameter : CallBack Func Pointer
         **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallbackInspComplete_FakeCamFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsComplete_FakeCamFunc callbackPointer);
+        public void RegCallbackInspComplete_FakeCamFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsComplete_FakeCamFunc callbackPointer)
+        {
+            m_RegInsComplete_FakeCamCallBack = callbackPointer;
+
+            RegCallbackInspComplete_FakeCamFunc(m_NVisionInspectProcessor, m_RegInsComplete_FakeCamCallBack);
+        }
+        /**********************************
+         - Register Inspect Tool Fake Cam CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
         #endregion
 
-        #region Hik Cam
+        #region Camera
 
 #if DEBUG
         [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]

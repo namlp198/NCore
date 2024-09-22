@@ -27,10 +27,12 @@ using Npc.Foundation.Util;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Windows.Controls;
 using System.Runtime.InteropServices;
+using NVisionInspectGUI.Models.FakeCam.Setting;
+using NVisionInspectGUI.Models.FakeCam.Recipe;
 
 namespace NVisionInspectGUI.ViewModels
 {
-    public enum EnImageSource
+    public enum emImageSource
     {
         [Description("Image")]
         FromToImage,
@@ -45,8 +47,10 @@ namespace NVisionInspectGUI.ViewModels
         private XmlManagement m_xmlManagement = new XmlManagement();
         private CameraStreamingController m_cameraStreamingController = null;
         private CNVisionInspectRecipe_PropertyGrid m_NVisionInspectRecipe_PropertyGrid = new CNVisionInspectRecipe_PropertyGrid();
+        private CNVisionInspectRecipe_FakeCam_PropertyGrid m_NVisionInspectRecipe_FakeCam_PropertyGrid = new CNVisionInspectRecipe_FakeCam_PropertyGrid();
         private CNVisionInspectSystemSetting_PropertyGrid m_NVisionInspectSystemSetting_PropertyGrid = new CNVisionInspectSystemSetting_PropertyGrid();
 
+        private CNVisionInspect_FakeCameraSetting_PropertyGrid m_NVIFakeCamSetting_PropGrid = new CNVisionInspect_FakeCameraSetting_PropertyGrid();
         private CNVisionInspectCameraSetting_PropertyGrid m_NVICam1Setting_PropGrid = new CNVisionInspectCameraSetting_PropertyGrid();
         private CNVisionInspectCameraSetting_PropertyGrid m_NVICam2Setting_PropGrid = new CNVisionInspectCameraSetting_PropertyGrid();
         private CNVisionInspectCameraSetting_PropertyGrid m_NVICam3Setting_PropGrid = new CNVisionInspectCameraSetting_PropertyGrid();
@@ -74,8 +78,9 @@ namespace NVisionInspectGUI.ViewModels
         private bool m_bStreamming = false;
         private bool m_bStartedAcq = false;
         private bool m_bSelectedCamera = false;
+        private bool m_bUseFakeCam = false;
 
-        private EnImageSource m_fromImageSource = EnImageSource.FromToCamera;
+        private emImageSource m_fromImageSource = emImageSource.FromToCamera;
         private emCameraBrand m_cameraBrandSelected = emCameraBrand.CameraBrand_Hik;
 
         #endregion
@@ -87,12 +92,13 @@ namespace NVisionInspectGUI.ViewModels
             m_ucSettingView = settingView;
 
             m_ucSettingView.buffSettingPRO.CameraIndex = 99;
-            m_ucSettingView.buffSettingPRO.ModeView = NCore.Wpf.BufferViewerSettingPRO.EnModeView.Color;
+            m_ucSettingView.buffSettingPRO.ModeView = NCore.Wpf.BufferViewerSettingPRO.emModeView.Color;
             m_ucSettingView.buffSettingPRO.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
 
             SimulationThread.UpdateUI += SimulationThread_UpdateUI;
             InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
             InterfaceManager.LocatorTrainComplete += new InterfaceManager.LocatorTrainComplete_Handler(LocatorTrainComplete);
+            InterfaceManager.InspectComplete_FakeCam += new InterfaceManager.InspectComplete_FakeCam_Handler(InspectComplete_FakeCam);
             InterfaceManager.AlarmEvent += new InterfaceManager.Alarm_Handler(AlarmHandlerFunc);
 
             this.SaveRecipeCmd = new SaveRecipeCmd();
@@ -113,7 +119,7 @@ namespace NVisionInspectGUI.ViewModels
 
             m_xmlManagement.Load(Defines.StartupProgPath + "\\VisionSettings\\Settings\\PlcSettings.config");
 
-            m_lstImageSource = EnumUtil.GetEnumDescriptionToListString<EnImageSource>();
+            m_lstImageSource = EnumUtil.GetEnumDescriptionToListString<emImageSource>();
             SettingView.cbbImageSource.SelectionChanged += CbbImageSource_SelectionChanged;
             SettingView.cbbImageSource.SelectedIndex = 0;
 
@@ -138,11 +144,11 @@ namespace NVisionInspectGUI.ViewModels
             ComboBox cbb = (ComboBox)sender;
             if (string.Compare(cbb.SelectedItem.ToString(), "Image") == 0)
             {
-                FromImageSource = EnImageSource.FromToImage;
+                FromImageSource = emImageSource.FromToImage;
             }
             else if (string.Compare(cbb.SelectedItem.ToString(), "Camera") == 0)
             {
-                FromImageSource = EnImageSource.FromToCamera;
+                FromImageSource = emImageSource.FromToCamera;
             }
         }
         private void BuffSettingPRO_SelectCameraChanged(object sender, RoutedEventArgs e)
@@ -181,7 +187,13 @@ namespace NVisionInspectGUI.ViewModels
                     break;
                 case 7:
                     break;
+                case 8:
+                    UseFakeCam = true;
+                    return;
             }
+
+            if (nNumberOfROI <= 0)
+                return;
 
             List<string> lstROI = new List<string>();
             for (int i = 0; i < nNumberOfROI; i++)
@@ -191,7 +203,7 @@ namespace NVisionInspectGUI.ViewModels
 
             ROIList = lstROI;
 
-            // fine camera brand selecting
+            // Find camera brand selecting
             string strCamSelected = SettingView.buffSettingPRO.CameraSelected;
             int nPos = strCamSelected.IndexOf("-") + 2;
             int nLength = strCamSelected.Length - nPos;
@@ -201,11 +213,11 @@ namespace NVisionInspectGUI.ViewModels
             if (strCamBrand.IsNullOrEmpty())
                 return;
 
-            if(string.Compare(strCamBrand, "Hik") == 0)
+            if (string.Compare(strCamBrand, "Hik") == 0)
             {
                 CameraBrandSelected = emCameraBrand.CameraBrand_Hik;
             }
-            else if(string.Compare(strCamBrand, "Basler") == 0)
+            else if (string.Compare(strCamBrand, "Basler") == 0)
             {
                 CameraBrandSelected = emCameraBrand.CameraBrand_Basler;
             }
@@ -215,7 +227,7 @@ namespace NVisionInspectGUI.ViewModels
             }
 
             int nWidth = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nFrameWidth;
-            int nHeight= InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nFrameHeight;
+            int nHeight = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[nCamIdx].m_nFrameHeight;
             SettingView.buffSettingPRO.SetParamsModeColor(nWidth, nHeight);
         }
         private void BuffSettingPRO_SelectFrameChanged(object sender, RoutedEventArgs e)
@@ -288,10 +300,10 @@ namespace NVisionInspectGUI.ViewModels
 
             switch (FromImageSource)
             {
-                case EnImageSource.FromToImage:
+                case emImageSource.FromToImage:
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LocatorToolSimulator_Train(nBuff, nFrame);
                     break;
-                case EnImageSource.FromToCamera:
+                case emImageSource.FromToCamera:
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LocatorTool_Train(nCamIdx);
                     break;
                 default:
@@ -412,7 +424,7 @@ namespace NVisionInspectGUI.ViewModels
             int nBaslerCamCount = 0;
 
             int nPosHikCam = strCameras.IndexOf("Hik") + 4;
-            int nPosBaslerCam= strCameras.IndexOf("Basler") + 7;
+            int nPosBaslerCam = strCameras.IndexOf("Basler") + 7;
 
             string sPosHikCamCount = strCameras.Substring(nPosHikCam, 1);
             string sPosBaslerCamCount = strCameras.Substring(nPosBaslerCam, 1);
@@ -540,6 +552,23 @@ namespace NVisionInspectGUI.ViewModels
                     NVICam8Setting_PropGrid = cameraSetting_PropertyGrid;
                     break;
             }
+        }
+        public void LoadFakeCameraSetting()
+        {
+            CNVisionInspect_FakeCameraSetting_PropertyGrid fakeCamSetting_PropGrid = new CNVisionInspect_FakeCameraSetting_PropertyGrid();
+
+            fakeCamSetting_PropGrid.Channels = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nChannels;
+            fakeCamSetting_PropGrid.FrameWidth = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nFrameWidth;
+            fakeCamSetting_PropGrid.FrameHeight = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nFrameHeight;
+            fakeCamSetting_PropGrid.FrameDepth = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nFrameDepth;
+            fakeCamSetting_PropGrid.MaxFrameCount = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nMaxFrameCount;
+            fakeCamSetting_PropGrid.CameraName = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_sCameraName;
+            fakeCamSetting_PropGrid.FullImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_sFullImagePath;
+            fakeCamSetting_PropGrid.DefectImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_sDefectImagePath;
+            fakeCamSetting_PropGrid.TemplateImagePath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_sTemplateImagePath;
+            fakeCamSetting_PropGrid.ROIsPath = InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_sROIsPath;
+
+            NVIFakeCamSetting_PropGrid = fakeCamSetting_PropGrid;
         }
         public void SetAllParamPlcDelta()
         {
@@ -758,6 +787,28 @@ namespace NVisionInspectGUI.ViewModels
 
             NVisionInspectRecipePropertyGrid = NVIRecipe_PropGrid;
         }
+        public void LoadRecipe_FakeCam()
+        {
+            CNVisionInspectRecipe_FakeCam_PropertyGrid NVIRecipe_FakeCam_PropGrid = new CNVisionInspectRecipe_FakeCam_PropertyGrid();
+
+            // COUNT PIXEL
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_X;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Y;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Width;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_Height = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Height;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_Offset_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Offset_X;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_Offset_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_Offset_Y;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ROI_AngleRotate = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_AngleRotate;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_GrayThreshold_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_GrayThreshold_Min;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_GrayThreshold_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_GrayThreshold_Max;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_PixelCount_Min = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_PixelCount_Min;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_PixelCount_Max;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_ShowGraphics = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_ShowGraphics == 1 ? true : false;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_UseOffset = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseOffset == 1 ? true : false;
+            NVIRecipe_FakeCam_PropGrid.CountPixel_UseLocator = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseLocator == 1 ? true : false;
+
+            NVisionInspectRecipeFakeCamPropertyGrid = NVIRecipe_FakeCam_PropGrid;
+        }
         public async void SimulationThread_UpdateUI(int nBuff, int nFrame)
         {
             m_ucSettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetSimulatorBuffer(nBuff, nFrame);
@@ -769,7 +820,7 @@ namespace NVisionInspectGUI.ViewModels
             if (bSetting == 1)
             {
                 int nCoreIdx = nCamIdx;
-                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(nCoreIdx, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
 
                 SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(0, 0);
                 await SettingView.buffSettingPRO.UpdateImage();
@@ -779,11 +830,11 @@ namespace NVisionInspectGUI.ViewModels
                     case 1:
                         if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
                         {
-                            SettingView.buffSettingPRO.InspectResult = EnInspectResult.InspectResult_OK;
+                            SettingView.buffSettingPRO.InspectResult = emInspectResult.InspectResult_OK;
                         }
                         else
                         {
-                            SettingView.buffSettingPRO.InspectResult = EnInspectResult.InspectResult_NG;
+                            SettingView.buffSettingPRO.InspectResult = emInspectResult.InspectResult_NG;
                         }
 
                         string resStr = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_sResultString;
@@ -822,6 +873,36 @@ namespace NVisionInspectGUI.ViewModels
 
             // update PropertyGrid UI
             UpdatePropertyGridUI(nCamIdx);
+        }
+        private void InspectComplete_FakeCam(int nInspTool)
+        {
+            emInspectTool eInspectTool = (emInspectTool)nInspTool;
+
+            switch (eInspectTool)
+            {
+                case emInspectTool.InspectTool_Locator:
+                    break;
+                case emInspectTool.InspectTool_CountPixel:
+                    break;
+                case emInspectTool.InspectTool_CountBlob:
+                    break;
+                case emInspectTool.InspectTool_Calib:
+                    break;
+                case emInspectTool.InspectTool_ColorSpace:
+                    break;
+                case emInspectTool.InspectTool_FindLine:
+                    break;
+                case emInspectTool.InspectTool_FindCircle:
+                    break;
+                case emInspectTool.InspectTool_PCA:
+                    break;
+                case emInspectTool.InspectTool_TrainOCR:
+                    break;
+                case emInspectTool.InspectTool_OCR:
+                    break;
+                case emInspectTool.InspectTool_TemplateMatchingRotate:
+                    break;
+            }
         }
         private void AlarmHandlerFunc(string alarm)
         {
@@ -912,12 +993,22 @@ namespace NVisionInspectGUI.ViewModels
             get => m_NVisionInspectRecipe_PropertyGrid;
             set => m_NVisionInspectRecipe_PropertyGrid = value;
         }
+        public CNVisionInspectRecipe_FakeCam_PropertyGrid NVisionInspectRecipeFakeCamPropertyGrid
+        {
+            get => m_NVisionInspectRecipe_FakeCam_PropertyGrid;
+            set => m_NVisionInspectRecipe_FakeCam_PropertyGrid = value;
+        }
         public CNVisionInspectSystemSetting_PropertyGrid NVisionInspectSystemSettingsPropertyGrid
         {
             get => m_NVisionInspectSystemSetting_PropertyGrid;
             set => m_NVisionInspectSystemSetting_PropertyGrid = value;
         }
 
+        public CNVisionInspect_FakeCameraSetting_PropertyGrid NVIFakeCamSetting_PropGrid
+        {
+            get => m_NVIFakeCamSetting_PropGrid;
+            set => m_NVIFakeCamSetting_PropGrid = value;
+        }
         public CNVisionInspectCameraSetting_PropertyGrid NVICam1Setting_PropGrid
         {
             get => m_NVICam1Setting_PropGrid;
@@ -1049,6 +1140,17 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
+        public bool UseFakeCam
+        {
+            get => m_bUseFakeCam;
+            set
+            {
+                if (SetProperty(ref m_bUseFakeCam, value))
+                {
+
+                }
+            }
+        }
         public int ROIIdx
         {
             get => m_nROIIdx;
@@ -1071,7 +1173,7 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
-        public EnImageSource FromImageSource
+        public emImageSource FromImageSource
         {
             get => m_fromImageSource;
             set
@@ -1109,7 +1211,7 @@ namespace NVisionInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_cameraBrandSelected, value))
                 {
-                    
+
                 }
             }
         }
