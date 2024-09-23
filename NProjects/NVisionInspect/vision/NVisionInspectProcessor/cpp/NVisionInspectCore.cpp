@@ -537,6 +537,48 @@ void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
 	m_pInterface->SetResultBuffer(nCamIdx, 0, matBGR.data);
 }
 
+void CNVisionInspectCore::MakeROI_FakeCam(LPBYTE pBuffer)
+{
+	cv::Mat matGray, matBGR, matROI;
+	cv::Rect rectROI;
+
+	int nWidth = m_pInterface->GetFakeCameraSettingControl()->m_nFrameWidth;
+	int nHeight = m_pInterface->GetFakeCameraSettingControl()->m_nFrameHeight;
+	cv::Mat matSrc(nHeight, nWidth, CV_8UC3, pBuffer);
+
+	cv::cvtColor(matSrc, matGray, cv::COLOR_BGR2GRAY);
+	matSrc.copyTo(matBGR);
+
+	CNVisionInspectRecipe_FakeCam* pRecipeFakeCam = m_pInterface->GetRecipe_FakeCamControl();
+
+	int nROI_X = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_X;
+	int nROI_Y = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Y;
+	int nROI_Width = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Width;
+	int nROI_Height = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Height;
+
+	rectROI.x = nROI_X;
+	rectROI.y = nROI_Y;
+	rectROI.width = nROI_Width;
+	rectROI.height = nROI_Height;
+
+	// create ROI
+	matROI = cv::Mat(rectROI.height, rectROI.width, CV_8UC1);
+	for (int i = 0; i < matROI.rows; i++)
+		memcpy(&matROI.data[i * matROI.step1()], &matGray.data[(i + rectROI.y) * matGray.step1() + rectROI.x], matROI.cols);
+
+
+	USES_CONVERSION;
+	char chROIImageFakeCamPath[1000] = {};
+	sprintf_s(chROIImageFakeCamPath, "%s%s_%s%s", W2A(m_pInterface->GetFakeCameraSettingControl()->m_sROIsPath), "ROI", "FakeCam", ".png");
+
+	CString strFilePath(chROIImageFakeCamPath);
+	SaveROIImage(matROI, strFilePath);
+
+	cv::rectangle(matBGR, rectROI, PINK_COLOR, 1, cv::LINE_AA);
+
+	m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
+}
+
 #pragma region Functions handle Frame Cam
 void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 {
@@ -724,4 +766,16 @@ void CNVisionInspectCore::SaveROIImage(cv::Mat& matROI, int nCamIdx, int nROIIdx
 	sprintf_s(chROIImagePath, "%s%s_%d%s", W2A(m_pInterface->GetCameraSettingControl(nCamIdx)->m_sROIsPath), "ROI", nROIIdx, ".png");
 
 	cv::imwrite(chROIImagePath, matROI);
+}
+
+void CNVisionInspectCore::SaveROIImage(cv::Mat& matROI, CString strFilePath)
+{
+	if (matROI.empty())
+		return;
+
+	USES_CONVERSION;
+	char chROIImageFakeCamPath[1000] = {};
+	sprintf_s(chROIImageFakeCamPath, "%s", W2A(strFilePath));
+
+	cv::imwrite(chROIImageFakeCamPath, matROI);
 }

@@ -22,6 +22,8 @@ namespace NVisionInspectGUI.Manager
 
         public delegate void UpdateUIHandler(int nBuff, int nFrame);
         public static event UpdateUIHandler UpdateUI;
+        public delegate void UpdateUIHandler_FakeCam(int nFrame);
+        public static event UpdateUIHandler_FakeCam UpdateUI_FakeCam;
         public delegate void UpdateUIHandler_SumCameraView();
         public static event UpdateUIHandler_SumCameraView UpdateUI_SumCameraView;
 
@@ -33,6 +35,16 @@ namespace NVisionInspectGUI.Manager
             imgLoadThread.IsBackground = true;
             imgLoadThread.Start();
         }
+
+        public void LoadImage_FakeCam(int nFrame)
+        {
+            Thread imgLoadThread;
+            imgLoadThread = new Thread(() => LoadImageThread_FakeCam(nFrame));
+            imgLoadThread.SetApartmentState(ApartmentState.STA);
+            imgLoadThread.IsBackground = true;
+            imgLoadThread.Start();
+        }
+
         public void LoadAllImage(int nCamIdx, int nBuff, int nFrame)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -57,7 +69,30 @@ namespace NVisionInspectGUI.Manager
             m_nCurImageIndex = 0;
             UpdateUI?.Invoke(nBuff, nFrame);
         }
+        public void LoadAllImage_FakeCam(int nFrame)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image file(*.bmp, *.jpg, *.png, *.tif) | *.BMP;*.JPG;*.PNG;*.TIF;*.bmp;*.jpg;*.png;*.tif; |All Files(*.*)|*.*||";
+            ofd.Multiselect = true;
 
+            if (ofd.ShowDialog() != true)
+                return;
+
+            if (ofd.CheckFileExists == false)
+                return;
+
+            m_nImageListPath.Clear();
+
+            string[] arrFilePaths = ofd.FileNames;
+            for (int i = 0; i < arrFilePaths.Length; i++)
+            {
+                m_nImageListPath.Add(arrFilePaths[i]);
+            }
+
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer_FakeCam(nFrame, m_nImageListPath.ElementAt(0));
+            m_nCurImageIndex = 0;
+            UpdateUI_FakeCam?.Invoke(nFrame);
+        }
         private void LoadImageThread(int nCamIdx, int nBuff, int nFrame)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -74,6 +109,23 @@ namespace NVisionInspectGUI.Manager
 
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(nBuff, nFrame, filePath);
             UpdateUI?.Invoke(nBuff, nFrame);
+        }
+        private void LoadImageThread_FakeCam(int nFrame)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image file(*.bmp, *.jpg, *.png, *.tif) | *.BMP;*.JPG;*.PNG;*.TIF;*.bmp;*.jpg;*.png;*.tif; |All Files(*.*)|*.*||";
+            ofd.Multiselect = false;
+
+            if (ofd.ShowDialog() != true)
+                return;
+
+            if (ofd.CheckFileExists == false)
+                return;
+
+            string filePath = ofd.FileName;
+
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer_FakeCam(nFrame, filePath);
+            UpdateUI_FakeCam?.Invoke(nFrame);
         }
     }
 }

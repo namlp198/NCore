@@ -95,7 +95,7 @@ namespace NVisionInspectGUI.Manager.Class
         public bool InspectStart(int nThreadCount, int nCamCount) { return InspectStart(m_NVisionInspectProcessor, nThreadCount, nCamCount); }
         /**********************************
          - Inspection Ready / Start
-         - Parameter : Inspection Cavity
+         - Parameter : Instance Poiter, Thread Count, Camera Count
         **********************************/
 
 #if DEBUG
@@ -105,7 +105,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool InspectStop(IntPtr NVisionInspectProcessor, int nCamCount);
         public bool InspectStop(int nCamCount) { return InspectStop(m_NVisionInspectProcessor, nCamCount); }
-
+        /**********************************
+        - Inspection Ready / Start
+        - Parameter : Instance Poiter, Camera Count
+       **********************************/
 
 
 #if DEBUG
@@ -117,7 +120,7 @@ namespace NVisionInspectGUI.Manager.Class
         public bool Inspect_Simulator(int nCamBrand, int nCamIdx) { return Inspect_Simulator(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
         /**********************************
          - Inspection Simulator
-         - Parameter : Inspection Cam Index
+         - Parameter : Instance Pointer, Camera Brand, Camera Index
         **********************************/
 
 
@@ -131,6 +134,26 @@ namespace NVisionInspectGUI.Manager.Class
         {
             return GetResultBuffer(m_NVisionInspectProcessor, nBuff, nFrame);
         }
+        /**********************************
+         - Get Result Buffer
+         - Parameter : Instance Pointer, Buffer Index, Frame Index
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetResultBuffer_FakeCam(IntPtr NVisionInspectProcessor, int nFrame);
+        public IntPtr GetResultBuffer_FakeCam(int nFrame)
+        {
+            return GetResultBuffer_FakeCam(m_NVisionInspectProcessor, nFrame);
+        }
+        /**********************************
+         - Get Result Buffer for Fake Camera
+         - Parameter : Instance Pointer, Frame Index
+        **********************************/
 
 
 #if DEBUG
@@ -143,6 +166,26 @@ namespace NVisionInspectGUI.Manager.Class
         {
             return GetSimulatorBuffer(m_NVisionInspectProcessor, nBuff, nFrame);
         }
+        /**********************************
+         - Get Simulator Buffer
+         - Parameter : Instance Pointer, Buffer Index, Frame Index
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static IntPtr GetSimulatorBuffer_FakeCam(IntPtr NVisionInspectProcessor, int nFrame);
+        public IntPtr GetSimulatorBuffer_FakeCam(int nFrame)
+        {
+            return GetSimulatorBuffer_FakeCam(m_NVisionInspectProcessor, nFrame);
+        }
+        /**********************************
+        - Get Simulator Buffer for Fake Camera
+        - Parameter : Instance Pointer, Frame Index
+        **********************************/
 
 
 #if DEBUG
@@ -152,6 +195,23 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool LoadSimulatorBuffer(IntPtr NVisionInspectProcessor, int nBuff, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath);
         public bool LoadSimulatorBuffer(int nBuff, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath) { return LoadSimulatorBuffer(m_NVisionInspectProcessor, nBuff, nFrame, filePath); }
+        /**********************************
+       - Load Simulator Buffer
+       - Parameter : Instance Pointer, Buffer Index, Frame Index
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool LoadSimulatorBuffer_FakeCam(IntPtr NVisionInspectProcessor, int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath);
+        public bool LoadSimulatorBuffer_FakeCam(int nFrame, [MarshalAs(UnmanagedType.LPStr)] string filePath) { return LoadSimulatorBuffer_FakeCam(m_NVisionInspectProcessor, nFrame, filePath); }
+        /**********************************
+       - Load Simulator Buffer for Fake Camera
+       - Parameter : Instance Pointer, Frame Index, File Path
+        **********************************/
 
 
 #if DEBUG
@@ -161,6 +221,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool LocatorTool_Train(IntPtr NVisionInspectProcessor, int nCamIdx);
         public bool LocatorTool_Train(int nCamIdx) { return LocatorTool_Train(m_NVisionInspectProcessor, nCamIdx); }
+        /**********************************
+       - Train Locator Tool
+       - Parameter : Instance Pointer, Camera Index
+        **********************************/
 
 
 #if DEBUG
@@ -170,6 +234,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool LocatorToolSimulator_Train(IntPtr NVisionInspectProcessor, int nSimuBuff, int nFrame);
         public bool LocatorToolSimulator_Train(int nSimuBuff, int nFrame) { return LocatorToolSimulator_Train(m_NVisionInspectProcessor, nSimuBuff, nFrame); }
+        /**********************************
+       - Train Locator Tool Simulator
+       - Parameter : Instance Pointer, Simulator Buffer Index, Frame Index
+        **********************************/
 
 
 #if DEBUG
@@ -179,6 +247,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool SelectROI(IntPtr NVisionInspectProcessor, int nCamIdx, int nROIIdx, int nFrom);
         public bool SelectROI(int nCamIdx, int nROIIdx, int nFrom) { return SelectROI(m_NVisionInspectProcessor, nCamIdx, nROIIdx, nFrom); }
+        /**********************************
+       - Select ROI
+       - Parameter : Instance Pointer, Camera Index, ROI Index, From Index
+        **********************************/
 
 
 #if DEBUG
@@ -188,6 +260,11 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool CallInspectTool(IntPtr NVisionInspectProcessor, int nInspTool);
         public void CallInspectTool(int nInspTool) { CallInspectTool(m_NVisionInspectProcessor, nInspTool); }
+        /**********************************
+       - Call Inspect Tool
+       - Parameter : Instance Pointer, Inspect Tool Index
+        **********************************/
+
 
         #endregion
 
@@ -208,6 +285,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+       - Load System Settings
+       - Parameter : Instance Pointer, System Setting Pointer
+        **********************************/
 
 
 #if DEBUG
@@ -226,6 +307,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+       - Load Camera Settings
+       - Parameter : Instance Pointer, Camera Setting Pointer, Camera Index
+        **********************************/
 
 
 #if DEBUG
@@ -244,6 +329,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+       - Load Fake Camera Settings
+       - Parameter : Instance Pointer, Fake Camera Setting Pointer
+        **********************************/
 
 
 #if DEBUG
@@ -262,6 +351,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+       - Load Recipe
+       - Parameter : Instance Pointer, Camera Count, Recipe Pointer
+        **********************************/
 
 
 #if DEBUG
@@ -280,6 +373,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Load Recipe Fake Camera
+      - Parameter : Instance Pointer, Recipe Fake Camera Pointer
+       **********************************/
 
         #endregion
 
@@ -299,6 +396,11 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Save System Setting
+      - Parameter : Instance Pointer, System Setting Pointer
+       **********************************/
+
 
 #if DEBUG
         [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -314,6 +416,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Save Camera Setting
+      - Parameter : Instance Pointer, Camera Index, Camera Setting Pointer
+       **********************************/
 
 
 #if DEBUG
@@ -330,6 +436,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Save Fake Camera Setting
+      - Parameter : Instance Pointer, Fake Camera Setting Pointer
+       **********************************/
 
 
 #if DEBUG
@@ -346,6 +456,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Save Recipe
+      - Parameter : Instance Pointer, Camera Index, Recipe Pointer
+       **********************************/
 
 
 #if DEBUG
@@ -362,6 +476,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Save Recipe Fake Camera
+      - Parameter : Instance Pointer, Recipe Fake Camera Pointer
+       **********************************/
 
         #endregion
 
@@ -382,6 +500,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Get Inspection Result
+      - Parameter : Instance Pointer, Inspection Result Pointer
+       **********************************/
 
 
 #if DEBUG
@@ -400,6 +522,10 @@ namespace NVisionInspectGUI.Manager.Class
 
             return bRet;
         }
+        /**********************************
+      - Get Inspect Tool Result Fake Cam
+      - Parameter : Instance Pointer, Inspect Result Fake Camera
+       **********************************/
 
         #endregion
 
@@ -502,6 +628,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool ContinuousGrab(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
         public bool ContinuousGrab(int nCamBrand, int nCamIdx) { return ContinuousGrab(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
+        /**********************************
+      - Continuous Grab
+      - Parameter : Instance Pointer, Camera Brand, Camera Index
+       **********************************/
 
 
 #if DEBUG
@@ -511,6 +641,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool StopGrab(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
         public bool StopGrab(int nCamBrand, int nCamIdx) { return StopGrab(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
+        /**********************************
+     - Stop Grab
+     - Parameter : Instance Pointer, Camera Brand, Camera Index
+      **********************************/
 
 
 #if DEBUG
@@ -520,6 +654,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static IntPtr GetImageBuffer(IntPtr NVisionInspectProcessor, int nCamBrand, int nCamIdx);
         public IntPtr GetImageBuffer(int nCamBrand, int nCamIdx) { return GetImageBuffer(m_NVisionInspectProcessor, nCamBrand, nCamIdx); }
+        /**********************************
+     - Get Image Buffer
+     - Parameter : Instance Pointer, Camera Brand, Camera Index
+      **********************************/
 
 
 #if DEBUG
@@ -529,6 +667,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool SetTriggerMode(IntPtr NVisionInspectProcessor, int nCamIdx, int nMode);
         public bool SetTriggerMode(int nCamIdx, int nMode) { return SetTriggerMode(m_NVisionInspectProcessor, nCamIdx, nMode); }
+        /**********************************
+     - Set Trigger Mode
+     - Parameter : Instance Pointer, Camera Index, Mode Index
+      **********************************/
 
 
 #if DEBUG
@@ -538,6 +680,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool SetTriggerSource(IntPtr NVisionInspectProcessor, int nCamIdx, int nSource);
         public bool SetTriggerSource(int nCamIdx, int nSource) { return SetTriggerSource(m_NVisionInspectProcessor, nCamIdx, nSource); }
+        /**********************************
+    - Set Trigger Source
+    - Parameter : Instance Pointer, Camera Index, Source Index
+     **********************************/
 
 
 #if DEBUG
@@ -547,6 +693,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool SetExposureTime(IntPtr NVisionInspectProcessor, int nCamIdx, double dExpTime);
         public bool SetExposureTime(int nCamIdx, double dExpTime) { return SetExposureTime(m_NVisionInspectProcessor, nCamIdx, dExpTime); }
+        /**********************************
+    - Set Exposure
+    - Parameter : Instance Pointer, Camera Index, Exposure Time
+     **********************************/
 
 
 #if DEBUG
@@ -556,6 +706,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool SetAnalogGain(IntPtr NVisionInspectProcessor, int nCamIdx, double dGain);
         public bool SetAnalogGain(int nCamIdx, double dGain) { return SetAnalogGain(m_NVisionInspectProcessor, nCamIdx, dGain); }
+        /**********************************
+   - Set Analog Gain
+   - Parameter : Instance Pointer, Camera Index, Gain Analog
+    **********************************/
 
 
 #if DEBUG
@@ -565,6 +719,10 @@ namespace NVisionInspectGUI.Manager.Class
 #endif
         extern private static bool SaveImage(IntPtr NVisionInspectProcessor, int nCamIdx);
         public bool SaveImage(int nCamIdx) { return SaveImage(m_NVisionInspectProcessor, nCamIdx); }
+        /**********************************
+   - Save Image
+   - Parameter : Instance Pointer, Camera Index
+    **********************************/
 
         #endregion
     }

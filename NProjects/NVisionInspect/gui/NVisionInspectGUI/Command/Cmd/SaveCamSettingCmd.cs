@@ -23,8 +23,8 @@ namespace NVisionInspectGUI.Command.Cmd
             if (nCamIdx < 0)
                 return;
 
-            // Fake Cam has nCamIdx = 8
-            if(nCamIdx == 8)
+            // Fake Cam
+            if(nCamIdx >= MainViewModel.Instance.SettingVM.CameraCount)
             {
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nChannels = MainViewModel.Instance.SettingVM.NVIFakeCamSetting_PropGrid.Channels;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting.m_nFrameWidth = MainViewModel.Instance.SettingVM.NVIFakeCamSetting_PropGrid.FrameWidth;

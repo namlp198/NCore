@@ -603,6 +603,12 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 imageViewer.Source = bmpEx.Image;
             }));
         }
+        public void ResetImageExtBasic()
+        {
+            imageExt_Basic.EnableSelectRoiTool = false;
+            imageExt_Basic.EnableLocatorTool = false;
+            imageExt_Basic.EnableInspectTool = false;
+        }
         //private Task SetExposureTimeAsync()
         //{
         //    return Task.Run(() =>

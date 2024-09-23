@@ -228,6 +228,14 @@ BYTE* GetResultBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFram
 	return pProcessor->GetResultBuffer(nBuff, nFrame);
 }
 
+BYTE* GetResultBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetResultBuffer_FakeCam(nFrame);
+}
+
 bool GetInspectionResult(CNVisionInspectProcessor* pProcessor, CNVisionInspectResult* pNVisionInsppResult)
 {
 	if (pProcessor == NULL)
@@ -260,12 +268,32 @@ bool LoadSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nF
 	else                    return true;
 }
 
+bool LoadSimulatorBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame, char* pFilePath)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	CString strPath = (CString)pFilePath;
+	BOOL bRetValue = pProcessor->LoadSimulatorBuffer_FakeCam(nFrame, strPath);
+
+	if (bRetValue == FALSE) return false;
+	else                    return true;
+}
+
 BYTE* GetSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame)
 {
 	if (pProcessor == NULL)
 		return NULL;
 
 	return pProcessor->GetSimulatorBuffer(nBuff, nFrame);
+}
+
+BYTE* GetSimulatorBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame)
+{
+	if (pProcessor == NULL)
+		return NULL;
+
+	return pProcessor->GetSimulatorBuffer_FakeCam(nFrame);
 }
 
 void CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool)

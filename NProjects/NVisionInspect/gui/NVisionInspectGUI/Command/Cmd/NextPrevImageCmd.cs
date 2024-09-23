@@ -29,16 +29,32 @@ namespace NVisionInspectGUI.Command.Cmd
             int nCurImgIndex = InterfaceManager.Instance.m_simulationThread.CurrentImageIndex;
             int nImageCount = InterfaceManager.Instance.m_simulationThread.ImageListPath.Count;
 
+            if (nCamIdx < 0)
+                return;
+
             if (btn.CompareTo("btnPrevImage") == 0)
             {
                 if (nCurImgIndex == 0)
                 {
                     nCurImgIndex = nImageCount - 1;
                     filePath = InterfaceManager.Instance.m_simulationThread.ImageListPath[nCurImgIndex];
+
+                    if (nCamIdx >= MainViewModel.Instance.SettingVM.CameraCount)
+                    {
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer_FakeCam(nFrame, filePath);
+                        MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI_FakeCam(nFrame);
+
+                        InterfaceManager.Instance.m_simulationThread.CurrentImageIndex = nCurImgIndex;
+
+                        MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
+                        return;
+                    }
+
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(nBuff, nFrame, filePath);
                     MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI(nBuff, nFrame);
 
                     InterfaceManager.Instance.m_simulationThread.CurrentImageIndex = nCurImgIndex;
+                    MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
                     return;
                 }
 
@@ -46,19 +62,42 @@ namespace NVisionInspectGUI.Command.Cmd
                 filePath = InterfaceManager.Instance.m_simulationThread.ImageListPath[nCurImgIndex];
                 InterfaceManager.Instance.m_simulationThread.CurrentImageIndex = nCurImgIndex;
 
+                if (nCamIdx >= MainViewModel.Instance.SettingVM.CameraCount)
+                {
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer_FakeCam(nFrame, filePath);
+                    MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI_FakeCam(nFrame);
+
+                    MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
+                    return;
+                }
+
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(nBuff, nFrame, filePath);
                 MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI(nBuff, nFrame);
+
+                MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
             }
-            else if(btn.CompareTo("btnNextImage") == 0)
+            else if (btn.CompareTo("btnNextImage") == 0)
             {
                 if (nCurImgIndex == nImageCount - 1)
                 {
                     nCurImgIndex = 0;
                     filePath = InterfaceManager.Instance.m_simulationThread.ImageListPath[nCurImgIndex];
+
+                    if (nCamIdx >= MainViewModel.Instance.SettingVM.CameraCount)
+                    {
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer_FakeCam(nFrame, filePath);
+                        MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI_FakeCam(nFrame);
+
+                        InterfaceManager.Instance.m_simulationThread.CurrentImageIndex = nCurImgIndex;
+                        MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
+                        return;
+                    }
+
                     InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(nBuff, nFrame, filePath);
                     MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI(nBuff, nFrame);
 
                     InterfaceManager.Instance.m_simulationThread.CurrentImageIndex = nCurImgIndex;
+                    MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
                     return;
                 }
 
@@ -66,8 +105,18 @@ namespace NVisionInspectGUI.Command.Cmd
                 filePath = InterfaceManager.Instance.m_simulationThread.ImageListPath[nCurImgIndex];
                 InterfaceManager.Instance.m_simulationThread.CurrentImageIndex = nCurImgIndex;
 
+                if (nCamIdx >= MainViewModel.Instance.SettingVM.CameraCount)
+                {
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer_FakeCam(nFrame, filePath);
+                    MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI_FakeCam(nFrame);
+
+                    MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
+                    return;
+                }
+
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSimulatorBuffer(nBuff, nFrame, filePath);
                 MainViewModel.Instance.SettingVM.SimulationThread_UpdateUI(nBuff, nFrame);
+                MainViewModel.Instance.SettingVM.SettingView.buffSettingPRO.ResetImageExtBasic();
             }
         }
     }

@@ -562,6 +562,10 @@ namespace NpcCore.Wpf.Controls
             _getROIItem.FontFamily = new FontFamily("Georgia");
             _getROIItem.FontWeight = FontWeights.Regular;
             _getROIItem.FontSize = 12;
+            _getROIItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_input_success@2x.png", UriKind.RelativeOrAbsolute))
+            };
 
             _ctxMnuRoiMode.Items.Add(_getROIItem);
         }
@@ -576,6 +580,10 @@ namespace NpcCore.Wpf.Controls
             _fitItem.FontFamily = new FontFamily("Georgia");
             _fitItem.FontWeight = FontWeights.Regular;
             _fitItem.FontSize = 12;
+            _fitItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/zoom_to_fit_s@3x.png", UriKind.RelativeOrAbsolute))
+            };
 
             // select mode tool item
             _selectModeTool = new MenuItem();
@@ -585,6 +593,10 @@ namespace NpcCore.Wpf.Controls
             _selectModeTool.FontFamily = new FontFamily("Georgia");
             _selectModeTool.FontWeight = FontWeights.Regular;
             _selectModeTool.FontSize = 12;
+            _selectModeTool.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/btn_setting_50.png", UriKind.RelativeOrAbsolute))
+            };
 
             // select Roi mode
             _selectRoiMode = new MenuItem();
@@ -594,6 +606,10 @@ namespace NpcCore.Wpf.Controls
             _selectRoiMode.FontFamily = new FontFamily("Georgia");
             _selectRoiMode.FontWeight = FontWeights.Regular;
             _selectRoiMode.FontSize = 12;
+            _selectRoiMode.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/Cursor/mc_ig_include_n@2x.png", UriKind.RelativeOrAbsolute))
+            };
 
             // select rectangle
             _selectRectItem = new MenuItem();
@@ -603,7 +619,11 @@ namespace NpcCore.Wpf.Controls
             _selectRectItem.FontFamily = new FontFamily("Georgia");
             _selectRectItem.FontWeight = FontWeights.Regular;
             _selectRectItem.FontSize = 12;
-            _selectRectItem.IsCheckable = true;
+            //_selectRectItem.IsCheckable = true;
+            _selectRectItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_c_rectangle_n@3x.png", UriKind.RelativeOrAbsolute))
+            };
 
             // select polygon
             _selectPolyItem = new MenuItem();
@@ -613,7 +633,11 @@ namespace NpcCore.Wpf.Controls
             _selectPolyItem.FontFamily = new FontFamily("Georgia");
             _selectPolyItem.FontWeight = FontWeights.Regular;
             _selectPolyItem.FontSize = 12;
-            _selectPolyItem.IsCheckable = true;
+            //_selectPolyItem.IsCheckable = true;
+            _selectPolyItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_c_polygon_n@3x.png", UriKind.RelativeOrAbsolute))
+            };
 
             // add 2 item select rectangle and polygon into menu Roi mode
             _selectRoiMode.Items.Add(_selectRectItem);
@@ -627,6 +651,10 @@ namespace NpcCore.Wpf.Controls
             _locatorMode.FontFamily = new FontFamily("Georgia");
             _locatorMode.FontWeight = FontWeights.Regular;
             _locatorMode.FontSize = 12;
+            _locatorMode.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_baseteaching_s@3x.png", UriKind.RelativeOrAbsolute))
+            };
 
             // measure item
             _measureItem = new MenuItem();
@@ -636,6 +664,10 @@ namespace NpcCore.Wpf.Controls
             _measureItem.FontFamily = new FontFamily("Georgia");
             _measureItem.FontWeight = FontWeights.Regular;
             _measureItem.FontSize = 12;
+            _measureItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_toolbar_ruler_s_2.png", UriKind.RelativeOrAbsolute))
+            };
 
             // save Image
             _saveFullImageItem = new MenuItem();
@@ -653,6 +685,10 @@ namespace NpcCore.Wpf.Controls
             _saveROIImageItem.FontFamily = new FontFamily("Georgia");
             _saveROIImageItem.FontWeight = FontWeights.Regular;
             _saveROIImageItem.FontSize = 12;
+            _saveROIImageItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/btn_save_n@2x.png", UriKind.RelativeOrAbsolute))
+            };
 
             // add 2 mode: select Roi and locator into select mode tool item
             _selectModeTool.Items.Add(_selectRoiMode);
