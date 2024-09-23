@@ -24,7 +24,7 @@ namespace NVisionInspectGUI.Command.Cmd
                 return;
 
             // Fake Cam
-            if(nCamIdx == 8)
+            if(nCamIdx >= MainViewModel.Instance.SettingVM.CameraCount)
             {
                 // COUNT PIXEL
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_nCountPixel_ROI_X = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_X;

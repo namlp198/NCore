@@ -70,47 +70,8 @@
                                    FontWeight="Bold"
                                    Width="80"
                                    ItemsSource="{Binding ROIList}"
-                                   SelectedItem="{Binding ROISelected, Mode=TwoWay}"/>
+                                   SelectedItem="{Binding ROISelected, Mode=TwoWay}" />
                     </DockPanel>
-                    <Separator Margin="3"/>
-                    <Button Margin="5 0 5 0"
-                            x:Name="btnLocatorTool"
-                            Command="{Binding LocateCmd}"
-                            ToolTip="Locator Tool">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_IC_BaseTeaching}"
-                                       Stretch="Fill"
-                                       Margin="5" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Separator Margin="3" />
-                    <Button Margin="5 0 5 0"
-                            x:Name="btnSelectROITool"
-                            Command="{Binding SelectROICmd}"
-                            ToolTip="Select ROI Tool">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_Toolbar_Cursor}"
-                                       Stretch="Fill"
-                                       Margin="3" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Separator Margin="3" />
-                    <Button Margin="5 0 5 0"
-                            x:Name="btnReadCodeTool"
-                            Command="{Binding ReadCodeCmd}"
-                            ToolTip="Read Code">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_IC_Barcode_W_N}"
-                                       Stretch="Fill"
-                                       Margin="3" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
                     <Separator Margin="3" />
                     <Button x:Name="btnInspect"
                             Command="{Binding InspectCmd}"
