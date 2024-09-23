@@ -64,12 +64,22 @@ BOOL CNVisionInspectProcessor::Initialize()
 
 	if (CreateResultBuffer() == FALSE)
 	{
-		SystemMessage(_T("Create Memory Fail!"));
+		SystemMessage(_T("Create Memory Result Fail!"));
 		return FALSE;
 	}
 	if (CreateSimulatorBuffer() == FALSE)
 	{
 		SystemMessage(_T("Create Memory Simulator Failed!"));
+		return FALSE;
+	}
+	if (CreateResultBuffer_FakeCam() == FALSE)
+	{
+		SystemMessage(_T("Create Memory Result FakeCam Fail!"));
+		return FALSE;
+	}
+	if (CreateSimulatorBuffer_FakeCam() == FALSE)
+	{
+		SystemMessage(_T("Create Memory Simulator FakeCam Failed!"));
 		return FALSE;
 	}
 
@@ -105,6 +115,11 @@ BOOL CNVisionInspectProcessor::Initialize()
 			delete m_pNVisionInspectCore[i], m_pNVisionInspectCore[i] = NULL;
 		m_pNVisionInspectCore[i] = new CNVisionInspectCore(this);
 	}
+
+	// Core Fake Cam
+	if (m_pNVisionInspectCore_FakeCam != NULL)
+		delete m_pNVisionInspectCore_FakeCam, m_pNVisionInspectCore_FakeCam = NULL;
+	m_pNVisionInspectCore_FakeCam = new CNVisionInspectCore(this);
 
 	// 7. Camera
 	if (m_pNVisionInspectSystemSetting->m_bSimulation == FALSE)
@@ -158,6 +173,15 @@ BOOL CNVisionInspectProcessor::Destroy()
 		}
 	}
 
+	// Release Buffer Fake Cam
+	m_pResultBuffer_FakeCam->DeleteSharedMemory();
+	delete m_pResultBuffer_FakeCam;
+	m_pResultBuffer_FakeCam = NULL;
+
+	m_pSimulatorBuffer_FakeCam->DeleteSharedMemory();
+	delete m_pSimulatorBuffer_FakeCam;
+	m_pSimulatorBuffer_FakeCam = NULL;
+
 	if (m_pNVisionInspectSystemSetting != NULL)
 		delete m_pNVisionInspectSystemSetting, m_pNVisionInspectSystemSetting = NULL;
 
@@ -178,6 +202,10 @@ BOOL CNVisionInspectProcessor::Destroy()
 		if (m_pNVisionInspectCameraSetting[i] != NULL)
 			delete m_pNVisionInspectCameraSetting[i], m_pNVisionInspectCameraSetting[i] = NULL;
 	}
+
+	// Release Core Fake Cam
+	if (m_pNVisionInspectCore_FakeCam != NULL)
+		delete m_pNVisionInspectCore_FakeCam, m_pNVisionInspectCore_FakeCam = NULL;
 
 	// Release Fake Cam
 	if (m_pNVisionInspect_FakeCamSetting != NULL)
@@ -1566,12 +1594,28 @@ LPBYTE CNVisionInspectProcessor::GetResultBuffer(int nBuff, int nFrame)
 	return m_pResultBuffer[nBuff]->GetFrameImage(nFrame);
 }
 
+LPBYTE CNVisionInspectProcessor::GetResultBuffer_FakeCam(int nFrame)
+{
+	if (m_pResultBuffer_FakeCam == NULL)
+		return NULL;
+
+	return m_pResultBuffer_FakeCam->GetFrameImage(nFrame);
+}
+
 BOOL CNVisionInspectProcessor::SetResultBuffer(int nBuff, int nFrame, BYTE* buff)
 {
 	if (m_pResultBuffer[nBuff] == NULL)
 		return FALSE;
 
 	return m_pResultBuffer[nBuff]->SetFrameImage(nFrame, buff);
+}
+
+BOOL CNVisionInspectProcessor::SetResultBuffer_FakeCam(int nFrame, BYTE* buff)
+{
+	if (m_pResultBuffer_FakeCam == NULL)
+		return FALSE;
+
+	return m_pResultBuffer_FakeCam->SetFrameImage(nFrame, buff);
 }
 
 BOOL CNVisionInspectProcessor::GetInspectionResult(CNVisionInspectResult* pNVisionInspRes)
@@ -1694,6 +1738,55 @@ BOOL CNVisionInspectProcessor::LoadSimulatorBuffer(int nBuff, int nFrame, CStrin
 	return TRUE;
 }
 
+BOOL CNVisionInspectProcessor::LoadSimulatorBuffer_FakeCam(int nFrame, CString strFilePath)
+{
+	if (m_pSimulatorBuffer_FakeCam == NULL)
+		return FALSE;
+
+	if (strFilePath.IsEmpty() == TRUE)
+		return FALSE;
+
+	CString strExt = strFilePath.Right(3);
+
+	strExt.MakeUpper();
+
+	if (strExt.CompareNoCase(_T("JPG")) != 0 && strExt.CompareNoCase(_T("BMP")) != 0 && strExt.CompareNoCase(_T("PNG")) != 0 && strExt.CompareNoCase(_T("TIF")) != 0)
+		return FALSE;
+
+	CString strImagePath = strFilePath;
+
+	int nFrameWidth = m_pSimulatorBuffer_FakeCam->GetFrameWidth();
+	int nFrameHeight = m_pSimulatorBuffer_FakeCam->GetFrameHeight();
+	int nFrameCount = m_pSimulatorBuffer_FakeCam->GetFrameCount();
+	int nFrameSize = m_pSimulatorBuffer_FakeCam->GetFrameSize();
+
+	USES_CONVERSION;
+	char strTemp[1024] = {};
+	sprintf_s(strTemp, "%s", W2A(strImagePath));
+
+	cv::Mat pOpenImage = cv::imread(strTemp, cv::IMREAD_COLOR);
+
+	if (pOpenImage.empty())
+		return FALSE;
+
+	/*if (pOpenImage.type() != CV_8UC1)
+		return FALSE;
+
+	LPBYTE pBuffer = m_pImageBuffer[nBuff]->GetSharedBuffer();
+
+	int nCopyHeight = (nFrameHeight * nFrameCount < pOpenImage.rows) ? nFrameHeight * nFrameCount : pOpenImage.rows;
+	int nCopyWidth = (nFrameWidth < pOpenImage.cols) ? nFrameWidth : pOpenImage.cols;
+
+	ZeroMemory(pBuffer, nFrameSize * nFrameCount);
+
+	for (int i = 0; i < nCopyHeight; i++)
+		memcpy(pBuffer + (i * nFrameWidth), &pOpenImage.data[i * pOpenImage.step1()], nCopyWidth);*/
+
+	m_pSimulatorBuffer_FakeCam->SetFrameImage(nFrame, pOpenImage.data);
+
+	return TRUE;
+}
+
 BOOL CNVisionInspectProcessor::LocatorTool_Train(int nCamIdx)
 {
 	LPBYTE pBuffer = GetImageBufferHikCam(nCamIdx);
@@ -1729,6 +1822,18 @@ BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom)
 	int nFrame = 0;
 	LPBYTE pBuffer = NULL;
 
+	// Fake Cam
+	if (nCamIdx >= m_pNVisionInspectSystemSetting->m_nNumberOfInspectionCamera)
+	{
+		pBuffer = GetSimulatorBuffer_FakeCam(nFrame);
+		if (pBuffer == NULL)
+			return FALSE;
+
+		m_pNVisionInspectCore_FakeCam->MakeROI_FakeCam(pBuffer);
+
+		return TRUE;
+	}
+
 	switch (nFrom)
 	{
 	case 0:
@@ -1753,6 +1858,14 @@ LPBYTE CNVisionInspectProcessor::GetSimulatorBuffer(int nBuff, int nFrame)
 		return NULL;
 
 	return m_pSimulatorBuffer[nBuff]->GetFrameImage(nFrame);
+}
+
+LPBYTE CNVisionInspectProcessor::GetSimulatorBuffer_FakeCam(int nFrame)
+{
+	if (m_pSimulatorBuffer_FakeCam == NULL)
+		return NULL;
+
+	return m_pSimulatorBuffer_FakeCam->GetFrameImage(nFrame);
 }
 
 void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool)
@@ -1876,14 +1989,14 @@ BOOL CNVisionInspectProcessor::CreateResultBuffer()
 		if (bRetValue == FALSE)
 		{
 			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+			strLogMessage.Format(_T("Reuslt Buff [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
 			SystemMessage(strLogMessage);
 			return FALSE;
 		}
 		else
 		{
 			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+			strLogMessage.Format(_T("Reuslt Buff [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
 			SystemMessage(strLogMessage);
 		}
 	}
@@ -1892,6 +2005,64 @@ BOOL CNVisionInspectProcessor::CreateResultBuffer()
 	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize * dwTotalFrameCount)) / 1000000.0));
 	SystemMessage(strLogMessage);
 	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::CreateResultBuffer_FakeCam()
+{
+	BOOL bRetValue = FALSE;
+
+	DWORD dwFrameSize = 0;
+	DWORD64 dwTotalFrameCount = 0;
+
+	DWORD dwFrameWidth = (DWORD)m_pNVisionInspect_FakeCamSetting->m_nFrameWidth;
+	DWORD dwFrameHeight = (DWORD)m_pNVisionInspect_FakeCamSetting->m_nFrameHeight;
+	DWORD dwFrameCount = 0;
+
+	dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
+
+	if (m_pResultBuffer_FakeCam != NULL)
+	{
+		m_pResultBuffer_FakeCam->DeleteSharedMemory();
+		delete m_pResultBuffer_FakeCam;
+		m_pResultBuffer_FakeCam = NULL;
+	}
+
+	m_pResultBuffer_FakeCam = new CSharedMemoryBuffer;
+
+	dwFrameCount = (DWORD)MAX_IMAGE_BUFFER;
+
+	dwTotalFrameCount += dwFrameCount;
+
+	m_pResultBuffer_FakeCam->SetFrameWidth(dwFrameWidth);
+	m_pResultBuffer_FakeCam->SetFrameHeight(dwFrameHeight);
+	m_pResultBuffer_FakeCam->SetFrameCount(dwFrameCount);
+	m_pResultBuffer_FakeCam->SetFrameSize(dwFrameSize);
+
+	DWORD64 dw64Size_Side = (DWORD64)dwFrameCount * dwFrameSize;
+
+	CString strMemory_Side;
+	strMemory_Side.Format(_T("%s"), "ResultBuffer_FakeCam");
+
+	bRetValue = m_pResultBuffer_FakeCam->CreateSharedMemory(strMemory_Side, dw64Size_Side);
+
+	if (bRetValue == FALSE)
+	{
+		CString strLogMessage;
+		strLogMessage.Format(_T("Result Buffer Fake Cam Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+		SystemMessage(strLogMessage);
+		return FALSE;
+	}
+	else
+	{
+		CString strLogMessage;
+		strLogMessage.Format(_T("Result Buffer Fake Cam Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+		SystemMessage(strLogMessage);
+	}
+
+    CString strLogMessage;
+    strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize* dwTotalFrameCount)) / 1000000.0));
+    SystemMessage(strLogMessage);
+    return TRUE;
 }
 
 BOOL CNVisionInspectProcessor::CreateSimulatorBuffer()
@@ -1937,16 +2108,74 @@ BOOL CNVisionInspectProcessor::CreateSimulatorBuffer()
 		if (bRetValue == FALSE)
 		{
 			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+			strLogMessage.Format(_T("Simulator Buffer [%d] Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
 			SystemMessage(strLogMessage);
 			return FALSE;
 		}
 		else
 		{
 			CString strLogMessage;
-			strLogMessage.Format(_T("Side [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+			strLogMessage.Format(_T("Simulator Buffer [%d] Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), i, (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
 			SystemMessage(strLogMessage);
 		}
+	}
+
+	CString strLogMessage;
+	strLogMessage.Format(_T("Total Create Memory : %.2f MB"), (((double)(dwFrameSize * dwTotalFrameCount)) / 1000000.0));
+	SystemMessage(strLogMessage);
+	return TRUE;
+}
+
+BOOL CNVisionInspectProcessor::CreateSimulatorBuffer_FakeCam()
+{
+	BOOL bRetValue = FALSE;
+
+	DWORD dwFrameCount = 0;
+	DWORD dwFrameSize = 0;
+
+	DWORD64 dwTotalFrameCount = 0;
+
+	DWORD dwFrameWidth = (DWORD)m_pNVisionInspect_FakeCamSetting->m_nFrameWidth;
+	DWORD dwFrameHeight = (DWORD)m_pNVisionInspect_FakeCamSetting->m_nFrameHeight;
+	dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
+
+	if (m_pSimulatorBuffer_FakeCam != NULL)
+	{
+		m_pSimulatorBuffer_FakeCam->DeleteSharedMemory();
+		delete m_pSimulatorBuffer_FakeCam;
+		m_pSimulatorBuffer_FakeCam = NULL;
+	}
+
+	m_pSimulatorBuffer_FakeCam = new CSharedMemoryBuffer;
+
+	dwFrameCount = (DWORD)MAX_IMAGE_BUFFER;
+
+	dwTotalFrameCount += dwFrameCount;
+
+	m_pSimulatorBuffer_FakeCam->SetFrameWidth(dwFrameWidth);
+	m_pSimulatorBuffer_FakeCam->SetFrameHeight(dwFrameHeight);
+	m_pSimulatorBuffer_FakeCam->SetFrameCount(dwFrameCount);
+	m_pSimulatorBuffer_FakeCam->SetFrameSize(dwFrameSize);
+
+	DWORD64 dw64Size_Side = (DWORD64)dwFrameCount * dwFrameSize;
+
+	CString strMemory_Side;
+	strMemory_Side.Format(_T("%s"), "SimulatorBuffer_FakeCam");
+
+	bRetValue = m_pSimulatorBuffer_FakeCam->CreateSharedMemory(strMemory_Side, dw64Size_Side);
+
+	if (bRetValue == FALSE)
+	{
+		CString strLogMessage;
+		strLogMessage.Format(_T("Simulator Buffer FakeCam Create Memory Fail.. : W[%d]xH[%d]xC[%d]=%.2f GB"), (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+		SystemMessage(strLogMessage);
+		return FALSE;
+	}
+	else
+	{
+		CString strLogMessage;
+		strLogMessage.Format(_T("Simulator Buffer FakeCam Create Memory Info : W[%d]xH[%d]xC[%d]=%.2f GB"), (int)dwFrameWidth, (int)dwFrameHeight, (int)dwFrameCount, (((double)(dwFrameSize * dwFrameCount)) / 1000000000.0));
+		SystemMessage(strLogMessage);
 	}
 
 	CString strLogMessage;

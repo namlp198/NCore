@@ -45,14 +45,20 @@ extern "C"
 	__declspec(dllexport) bool                          Inspect_Simulator(CNVisionInspectProcessor* pProcessor, emCameraBrand camBrand, int nCamIdx);
 												        
 	__declspec(dllexport) BYTE*                         GetResultBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame);
+
+	__declspec(dllexport) BYTE*                         GetResultBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame);
 												        
 	__declspec(dllexport) bool                          GetInspectionResult(CNVisionInspectProcessor* pProcessor,  CNVisionInspectResult* pNVisionInsppResult);
 
 	__declspec(dllexport) bool                          GetInspectToolResult_FakeCam(CNVisionInspectProcessor* pProcessor, CNVisionInspectResult_FakeCam* pNVisionInsppRes_FakeCam);
 
 	__declspec(dllexport) bool                          LoadSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame, char* pFilePath);
+
+	__declspec(dllexport) bool                          LoadSimulatorBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame, char* pFilePath);
 												        
 	__declspec(dllexport) BYTE*                         GetSimulatorBuffer(CNVisionInspectProcessor* pProcessor, int nBuff, int nFrame);
+
+	__declspec(dllexport) BYTE*                         GetSimulatorBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame);
 
 	__declspec(dllexport) void                          CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool);
 

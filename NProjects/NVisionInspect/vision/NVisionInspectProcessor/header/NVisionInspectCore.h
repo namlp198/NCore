@@ -30,11 +30,12 @@ interface INVisionInspectCoreToParent
 	virtual CNVisionInspectResult*                 GetResultControl() = 0;
 	virtual CNVisionInspectResult_FakeCam*         GetResult_FakeCamControl() = 0;
 	virtual CNVisionInspectStatus*                 GetStatusControl(int nCamIdx) = 0;
-	virtual BOOL                                   SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual LPBYTE                                 GetSimulatorBuffer(int nBuff, int nFrame) = 0;
+	virtual BOOL                                   SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
+	virtual BOOL                                   SetResultBuffer_FakeCam(int nFrame, BYTE* buff) = 0;
 	virtual void                                   InspectComplete(int nCamIdx, BOOL bSetting) = 0;
-	virtual void                                   LocatorTrainComplete(int CamIdx) = 0;
 	virtual void                                   InspectComplete_FakeCam(emInspectTool eInspTool) = 0;
+	virtual void                                   LocatorTrainComplete(int CamIdx) = 0;
 };
 
 class AFX_EXT_CLASS CNVisionInspectCoreThreadData : public CWorkThreadData
@@ -79,6 +80,7 @@ public:
 
 public:
 	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+	void                       MakeROI_FakeCam(LPBYTE pBuffer);
 
 	// Process Hik Cam
 private:
@@ -95,6 +97,7 @@ private:
 private:
 	void                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
 	void                       SaveROIImage(cv::Mat& matROI, int nCamIdx, int nROIIdx);
+	void                       SaveROIImage(cv::Mat& matROI, CString strFilePath);
 
 private:
 

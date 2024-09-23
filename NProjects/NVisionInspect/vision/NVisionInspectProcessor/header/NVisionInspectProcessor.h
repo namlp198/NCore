@@ -92,17 +92,22 @@ public:
 
 public:
 	LPBYTE                            GetResultBuffer(int nBuff, int nFrame);
-	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff);
+	LPBYTE                            GetResultBuffer_FakeCam(int nFrame);
 	BOOL                              GetInspectionResult(CNVisionInspectResult* pNVisionInspRes);
 	BOOL                              GetInspectToolResult_FakeCam(CNVisionInspectResult_FakeCam* pInspRes_FakeCam);
 	LPBYTE                            GetImageBufferHikCam(int nCamIdx);
 	LPBYTE                            GetImageBufferBaslerCam(int nCamIdx);
 
+	virtual BOOL                      SetResultBuffer(int nBuff, int nFrame, BYTE* buff);
+	virtual BOOL                      SetResultBuffer_FakeCam(int nFrame, BYTE* buff);
+
 	BOOL                              LoadSimulatorBuffer(int nBuff, int nFrame, CString strFilePath);
+	BOOL                              LoadSimulatorBuffer_FakeCam(int nFrame, CString strFilePath);
 	BOOL                              LocatorTool_Train(int nCamIdx);
 	BOOL                              LocatorToolSimulator_Train(int nSimuBuff, int nFrame);
-	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom); /*0: From Image, 1: From Camera*/
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
+	virtual LPBYTE                    GetSimulatorBuffer_FakeCam(int nFrame);
+	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom); /*0: From Image, 1: From Camera*/
 
 	void                              CallInspectTool(emInspectTool inspTool);
 
@@ -111,7 +116,9 @@ private:
 	virtual void				      SystemMessage(const TCHAR* lpstrFormat, ...);
 	void						      SystemMessage(CString strMessage);
 	BOOL                              CreateResultBuffer();
+	BOOL                              CreateResultBuffer_FakeCam();
 	BOOL                              CreateSimulatorBuffer();
+	BOOL                              CreateSimulatorBuffer_FakeCam();
 	virtual void		              InspectComplete(int nCamIdx, BOOL bSetting);
 	virtual void                      LocatorTrainComplete(int nCamIdx);
 	virtual void                      InspectComplete_FakeCam(emInspectTool eInspTool);
@@ -157,12 +164,15 @@ private:
 
 	// Core
 	CNVisionInspectCore*                        m_pNVisionInspectCore[MAX_CAMERA_INSPECT_COUNT];
+	CNVisionInspectCore*                        m_pNVisionInspectCore_FakeCam;
 
 	// Buffer Image
 	CSharedMemoryBuffer*                        m_pSimulatorBuffer[MAX_CAMERA_INSPECT_COUNT];
+	CSharedMemoryBuffer*                        m_pSimulatorBuffer_FakeCam;
 
 	// Result Buffer			               
 	CSharedMemoryBuffer*                        m_pResultBuffer[MAX_CAMERA_INSPECT_COUNT];
+	CSharedMemoryBuffer*                        m_pResultBuffer_FakeCam;
 
 	// Result						                        
 	CCriticalSection                            m_csInspResult;
