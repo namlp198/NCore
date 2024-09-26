@@ -82,6 +82,10 @@ public:
 	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
 	void                       MakeROI_FakeCam(LPBYTE pBuffer);
 
+public:
+	// INSPECT TOOL
+	BOOL                       Algorithm_CountPixel();
+
 	// Process Hik Cam
 private:
 	void                       ProcessFrame(int nCamIdx, LPBYTE pBuffer);
@@ -114,4 +118,8 @@ private:
 	CWorkThreadArray*                   m_pWorkThreadArray[MAX_THREAD_COUNT];
 
 	CCriticalSection					m_csPostProcessing;
+
+	cv::Mat                             m_pMat;
+	cv::Mat                             m_pMatROI;
+	cv::Rect                            m_pRectROI;
 };

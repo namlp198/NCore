@@ -514,6 +514,10 @@ BOOL CNVisionInspectProcessor::LoadSystemSettings(CNVisionInspectSystemSetting* 
 	m_vecCameras.at(0) = (_ttoi(strPosHik)); // Pos 0: number of Hik Cam
 	m_vecCameras.at(1) = (_ttoi(strPosBasler)); // Pos 1: number of Basler Cam
 
+	CString csRole = (CString)pRoot->first_node("Role")->value();
+	ZeroMemory(sysSettings.m_sRole, sizeof(sysSettings.m_sRole));
+	wsprintf(sysSettings.m_sRole, _T("%s"), (TCHAR*)(LPCTSTR)csRole);
+
 	// set recipe path
 	m_csRecipePath.Format(_T("%sVisionSettings\\Recipe\\%s.%s"), GetCurrentPathApp(), sysSettings.m_sModelName, _T("cfg"));
 
@@ -1769,6 +1773,23 @@ BOOL CNVisionInspectProcessor::LoadSimulatorBuffer_FakeCam(int nFrame, CString s
 	if (pOpenImage.empty())
 		return FALSE;
 
+	if (pOpenImage.rows != nFrameHeight || pOpenImage.cols != nFrameWidth)
+	{
+		m_pNVisionInspect_FakeCamSetting->m_nFrameWidth = pOpenImage.cols;
+		m_pNVisionInspect_FakeCamSetting->m_nFrameHeight = pOpenImage.rows;
+
+		if (CreateResultBuffer_FakeCam() == FALSE)
+		{
+			SystemMessage(_T("Create Memory Result FakeCam Failed!"));
+			return FALSE;
+		}
+		if (CreateSimulatorBuffer_FakeCam() == FALSE)
+		{
+			SystemMessage(_T("Create Memory Simulator FakeCam Failed!"));
+			return FALSE;
+		}
+	}
+
 	/*if (pOpenImage.type() != CV_8UC1)
 		return FALSE;
 
@@ -1873,6 +1894,7 @@ void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool)
 	switch (inspTool)
 	{
 	case InspectTool_CountPixel:
+		m_pNVisionInspectCore_FakeCam->Algorithm_CountPixel();
 		break;
 	case InspectTool_CountBlob:
 		break;
