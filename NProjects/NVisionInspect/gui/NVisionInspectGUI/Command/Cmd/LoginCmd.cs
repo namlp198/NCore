@@ -11,36 +11,27 @@ namespace NVisionInspectGUI.Command.Cmd
 {
     public class LoginCmd : CommandBase
     {
-        LoginViewModel _loginViewModel;
+        LoginViewModel m_loginViewModel;
         public LoginCmd(LoginViewModel loginViewModel) 
         { 
-            _loginViewModel = loginViewModel;
+            m_loginViewModel = loginViewModel;
         }
         public override void Execute(object parameter)
         {
-            if (_loginViewModel.Admin.CompareTo(_loginViewModel.LoginView.txtUser.Text.Trim()) == 0
-             && _loginViewModel.Password.CompareTo(_loginViewModel.Password.Trim()) == 0)
-            {
-                MainViewModel.Instance.UserLevel = Commons.emUserLevel.UserLevel_Admin;
-                MainViewModel.Instance.MainView.tbLogin.Text = "LOGOUT";
-                MainViewModel.Instance.DisplayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/logout.png";
-                //MessageBox.Show("Login success!");
-            }
-            else if (_loginViewModel.SuperAdmin.CompareTo(_loginViewModel.LoginView.txtUser.Text.Trim()) == 0
-                && _loginViewModel.SuperPassword.CompareTo(_loginViewModel.Password.Trim()) == 0)
-            {
-                MainViewModel.Instance.UserLevel = Commons.emUserLevel.UserLevel_SuperAdmin;
-                MainViewModel.Instance.MainView.tbLogin.Text = "LOGOUT";
-                MainViewModel.Instance.DisplayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/logout.png";
-                //MessageBox.Show("Login success!");
-            }
+            if (parameter == null)
+                return;
 
-            else
-            {
-                MessageBox.Show("User or Password incorrect!");
-            }
+            string btnName = parameter as string;
 
-            _loginViewModel.LoginView.Close();
+            if (btnName.Equals("btnLogin"))
+            {
+                if(m_loginViewModel.CheckInfoLogin())
+                    m_loginViewModel.LoginView.Close();
+            }
+            else if(string.Compare(btnName, "btnClose") == 0)
+            {
+                m_loginViewModel.LoginView.Close();
+            }
         }
     }
 }

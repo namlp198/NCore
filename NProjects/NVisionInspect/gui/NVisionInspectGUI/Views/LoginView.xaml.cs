@@ -22,21 +22,21 @@ namespace NVisionInspectGUI.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        LoginViewModel loginViewModel = null;
+        LoginViewModel m_loginViewModel = null;
         public LoginView()
         {
             InitializeComponent();
 
-            loginViewModel = new LoginViewModel(this.Dispatcher, this);
-            this.DataContext = loginViewModel;
+            m_loginViewModel = new LoginViewModel(this.Dispatcher, this);
+            this.DataContext = m_loginViewModel;
         }
 
         private void pwBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                LoginCmd loginCmd = new LoginCmd(loginViewModel);
-                loginCmd.Execute(this);
+                LoginCmd loginCmd = new LoginCmd(m_loginViewModel);
+                loginCmd.Execute("btnLogin");
             }
         }
 

@@ -534,6 +534,10 @@ void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
 
 	cv::rectangle(matBGR, rectROI, PINK_COLOR, 1, cv::LINE_AA);
 
+	m_pMat = matSrc;
+	m_pMatROI = matROI;
+	m_pRectROI = rectROI;
+
 	m_pInterface->SetResultBuffer(nCamIdx, 0, matBGR.data);
 }
 
@@ -576,7 +580,80 @@ void CNVisionInspectCore::MakeROI_FakeCam(LPBYTE pBuffer)
 
 	cv::rectangle(matBGR, rectROI, PINK_COLOR, 1, cv::LINE_AA);
 
+	matSrc.copyTo(m_pMat);
+	matROI.copyTo(m_pMatROI);
+	m_pRectROI = rectROI;
+
 	m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
+}
+
+BOOL CNVisionInspectCore::Algorithm_CountPixel()
+{
+	if (m_pMat.empty())
+		return FALSE;
+
+	if (m_pMatROI.empty())
+		return FALSE;
+
+	cv::Mat matBGR;
+	m_pMat.copyTo(matBGR);
+
+	int nMinThreshold = m_pInterface->GetRecipe_FakeCamControl()->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_GrayThreshold_Min;
+	int nMaxThreshold = m_pInterface->GetRecipe_FakeCamControl()->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_GrayThreshold_Max;
+	int nMinNumberOfPixel = m_pInterface->GetRecipe_FakeCamControl()->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_PixelCount_Min;
+	int nMaxNumberOfPixel = m_pInterface->GetRecipe_FakeCamControl()->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_PixelCount_Max;
+
+	int count = 0;
+	for (int row = 0; row < m_pMatROI.rows; row++)
+	{
+		for (int col = 0; col < m_pMatROI.cols; col++)
+		{
+			int gray = m_pMatROI.at<uchar>(row, col);
+			if (gray >= nMinThreshold && gray <= nMaxThreshold)
+			{
+				matBGR.at<cv::Vec3b>(row + m_pRectROI.y, col + m_pRectROI.x)[0] = 0;
+				matBGR.at<cv::Vec3b>(row + m_pRectROI.y, col + m_pRectROI.x)[1] = 128;
+				matBGR.at<cv::Vec3b>(row + m_pRectROI.y, col + m_pRectROI.x)[2] = 255;
+				count++;
+			}
+		}
+	}
+	// NG
+	if (count < nMinNumberOfPixel || count > nMaxNumberOfPixel)
+	{
+		cv::rectangle(matBGR, m_pRectROI, RED_COLOR, 2, cv::LINE_AA);
+
+		char chTemp[256] = {};
+		sprintf_s(chTemp, "%i", count);
+		cv::putText(matBGR, chTemp, cv::Point(m_pRectROI.x + m_pRectROI.width / 2 - 10, m_pRectROI.y + m_pRectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, RED_COLOR, 2, cv::LINE_AA);
+
+		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bInspectCompleted = TRUE;
+		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bResultStatus = FALSE;
+		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_fNumberOfPixel = count;
+
+		m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
+		m_pInterface->InspectComplete_FakeCam(InspectTool_CountPixel);
+
+		return TRUE;
+	}
+	// OK
+	else if (count > nMinNumberOfPixel && count < nMaxNumberOfPixel)
+	{
+		cv::rectangle(matBGR, m_pRectROI, GREEN_COLOR, 2, cv::LINE_AA);
+
+		char chTemp[256] = {};
+		sprintf_s(chTemp, "%i", count);
+		cv::putText(matBGR, chTemp, cv::Point(m_pRectROI.x + m_pRectROI.width / 2 - 10, m_pRectROI.y + m_pRectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, GREEN_COLOR, 2, cv::LINE_AA);
+
+		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bInspectCompleted = TRUE;
+		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bResultStatus = TRUE;
+		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_fNumberOfPixel = count;
+
+		m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
+		m_pInterface->InspectComplete_FakeCam(InspectTool_CountPixel);
+
+		return TRUE;
+	}
 }
 
 #pragma region Functions handle Frame Cam

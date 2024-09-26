@@ -200,6 +200,7 @@
     <ClInclude Include="header\Tools\ThreadPool\WaitThreadPool.h" />
     <ClInclude Include="header\Tools\ThreadPool\WorkThreadArray.h" />
     <ClInclude Include="header\Tools\ThreadPool\WorkThreadPool.h" />
+    <ClInclude Include="header\Tools\Time\CalcTime.h" />
     <ClInclude Include="header\Tools\Time\TimeCalculator.h" />
     <ClInclude Include="header\Tools\View\HWChecker.h" />
     <ClInclude Include="header\Tools\View\LogView.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="cpp\Tools\ThreadPool\WaitThreadPool.cpp" />
     <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadArray.cpp" />
     <ClCompile Include="cpp\Tools\ThreadPool\WorkThreadPool.cpp" />
+    <ClCompile Include="cpp\Tools\Time\CalcTime.cpp" />
     <ClCompile Include="cpp\Tools\Time\TimeCalculator.cpp" />
     <ClCompile Include="cpp\Tools\View\HWChecker.cpp" />
     <ClCompile Include="cpp\Tools\View\LogView.cpp" />

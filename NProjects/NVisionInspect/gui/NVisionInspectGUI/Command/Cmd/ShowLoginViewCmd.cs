@@ -25,9 +25,7 @@ namespace NVisionInspectGUI.Command.Cmd
                 }
                 else if(s.CompareTo("LOGOUT") == 0)
                 {
-                    MainViewModel.Instance.UserLevel = Commons.emUserLevel.UserLevel_Operator;
-                    MainViewModel.Instance.DisplayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/account_2.png";
-                    MainViewModel.Instance.MainView.tbLogin.Text = "LOGIN";
+                    MainViewModel.Instance.ROLE = Commons.emRole.Role_Operator;
                 }
             }
         }

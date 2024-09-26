@@ -60,8 +60,13 @@ namespace NVisionInspectGUI.ViewModels
 
             InterfaceManager.Instance.m_processorManager.Initialize();
 
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadSystemSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings);
+            // Load system setting
             SettingVM.LoadSystemSettings();
+            if(InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_sRole.CompareTo("superadmin") == 0)
+            {
+                LoginSystemEventHandle(emLoginStatus.LoginStatus_Success, emRole.Role_SuperAdmin);
+            }
+
 
             // read number of camera inspect
             int nNumberOfCamInsp = InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_nNumberOfInspectionCamera;
@@ -83,15 +88,12 @@ namespace NVisionInspectGUI.ViewModels
             AddSumCamViewToRunView(nNumberOfCamInsp);
 
             // Load Recipe
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(nNumberOfCamInsp, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
             SettingVM.LoadRecipe(nNumberOfCamInsp);
 
             // Load Recipe Fake Cam
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
             SettingVM.LoadRecipe_FakeCam();
 
             // Load Fake Camera Setting
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadFakeCameraSettings(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectFakeCamSetting);
             SettingVM.LoadFakeCameraSetting();
 
             // Add Fake Cam in the end of list camera
@@ -122,6 +124,8 @@ namespace NVisionInspectGUI.ViewModels
                 Thread.Sleep(2);
                 InspectRunning = false;
             }
+
+            LoginViewModel.LoginSystemSuccessEvent += new LoginViewModel.LoginSystemSuccess_Handler(LoginSystemEventHandle);
         }
         #endregion
 
@@ -138,7 +142,7 @@ namespace NVisionInspectGUI.ViewModels
         public MainView MainView { get => m_ucMainView; private set { } }
 
         private emMachineMode m_machineMode = emMachineMode.MachineMode_Auto;
-        private emUserLevel m_userLevel = emUserLevel.UserLevel_Operator;
+        private emRole m_role = emRole.Role_Operator;
         private bool m_bInspRunning = false;
         private bool m_bEnableSetting = false;
         private string m_displayImage_MachineModePath = "/NpcCore.Wpf;component/Resources/Images/arrow_backward.png";
@@ -173,26 +177,16 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
-        public emUserLevel UserLevel
+        public emRole ROLE
         {
-            get => m_userLevel;
+            get => m_role;
             set
             {
-                if (SetProperty(ref m_userLevel, value))
+                if(SetProperty(ref m_role, value))
                 {
-                    if ((m_userLevel == emUserLevel.UserLevel_Admin || m_userLevel == emUserLevel.UserLevel_SuperAdmin) && m_bInspRunning == false)
+                    if(m_role == emRole.Role_Operator)
                     {
-                        EnableSetting = true;
-                        m_ucMainView.btnSelectRecipe.Opacity = 1.0;
-                        m_ucMainView.btnReport.Opacity = 1.0;
-                        m_ucMainView.btnSettings.Opacity = 1.0;
-                    }
-                    else if (m_userLevel == emUserLevel.UserLevel_Operator)
-                    {
-                        EnableSetting = false;
-                        m_ucMainView.btnSelectRecipe.Opacity = 0.3;
-                        m_ucMainView.btnReport.Opacity = 0.3;
-                        m_ucMainView.btnSettings.Opacity = 0.3;
+                        LoginSystemEventHandle(emLoginStatus.LoginStatus_Success, emRole.Role_Operator);
                     }
                 }
             }
@@ -244,14 +238,14 @@ namespace NVisionInspectGUI.ViewModels
                         m_ucMainView.btnReport.Opacity = 0.3;
                         m_ucMainView.btnSettings.Opacity = 0.3;
                     }
-                    else if (m_bInspRunning == false && (m_userLevel == emUserLevel.UserLevel_Admin || m_userLevel == emUserLevel.UserLevel_SuperAdmin))
+                    else if (m_bInspRunning == false && (m_role == emRole.Role_Admin || m_role == emRole.Role_SuperAdmin))
                     {
                         EnableSetting = true;
                         m_ucMainView.btnSelectRecipe.Opacity = 1.0;
                         m_ucMainView.btnReport.Opacity = 1.0;
                         m_ucMainView.btnSettings.Opacity = 1.0;
                     }
-                    else if (m_bInspRunning == false && m_userLevel == emUserLevel.UserLevel_Operator)
+                    else if (m_bInspRunning == false && m_role == emRole.Role_Operator)
                     {
                         EnableSetting = false;
                         m_ucMainView.btnSelectRecipe.Opacity = 0.3;
@@ -282,6 +276,42 @@ namespace NVisionInspectGUI.ViewModels
         #endregion
 
         #region Methods
+        private void LoginSystemEventHandle (emLoginStatus eStatus, emRole eRole)
+        {
+            switch (eStatus)
+            {
+                case emLoginStatus.LoginStatus_Success:
+                    m_role = eRole;
+
+                    switch (eRole)
+                    {
+                        case emRole.Role_Operator:
+                            MainView.tbLogin.Text = "LOGIN";
+                            DisplayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/account_2.png";
+
+                            EnableSetting = false;
+                            m_ucMainView.btnSelectRecipe.Opacity = 0.3;
+                            m_ucMainView.btnReport.Opacity = 0.3;
+                            m_ucMainView.btnSettings.Opacity = 0.3;
+                            break;
+
+                        case emRole.Role_Engineer:
+                        case emRole.Role_Admin:
+                        case emRole.Role_SuperAdmin:
+                            MainView.tbLogin.Text = "LOGOUT";
+                            DisplayImage_LoginStatusPath = "/NpcCore.Wpf;component/Resources/Images/logout.png";
+
+                            EnableSetting = true;
+                            m_ucMainView.btnSelectRecipe.Opacity = 1.0;
+                            m_ucMainView.btnReport.Opacity = 1.0;
+                            m_ucMainView.btnSettings.Opacity = 1.0;
+                            break;
+                    }
+                    break;
+                case emLoginStatus.LoginStatus_Failed:
+                    break;
+            }
+        }
         private void StartAppExcel()
         {
             KillAppExcel();

@@ -22,5 +22,7 @@ namespace NVisionInspectGUI.Models
         public string m_sModelList;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
         public string m_sCameras;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE)]
+        public string m_sRole;
     }
 }

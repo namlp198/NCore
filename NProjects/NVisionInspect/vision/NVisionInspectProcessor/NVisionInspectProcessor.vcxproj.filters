@@ -258,6 +258,9 @@
     <ClInclude Include="header\NVisionInspect_BaslerCam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\Tools\Time\CalcTime.h">
+      <Filter>Header Files\Tools\Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -415,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="cpp\NVisionInspect_BaslerCam.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Tools\Time\CalcTime.cpp">
+      <Filter>Source Files\Tools\Time</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

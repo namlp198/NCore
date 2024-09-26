@@ -73,6 +73,44 @@
                                    SelectedItem="{Binding ROISelected, Mode=TwoWay}" />
                     </DockPanel>
                     <Separator Margin="3" />
+                    <Button x:Name="btnOpenColorSpace"
+                            Command="{Binding ColorSpaceCmd}"
+                            Margin="5 0 5 0"
+                            Width="120">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_Color_Space_1}"
+                                       Margin="0 5 5 5" />
+                                <TextBlock Text="Color Space"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="White"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Margin="0 0 0 0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="3" />
+                    <Button x:Name="btnCalibration"
+                            Command="{Binding CalibrationCmd}"
+                            Margin="5 0 5 0"
+                            Width="110">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource IMG_Calibration_1}"
+                                       Margin="0 5 5 5" />
+                                <TextBlock Text="Calibration"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="White"
+                                           VerticalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Margin="0 0 0 0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator Margin="3" />
                     <Button x:Name="btnInspect"
                             Command="{Binding InspectCmd}"
                             Margin="5 0 5 0"
@@ -82,7 +120,7 @@
                                 <Image Source="{DynamicResource IMG_SideBarDownIcon}"
                                        Margin="0 5 5 5" />
                                 <TextBlock Text="INSPECT"
-                                           FontSize="12"
+                                           FontSize="14"
                                            FontWeight="SemiBold"
                                            Foreground="White"
                                            VerticalAlignment="Center"
@@ -286,7 +324,8 @@
                     <ColumnDefinition Width="1" />
                     <ColumnDefinition Width="2.8*" />
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
+                <Grid Grid.Column="0"
+                      Name="gridBufferSetting">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition Height="1" />
@@ -337,12 +376,31 @@
 
                 <!--separator-->
                 <Grid Grid.Column="1"
+                      Name="gridSeparator1"
                       Margin="0 2 0 2"
                       Background="White">
 
                 </Grid>
+                <Grid Grid.Column="2"
+                      Name="gridSetting">
+                    <Popup Name="popupColorSpace"
+                           Width="650"
+                           Height="{Binding ElementName=gridSetting, Path=ActualHeight}"
+                           PlacementTarget="{Binding ElementName=gridSeparator1}"
+                           Placement="Right"
+                           PopupAnimation="Fade"
+                           IsOpen="{Binding OpenPopupColorSpace}">
+                        
+                    </Popup>
+                    <Popup Name="popupCalibration"
+                           Width="{Binding ElementName=gridSetting, Path=ActualWidth}"
+                           Height="{Binding ElementName=gridSetting, Path=ActualHeight}"
+                           PlacementTarget="{Binding ElementName=gridSeparator1}"
+                           Placement="Right"
+                           PopupAnimation="Fade"
+                           IsOpen="{Binding OpenPopupCalibration}">
 
-                <Grid Grid.Column="2">
+                    </Popup>
                     <TabControl Background="{DynamicResource SidebarMouseOverBackground}">
                         <TabItem Header="SYSTEM SETTINGS"
                                  Width="220"

@@ -16,4 +16,5 @@ public:
 	TCHAR               m_sModelName[MAX_STRING_SIZE];
 	TCHAR               m_sModelList[MAX_STRING_SIZE];
 	TCHAR               m_sCameras[MAX_STRING_SIZE];
+	TCHAR               m_sRole[MAX_STRING_SIZE];
 };
