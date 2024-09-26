@@ -30,11 +30,12 @@ namespace NVisionInspectGUI.Commons
         InspectTool_OCR = 9,
         InspectTool_TemplateMatchingRotate = 10,
     }
-    public enum emUserLevel
+    public enum emRole
     {
-        UserLevel_Operator,
-        UserLevel_Admin,
-        UserLevel_SuperAdmin
+        Role_Operator,
+        Role_Engineer,
+        Role_Admin,
+        Role_SuperAdmin
     }
     public enum emLoginStatus
     {
