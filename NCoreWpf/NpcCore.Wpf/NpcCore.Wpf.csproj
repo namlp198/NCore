@@ -932,5 +932,18 @@
     <Resource Include="Resources\Images\ocr_3.png" />
     <Resource Include="Resources\Images\prev_button_64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\color_space_1.png" />
+    <Resource Include="Resources\Images\color_space_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\calibration_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ntech.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\logo_ntech.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

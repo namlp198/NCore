@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
@@ -122,15 +123,15 @@ namespace NpcCore.Wpf.Controls
         }
         #endregion
 
-        AnchorPoint _dragAnchor = AnchorPoint.None;
-        HitType _mouseHitType = HitType.None;
+        AnchorPoint m_dragAnchor = AnchorPoint.None;
+        HitType m_mouseHitType = HitType.None;
 
         #region Solidbrush
         SolidColorBrush colorBgRect = (SolidColorBrush)new BrushConverter().ConvertFrom("#3d424d");
         SolidColorBrush colorBgCorner = (SolidColorBrush)new BrushConverter().ConvertFrom("#ce3b3f");
         SolidColorBrush colorPen = (SolidColorBrush)new BrushConverter().ConvertFrom("#F3E9DF");
         SolidColorBrush colorCrossLine = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD764");
-        double _thicknessPen = 0.5;
+        double m_dThicknessPen = 0.5;
         #endregion
 
         #region Event
@@ -221,41 +222,222 @@ namespace NpcCore.Wpf.Controls
                 base.RemoveHandler(FitEvent, value);
             }
         }
+
+        public static readonly RoutedEvent MeasureSegLine = EventManager.RegisterRoutedEvent(
+            "MeasureSegLine",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt_Basic));
+        public event RoutedEventHandler MeasureSegLineEvent
+        {
+            add
+            {
+                base.AddHandler(MeasureSegLine, value);
+            }
+            remove
+            {
+                base.RemoveHandler(MeasureSegLine, value);
+            }
+        }
+
+        public static readonly RoutedEvent MeasureCircle = EventManager.RegisterRoutedEvent(
+            "MeasureCircle",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(ImageExt_Basic));
+        public event RoutedEventHandler MeasureCircleEvent
+        {
+            add
+            {
+                base.AddHandler(MeasureCircle, value);
+            }
+            remove
+            {
+                base.RemoveHandler(MeasureCircle, value);
+            }
+        }
+
+        public static readonly RoutedEvent CountPixel = EventManager.RegisterRoutedEvent(
+           "CountPixel",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(ImageExt_Basic));
+        public event RoutedEventHandler CountPixelEvent
+        {
+            add
+            {
+                base.AddHandler(CountPixel, value);
+            }
+            remove
+            {
+                base.RemoveHandler(CountPixel, value);
+            }
+        }
+
+        public static readonly RoutedEvent CountBlob = EventManager.RegisterRoutedEvent(
+          "CountBlob",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler CountBlobEvent
+        {
+            add
+            {
+                base.AddHandler(CountBlob, value);
+            }
+            remove
+            {
+                base.RemoveHandler(CountBlob, value);
+            }
+        }
+
+        public static readonly RoutedEvent FindLine = EventManager.RegisterRoutedEvent(
+           "FindLine",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(ImageExt_Basic));
+        public event RoutedEventHandler FindLineEvent
+        {
+            add
+            {
+                base.AddHandler(FindLine, value);
+            }
+            remove
+            {
+                base.RemoveHandler(FindLine, value);
+            }
+        }
+
+        public static readonly RoutedEvent FindCircle = EventManager.RegisterRoutedEvent(
+          "FindCircle",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler FindCircleEvent
+        {
+            add
+            {
+                base.AddHandler(FindCircle, value);
+            }
+            remove
+            {
+                base.RemoveHandler(FindCircle, value);
+            }
+        }
+
+        public static readonly RoutedEvent PCA = EventManager.RegisterRoutedEvent(
+          "PCA",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler PCAEvent
+        {
+            add
+            {
+                base.AddHandler(PCA, value);
+            }
+            remove
+            {
+                base.RemoveHandler(PCA, value);
+            }
+        }
+
+        public static readonly RoutedEvent TrainOCR = EventManager.RegisterRoutedEvent(
+          "TrainOCR",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler TrainOCREvent
+        {
+            add
+            {
+                base.AddHandler(TrainOCR, value);
+            }
+            remove
+            {
+                base.RemoveHandler(TrainOCR, value);
+            }
+        }
+
+        public static readonly RoutedEvent OCR = EventManager.RegisterRoutedEvent(
+          "OCR",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler OCREvent
+        {
+            add
+            {
+                base.AddHandler(OCR, value);
+            }
+            remove
+            {
+                base.RemoveHandler(OCR, value);
+            }
+        }
+
+        public static readonly RoutedEvent TemplateRotate = EventManager.RegisterRoutedEvent(
+          "TemplateRotate",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler TemplateRotateEvent
+        {
+            add
+            {
+                base.AddHandler(TemplateRotate, value);
+            }
+            remove
+            {
+                base.RemoveHandler(TemplateRotate, value);
+            }
+        }
         #endregion
 
         #region Member Variables
-        private bool _drag;
-        private bool _completedSelectRoi;
-        private bool _enableSelectRoiTool;
-        private bool _enableInspectTool;
-        private bool _isSelectingRoi;
-        private bool _enableRotate;
-        private bool _enableLocatorTool;
-        private bool _enableSelectRect;
-        private bool _enableSelectRectInside;
-        private bool _enableSelectPoly;
-        private Size _dragSize;
-        private Point _dragStart;
-        private Point _dragStartOffset;
-        private Rect _dragRect;
-        private Rect _dragRectInside;
-        private Rect _rect;
-        private Rect _rectReal;
-        private Rect _rectInside;
-        private Rect _rectTransform;
-        private Point _centerPoint;
-        private Point _centerPointReal;
-        private Point _offsetRect;
-        private Point _offsetRectInside;
-        private Point _offsetXYInside;
-        private Single _rectRotation;
+        private bool m_bDrag;
+        private bool m_bCompletedSelectRoi;
+        private bool m_bEnableSelectRoiTool;
+        private bool m_bEnableInspectTool;
+        private bool m_bEnableMeasureSegLineTool;
+        private bool m_bEnableMeasureCircleTool;
+        private bool m_bEnableRotate;
+        private bool m_bEnableLocatorTool;
+        private bool m_bEnableSelectRect;
+        private bool m_bEnableSelectRectInside;
+        private bool m_bEnableSelectPoly;
+        private bool m_bSelectingRoi;
+        private bool m_bMeasuringSegLine;
+        private bool m_bMeasuringCircle;
+        private bool m_bMeasureSegLineSelectedPt1;
+        private bool m_bMeasureSegLineSelectedPt2;
+        private bool m_bMeasureCircleSelectedPt1;
+        private bool m_bMeasureCircleSelectedPt2;
 
-        private EnToolType _toolType = EnToolType.ToolType_Default;
-        private EnGrabMode _grabMode = EnGrabMode.GrabMode_SingleGrab;
-        private EnViewMode _viewMode = EnViewMode.ViewMode_CreateRecipe;
+        private Rect m_rectDrag;
+        private Rect m_rectInsideDrag;
+        private Rect m_rect;
+        private Rect m_rectReal;
+        private Rect m_rectInside;
+        private Rect m_rectTransform;
+        private Point m_centerPoint;
+        private Point m_centerPointReal;
+        private Point m_offsetRectPoint;
+        private Point m_offsetRectInsidePoint;
+        private Point m_offsetXYInsidePoint;
+        private Point m_dragStartPoint;
+        private Point m_dragStartOffsetPoint;
+        private Point m_startPoint_MeasureSegLineTool;
+        private Point m_endPoint_MeasureSegLineTool;
+        private Point m_centerPoint_MeasureCircleTool;
+        private Point m_radiusPoint_MeasureCircleTool;
+        private Size m_szDragSize;
+        private Single m_rectRotation;
 
-        private double _comWidth = 20;
-        private double _comOffset = 10;
+        private emToolType m_toolType = emToolType.ToolType_Default;
+
+        private double m_dComWidth = 20;
+        private double m_dComOffset = 10;
 
         private System.Drawing.Bitmap m_bmp;
         #endregion
@@ -266,23 +448,23 @@ namespace NpcCore.Wpf.Controls
             // Compute a Screen to Rectangle transform 
 
             var mat = new Matrix();
-            mat.RotateAt(_rectRotation, _centerPoint.X, _centerPoint.Y);
-            mat.Translate(_offsetRect.X, _offsetRect.Y);
+            mat.RotateAt(m_rectRotation, m_centerPoint.X, m_centerPoint.Y);
+            mat.Translate(m_offsetRectPoint.X, m_offsetRectPoint.Y);
             mat.Invert();
 
             // Mouse point in Rectangle's space. 
             var point = mat.Transform(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
 
-            var rect = _rect;
-            var rectTopLeft = new Rect(_rect.Left - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-            var rectTopRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-            var rectBottomLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-            var rectBottomRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-            var rectMidTop = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-            var rectMidBottom = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-            var rectMidLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-            var rectMidRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-            var ellipse = new EllipseGeometry(new Point(_rect.Left + _rect.Width / 2, _rect.Top - 20), _comWidth * 0.7, _comWidth * 0.7);
+            var rect = m_rect;
+            var rectTopLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectTopRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectBottomLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectBottomRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidTop = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidBottom = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+            var ellipse = new EllipseGeometry(new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top - 20), m_dComWidth * 0.7, m_dComWidth * 0.7);
 
             Rect rectChild = new Rect();
             Rect rectTopLeftChild = new Rect();
@@ -293,101 +475,101 @@ namespace NpcCore.Wpf.Controls
             Rect rectMidBottomChild = new Rect();
             Rect rectMidLeftChild = new Rect();
             Rect rectMidRightChild = new Rect();
-            if (_enableLocatorTool)
+            if (m_bEnableLocatorTool)
             {
-                rectChild = _rectInside;
-                rectTopLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-                rectTopRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-                rectBottomLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-                rectBottomRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-                rectMidTopChild = new Rect(_rectInside.Left + _rectInside.Width / 2 - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-                rectMidBottomChild = new Rect(_rectInside.Left + _rectInside.Width / 2 - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-                rectMidLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top + _rectInside.Height / 2 - _comOffset, _comWidth, _comWidth);
-                rectMidRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top + _rectInside.Height / 2 - _comOffset, _comWidth, _comWidth);
+                rectChild = m_rectInside;
+                rectTopLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectTopRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectBottomLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectBottomRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectMidTopChild = new Rect(m_rectInside.Left + m_rectInside.Width / 2 - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectMidBottomChild = new Rect(m_rectInside.Left + m_rectInside.Width / 2 - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectMidLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top + m_rectInside.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+                rectMidRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top + m_rectInside.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
             }
 
             if (rectTopLeft.Contains(point) || rectTopLeftChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.TopLeft;
-                _mouseHitType = HitType.TopLeftChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.TopLeft;
+                m_mouseHitType = HitType.TopLeftChild;
                 SetMouseCusor();
             }
             else if (rectTopRight.Contains(point) || rectTopRightChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.TopRight;
-                _mouseHitType = HitType.TopRightChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.TopRight;
+                m_mouseHitType = HitType.TopRightChild;
                 SetMouseCusor();
             }
             else if (rectBottomLeft.Contains(point) || rectBottomLeftChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.BottomLeft;
-                _mouseHitType = HitType.BottomLeftChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.BottomLeft;
+                m_mouseHitType = HitType.BottomLeftChild;
                 SetMouseCusor();
             }
             else if (rectBottomRight.Contains(point) || rectBottomRightChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.BottomRight;
-                _mouseHitType = HitType.BottomRightChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.BottomRight;
+                m_mouseHitType = HitType.BottomRightChild;
                 SetMouseCusor();
             }
             else if (rectMidTop.Contains(point) || rectMidTopChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.MidTop;
-                _mouseHitType = HitType.MidTopChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.MidTop;
+                m_mouseHitType = HitType.MidTopChild;
                 SetMouseCusor();
             }
             else if (rectMidBottom.Contains(point) || rectMidBottomChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.MidBottom;
-                _mouseHitType = HitType.MidBottomChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.MidBottom;
+                m_mouseHitType = HitType.MidBottomChild;
                 SetMouseCusor();
             }
             else if (rectMidLeft.Contains(point) || rectMidLeftChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.MidLeft;
-                _mouseHitType = HitType.MidLeftChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.MidLeft;
+                m_mouseHitType = HitType.MidLeftChild;
                 SetMouseCusor();
             }
             else if (rectMidRight.Contains(point) || rectMidRightChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.MidRight;
-                _mouseHitType = HitType.MidRightChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.MidRight;
+                m_mouseHitType = HitType.MidRightChild;
                 SetMouseCusor();
             }
             else if (ellipse.FillContains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.Rotate;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.Rotate;
                 SetMouseCusor();
             }
             else if (rect.Contains(point) || rectChild.Contains(point))
             {
-                _isSelectingRoi = true;
-                _mouseHitType = HitType.Body;
-                _mouseHitType = HitType.BodyChild;
+                m_bSelectingRoi = true;
+                m_mouseHitType = HitType.Body;
+                m_mouseHitType = HitType.BodyChild;
                 SetMouseCusor();
             }
 
             else
             {
-                _isSelectingRoi = false;
-                _mouseHitType = HitType.None;
-                _mouseHitType = HitType.NoneChild;
+                m_bSelectingRoi = false;
+                m_mouseHitType = HitType.None;
+                m_mouseHitType = HitType.NoneChild;
                 SetMouseCusor();
             }
         }
         public void SetMouseCusor()
         {
             Cursor desired_cursor = Cursors.Arrow;
-            switch (_mouseHitType)
+            switch (m_mouseHitType)
             {
                 case HitType.None:
                 case HitType.NoneChild:
@@ -432,12 +614,19 @@ namespace NpcCore.Wpf.Controls
         }
         public void ResetImageEx()
         {
-            _rect = new Rect(new Point(100, 100), new Size(220, 160));
-            _rectTransform = _rect;
-            _offsetRect = new Point(0, 0);
-            _rectRotation = 0;
-            _centerPoint = new Point(_rect.Left + _rect.Width / 2, _rect.Top + _rect.Height / 2);
-            _centerPointReal = new Point(_centerPoint.X + _offsetRect.X, _centerPoint.Y + _offsetRect.Y);
+            m_rect = new Rect(new Point(100, 100), new Size(220, 160));
+            m_rectTransform = m_rect;
+            m_offsetRectPoint = new Point(0, 0);
+            m_rectRotation = 0;
+            m_centerPoint = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top + m_rect.Height / 2);
+            m_centerPointReal = new Point(m_centerPoint.X + m_offsetRectPoint.X, m_centerPoint.Y + m_offsetRectPoint.Y);
+
+            EnableSelectRoiTool = false;
+            EnableLocatorTool = false;
+            EnableInspectTool = false;
+            EnableMeasureSegLineTool = false;
+
+            Reset();
         }
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
@@ -472,16 +661,15 @@ namespace NpcCore.Wpf.Controls
         #region Constructor
         public ImageExt_Basic()
         {
-            _rect = new Rect(new Point(100, 100), new Size(220, 160));
-            _rectReal = new Rect(new Point(_rect.X + _offsetRect.X, _rect.Y + _offsetRect.Y), new Size(_rect.Width, _rect.Height));
-            _rectInside = new Rect(new Point(_rect.X + 60, _rect.Y + 40), new Size(100, 80));
-            _rectTransform = _rect;
-            _offsetXYInside = new Point((_rect.Width - _rectInside.Width) / 2, (_rect.Height - _rectInside.Height) / 2);
-            _offsetRect = new Point(0, 0);
-            _rectRotation = 0;
-            _centerPoint = new Point(_rect.Left + _rect.Width / 2, _rect.Top + _rect.Height / 2);
-            _centerPointReal = new Point(_centerPoint.X + _offsetRect.X, _centerPoint.Y + _offsetRect.Y);
-
+            m_rect = new Rect(new Point(100, 100), new Size(220, 160));
+            m_rectReal = new Rect(new Point(m_rect.X + m_offsetRectPoint.X, m_rect.Y + m_offsetRectPoint.Y), new Size(m_rect.Width, m_rect.Height));
+            m_rectInside = new Rect(new Point(m_rect.X + 60, m_rect.Y + 40), new Size(100, 80));
+            m_rectTransform = m_rect;
+            m_offsetXYInsidePoint = new Point((m_rect.Width - m_rectInside.Width) / 2, (m_rect.Height - m_rectInside.Height) / 2);
+            m_offsetRectPoint = new Point(0, 0);
+            m_rectRotation = 0;
+            m_centerPoint = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top + m_rect.Height / 2);
+            m_centerPointReal = new Point(m_centerPoint.X + m_offsetRectPoint.X, m_centerPoint.Y + m_offsetRectPoint.Y);
 
             TransformGroup group = new TransformGroup();
             ScaleTransform st = new ScaleTransform();
@@ -509,325 +697,338 @@ namespace NpcCore.Wpf.Controls
         #region ContextMenu
 
         // context menu default 
-        private ContextMenu _ctxMnuDefault;
+        private ContextMenu m_ctxMnuDefault;
 
         // context menu in Select Roi tool mode and locator tool mode
-        private ContextMenu _ctxMnuRoiMode;
+        private ContextMenu m_ctxMnuRoiMode;
 
         // context menu in Locator tool
-        private ContextMenu _ctxMnuLocator;
+        private ContextMenu m_ctxMnuLocator;
 
         // context menu inspect tools
-        private ContextMenu _ctxMnuInspectTool;
+        private ContextMenu m_ctxMnuInspectTool;
 
         // Get roi and save image
-        private MenuItem _getROIItem;
+        private MenuItem m_getROIItem;
 
         // default mode
-        private MenuItem _fitItem;
-        private MenuItem _measureItem;
-        private MenuItem _selectModeTool;
-        private MenuItem _selectRoiMode;
-        private MenuItem _selectRectItem;
-        private MenuItem _selectPolyItem;
-        private MenuItem _locatorMode;
-        private MenuItem _saveFullImageItem;
-        private MenuItem _saveROIImageItem;
+        private MenuItem m_fitItem;
+        private MenuItem m_measureItem;
+        private MenuItem m_measureSegLineItem;
+        private MenuItem m_measureCircleItem;
+        private MenuItem m_selectModeTool;
+        private MenuItem m_selectRoiMode;
+        private MenuItem m_selectRectItem;
+        private MenuItem m_selectPolyItem;
+        private MenuItem m_selectCircleItem;
+        private MenuItem m_locatorMode;
+        private MenuItem m_saveFullImageItem;
+        private MenuItem m_saveROIImageItem;
 
         // inspect tools
-        private MenuItem _calibration2DItem;
-        private MenuItem _colorSpaceItem;
-        private MenuItem _countPixelItem;
-        private MenuItem _countBlobItem;
-        private MenuItem _findLineItem;
-        private MenuItem _findCircleItem;
-        private MenuItem _pcaItem;
-        private MenuItem _trainOcrItem;
-        private MenuItem _ocrItem;
-        private MenuItem _templateRotateItem;
+        private MenuItem m_countPixelItem;
+        private MenuItem m_countBlobItem;
+        private MenuItem m_findLineItem;
+        private MenuItem m_findCircleItem;
+        private MenuItem m_pcaItem;
+        private MenuItem m_trainOcrItem;
+        private MenuItem m_ocrItem;
+        private MenuItem m_templateRotateItem;
 
 
         // the chooses in locator contextmenu
-        private MenuItem _trainItem;
+        private MenuItem m_trainItem;
 
         // method
         private void InitContextMenuRoiMode()
         {
-            _ctxMnuRoiMode = new ContextMenu();
+            m_ctxMnuRoiMode = new ContextMenu();
 
-            _getROIItem = new MenuItem();
-            _getROIItem.Header = "Select ROI";
-            _getROIItem.Name = "mnuGetROI";
-            _getROIItem.Click += mnuGetROI_Click;
-            _getROIItem.FontFamily = new FontFamily("Georgia");
-            _getROIItem.FontWeight = FontWeights.Regular;
-            _getROIItem.FontSize = 12;
-            _getROIItem.Icon = new System.Windows.Controls.Image
+            m_getROIItem = new MenuItem();
+            m_getROIItem.Header = "Select ROI";
+            m_getROIItem.Name = "mnuGetROI";
+            m_getROIItem.Click += mnuGetROI_Click;
+            m_getROIItem.FontFamily = new FontFamily("Georgia");
+            m_getROIItem.FontWeight = FontWeights.Regular;
+            m_getROIItem.FontSize = 14;
+            m_getROIItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_input_success@2x.png", UriKind.RelativeOrAbsolute))
             };
 
-            _ctxMnuRoiMode.Items.Add(_getROIItem);
+            m_ctxMnuRoiMode.Items.Add(m_getROIItem);
         }
         private void InitContextMenuDefault()
         {
-            _ctxMnuDefault = new ContextMenu();
+            m_ctxMnuDefault = new ContextMenu();
 
-            _fitItem = new MenuItem();
-            _fitItem.Header = "Fit";
-            _fitItem.Name = "mnuFit";
-            _fitItem.Click += mnuFit_Click;
-            _fitItem.FontFamily = new FontFamily("Georgia");
-            _fitItem.FontWeight = FontWeights.Regular;
-            _fitItem.FontSize = 12;
-            _fitItem.Icon = new System.Windows.Controls.Image
+            m_fitItem = new MenuItem();
+            m_fitItem.Header = "Fit";
+            m_fitItem.Name = "mnuFit";
+            m_fitItem.Click += mnuFit_Click;
+            m_fitItem.FontFamily = new FontFamily("Georgia");
+            m_fitItem.FontWeight = FontWeights.Regular;
+            m_fitItem.FontSize = 14;
+            m_fitItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/zoom_to_fit_s@3x.png", UriKind.RelativeOrAbsolute))
             };
 
             // select mode tool item
-            _selectModeTool = new MenuItem();
-            _selectModeTool = new MenuItem();
-            _selectModeTool.Header = "Mode Tool";
-            _selectModeTool.Name = "mnuModeTool";
-            _selectModeTool.FontFamily = new FontFamily("Georgia");
-            _selectModeTool.FontWeight = FontWeights.Regular;
-            _selectModeTool.FontSize = 12;
-            _selectModeTool.Icon = new System.Windows.Controls.Image
+            m_selectModeTool = new MenuItem();
+            m_selectModeTool.Header = "Mode Tool";
+            m_selectModeTool.Name = "mnuModeTool";
+            m_selectModeTool.FontFamily = new FontFamily("Georgia");
+            m_selectModeTool.FontWeight = FontWeights.Regular;
+            m_selectModeTool.FontSize = 14;
+            m_selectModeTool.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/btn_setting_50.png", UriKind.RelativeOrAbsolute))
             };
 
             // select Roi mode
-            _selectRoiMode = new MenuItem();
-            _selectRoiMode = new MenuItem();
-            _selectRoiMode.Header = "Select ROI";
-            _selectRoiMode.Name = "mnuSelectRoi";
-            _selectRoiMode.FontFamily = new FontFamily("Georgia");
-            _selectRoiMode.FontWeight = FontWeights.Regular;
-            _selectRoiMode.FontSize = 12;
-            _selectRoiMode.Icon = new System.Windows.Controls.Image
+            m_selectRoiMode = new MenuItem();
+            m_selectRoiMode.Header = "Select ROI";
+            m_selectRoiMode.Name = "mnuSelectRoi";
+            m_selectRoiMode.FontFamily = new FontFamily("Georgia");
+            m_selectRoiMode.FontWeight = FontWeights.Regular;
+            m_selectRoiMode.FontSize = 14;
+            m_selectRoiMode.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/Cursor/mc_ig_include_n@2x.png", UriKind.RelativeOrAbsolute))
             };
 
             // select rectangle
-            _selectRectItem = new MenuItem();
-            _selectRectItem.Header = "Rectangle";
-            _selectRectItem.Name = "mnuSelectRect";
-            _selectRectItem.Click += mnuSelectRect_Click;
-            _selectRectItem.FontFamily = new FontFamily("Georgia");
-            _selectRectItem.FontWeight = FontWeights.Regular;
-            _selectRectItem.FontSize = 12;
-            //_selectRectItem.IsCheckable = true;
-            _selectRectItem.Icon = new System.Windows.Controls.Image
+            m_selectRectItem = new MenuItem();
+            m_selectRectItem.Header = "Rectangle";
+            m_selectRectItem.Name = "mnuSelectRect";
+            m_selectRectItem.Click += mnuSelectRect_Click;
+            m_selectRectItem.FontFamily = new FontFamily("Georgia");
+            m_selectRectItem.FontWeight = FontWeights.Regular;
+            m_selectRectItem.FontSize = 14;
+            m_selectRectItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_c_rectangle_n@3x.png", UriKind.RelativeOrAbsolute))
             };
 
             // select polygon
-            _selectPolyItem = new MenuItem();
-            _selectPolyItem.Header = "Polygon";
-            _selectPolyItem.Name = "mnuSelectPolygon";
-            _selectPolyItem.Click += mnuSelectPolygon_Click;
-            _selectPolyItem.FontFamily = new FontFamily("Georgia");
-            _selectPolyItem.FontWeight = FontWeights.Regular;
-            _selectPolyItem.FontSize = 12;
-            //_selectPolyItem.IsCheckable = true;
-            _selectPolyItem.Icon = new System.Windows.Controls.Image
+            m_selectPolyItem = new MenuItem();
+            m_selectPolyItem.Header = "Polygon";
+            m_selectPolyItem.Name = "mnuSelectPolygon";
+            m_selectPolyItem.Click += mnuSelectPolygon_Click;
+            m_selectPolyItem.FontFamily = new FontFamily("Georgia");
+            m_selectPolyItem.FontWeight = FontWeights.Regular;
+            m_selectPolyItem.FontSize = 14;
+            m_selectPolyItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_c_polygon_n@3x.png", UriKind.RelativeOrAbsolute))
             };
 
+            // select circle
+            m_selectCircleItem = new MenuItem();
+            m_selectCircleItem.Header = "Circle";
+            m_selectCircleItem.Name = "mnuSelectCircle";
+            m_selectCircleItem.Click += mnuSelectCircle_Click;
+            m_selectCircleItem.FontFamily = new FontFamily("Georgia");
+            m_selectCircleItem.FontWeight = FontWeights.Regular;
+            m_selectCircleItem.FontSize = 14;
+            m_selectCircleItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_c_circle_n@3x.png", UriKind.RelativeOrAbsolute))
+            };
+
             // add 2 item select rectangle and polygon into menu Roi mode
-            _selectRoiMode.Items.Add(_selectRectItem);
-            _selectRoiMode.Items.Add(_selectPolyItem);
+            m_selectRoiMode.Items.Add(m_selectRectItem);
+            m_selectRoiMode.Items.Add(m_selectPolyItem);
+            m_selectRoiMode.Items.Add(m_selectCircleItem);
 
             // locator mode
-            _locatorMode = new MenuItem();
-            _locatorMode.Header = "Locator";
-            _locatorMode.Name = "mnuLocator";
-            _locatorMode.Click += mnuLocator_Click;
-            _locatorMode.FontFamily = new FontFamily("Georgia");
-            _locatorMode.FontWeight = FontWeights.Regular;
-            _locatorMode.FontSize = 12;
-            _locatorMode.Icon = new System.Windows.Controls.Image
+            m_locatorMode = new MenuItem();
+            m_locatorMode.Header = "Locator";
+            m_locatorMode.Name = "mnuLocator";
+            m_locatorMode.Click += mnuLocator_Click;
+            m_locatorMode.FontFamily = new FontFamily("Georgia");
+            m_locatorMode.FontWeight = FontWeights.Regular;
+            m_locatorMode.FontSize = 14;
+            m_locatorMode.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_baseteaching_s@3x.png", UriKind.RelativeOrAbsolute))
             };
 
             // measure item
-            _measureItem = new MenuItem();
-            _measureItem.Header = "Measure";
-            _measureItem.Name = "mnuMeasure";
-            _measureItem.Click += mnuMeasure_Click;
-            _measureItem.FontFamily = new FontFamily("Georgia");
-            _measureItem.FontWeight = FontWeights.Regular;
-            _measureItem.FontSize = 12;
-            _measureItem.Icon = new System.Windows.Controls.Image
+            m_measureItem = new MenuItem();
+            m_measureItem.Header = "Measure";
+            m_measureItem.Name = "mnuMeasure";
+            m_measureItem.FontFamily = new FontFamily("Georgia");
+            m_measureItem.FontWeight = FontWeights.Regular;
+            m_measureItem.FontSize = 14;
+            m_measureItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_toolbar_ruler_s_2.png", UriKind.RelativeOrAbsolute))
             };
 
-            // save Image
-            _saveFullImageItem = new MenuItem();
-            _saveFullImageItem.Header = "Save Full Image";
-            _saveFullImageItem.Name = "mnuSaveFullImage";
-            _saveFullImageItem.Click += mnuSaveFullImage_Click;
-            _saveFullImageItem.FontFamily = new FontFamily("Georgia");
-            _saveFullImageItem.FontWeight = FontWeights.Regular;
-            _saveFullImageItem.FontSize = 12;
+            // measure seg line item
+            m_measureSegLineItem = new MenuItem();
+            m_measureSegLineItem.Header = "Measure Segment Line";
+            m_measureSegLineItem.Name = "mnuMeasureSegLine";
+            m_measureSegLineItem.Click += mnuMeasureSegLine_Click;
+            m_measureSegLineItem.FontFamily = new FontFamily("Georgia");
+            m_measureSegLineItem.FontWeight = FontWeights.Regular;
+            m_measureSegLineItem.FontSize = 14;
 
-            _saveROIImageItem = new MenuItem();
-            _saveROIImageItem.Header = "Save ROI Image";
-            _saveROIImageItem.Name = "mnuSaveROIImage";
-            _saveROIImageItem.Click += mnuSaveROIImage_Click;
-            _saveROIImageItem.FontFamily = new FontFamily("Georgia");
-            _saveROIImageItem.FontWeight = FontWeights.Regular;
-            _saveROIImageItem.FontSize = 12;
-            _saveROIImageItem.Icon = new System.Windows.Controls.Image
-            {
-                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/btn_save_n@2x.png", UriKind.RelativeOrAbsolute))
-            };
+            // measure circle item
+            m_measureCircleItem = new MenuItem();
+            m_measureCircleItem.Header = "Measure Circle";
+            m_measureCircleItem.Name = "mnuMeasureCircle";
+            m_measureCircleItem.Click += mnuMeasureCircle_Click;
+            m_measureCircleItem.FontFamily = new FontFamily("Georgia");
+            m_measureCircleItem.FontWeight = FontWeights.Regular;
+            m_measureCircleItem.FontSize = 14;
+
+            m_measureItem.Items.Add(m_measureSegLineItem);
+            m_measureItem.Items.Add(m_measureCircleItem);
+
+            // save Image
+            m_saveFullImageItem = new MenuItem();
+            m_saveFullImageItem.Header = "Save Full Image";
+            m_saveFullImageItem.Name = "mnuSaveFullImage";
+            m_saveFullImageItem.Click += mnuSaveFullImage_Click;
+            m_saveFullImageItem.FontFamily = new FontFamily("Georgia");
+            m_saveFullImageItem.FontWeight = FontWeights.Regular;
+            m_saveFullImageItem.FontSize = 14;
 
             // add 2 mode: select Roi and locator into select mode tool item
-            _selectModeTool.Items.Add(_selectRoiMode);
-            _selectModeTool.Items.Add(_locatorMode);
+            m_selectModeTool.Items.Add(m_selectRoiMode);
+            m_selectModeTool.Items.Add(m_locatorMode);
 
-            _ctxMnuDefault.Items.Add(_fitItem);
-            _ctxMnuDefault.Items.Add(_selectModeTool);
+            m_ctxMnuDefault.Items.Add(m_fitItem);
+            m_ctxMnuDefault.Items.Add(m_selectModeTool);
 
-            _ctxMnuDefault.Items.Add(_measureItem);
-            _ctxMnuDefault.Items.Add(_saveFullImageItem);
-            _ctxMnuDefault.Items.Add(_saveROIImageItem);
-            _ctxMnuDefault.PlacementTarget = this;
-            _ctxMnuDefault.IsOpen = false;
+            m_ctxMnuDefault.Items.Add(m_measureItem);
+            m_ctxMnuDefault.Items.Add(m_saveFullImageItem);
+            m_ctxMnuDefault.PlacementTarget = this;
+            m_ctxMnuDefault.IsOpen = false;
 
         }
         private void InitContextMenuLocator()
         {
-            _ctxMnuLocator = new ContextMenu();
+            m_ctxMnuLocator = new ContextMenu();
 
-            _trainItem = new MenuItem();
-            _trainItem = new MenuItem();
-            _trainItem.Header = "Train";
-            _trainItem.Name = "mnuTrain";
-            _trainItem.Click += mnuTrain_Click;
-            _trainItem.FontFamily = new FontFamily("Georgia");
-            _trainItem.FontWeight = FontWeights.Regular;
-            _trainItem.FontSize = 12;
+            m_trainItem = new MenuItem();
+            m_trainItem = new MenuItem();
+            m_trainItem.Header = "Train";
+            m_trainItem.Name = "mnuTrain";
+            m_trainItem.Click += mnuTrain_Click;
+            m_trainItem.FontFamily = new FontFamily("Georgia");
+            m_trainItem.FontWeight = FontWeights.Regular;
+            m_trainItem.FontSize = 14;
 
-            _ctxMnuLocator.Items.Add(_trainItem);
-            _ctxMnuLocator.PlacementTarget = this;
-            _ctxMnuLocator.IsOpen = false;
+            m_ctxMnuLocator.Items.Add(m_trainItem);
+            m_ctxMnuLocator.PlacementTarget = this;
+            m_ctxMnuLocator.IsOpen = false;
         }
         private void InitContextMenuInspecTools()
         {
-            _ctxMnuInspectTool = new ContextMenu();
-
-            // Calibration
-            _calibration2DItem = new MenuItem();
-            _calibration2DItem.Header = "Calibration 2D";
-            _calibration2DItem.Name = "mnuCalibration";
-            _calibration2DItem.Click += mnuCalibration_Click;
-            _calibration2DItem.FontFamily = new FontFamily("Georgia");
-            _calibration2DItem.FontWeight = FontWeights.Regular;
-            _calibration2DItem.FontSize = 12;
-
-            // Color Space
-            _colorSpaceItem = new MenuItem();
-            _colorSpaceItem.Header = "Color Space (HSV)";
-            _colorSpaceItem.Name = "mnuColorSpace";
-            _colorSpaceItem.Click += mnuColorSpace_Click;
-            _colorSpaceItem.FontFamily = new FontFamily("Georgia");
-            _colorSpaceItem.FontWeight = FontWeights.Regular;
-            _colorSpaceItem.FontSize = 12;
+            m_ctxMnuInspectTool = new ContextMenu();
 
             // Count pixel
-            _countPixelItem = new MenuItem();
-            _countPixelItem.Header = "Count Pixel";
-            _countPixelItem.Name = "mnuCntPixel";
-            _countPixelItem.Click += mnuCntPixel_Click;
-            _countPixelItem.FontFamily = new FontFamily("Georgia");
-            _countPixelItem.FontWeight = FontWeights.Regular;
-            _countPixelItem.FontSize = 12;
+            m_countPixelItem = new MenuItem();
+            m_countPixelItem.Header = "Count Pixel";
+            m_countPixelItem.Name = "mnuCntPixel";
+            m_countPixelItem.Click += mnuCntPixel_Click;
+            m_countPixelItem.FontFamily = new FontFamily("Georgia");
+            m_countPixelItem.FontWeight = FontWeights.Regular;
+            m_countPixelItem.FontSize = 14;
 
             // Count blob
-            _countBlobItem = new MenuItem();
-            _countBlobItem.Header = "Count Blob";
-            _countBlobItem.Name = "mnuCntBlob";
-            _countBlobItem.Click += mnuCntBlob_Click;
-            _countBlobItem.FontFamily = new FontFamily("Georgia");
-            _countBlobItem.FontWeight = FontWeights.Regular;
-            _countBlobItem.FontSize = 12;
+            m_countBlobItem = new MenuItem();
+            m_countBlobItem.Header = "Count Blob";
+            m_countBlobItem.Name = "mnuCntBlob";
+            m_countBlobItem.Click += mnuCntBlob_Click;
+            m_countBlobItem.FontFamily = new FontFamily("Georgia");
+            m_countBlobItem.FontWeight = FontWeights.Regular;
+            m_countBlobItem.FontSize = 14;
 
             // Find line
-            _findLineItem = new MenuItem();
-            _findLineItem.Header = "Find Line";
-            _findLineItem.Name = "mnuFindLine";
-            _findLineItem.Click += mnuFindLine_Click;
-            _findLineItem.FontFamily = new FontFamily("Georgia");
-            _findLineItem.FontWeight = FontWeights.Regular;
-            _findLineItem.FontSize = 12;
+            m_findLineItem = new MenuItem();
+            m_findLineItem.Header = "Find Line";
+            m_findLineItem.Name = "mnuFindLine";
+            m_findLineItem.Click += mnuFindLine_Click;
+            m_findLineItem.FontFamily = new FontFamily("Georgia");
+            m_findLineItem.FontWeight = FontWeights.Regular;
+            m_findLineItem.FontSize = 14;
 
             // Find Circle
-            _findCircleItem = new MenuItem();
-            _findCircleItem.Header = "Find Circle";
-            _findCircleItem.Name = "mnuFindCircle";
-            _findCircleItem.Click += mnuFindCircle_Click;
-            _findCircleItem.FontFamily = new FontFamily("Georgia");
-            _findCircleItem.FontWeight = FontWeights.Regular;
-            _findCircleItem.FontSize = 12;
+            m_findCircleItem = new MenuItem();
+            m_findCircleItem.Header = "Find Circle";
+            m_findCircleItem.Name = "mnuFindCircle";
+            m_findCircleItem.Click += mnuFindCircle_Click;
+            m_findCircleItem.FontFamily = new FontFamily("Georgia");
+            m_findCircleItem.FontWeight = FontWeights.Regular;
+            m_findCircleItem.FontSize = 14;
 
             // PCA
-            _pcaItem = new MenuItem();
-            _pcaItem.Header = "PCA";
-            _pcaItem.Name = "mnuPCA";
-            _pcaItem.Click += mnuPCA_Click;
-            _pcaItem.FontFamily = new FontFamily("Georgia");
-            _pcaItem.FontWeight = FontWeights.Regular;
-            _pcaItem.FontSize = 12;
+            m_pcaItem = new MenuItem();
+            m_pcaItem.Header = "PCA";
+            m_pcaItem.Name = "mnuPCA";
+            m_pcaItem.Click += mnuPCA_Click;
+            m_pcaItem.FontFamily = new FontFamily("Georgia");
+            m_pcaItem.FontWeight = FontWeights.Regular;
+            m_pcaItem.FontSize = 14;
 
             // Train OCR
-            _trainOcrItem = new MenuItem();
-            _trainOcrItem.Header = "Train OCR";
-            _trainOcrItem.Name = "mnuTrainOCR";
-            _trainOcrItem.Click += mnuTrainOCR_Click;
-            _trainOcrItem.FontFamily = new FontFamily("Georgia");
-            _trainOcrItem.FontWeight = FontWeights.Regular;
-            _trainOcrItem.FontSize = 12;
+            m_trainOcrItem = new MenuItem();
+            m_trainOcrItem.Header = "Train OCR";
+            m_trainOcrItem.Name = "mnuTrainOCR";
+            m_trainOcrItem.Click += mnuTrainOCR_Click;
+            m_trainOcrItem.FontFamily = new FontFamily("Georgia");
+            m_trainOcrItem.FontWeight = FontWeights.Regular;
+            m_trainOcrItem.FontSize = 14;
 
             // OCR
-            _ocrItem = new MenuItem();
-            _ocrItem.Header = "OCR";
-            _ocrItem.Name = "mnuOCR";
-            _ocrItem.Click += mnuOCR_Click;
-            _ocrItem.FontFamily = new FontFamily("Georgia");
-            _ocrItem.FontWeight = FontWeights.Regular;
-            _ocrItem.FontSize = 12;
+            m_ocrItem = new MenuItem();
+            m_ocrItem.Header = "OCR";
+            m_ocrItem.Name = "mnuOCR";
+            m_ocrItem.Click += mnuOCR_Click;
+            m_ocrItem.FontFamily = new FontFamily("Georgia");
+            m_ocrItem.FontWeight = FontWeights.Regular;
+            m_ocrItem.FontSize = 14;
 
             // Template Rotate
-            _templateRotateItem = new MenuItem();
-            _templateRotateItem.Header = "Template Rotate";
-            _templateRotateItem.Name = "mnuTemplateRotate";
-            _templateRotateItem.Click += mnuTemplateRotate_Click;
-            _templateRotateItem.FontFamily = new FontFamily("Georgia");
-            _templateRotateItem.FontWeight = FontWeights.Regular;
-            _templateRotateItem.FontSize = 12;
+            m_templateRotateItem = new MenuItem();
+            m_templateRotateItem.Header = "Template Rotate";
+            m_templateRotateItem.Name = "mnuTemplateRotate";
+            m_templateRotateItem.Click += mnuTemplateRotate_Click;
+            m_templateRotateItem.FontFamily = new FontFamily("Georgia");
+            m_templateRotateItem.FontWeight = FontWeights.Regular;
+            m_templateRotateItem.FontSize = 14;
 
-            _ctxMnuInspectTool.Items.Add(_calibration2DItem);
-            _ctxMnuInspectTool.Items.Add(_colorSpaceItem);
-            _ctxMnuInspectTool.Items.Add(_countPixelItem);
-            _ctxMnuInspectTool.Items.Add(_countBlobItem);
-            _ctxMnuInspectTool.Items.Add(_findLineItem);
-            _ctxMnuInspectTool.Items.Add(_findCircleItem);
-            _ctxMnuInspectTool.Items.Add(_pcaItem);
-            _ctxMnuInspectTool.Items.Add(_trainOcrItem);
-            _ctxMnuInspectTool.Items.Add(_ocrItem);
-            _ctxMnuInspectTool.Items.Add(_templateRotateItem);
+            // Save ROI
+            m_saveROIImageItem = new MenuItem();
+            m_saveROIImageItem.Header = "Save ROI Image";
+            m_saveROIImageItem.Name = "mnuSaveROIImage";
+            m_saveROIImageItem.Click += mnuSaveROIImage_Click;
+            m_saveROIImageItem.FontFamily = new FontFamily("Georgia");
+            m_saveROIImageItem.FontWeight = FontWeights.Regular;
+            m_saveROIImageItem.FontSize = 14;
+            m_saveROIImageItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/btn_save_n@2x.png", UriKind.RelativeOrAbsolute))
+            };
 
-            _ctxMnuInspectTool.PlacementTarget = this;
-            _ctxMnuInspectTool.IsOpen = false;
+            m_ctxMnuInspectTool.Items.Add(m_countPixelItem);
+            m_ctxMnuInspectTool.Items.Add(m_countBlobItem);
+            m_ctxMnuInspectTool.Items.Add(m_findLineItem);
+            m_ctxMnuInspectTool.Items.Add(m_findCircleItem);
+            m_ctxMnuInspectTool.Items.Add(m_pcaItem);
+            m_ctxMnuInspectTool.Items.Add(m_trainOcrItem);
+            m_ctxMnuInspectTool.Items.Add(m_ocrItem);
+            m_ctxMnuInspectTool.Items.Add(m_templateRotateItem);
+            m_ctxMnuInspectTool.Items.Add(new Separator());
+            m_ctxMnuInspectTool.Items.Add(m_saveROIImageItem);
+
+            m_ctxMnuInspectTool.PlacementTarget = this;
+            m_ctxMnuInspectTool.IsOpen = false;
         }
 
         #region Functions Handle Event for MenuItem Default
@@ -837,9 +1038,15 @@ namespace NpcCore.Wpf.Controls
             //this.InvalidateVisual();
             RaiseEvent(new RoutedEventArgs(FitEvent, this));
         }
-        private void mnuMeasure_Click(object sender, RoutedEventArgs e)
+        private void mnuMeasureSegLine_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Just press measure");
+            EnableMeasureSegLineTool = true;
+            RaiseEvent(new RoutedEventArgs(MeasureSegLine, this));
+        }
+        private void mnuMeasureCircle_Click(object sender, RoutedEventArgs e)
+        {
+            EnableMeasureCircleTool = true;
+            RaiseEvent(new RoutedEventArgs(MeasureSegLine, this));
         }
         private void mnuLocator_Click(object sender, RoutedEventArgs e)
         {
@@ -852,12 +1059,15 @@ namespace NpcCore.Wpf.Controls
         }
         private void mnuSelectRect_Click(object sender, RoutedEventArgs e)
         {
-            _selectPolyItem.IsChecked = false;
+            m_selectPolyItem.IsChecked = false;
             EnableSelectRoiTool = true;
         }
         private void mnuSelectPolygon_Click(object sender, RoutedEventArgs e)
         {
-            _selectRectItem.IsChecked = false;
+            m_selectRectItem.IsChecked = false;
+        }
+        private void mnuSelectCircle_Click(object sender, RoutedEventArgs e)
+        {
         }
         private void mnuSaveFullImage_Click(object sender, RoutedEventArgs e)
         {
@@ -870,6 +1080,7 @@ namespace NpcCore.Wpf.Controls
             RaiseEvent(new RoutedEventArgs(SaveROIImageEvent, this));
         }
         #endregion
+
         #region Functions Handle Event for ROI
         private void mnuGetROI_Click(object sender, RoutedEventArgs e)
         {
@@ -877,55 +1088,45 @@ namespace NpcCore.Wpf.Controls
             EnableInspectTool = true;
             RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
         }
-        private void mnuCalibration_Click(object sender, RoutedEventArgs e)
-        {
-            EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
-        }
-        private void mnuColorSpace_Click(object sender, RoutedEventArgs e)
-        {
-            EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
-        }
         private void mnuCntPixel_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(CountPixel, this));
         }
         private void mnuCntBlob_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(CountBlob, this));
         }
         private void mnuFindLine_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(FindLine, this));
         }
         private void mnuFindCircle_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(FindCircle, this));
         }
         private void mnuPCA_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(PCA, this));
         }
         private void mnuTrainOCR_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(TrainOCR, this));
         }
         private void mnuOCR_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(OCR, this));
         }
         private void mnuTemplateRotate_Click(object sender, RoutedEventArgs e)
         {
             EnableInspectTool = false;
-            //RaiseEvent(new RoutedEventArgs(SelectedROIEvent, this));
+            RaiseEvent(new RoutedEventArgs(TemplateRotate, this));
         }
         #endregion
 
@@ -934,32 +1135,32 @@ namespace NpcCore.Wpf.Controls
         #region Handle Event
         private void ImageEx_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableSelectRoiTool && !_enableLocatorTool && !_enableInspectTool)
+            if (!m_bEnableSelectRoiTool && !m_bEnableLocatorTool && !m_bEnableInspectTool && !m_bEnableMeasureSegLineTool)
             {
-                _ctxMnuDefault.IsOpen = true;
+                m_ctxMnuDefault.IsOpen = true;
                 return;
             }
 
             var mat = new Matrix();
-            if (_enableRotate == true)
-                mat.RotateAt(_rectRotation, _centerPoint.X, _centerPoint.Y);
-            mat.Translate(_offsetRect.X, _offsetRect.Y);
+            if (m_bEnableRotate == true)
+                mat.RotateAt(m_rectRotation, m_centerPoint.X, m_centerPoint.Y);
+            mat.Translate(m_offsetRectPoint.X, m_offsetRectPoint.Y);
             mat.Invert();
 
             // Mouse point in Rectangle's space. 
             var point = mat.Transform(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
 
-            if (_rect.Contains(point) && _enableSelectRoiTool && !_enableLocatorTool && !_enableInspectTool)
+            if (m_rect.Contains(point) && m_bEnableSelectRoiTool && !m_bEnableLocatorTool && !m_bEnableInspectTool)
             {
-                _ctxMnuRoiMode.IsOpen = true;
+                m_ctxMnuRoiMode.IsOpen = true;
             }
-            else if (_rect.Contains(point) && !_enableSelectRoiTool && _enableLocatorTool && !_enableInspectTool)
+            else if (m_rect.Contains(point) && !m_bEnableSelectRoiTool && m_bEnableLocatorTool && !m_bEnableInspectTool)
             {
-                _ctxMnuLocator.IsOpen = true;
+                m_ctxMnuLocator.IsOpen = true;
             }
-            else if (_rect.Contains(point) && !_enableSelectRoiTool && !_enableLocatorTool && _enableInspectTool)
+            else if (m_rect.Contains(point) && !m_bEnableSelectRoiTool && !m_bEnableLocatorTool && m_bEnableInspectTool)
             {
-                _ctxMnuInspectTool.IsOpen = true;
+                m_ctxMnuInspectTool.IsOpen = true;
             }
         }
         private void ImageEx_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -986,16 +1187,44 @@ namespace NpcCore.Wpf.Controls
         }
         private void ImageEx_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableSelectRoiTool && !_enableLocatorTool)
+            if (!m_bEnableSelectRoiTool && !m_bEnableLocatorTool && !m_bEnableMeasureSegLineTool && !m_bEnableMeasureCircleTool)
                 return;
-            _drag = false;
 
-            _offsetXYInside.X = (_rect.Width - _rectInside.Width) / 2;
-            _offsetXYInside.Y = (_rect.Height - _rectInside.Height) / 2;
+            if (m_bEnableMeasureSegLineTool && m_bMeasuringSegLine && m_bMeasureSegLineSelectedPt1 && m_bMeasureSegLineSelectedPt2)
+            {
+                m_startPoint_MeasureSegLineTool = new Point(0, 0);
+                m_endPoint_MeasureSegLineTool = new Point(0, 0);
+
+                m_bMeasureSegLineSelectedPt1 = false;
+                m_bMeasureSegLineSelectedPt2 = false;
+                m_bEnableMeasureSegLineTool = false;
+                m_bMeasuringSegLine = false;
+
+                return;
+            }
+
+            if (m_bEnableMeasureCircleTool && m_bMeasuringCircle && m_bMeasureCircleSelectedPt1 && m_bMeasureCircleSelectedPt2)
+            {
+                m_centerPoint_MeasureCircleTool = new Point(0, 0);
+                m_radiusPoint_MeasureCircleTool = new Point(0, 0);
+
+                m_bMeasureCircleSelectedPt1 = false;
+                m_bMeasureCircleSelectedPt2 = false;
+                m_bEnableMeasureCircleTool = false;
+                m_bMeasuringCircle = false;
+
+                return;
+            }
+
+            m_bDrag = false;
+
+            m_offsetXYInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2;
+            m_offsetXYInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2;
+
         }
         private void ImageEx_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!_enableSelectRoiTool && !_enableLocatorTool)
+            if (!m_bEnableSelectRoiTool && !m_bEnableLocatorTool)
             {
                 if (m_bmp == null)
                     return;
@@ -1007,7 +1236,7 @@ namespace NpcCore.Wpf.Controls
 
                 if ((nX >= 0) && (nX < m_bmp.Width) && (nY >= 0) && (nY < m_bmp.Height))
                 {
-                    
+
                     System.Drawing.Color color = m_bmp.GetPixel(nX, nY);
                     int r = color.R;
                     int g = color.G;
@@ -1022,16 +1251,31 @@ namespace NpcCore.Wpf.Controls
                     //RGB = String.Format("R: {0} G: {1} B: {2}", r.ToString(), g.ToString(), b.ToString());
                     //HSI = String.Format("H: {0} S: {1:0.000} I: {2:0.000}", (int)hue, saturation, brightness);
                 }
+
+                // Measure Segment Line
+                if (m_bEnableMeasureSegLineTool && m_bMeasuringSegLine && m_bMeasureSegLineSelectedPt1 && !m_bMeasureSegLineSelectedPt2)
+                {
+                    m_endPoint_MeasureSegLineTool = pointEnd;
+                    this.InvalidateVisual();
+                }
+
+                // Measure Circle
+                if (m_bEnableMeasureCircleTool && m_bMeasuringCircle && m_bMeasureCircleSelectedPt1 && !m_bMeasureCircleSelectedPt2)
+                {
+                    m_radiusPoint_MeasureCircleTool = pointEnd;
+                    this.InvalidateVisual();
+                }
+
                 return;
             }
             SetHitType(e);
-            if (!_drag)
+            if (!m_bDrag)
                 return;
 
             var mat = new Matrix();
-            if (_enableRotate == true)
-                mat.RotateAt(_rectRotation, _centerPoint.X, _centerPoint.Y);
-            mat.Translate(_offsetRect.X, _offsetRect.Y);
+            if (m_bEnableRotate == true)
+                mat.RotateAt(m_rectRotation, m_centerPoint.X, m_centerPoint.Y);
+            mat.Translate(m_offsetRectPoint.X, m_offsetRectPoint.Y);
             mat.Invert();
 
             var point = mat.Transform(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
@@ -1039,339 +1283,339 @@ namespace NpcCore.Wpf.Controls
             Point offsetSize;
             Point clamped;
 
-            switch (_dragAnchor)
+            switch (m_dragAnchor)
             {
                 case AnchorPoint.TopLeft:
                 case AnchorPoint.TopLeftChild:
-                    if (_dragAnchor == AnchorPoint.TopLeft)
+                    if (m_dragAnchor == AnchorPoint.TopLeft)
                     {
-                        clamped = new Point(Math.Min(_rect.BottomRight.X - 10d, point.X),
-                            Math.Min(_rect.BottomRight.Y - 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left + offsetSize.X,
-                            _dragRect.Top + offsetSize.Y,
-                            _dragRect.Width - offsetSize.X,
-                            _dragRect.Height - offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rect.BottomRight.X - 10d, point.X),
+                            Math.Min(m_rect.BottomRight.Y - 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left + offsetSize.X,
+                            m_rectDrag.Top + offsetSize.Y,
+                            m_rectDrag.Width - offsetSize.X,
+                            m_rectDrag.Height - offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + offsetSize.X + _offsetRectInside.X,
-                                  _dragRectInside.Top + offsetSize.Y + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + offsetSize.X + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + offsetSize.Y + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.TopLeftChild)
+                    else if (m_dragAnchor == AnchorPoint.TopLeftChild)
                     {
-                        clamped = new Point(Math.Min(_rectInside.BottomRight.X - 10d, point.X),
-                            Math.Min(_rectInside.BottomRight.Y - 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left + offsetSize.X,
-                            _dragRectInside.Top + offsetSize.Y,
-                            _dragRectInside.Width - offsetSize.X,
-                            _dragRectInside.Height - offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rectInside.BottomRight.X - 10d, point.X),
+                            Math.Min(m_rectInside.BottomRight.Y - 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left + offsetSize.X,
+                            m_rectInsideDrag.Top + offsetSize.Y,
+                            m_rectInsideDrag.Width - offsetSize.X,
+                            m_rectInsideDrag.Height - offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left + offsetSize.X - _offsetRectInside.X,
-                                  _dragRect.Top + offsetSize.Y - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left + offsetSize.X - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top + offsetSize.Y - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
                 case AnchorPoint.TopRight:
                 case AnchorPoint.TopRightChild:
-                    if (_dragAnchor == AnchorPoint.TopRight)
+                    if (m_dragAnchor == AnchorPoint.TopRight)
                     {
-                        clamped = new Point(Math.Max(_rect.BottomLeft.X - 10d, point.X),
-                            Math.Min(_rect.BottomLeft.Y - 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left,
-                            _dragRect.Top + offsetSize.Y,
-                            _dragRect.Width + offsetSize.X,
-                            _dragRect.Height - offsetSize.Y);
+                        clamped = new Point(Math.Max(m_rect.BottomLeft.X - 10d, point.X),
+                            Math.Min(m_rect.BottomLeft.Y - 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left,
+                            m_rectDrag.Top + offsetSize.Y,
+                            m_rectDrag.Width + offsetSize.X,
+                            m_rectDrag.Height - offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + _offsetRectInside.X,
-                                  _dragRectInside.Top + offsetSize.Y + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + offsetSize.Y + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.TopRightChild)
+                    else if (m_dragAnchor == AnchorPoint.TopRightChild)
                     {
-                        clamped = new Point(Math.Max(_rectInside.BottomLeft.X - 10d, point.X),
-                           Math.Min(_rectInside.BottomLeft.Y - 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left,
-                            _dragRectInside.Top + offsetSize.Y,
-                            _dragRectInside.Width + offsetSize.X,
-                            _dragRectInside.Height - offsetSize.Y);
+                        clamped = new Point(Math.Max(m_rectInside.BottomLeft.X - 10d, point.X),
+                           Math.Min(m_rectInside.BottomLeft.Y - 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left,
+                            m_rectInsideDrag.Top + offsetSize.Y,
+                            m_rectInsideDrag.Width + offsetSize.X,
+                            m_rectInsideDrag.Height - offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left - _offsetRectInside.X,
-                                  _dragRect.Top + offsetSize.Y - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top + offsetSize.Y - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
 
                 case AnchorPoint.BottomLeft:
                 case AnchorPoint.BottomLeftChild:
-                    if (_dragAnchor == AnchorPoint.BottomLeft)
+                    if (m_dragAnchor == AnchorPoint.BottomLeft)
                     {
-                        clamped = new Point(Math.Min(_rect.TopRight.X - 10d, point.X),
-                            Math.Max(_rect.TopRight.Y + 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left + offsetSize.X,
-                            _dragRect.Top,
-                            _dragRect.Width - offsetSize.X,
-                            _dragRect.Height + offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rect.TopRight.X - 10d, point.X),
+                            Math.Max(m_rect.TopRight.Y + 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left + offsetSize.X,
+                            m_rectDrag.Top,
+                            m_rectDrag.Width - offsetSize.X,
+                            m_rectDrag.Height + offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + offsetSize.X + _offsetRectInside.X,
-                                  _dragRectInside.Top + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + offsetSize.X + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.BottomLeftChild)
+                    else if (m_dragAnchor == AnchorPoint.BottomLeftChild)
                     {
-                        clamped = new Point(Math.Min(_rectInside.TopRight.X - 10d, point.X),
-                           Math.Max(_rectInside.TopRight.Y + 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left + offsetSize.X,
-                            _dragRectInside.Top,
-                            _dragRectInside.Width - offsetSize.X,
-                            _dragRectInside.Height + offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rectInside.TopRight.X - 10d, point.X),
+                           Math.Max(m_rectInside.TopRight.Y + 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left + offsetSize.X,
+                            m_rectInsideDrag.Top,
+                            m_rectInsideDrag.Width - offsetSize.X,
+                            m_rectInsideDrag.Height + offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left + offsetSize.X - _offsetRectInside.X,
-                                  _dragRect.Top - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left + offsetSize.X - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
 
                 case AnchorPoint.BottomRight:
                 case AnchorPoint.BottomRightChild:
-                    if (_dragAnchor == AnchorPoint.BottomRight)
+                    if (m_dragAnchor == AnchorPoint.BottomRight)
                     {
-                        clamped = new Point(Math.Max(_rect.TopLeft.X + 10d, point.X),
-                            Math.Max(_rect.TopLeft.Y + 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left,
-                            _dragRect.Top,
-                            _dragRect.Width + offsetSize.X,
-                            _dragRect.Height + offsetSize.Y);
+                        clamped = new Point(Math.Max(m_rect.TopLeft.X + 10d, point.X),
+                            Math.Max(m_rect.TopLeft.Y + 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left,
+                            m_rectDrag.Top,
+                            m_rectDrag.Width + offsetSize.X,
+                            m_rectDrag.Height + offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
 
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + _offsetRectInside.X,
-                                  _dragRectInside.Top + _offsetRectInside.Y,
-                                 _dragRectInside.Width,
-                                 _dragRectInside.Height);
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + m_offsetRectInsidePoint.Y,
+                                 m_rectInsideDrag.Width,
+                                 m_rectInsideDrag.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.BottomRightChild)
+                    else if (m_dragAnchor == AnchorPoint.BottomRightChild)
                     {
-                        clamped = new Point(Math.Max(_rectInside.TopLeft.X + 10d, point.X),
-                            Math.Max(_rectInside.TopLeft.Y + 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left,
-                            _dragRectInside.Top,
-                            _dragRectInside.Width + offsetSize.X,
-                            _dragRectInside.Height + offsetSize.Y);
+                        clamped = new Point(Math.Max(m_rectInside.TopLeft.X + 10d, point.X),
+                            Math.Max(m_rectInside.TopLeft.Y + 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left,
+                            m_rectInsideDrag.Top,
+                            m_rectInsideDrag.Width + offsetSize.X,
+                            m_rectInsideDrag.Height + offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
 
-                        _rect = new Rect(
-                                  _dragRect.Left - _offsetRectInside.X,
-                                  _dragRect.Top - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_rect = new Rect(
+                                  m_rectDrag.Left - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
 
                 case AnchorPoint.MidTop:
                 case AnchorPoint.MidTopChild:
-                    if (_dragAnchor == AnchorPoint.MidTop)
+                    if (m_dragAnchor == AnchorPoint.MidTop)
                     {
-                        clamped = new Point(Math.Min(_rect.BottomRight.X - 10d, point.X),
-                            Math.Min(_rect.BottomRight.Y - 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left,
-                            _dragRect.Top + offsetSize.Y,
-                            _dragRect.Width,
-                            _dragRect.Height - offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rect.BottomRight.X - 10d, point.X),
+                            Math.Min(m_rect.BottomRight.Y - 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left,
+                            m_rectDrag.Top + offsetSize.Y,
+                            m_rectDrag.Width,
+                            m_rectDrag.Height - offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + _offsetRectInside.X,
-                                  _dragRectInside.Top + offsetSize.Y + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + offsetSize.Y + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.MidTopChild)
+                    else if (m_dragAnchor == AnchorPoint.MidTopChild)
                     {
-                        clamped = new Point(Math.Min(_rectInside.BottomRight.X - 10d, point.X),
-                            Math.Min(_rectInside.BottomRight.Y - 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left,
-                            _dragRectInside.Top + offsetSize.Y,
-                            _dragRectInside.Width,
-                            _dragRectInside.Height - offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rectInside.BottomRight.X - 10d, point.X),
+                            Math.Min(m_rectInside.BottomRight.Y - 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left,
+                            m_rectInsideDrag.Top + offsetSize.Y,
+                            m_rectInsideDrag.Width,
+                            m_rectInsideDrag.Height - offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left - _offsetRectInside.X,
-                                  _dragRect.Top + offsetSize.Y - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top + offsetSize.Y - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
                 case AnchorPoint.MidBottom:
                 case AnchorPoint.MidBottomChild:
-                    if (_dragAnchor == AnchorPoint.MidBottom)
+                    if (m_dragAnchor == AnchorPoint.MidBottom)
                     {
-                        clamped = new Point(Math.Min(_rect.TopRight.X - 10d, point.X),
-                            Math.Max(_rect.TopRight.Y + 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left,
-                            _dragRect.Top,
-                            _dragRect.Width,
-                            _dragRect.Height + offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rect.TopRight.X - 10d, point.X),
+                            Math.Max(m_rect.TopRight.Y + 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left,
+                            m_rectDrag.Top,
+                            m_rectDrag.Width,
+                            m_rectDrag.Height + offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + _offsetRectInside.X,
-                                  _dragRectInside.Top + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.MidBottomChild)
+                    else if (m_dragAnchor == AnchorPoint.MidBottomChild)
                     {
-                        clamped = new Point(Math.Min(_rectInside.TopRight.X - 10d, point.X),
-                            Math.Max(_rectInside.TopRight.Y + 10d, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left,
-                            _dragRectInside.Top,
-                            _dragRectInside.Width,
-                            _dragRectInside.Height + offsetSize.Y);
+                        clamped = new Point(Math.Min(m_rectInside.TopRight.X - 10d, point.X),
+                            Math.Max(m_rectInside.TopRight.Y + 10d, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left,
+                            m_rectInsideDrag.Top,
+                            m_rectInsideDrag.Width,
+                            m_rectInsideDrag.Height + offsetSize.Y);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left - _offsetRectInside.X,
-                                  _dragRect.Top - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
                 case AnchorPoint.MidLeft:
                 case AnchorPoint.MidLeftChild:
-                    if (_dragAnchor == AnchorPoint.MidLeft)
+                    if (m_dragAnchor == AnchorPoint.MidLeft)
                     {
-                        clamped = new Point(Math.Min(_rect.TopRight.X - 10d, point.X),
-                            Math.Max(_rect.TopRight.Y, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left + offsetSize.X,
-                            _dragRect.Top,
-                            _dragRect.Width - offsetSize.X,
-                            _dragRect.Height);
+                        clamped = new Point(Math.Min(m_rect.TopRight.X - 10d, point.X),
+                            Math.Max(m_rect.TopRight.Y, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left + offsetSize.X,
+                            m_rectDrag.Top,
+                            m_rectDrag.Width - offsetSize.X,
+                            m_rectDrag.Height);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + offsetSize.X + _offsetRectInside.X,
-                                  _dragRectInside.Top + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + offsetSize.X + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.MidLeftChild)
+                    else if (m_dragAnchor == AnchorPoint.MidLeftChild)
                     {
-                        clamped = new Point(Math.Min(_rectInside.TopRight.X - 10d, point.X),
-                            Math.Max(_rectInside.TopRight.Y, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left + offsetSize.X,
-                            _dragRectInside.Top,
-                            _dragRectInside.Width - offsetSize.X,
-                            _dragRectInside.Height);
+                        clamped = new Point(Math.Min(m_rectInside.TopRight.X - 10d, point.X),
+                            Math.Max(m_rectInside.TopRight.Y, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left + offsetSize.X,
+                            m_rectInsideDrag.Top,
+                            m_rectInsideDrag.Width - offsetSize.X,
+                            m_rectInsideDrag.Height);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left + offsetSize.X - _offsetRectInside.X,
-                                  _dragRect.Top - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left + offsetSize.X - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
                 case AnchorPoint.MidRight:
                 case AnchorPoint.MidRightChild:
-                    if (_dragAnchor == AnchorPoint.MidRight)
+                    if (m_dragAnchor == AnchorPoint.MidRight)
                     {
-                        clamped = new Point(Math.Max(_rect.TopLeft.X + 10d, point.X),
-                            Math.Max(_rect.TopLeft.Y, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rect = new Rect(
-                            _dragRect.Left,
-                            _dragRect.Top,
-                            _dragRect.Width + offsetSize.X,
-                            _dragRect.Height);
+                        clamped = new Point(Math.Max(m_rect.TopLeft.X + 10d, point.X),
+                            Math.Max(m_rect.TopLeft.Y, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rect = new Rect(
+                            m_rectDrag.Left,
+                            m_rectDrag.Top,
+                            m_rectDrag.Width + offsetSize.X,
+                            m_rectDrag.Height);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rectInside = new Rect(
-                                  _dragRectInside.Left + _offsetRectInside.X,
-                                  _dragRectInside.Top + _offsetRectInside.Y,
-                                 _rectInside.Width,
-                                 _rectInside.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rectInside = new Rect(
+                                  m_rectInsideDrag.Left + m_offsetRectInsidePoint.X,
+                                  m_rectInsideDrag.Top + m_offsetRectInsidePoint.Y,
+                                 m_rectInside.Width,
+                                 m_rectInside.Height);
                     }
-                    else if (_dragAnchor == AnchorPoint.MidRightChild)
+                    else if (m_dragAnchor == AnchorPoint.MidRightChild)
                     {
-                        clamped = new Point(Math.Max(_rectInside.TopLeft.X + 10d, point.X),
-                            Math.Max(_rectInside.TopLeft.Y, point.Y));
-                        offsetSize = new Point(clamped.X - _dragStart.X, clamped.Y - _dragStart.Y);
-                        _rectInside = new Rect(
-                            _dragRectInside.Left,
-                            _dragRectInside.Top,
-                            _dragRectInside.Width + offsetSize.X,
-                            _dragRectInside.Height);
+                        clamped = new Point(Math.Max(m_rectInside.TopLeft.X + 10d, point.X),
+                            Math.Max(m_rectInside.TopLeft.Y, point.Y));
+                        offsetSize = new Point(clamped.X - m_dragStartPoint.X, clamped.Y - m_dragStartPoint.Y);
+                        m_rectInside = new Rect(
+                            m_rectInsideDrag.Left,
+                            m_rectInsideDrag.Top,
+                            m_rectInsideDrag.Width + offsetSize.X,
+                            m_rectInsideDrag.Height);
 
-                        _offsetRectInside.X = (_rect.Width - _rectInside.Width) / 2 - _offsetXYInside.X;
-                        _offsetRectInside.Y = (_rect.Height - _rectInside.Height) / 2 - _offsetXYInside.Y;
-                        _rect = new Rect(
-                                  _dragRect.Left - _offsetRectInside.X,
-                                  _dragRect.Top - _offsetRectInside.Y,
-                                 _rect.Width,
-                                 _rect.Height);
+                        m_offsetRectInsidePoint.X = (m_rect.Width - m_rectInside.Width) / 2 - m_offsetXYInsidePoint.X;
+                        m_offsetRectInsidePoint.Y = (m_rect.Height - m_rectInside.Height) / 2 - m_offsetXYInsidePoint.Y;
+                        m_rect = new Rect(
+                                  m_rectDrag.Left - m_offsetRectInsidePoint.X,
+                                  m_rectDrag.Top - m_offsetRectInsidePoint.Y,
+                                 m_rect.Width,
+                                 m_rect.Height);
                     }
                     break;
 
@@ -1379,8 +1623,8 @@ namespace NpcCore.Wpf.Controls
                     //var vecX = (point.X);
                     //var vecY = (-point.Y);
 
-                    var vecX = (point.X - _centerPoint.X);
-                    var vecY = (_centerPoint.Y - point.Y);
+                    var vecX = (point.X - m_centerPoint.X);
+                    var vecY = (m_centerPoint.Y - point.Y);
 
                     var len = Math.Sqrt(vecX * vecX + vecY * vecY);
 
@@ -1397,17 +1641,17 @@ namespace NpcCore.Wpf.Controls
                         angle = -angle;
 
                     // Add (delta-radians) to rotation as degrees
-                    _rectRotation += (float)((180 / Math.PI) * angle);
-                    if (_rectRotation > 360 || _rectRotation < -360)
-                        _rectRotation = 0;
+                    m_rectRotation += (float)((180 / Math.PI) * angle);
+                    if (m_rectRotation > 360 || m_rectRotation < -360)
+                        m_rectRotation = 0;
 
                     break;
 
                 case AnchorPoint.Center:
                 case AnchorPoint.CenterChild:
                     //move this in screen-space
-                    _offsetRect = new Point(e.GetPosition(this).X - _dragStartOffset.X,
-                        e.GetPosition(this).Y - _dragStartOffset.Y);
+                    m_offsetRectPoint = new Point(e.GetPosition(this).X - m_dragStartOffsetPoint.X,
+                        e.GetPosition(this).Y - m_dragStartOffsetPoint.Y);
 
                     break;
                 default:
@@ -1424,240 +1668,292 @@ namespace NpcCore.Wpf.Controls
         }
         private void ImageEx_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_enableSelectRoiTool && !_enableLocatorTool)
+            if (!m_bEnableSelectRoiTool && !m_bEnableLocatorTool && !m_bEnableMeasureSegLineTool && !m_bEnableMeasureCircleTool)
                 return;
+
+            // Measure Segment Line
+            if (m_bEnableMeasureSegLineTool)
+            {
+                var pointCur = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
+
+                if (m_startPoint_MeasureSegLineTool == new Point(0,0) && m_startPoint_MeasureSegLineTool == new Point(0,0))
+                {
+                    // Measuring
+                    m_bMeasuringSegLine = true;
+
+                    // Select point 1
+                    m_bMeasureSegLineSelectedPt1 = true;
+
+                    m_startPoint_MeasureSegLineTool = pointCur;
+                    m_endPoint_MeasureSegLineTool = pointCur;
+
+                    this.InvalidateVisual();
+                    return;
+                }
+
+                m_bMeasureSegLineSelectedPt2 = true;
+                this.InvalidateVisual();
+
+                return;
+            }
+
+            // Measure Circle
+            if(m_bEnableMeasureCircleTool)
+            {
+                var pointCur = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
+
+                if (m_centerPoint_MeasureCircleTool == new Point(0, 0) && m_radiusPoint_MeasureCircleTool == new Point(0, 0))
+                {
+                    // Measuring
+                    m_bMeasuringCircle = true;
+
+                    // Select point 1
+                    m_bMeasureCircleSelectedPt1 = true;
+
+                    m_centerPoint_MeasureCircleTool = pointCur;
+                    m_radiusPoint_MeasureCircleTool = pointCur;
+
+                    this.InvalidateVisual();
+                    return;
+                }
+
+                m_bMeasureCircleSelectedPt2 = true;
+                this.InvalidateVisual();
+
+                return;
+            }
 
             // Compute a Screen to Rectangle transform 
 
             var mat = new Matrix();
-            if (_enableRotate == true)
-                mat.RotateAt(_rectRotation, _centerPoint.X, _centerPoint.Y);
-            mat.Translate(_offsetRect.X, _offsetRect.Y);
+            if (m_bEnableRotate == true)
+                mat.RotateAt(m_rectRotation, m_centerPoint.X, m_centerPoint.Y);
+            mat.Translate(m_offsetRectPoint.X, m_offsetRectPoint.Y);
             mat.Invert();
 
             // Mouse point in Rectangle's space. 
             var point = mat.Transform(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
 
-            var rectOutside = _rect;
-            var rectInside = _rectInside;
+            var rectOutside = m_rect;
+            var rectInside = m_rectInside;
 
-            if (_enableLocatorTool)
+            if (m_bEnableLocatorTool)
             {
                 if (rectOutside.Contains(point))
                 {
-                    _enableSelectRect = true;
-                    _enableSelectRectInside = false;
+                    m_bEnableSelectRect = true;
+                    m_bEnableSelectRectInside = false;
                     this.InvalidateVisual();
                 }
                 if (rectInside.Contains(point) && rectOutside.Contains(point))
                 {
-                    _enableSelectRectInside = true;
-                    _enableSelectRect = false;
+                    m_bEnableSelectRectInside = true;
+                    m_bEnableSelectRect = false;
                     this.InvalidateVisual();
                 }
                 else if (!rectInside.Contains(point) && !rectOutside.Contains(point))
                 {
-                    _enableSelectRect = false;
-                    _enableSelectRectInside = false;
+                    m_bEnableSelectRect = false;
+                    m_bEnableSelectRectInside = false;
                     this.InvalidateVisual();
                 }
             }
-            var rectTopLeft = new Rect(_rect.Left - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-            var rectTopRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-            var rectBottomLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-            var rectBottomRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-            var rectMidTop = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-            var rectMidBottom = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-            var rectMidLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-            var rectMidRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-            var ellipse = new EllipseGeometry(new Point(_rect.Left + _rect.Width / 2, _rect.Top - 20), _comWidth * 0.7, _comWidth * 0.7);
+            var rectTopLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectTopRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectBottomLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectBottomRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidTop = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidBottom = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+            var ellipse = new EllipseGeometry(new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top - 20), m_dComWidth * 0.7, m_dComWidth * 0.7);
 
-            var rectTopLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-            var rectTopRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-            var rectBottomLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-            var rectBottomRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-            var rectMidTopChild = new Rect(_rectInside.Left + _rectInside.Width / 2 - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-            var rectMidBottomChild = new Rect(_rectInside.Left + _rectInside.Width / 2 - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-            var rectMidLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top + _rectInside.Height / 2 - _comOffset, _comWidth, _comWidth);
-            var rectMidRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top + _rectInside.Height / 2 - _comOffset, _comWidth, _comWidth);
+            var rectTopLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectTopRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectBottomLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectBottomRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidTopChild = new Rect(m_rectInside.Left + m_rectInside.Width / 2 - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidBottomChild = new Rect(m_rectInside.Left + m_rectInside.Width / 2 - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top + m_rectInside.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+            var rectMidRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top + m_rectInside.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
 
-            if (!_drag)
+            if (!m_bDrag)
             {
                 //We're in Rectangle space now, so its simple box-point intersection test
                 if (rectTopLeft.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.TopLeft;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.TopLeft;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectTopLeftChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.TopLeftChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.TopLeftChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectTopRight.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.TopRight;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.TopRight;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectTopRightChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.TopRightChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.TopRightChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectBottomLeft.Contains(point))
                 {
 
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.BottomLeft;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.BottomLeft;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectBottomLeftChild.Contains(point))
                 {
 
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.BottomLeftChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.BottomLeftChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectBottomRight.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.BottomRight;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.BottomRight;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectBottomRightChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.BottomRightChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.BottomRightChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidTop.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidTop;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidTop;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidTopChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidTopChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidTopChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidBottom.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidBottom;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidBottom;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidBottomChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidBottomChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidBottomChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidLeft.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidLeft;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidLeft;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidLeftChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidLeftChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidLeftChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidRight.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidRight;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidRight;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectMidRightChild.Contains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.MidRightChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.MidRightChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (ellipse.FillContains(point))
                 {
-                    _drag = true;
-                    _dragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.Rotation;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _isSelectingRoi = true;
+                    m_bDrag = true;
+                    m_dragStartPoint = new Point(point.X, point.Y);
+                    m_dragAnchor = AnchorPoint.Rotation;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectOutside.Contains(point))
                 {
-                    _drag = true;
+                    m_bDrag = true;
                     //imageEx.DragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.Center;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _dragStartOffset = new Point(e.GetPosition(this).X - _offsetRect.X, e.GetPosition(this).Y - _offsetRect.Y);
-                    _isSelectingRoi = true;
+                    m_dragAnchor = AnchorPoint.Center;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_dragStartOffsetPoint = new Point(e.GetPosition(this).X - m_offsetRectPoint.X, e.GetPosition(this).Y - m_offsetRectPoint.Y);
+                    m_bSelectingRoi = true;
                 }
                 else if (rectInside.Contains(point))
                 {
-                    _drag = true;
+                    m_bDrag = true;
                     //imageEx.DragStart = new Point(point.X, point.Y);
-                    _dragAnchor = AnchorPoint.CenterChild;
-                    _dragRect = new Rect(_rect.Left, _rect.Top, _rect.Width, _rect.Height);
-                    _dragRectInside = new Rect(_rectInside.Left, _rectInside.Top, _rectInside.Width, _rectInside.Height);
-                    _dragStartOffset = new Point(e.GetPosition(this).X - _offsetRect.X, e.GetPosition(this).Y - _offsetRect.Y);
-                    _isSelectingRoi = true;
+                    m_dragAnchor = AnchorPoint.CenterChild;
+                    m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
+                    m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
+                    m_dragStartOffsetPoint = new Point(e.GetPosition(this).X - m_offsetRectPoint.X, e.GetPosition(this).Y - m_offsetRectPoint.Y);
+                    m_bSelectingRoi = true;
                 }
                 else
                 {
@@ -1666,7 +1962,7 @@ namespace NpcCore.Wpf.Controls
                     //origin = new Point(tt.X, tt.Y);
                     //this.Cursor = Cursors.Hand;
                     //this.CaptureMouse();
-                    _isSelectingRoi = false;
+                    m_bSelectingRoi = false;
                 }
             }
         }
@@ -1680,28 +1976,30 @@ namespace NpcCore.Wpf.Controls
         #region Public Properties
         public bool EnableSelectRectInside
         {
-            get => _enableSelectRectInside;
-            set => _enableSelectRectInside = value;
+            get => m_bEnableSelectRectInside;
+            set => m_bEnableSelectRectInside = value;
         }
         public bool EnableSelectRect
         {
-            get => _enableSelectRect;
-            set => _enableSelectRect = value;
+            get => m_bEnableSelectRect;
+            set => m_bEnableSelectRect = value;
         }
         public bool EnableLocatorTool
         {
-            get => _enableLocatorTool;
+            get => m_bEnableLocatorTool;
             set
             {
-                if (SetProperty(ref _enableLocatorTool, value))
+                if (SetProperty(ref m_bEnableLocatorTool, value))
                 {
-                    _enableSelectRoiTool = false;
-                    _isSelectingRoi = false;
-                    _enableSelectRect = false;
-                    _enableRotate = false;
-                    _drag = false;
+                    m_bEnableSelectRoiTool = false;
+                    m_bEnableMeasureSegLineTool = false;
+                    m_bSelectingRoi = false;
+                    m_bMeasuringSegLine = false;
+                    m_bEnableSelectRect = false;
+                    m_bEnableRotate = false;
+                    m_bDrag = false;
 
-                    ToolType = EnToolType.ToolType_LocatorTool;
+                    ToolType = emToolType.ToolType_LocatorTool;
 
                     this.InvalidateVisual();
                 }
@@ -1709,18 +2007,20 @@ namespace NpcCore.Wpf.Controls
         }
         public bool EnableSelectRoiTool
         {
-            get => _enableSelectRoiTool;
+            get => m_bEnableSelectRoiTool;
             set
             {
-                if (SetProperty(ref _enableSelectRoiTool, value))
+                if (SetProperty(ref m_bEnableSelectRoiTool, value))
                 {
-                    _enableLocatorTool = false;
-                    _isSelectingRoi = true;
-                    _enableSelectRect = true;
+                    m_bEnableLocatorTool = false;
+                    m_bEnableMeasureSegLineTool = false;
+                    m_bMeasuringSegLine = false;
+                    m_bSelectingRoi = true;
+                    m_bEnableSelectRect = true;
                     //_enableRotate = true;
-                    _drag = true;
+                    m_bDrag = true;
 
-                    ToolType = EnToolType.ToolType_SelectRoiTool;
+                    ToolType = emToolType.ToolType_SelectRoiTool;
 
                     this.InvalidateVisual();
                 }
@@ -1728,160 +2028,176 @@ namespace NpcCore.Wpf.Controls
         }
         public bool EnableInspectTool
         {
-            get => _enableInspectTool;
+            get => m_bEnableInspectTool;
             set
             {
-                if (SetProperty(ref _enableInspectTool, value))
+                if (SetProperty(ref m_bEnableInspectTool, value))
                 {
 
                 }
             }
         }
+        public bool EnableMeasureSegLineTool
+        {
+            get => m_bEnableMeasureSegLineTool;
+            set
+            {
+                if (SetProperty(ref m_bEnableMeasureSegLineTool, value))
+                {
+                    m_bEnableLocatorTool = false;
+                    m_bEnableSelectRoiTool = false;
+                    m_bEnableMeasureCircleTool = false;
+                    m_bSelectingRoi = false;
+                    m_bEnableSelectRect = false;
+
+                    ToolType = emToolType.ToolType_MeasurementTool;
+
+                    this.InvalidateVisual();
+                }
+            }
+        }
+        public bool EnableMeasureCircleTool
+        {
+            get => m_bEnableMeasureCircleTool;
+            set
+            {
+                if (SetProperty(ref m_bEnableMeasureCircleTool, value))
+                {
+                    m_bEnableLocatorTool = false;
+                    m_bEnableSelectRoiTool = false;
+                    m_bEnableMeasureSegLineTool = false;
+                    m_bSelectingRoi = false;
+                    m_bEnableSelectRect = false;
+
+                    ToolType = emToolType.ToolType_MeasurementTool;
+
+                    this.InvalidateVisual();
+                }
+            }
+        }
         public bool EnableRotate
         {
-            get => _enableRotate;
-            set => _enableRotate = value;
+            get => m_bEnableRotate;
+            set => m_bEnableRotate = value;
         }
         public bool IsSelectingRoi
         {
-            get => _isSelectingRoi;
-            set => _isSelectingRoi = value;
+            get => m_bSelectingRoi;
+            set => m_bSelectingRoi = value;
+        }
+        public bool IsMeasuringSegLine
+        {
+            get => m_bMeasuringSegLine;
+            set => m_bMeasuringSegLine = value;
+        }
+        public bool IsMeasuringCircle
+        {
+            get => m_bMeasuringCircle;
+            set => m_bMeasuringCircle = value;
         }
         public bool EnableSelectPoly
         {
-            get => _enableSelectPoly;
-            set => _enableSelectPoly = value;
+            get => m_bEnableSelectPoly;
+            set => m_bEnableSelectPoly = value;
         }
         public Point CenterPoint
         {
-            get => _centerPoint;
-            set => _centerPoint = value;
+            get => m_centerPoint;
+            set => m_centerPoint = value;
         }
         public Point CenterPointReal
         {
-            get => _centerPointReal;
-            set => _centerPointReal = value;
+            get => m_centerPointReal;
+            set => m_centerPointReal = value;
         }
         public bool Drag
         {
-            get => _drag;
-            set => _drag = value;
+            get => m_bDrag;
+            set => m_bDrag = value;
         }
         public bool CompletedSelectRoi
         {
-            get => _completedSelectRoi;
-            set => _completedSelectRoi = value;
+            get => m_bCompletedSelectRoi;
+            set => m_bCompletedSelectRoi = value;
         }
         public Size DragSize
         {
-            get => _dragSize;
-            set => _dragSize = value;
+            get => m_szDragSize;
+            set => m_szDragSize = value;
         }
         public Point DragStart
         {
-            get => _dragStart;
-            set => _dragStart = value;
+            get => m_dragStartPoint;
+            set => m_dragStartPoint = value;
         }
         public Point DragStartOffset
         {
-            get => _dragStartOffset;
-            set => _dragStartOffset = value;
+            get => m_dragStartOffsetPoint;
+            set => m_dragStartOffsetPoint = value;
         }
         public Rect DragRect
         {
-            get => _dragRect;
-            set => _dragRect = value;
+            get => m_rectDrag;
+            set => m_rectDrag = value;
         }
         public Rect DragRectInside
         {
-            get => _dragRectInside;
-            set => _dragRectInside = value;
+            get => m_rectInsideDrag;
+            set => m_rectInsideDrag = value;
         }
         public AnchorPoint DragAnchor
         {
-            get => _dragAnchor;
-            set => _dragAnchor = value;
+            get => m_dragAnchor;
+            set => m_dragAnchor = value;
         }
         public Rect Rect
         {
-            get => _rect;
-            set => _rect = value;
+            get => m_rect;
+            set => m_rect = value;
         }
         public Rect RectReal
         {
-            get => _rectReal;
-            set => _rectReal = value;
+            get => m_rectReal;
+            set => m_rectReal = value;
         }
         public Rect RectInside
         {
-            get => _rectInside;
-            set => _rectInside = value;
+            get => m_rectInside;
+            set => m_rectInside = value;
         }
         public Rect RectTransform
         {
-            get => _rectTransform;
-            set => _rectTransform = value;
+            get => m_rectTransform;
+            set => m_rectTransform = value;
         }
         public Point OffsetRect
         {
-            get => _offsetRect;
-            set => _offsetRect = value;
+            get => m_offsetRectPoint;
+            set => m_offsetRectPoint = value;
         }
         public Point OffsetRectInside
         {
-            get => _offsetRectInside;
-            set => _offsetRectInside = value;
+            get => m_offsetRectInsidePoint;
+            set => m_offsetRectInsidePoint = value;
         }
         public Point OffsetXYInside
         {
-            get => _offsetXYInside;
-            set => _offsetXYInside = value;
+            get => m_offsetXYInsidePoint;
+            set => m_offsetXYInsidePoint = value;
         }
         public Single RectRotation
         {
-            get => _rectRotation;
-            set => _rectRotation = value;
+            get => m_rectRotation;
+            set => m_rectRotation = value;
         }
-        public EnToolType ToolType
+        public emToolType ToolType
         {
-            get => _toolType;
+            get => m_toolType;
             set
             {
-                if (SetProperty(ref _toolType, value))
+                if (SetProperty(ref m_toolType, value))
                 {
                     // change mode tool
-                }
-            }
-        }
-        public EnGrabMode GrabMode
-        {
-            get => _grabMode;
-            set
-            {
-                if (SetProperty(ref _grabMode, value))
-                {
-                    // change mode grab
-                    if (_grabMode == EnGrabMode.GrabMode_ContinuousGrab)
-                    {
-                        EnableSelectRoiTool = false;
-                        EnableLocatorTool = false;
-                    }
-                }
-            }
-        }
-        public EnViewMode ViewMode
-        {
-            get => _viewMode;
-            set
-            {
-                if (SetProperty(ref _viewMode, value))
-                {
-                    if (_viewMode == EnViewMode.ViewMode_ViewResult)
-                    {
-                        EnableSelectRoiTool = false;
-                        EnableLocatorTool = false;
-                    }
-                    this.InvalidateVisual();
                 }
             }
         }
@@ -1890,7 +2206,7 @@ namespace NpcCore.Wpf.Controls
             get => m_bmp;
             set
             {
-                if(SetProperty(ref m_bmp, value))
+                if (SetProperty(ref m_bmp, value))
                 {
 
                 }
@@ -1912,7 +2228,7 @@ namespace NpcCore.Wpf.Controls
             Point p4 = new Point(cntPt.X + seg, cntPt.Y + squareEdge);
             dc.DrawLine(new Pen(Brushes.LightSalmon, 1), p3, p4);
 
-            dc.DrawEllipse(Brushes.LightSalmon, new Pen(Brushes.LightSalmon, 1), cntPt, _comWidth * 0.1, _comWidth * 0.1);
+            dc.DrawEllipse(Brushes.LightSalmon, new Pen(Brushes.LightSalmon, 1), cntPt, m_dComWidth * 0.1, m_dComWidth * 0.1);
         }
         private void DrawAxis(DrawingContext dc, Point p1, Point p2, float scale = 0.2f)
         {
@@ -1936,10 +2252,10 @@ namespace NpcCore.Wpf.Controls
         private void RenderSelectRectTool(DrawingContext dc)
         {
             //calculate center point
-            _centerPoint = new Point(_rect.Left + _rect.Width / 2, _rect.Top + _rect.Height / 2);
-            _centerPointReal.X = _centerPoint.X + _offsetRect.X;
-            _centerPointReal.Y = _centerPoint.Y + _offsetRect.Y;
-            _rectReal = new Rect(new Point(_rect.X + _offsetRect.X, _rect.Y + _offsetRect.Y), new Size(_rect.Width, _rect.Height));
+            m_centerPoint = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top + m_rect.Height / 2);
+            m_centerPointReal.X = m_centerPoint.X + m_offsetRectPoint.X;
+            m_centerPointReal.Y = m_centerPoint.Y + m_offsetRectPoint.Y;
+            m_rectReal = new Rect(new Point(m_rect.X + m_offsetRectPoint.X, m_rect.Y + m_offsetRectPoint.Y), new Size(m_rect.Width, m_rect.Height));
 
             //string puttext = "Angle: " + _rectRotation + "\n" + "Offset X: " + _offsetRect.X
             //    + " , " + "Offset Y: " + _offsetRect.Y + "\n"
@@ -1953,63 +2269,63 @@ namespace NpcCore.Wpf.Controls
             //dc.DrawText(formattedText, new Point(10, 10));
 
             Matrix mat1 = new Matrix();
-            if (_enableRotate == true)
-                mat1.RotateAt(_rectRotation, _centerPoint.X, _centerPoint.Y);
-            mat1.Translate(_offsetRect.X, _offsetRect.Y);
+            if (m_bEnableRotate == true)
+                mat1.RotateAt(m_rectRotation, m_centerPoint.X, m_centerPoint.Y);
+            mat1.Translate(m_offsetRectPoint.X, m_offsetRectPoint.Y);
 
             MatrixTransform matrixTransform1 = new MatrixTransform(mat1);
             dc.PushTransform(matrixTransform1);
             dc.PushOpacity(0.35);
 
 
-            if (!_enableSelectRect)
+            if (!m_bEnableSelectRect)
             {
-                dc.DrawRectangle(Brushes.GreenYellow, new Pen(Brushes.LightYellow, 2), _rect);
+                dc.DrawRectangle(Brushes.GreenYellow, new Pen(Brushes.LightYellow, 2), m_rect);
             }
             else
             {
                 // All out gizmo rectangles are defined in Rectangle Parent Space
-                Rect rectTopLeft = new Rect(_rect.Left - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectTopRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectBottomLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectBottomRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectMidTop = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectMidBottom = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectMidLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-                Rect rectMidRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-                Rect rectCenter = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
+                Rect rectTopLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectTopRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectBottomLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectBottomRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidTop = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidBottom = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectCenter = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
 
                 //Draw Rectangle Parent
-                dc.DrawRectangle(colorBgRect, new Pen(colorPen, _thicknessPen), _rect);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectTopLeft);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectTopRight);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectBottomLeft);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectBottomRight);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidTop);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidBottom);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidLeft);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidRight);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectCenter);
+                dc.DrawRectangle(colorBgRect, new Pen(colorPen, m_dThicknessPen), m_rect);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectTopLeft);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectTopRight);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectBottomLeft);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectBottomRight);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidTop);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidBottom);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidLeft);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidRight);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectCenter);
 
 
                 //draw center
-                dc.DrawLine(new Pen(colorCrossLine, _thicknessPen), new Point(_centerPoint.X - 10d,
-                    _centerPoint.Y), new Point(_centerPoint.X + 10d, _centerPoint.Y));
-                dc.DrawLine(new Pen(colorCrossLine, _thicknessPen), new Point(_centerPoint.X,
-                    _centerPoint.Y - 10d), new Point(_centerPoint.X, _centerPoint.Y + 10d));
+                dc.DrawLine(new Pen(colorCrossLine, m_dThicknessPen), new Point(m_centerPoint.X - 10d,
+                    m_centerPoint.Y), new Point(m_centerPoint.X + 10d, m_centerPoint.Y));
+                dc.DrawLine(new Pen(colorCrossLine, m_dThicknessPen), new Point(m_centerPoint.X,
+                    m_centerPoint.Y - 10d), new Point(m_centerPoint.X, m_centerPoint.Y + 10d));
                 //dc.DrawEllipse(colorCrossLine, null, _centerPoint, 2d, 2d);
             }
-            if (_enableRotate == true)
+            if (m_bEnableRotate == true)
             {
                 //3 point draw line and ellipse
-                Point pointLine1 = new Point(_rect.Left + _rect.Width / 2, _rect.Top - _comOffset);
-                Point pointLine2 = new Point(_rect.Left + _rect.Width / 2, _rect.Top - 40);
-                Point pointCenterEllipse = new Point(_rect.Left + _rect.Width / 2, _rect.Top - 40);
+                Point pointLine1 = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top - m_dComOffset);
+                Point pointLine2 = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top - 40);
+                Point pointCenterEllipse = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top - 40);
 
                 //draw line rotate
-                dc.DrawLine(new Pen(colorPen, _thicknessPen), pointLine1, pointLine2);
+                dc.DrawLine(new Pen(colorPen, m_dThicknessPen), pointLine1, pointLine2);
                 //draw ellipse rotate
-                dc.DrawEllipse(colorBgCorner, new Pen(colorPen, _thicknessPen), pointCenterEllipse, _comWidth * 0.6, _comWidth * 0.6);
+                dc.DrawEllipse(colorBgCorner, new Pen(colorPen, m_dThicknessPen), pointCenterEllipse, m_dComWidth * 0.6, m_dComWidth * 0.6);
             }
 
             dc.Pop();
@@ -2021,124 +2337,263 @@ namespace NpcCore.Wpf.Controls
         private void RenderLocatorTool(DrawingContext dc)
         {
             //calculate center point
-            _centerPoint = new Point(_rect.Left + _rect.Width / 2, _rect.Top + _rect.Height / 2);
-            _centerPointReal.X = _centerPoint.X + _offsetRect.X;
-            _centerPointReal.Y = _centerPoint.Y + _offsetRect.Y;
-            _rectReal = new Rect(new Point(_rect.X + _offsetRect.X, _rect.Y + _offsetRect.Y), new Size(_rect.Width, _rect.Height));
+            m_centerPoint = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top + m_rect.Height / 2);
+            m_centerPointReal.X = m_centerPoint.X + m_offsetRectPoint.X;
+            m_centerPointReal.Y = m_centerPoint.Y + m_offsetRectPoint.Y;
+            m_rectReal = new Rect(new Point(m_rect.X + m_offsetRectPoint.X, m_rect.Y + m_offsetRectPoint.Y), new Size(m_rect.Width, m_rect.Height));
 
 
             Matrix mat1 = new Matrix();
-            mat1.Translate(_offsetRect.X, _offsetRect.Y);
+            mat1.Translate(m_offsetRectPoint.X, m_offsetRectPoint.Y);
 
             MatrixTransform matrixTransform1 = new MatrixTransform(mat1);
             dc.PushTransform(matrixTransform1);
             dc.PushOpacity(0.35);
 
-            if (!_enableSelectRect)
+            if (!m_bEnableSelectRect)
             {
-                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.LightYellow, 2), _rect);
+                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.LightYellow, 2), m_rect);
             }
             else
             {
                 // All out gizmo rectangles are defined in Rectangle Parent Space
-                Rect rectTopLeft = new Rect(_rect.Left - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectTopRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectBottomLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectBottomRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectMidTop = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectMidBottom = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top + _rect.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectMidLeft = new Rect(_rect.Left - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-                Rect rectMidRight = new Rect(_rect.Left + _rect.Width - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
-                Rect rectCenter = new Rect(_rect.Left + _rect.Width / 2 - _comOffset, _rect.Top + _rect.Height / 2 - _comOffset, _comWidth, _comWidth);
+                Rect rectTopLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectTopRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectBottomLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectBottomRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidTop = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidBottom = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top + m_rect.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidLeft = new Rect(m_rect.Left - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidRight = new Rect(m_rect.Left + m_rect.Width - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectCenter = new Rect(m_rect.Left + m_rect.Width / 2 - m_dComOffset, m_rect.Top + m_rect.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
 
                 //Draw Rectangle Parent
-                dc.DrawRectangle(colorBgRect, new Pen(colorPen, _thicknessPen), _rect);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectTopLeft);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectTopRight);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectBottomLeft);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectBottomRight);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidTop);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidBottom);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidLeft);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectMidRight);
-                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, _thicknessPen), rectCenter);
+                dc.DrawRectangle(colorBgRect, new Pen(colorPen, m_dThicknessPen), m_rect);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectTopLeft);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectTopRight);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectBottomLeft);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectBottomRight);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidTop);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidBottom);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidLeft);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectMidRight);
+                dc.DrawRectangle(colorBgCorner, new Pen(colorPen, m_dThicknessPen), rectCenter);
 
 
                 //draw center
-                dc.DrawLine(new Pen(colorCrossLine, _thicknessPen), new Point(_centerPoint.X - 10d,
-                    _centerPoint.Y), new Point(_centerPoint.X + 10d, _centerPoint.Y));
-                dc.DrawLine(new Pen(colorCrossLine, _thicknessPen), new Point(_centerPoint.X,
-                    _centerPoint.Y - 10d), new Point(_centerPoint.X, _centerPoint.Y + 10d));
+                dc.DrawLine(new Pen(colorCrossLine, m_dThicknessPen), new Point(m_centerPoint.X - 10d,
+                    m_centerPoint.Y), new Point(m_centerPoint.X + 10d, m_centerPoint.Y));
+                dc.DrawLine(new Pen(colorCrossLine, m_dThicknessPen), new Point(m_centerPoint.X,
+                    m_centerPoint.Y - 10d), new Point(m_centerPoint.X, m_centerPoint.Y + 10d));
                 //dc.DrawEllipse(Brushes.Red, null, _centerPoint, 2d, 2d);
             }
 
-            if (!_enableSelectRectInside)
+            if (!m_bEnableSelectRectInside)
             {
-                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.OrangeRed, 2), _rectInside);
+                dc.DrawRectangle(Brushes.LightBlue, new Pen(Brushes.OrangeRed, 2), m_rectInside);
             }
             else
             {
                 // All out gizmo rectangles are defined in Rectangle Child Space
-                Rect rectTopLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectTopRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectBottomLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectBottomRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectMidTopChild = new Rect(_rectInside.Left + _rectInside.Width / 2 - _comOffset, _rectInside.Top - _comOffset, _comWidth, _comWidth);
-                Rect rectMidBottomChild = new Rect(_rectInside.Left + _rectInside.Width / 2 - _comOffset, _rectInside.Top + _rectInside.Height - _comOffset, _comWidth, _comWidth);
-                Rect rectMidLeftChild = new Rect(_rectInside.Left - _comOffset, _rectInside.Top + _rectInside.Height / 2 - _comOffset, _comWidth, _comWidth);
-                Rect rectMidRightChild = new Rect(_rectInside.Left + _rectInside.Width - _comOffset, _rectInside.Top + _rectInside.Height / 2 - _comOffset, _comWidth, _comWidth);
+                Rect rectTopLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectTopRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectBottomLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectBottomRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidTopChild = new Rect(m_rectInside.Left + m_rectInside.Width / 2 - m_dComOffset, m_rectInside.Top - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidBottomChild = new Rect(m_rectInside.Left + m_rectInside.Width / 2 - m_dComOffset, m_rectInside.Top + m_rectInside.Height - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidLeftChild = new Rect(m_rectInside.Left - m_dComOffset, m_rectInside.Top + m_rectInside.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
+                Rect rectMidRightChild = new Rect(m_rectInside.Left + m_rectInside.Width - m_dComOffset, m_rectInside.Top + m_rectInside.Height / 2 - m_dComOffset, m_dComWidth, m_dComWidth);
                 //var rectCenterChild = new Rect(_rectChild.Left + _rectChild.Width / 2 - 10f, _rectChild.Top + _rectChild.Height / 2 - 10f, 20f, 20f);
 
                 //Draw Rectangle Child
-                dc.DrawRectangle(Brushes.LightSlateGray, new Pen(Brushes.OrangeRed, _thicknessPen), _rectInside);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectTopLeftChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectTopRightChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectBottomLeftChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectBottomRightChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectMidTopChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectMidBottomChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectMidLeftChild);
-                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, _thicknessPen), rectMidRightChild);
+                dc.DrawRectangle(Brushes.LightSlateGray, new Pen(Brushes.OrangeRed, m_dThicknessPen), m_rectInside);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectTopLeftChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectTopRightChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectBottomLeftChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectBottomRightChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectMidTopChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectMidBottomChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectMidLeftChild);
+                dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Blue, m_dThicknessPen), rectMidRightChild);
                 //dc.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.Black, 1), rectCenterChild);
             }
             dc.Pop();
         }
 
+        [Obsolete]
+        private void RenderMeasureSegLineTool(DrawingContext dc)
+        {
+            if (BMP == null)
+                return;
+
+            if (m_startPoint_MeasureSegLineTool.X == 0 && m_endPoint_MeasureSegLineTool.X == 0 &&
+                m_endPoint_MeasureSegLineTool.Y == 0 && m_endPoint_MeasureSegLineTool.Y == 0)
+            {
+                dc.PushOpacity(0.5);
+
+                dc.DrawText(new FormattedText("MOUSE CLICK start to measure segment line", CultureInfo.InvariantCulture, FlowDirection.LeftToRight, 
+                    new Typeface(new FontFamily("Segoe UI"), FontStyles.Oblique, FontWeights.Bold, FontStretches.Normal), 26, Brushes.OrangeRed), new Point(200, 200));
+                dc.Pop();
+                return;
+            }
+
+            dc.PushOpacity(1.0);
+            double dThicknessPen = 2.0;
+
+            Pen penDash = new Pen(colorCrossLine, dThicknessPen);
+            penDash.DashStyle = DashStyles.Dash;
+            penDash.DashCap = PenLineCap.Flat;
+            penDash.LineJoin = PenLineJoin.Miter;
+
+            // cross line 1
+            dc.DrawLine(new Pen(Brushes.Cyan, dThicknessPen), new Point(m_startPoint_MeasureSegLineTool.X,
+                0), new Point(m_startPoint_MeasureSegLineTool.X, BMP.Height));
+            dc.DrawLine(new Pen(Brushes.Cyan, dThicknessPen), new Point(0, m_startPoint_MeasureSegLineTool.Y), 
+                new Point(BMP.Width, m_startPoint_MeasureSegLineTool.Y));
+            dc.DrawEllipse(Brushes.Red, null, m_startPoint_MeasureSegLineTool, 3d, 3d);
+
+            // cross line 2
+            dc.DrawLine(new Pen(Brushes.Magenta, dThicknessPen), new Point(m_endPoint_MeasureSegLineTool.X,
+                0), new Point(m_endPoint_MeasureSegLineTool.X, BMP.Height));
+            dc.DrawLine(new Pen(Brushes.Magenta, dThicknessPen), new Point(0, m_endPoint_MeasureSegLineTool.Y),
+                new Point(BMP.Width, m_endPoint_MeasureSegLineTool.Y));
+            dc.DrawEllipse(Brushes.Red, null, m_endPoint_MeasureSegLineTool, 3d, 3d);
+
+            // draw dash line distance
+            dc.DrawLine(penDash, m_startPoint_MeasureSegLineTool, m_endPoint_MeasureSegLineTool);
+
+            if(m_bMeasureSegLineSelectedPt1 && m_bMeasureSegLineSelectedPt2)
+            {
+                double deltaX = Math.Round(Math.Abs(m_endPoint_MeasureSegLineTool.X - m_startPoint_MeasureSegLineTool.X), 1);
+                double deltaY = Math.Round(Math.Abs(m_endPoint_MeasureSegLineTool.Y - m_startPoint_MeasureSegLineTool.Y), 1);
+                double hypotenuse = Math.Round((Math.Sqrt(deltaX * deltaX + deltaY * deltaY)), 1);
+
+                Point pointPutText = new Point(0, 0);
+                if (m_endPoint_MeasureSegLineTool.X > m_startPoint_MeasureSegLineTool.X)
+                {
+                    pointPutText = new Point(m_endPoint_MeasureSegLineTool.X + 10, m_endPoint_MeasureSegLineTool.Y + 10);
+                }
+                else
+                {
+                    pointPutText = new Point(m_endPoint_MeasureSegLineTool.X + deltaX + 10, m_endPoint_MeasureSegLineTool.Y + 10);
+                }
+
+                dc.DrawText(new FormattedText(string.Format("Start Point: X = {0} | Y = {1}", (int)m_startPoint_MeasureSegLineTool.X, (int)m_startPoint_MeasureSegLineTool.Y), 
+                    CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), pointPutText);
+                dc.DrawText(new FormattedText(string.Format("End Point: X = {0} | Y = {1}", (int)m_endPoint_MeasureSegLineTool.X, (int)m_endPoint_MeasureSegLineTool.Y),
+                   CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), new Point(pointPutText.X, pointPutText.Y + 20));
+                dc.DrawText(new FormattedText(string.Format("Delta X = {0} pxl", deltaX),
+                   CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), new Point(pointPutText.X, pointPutText.Y + 40));
+                dc.DrawText(new FormattedText(string.Format("Delta Y = {0} pxl", deltaY),
+                   CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), new Point(pointPutText.X, pointPutText.Y + 60));
+                dc.DrawText(new FormattedText(string.Format("Hypotenuse = {0} pxl", hypotenuse),
+                   CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), new Point(pointPutText.X, pointPutText.Y + 80));
+            }
+
+            dc.Pop();
+        }
+        [Obsolete]
+        private void RenderMeasureCircleTool(DrawingContext dc)
+        {
+            if (BMP == null)
+                return;
+
+            if (m_centerPoint_MeasureCircleTool.X == 0 && m_centerPoint_MeasureCircleTool.X == 0 &&
+                m_radiusPoint_MeasureCircleTool.Y == 0 && m_radiusPoint_MeasureCircleTool.Y == 0)
+            {
+                dc.PushOpacity(0.5);
+
+                dc.DrawText(new FormattedText("MOUSE CLICK start to measure circle", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
+                    new Typeface(new FontFamily("Segoe UI"), FontStyles.Oblique, FontWeights.Bold, FontStretches.Normal), 26, Brushes.OrangeRed), new Point(200, 200));
+                dc.Pop();
+                return;
+            }
+
+            dc.PushOpacity(1.0);
+            double dThicknessPen = 2.0;
+
+            double dDeltaX = Math.Round(Math.Abs(m_centerPoint_MeasureCircleTool.X - m_radiusPoint_MeasureCircleTool.X), 1);
+            double dDeltaY = Math.Round(Math.Abs(m_centerPoint_MeasureCircleTool.Y - m_radiusPoint_MeasureCircleTool.Y), 1);
+            double dRadius = Math.Round(Math.Sqrt(dDeltaX * dDeltaX + dDeltaY * dDeltaY), 1);
+
+            Pen penDash = new Pen(colorCrossLine, dThicknessPen);
+            penDash.DashStyle = DashStyles.Dash;
+            penDash.DashCap = PenLineCap.Flat;
+            penDash.LineJoin = PenLineJoin.Miter;
+
+            // cross line 1
+            dc.DrawLine(penDash, new Point(0, m_centerPoint_MeasureCircleTool.Y + (int)dRadius), 
+                new Point(BMP.Width, m_centerPoint_MeasureCircleTool.Y + (int)dRadius));
+            dc.DrawLine(penDash, new Point(0, m_centerPoint_MeasureCircleTool.Y - (int)dRadius),
+                new Point(BMP.Width, m_centerPoint_MeasureCircleTool.Y - (int)dRadius));
+
+            // cross line 2
+            dc.DrawLine(penDash, new Point(m_centerPoint_MeasureCircleTool.X + (int)dRadius, 0), 
+                new Point(m_centerPoint_MeasureCircleTool.X + (int)dRadius, BMP.Height));
+            dc.DrawLine(penDash, new Point(m_centerPoint_MeasureCircleTool.X - (int)dRadius, 0),
+                new Point(m_centerPoint_MeasureCircleTool.X - (int)dRadius, BMP.Height));
+
+            // draw dash line center to radius point
+            dc.DrawLine(penDash, m_centerPoint_MeasureCircleTool, m_radiusPoint_MeasureCircleTool);
+
+            // draw Circle
+            dc.DrawEllipse(null, new Pen(Brushes.Green, dThicknessPen), m_centerPoint_MeasureCircleTool, (int)dRadius, (int)dRadius);
+
+            // draw center point
+            dc.DrawEllipse(Brushes.Red, null, m_centerPoint_MeasureCircleTool, 3d, 3d);
+
+            // draw radius point
+            dc.DrawEllipse(Brushes.Red, null, m_radiusPoint_MeasureCircleTool, 3d, 3d);
+
+            if (m_bMeasureCircleSelectedPt1 && m_bMeasureCircleSelectedPt2)
+            {
+                Point pointPutText = new Point(0, 0);
+                if (BMP.Width - m_centerPoint_MeasureCircleTool.X <= 350)
+                {
+                    pointPutText = new Point(m_centerPoint_MeasureCircleTool.X - (int)dRadius - 250, m_centerPoint_MeasureCircleTool.Y - (int)dRadius - 30);
+                }
+                else
+                {
+                    pointPutText = new Point(m_centerPoint_MeasureCircleTool.X + (int)dRadius + 10, m_centerPoint_MeasureCircleTool.Y - (int)dRadius - 30);
+                }
+
+                dc.DrawText(new FormattedText(string.Format("Center Point: X = {0} | Y = {1}", (int)m_centerPoint_MeasureCircleTool.X, (int)m_centerPoint_MeasureCircleTool.Y),
+                    CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), new Point(pointPutText.X, pointPutText.Y - 40));
+                dc.DrawText(new FormattedText(string.Format("End Point: X = {0} | Y = {1}", (int)m_radiusPoint_MeasureCircleTool.X, (int)m_radiusPoint_MeasureCircleTool.Y),
+                    CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), new Point(pointPutText.X, pointPutText.Y - 20));
+                dc.DrawText(new FormattedText(string.Format("Radius = {0} pxl", dRadius),
+                    CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal), 16, Brushes.OrangeRed), pointPutText);
+            }
+
+            dc.Pop();
+        }
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
 
-            if (_viewMode == EnViewMode.ViewMode_CreateRecipe)
+            if (m_bEnableSelectRoiTool && !m_bCompletedSelectRoi)
             {
-                if (_enableSelectRoiTool && !_completedSelectRoi)
-                {
-                    RenderSelectRoiTool(dc);
-                }
-                else if (_enableLocatorTool && !_completedSelectRoi)
-                {
-                    RenderLocatorTool(dc);
-                }
+                RenderSelectRoiTool(dc);
             }
-            else if (_viewMode == EnViewMode.ViewMode_ViewResult)
+            else if (m_bEnableLocatorTool && !m_bCompletedSelectRoi)
             {
-                
+                RenderLocatorTool(dc);
+            }
+            else if(m_bEnableMeasureSegLineTool && !m_bCompletedSelectRoi)
+            {
+                RenderMeasureSegLineTool(dc);
+            }
+            else if (m_bEnableMeasureCircleTool && !m_bCompletedSelectRoi)
+            {
+                RenderMeasureCircleTool(dc);
             }
         }
     }
-    public enum EnToolType
+    public enum emToolType
     {
         ToolType_Default,
         ToolType_SelectRoiTool,
-        ToolType_LocatorTool
-    }
-    public enum EnGrabMode
-    {
-        GrabMode_SingleGrab,
-        GrabMode_ContinuousGrab,
-    }
-    public enum EnViewMode
-    {
-        ViewMode_CreateRecipe,
-        ViewMode_ViewResult
+        ToolType_LocatorTool,
+        ToolType_MeasurementTool,
     }
 }

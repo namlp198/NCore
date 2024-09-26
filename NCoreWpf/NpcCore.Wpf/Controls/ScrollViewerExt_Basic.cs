@@ -109,7 +109,9 @@ namespace NpcCore.Wpf.Controls
 
         private void ScrollViewerEx_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_imageExt_Basic.IsSelectingRoi)
+            if (_imageExt_Basic.IsSelectingRoi || _imageExt_Basic.EnableMeasureSegLineTool || 
+                _imageExt_Basic.IsMeasuringSegLine || _imageExt_Basic.EnableMeasureCircleTool || 
+                _imageExt_Basic.IsMeasuringCircle)
                 return;
             var mousePos = e.GetPosition(this);
             if (mousePos.X <= this.ViewportWidth && mousePos.Y < this.ViewportHeight) //make sure we still can use the scrollbars

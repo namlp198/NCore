@@ -157,6 +157,11 @@ namespace NCore.Wpf.BufferViewerSettingPRO
                 }
             }
         }
+        public ImageExt_Basic IMAGE_EXT_BASIC
+        {
+            get => imageExt_Basic;
+            private set { }
+        }
         public IntPtr BufferView
         {
             get { return m_bufferView; }
@@ -605,9 +610,7 @@ namespace NCore.Wpf.BufferViewerSettingPRO
         }
         public void ResetImageExtBasic()
         {
-            imageExt_Basic.EnableSelectRoiTool = false;
-            imageExt_Basic.EnableLocatorTool = false;
-            imageExt_Basic.EnableInspectTool = false;
+            imageExt_Basic.ResetImageEx();
         }
         //private Task SetExposureTimeAsync()
         //{
