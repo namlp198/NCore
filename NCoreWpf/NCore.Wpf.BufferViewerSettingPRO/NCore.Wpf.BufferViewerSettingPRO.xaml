@@ -161,7 +161,6 @@
                                 <TranslateTransform x:Name="translateTransform" />
                             </TransformGroup>
                         </Grid.LayoutTransform>
-
                         <Ctrls:ImageExt_Basic x:Name="imageExt_Basic"
                                               Stretch="None">
                         </Ctrls:ImageExt_Basic>
@@ -314,6 +313,7 @@
                                Margin="5 0 2 0" />
                     <ComboBox  Grid.Column="1"
                                Margin="0 2"
+                               Style="{DynamicResource ComboboxStyleBoardSetting}"
                                x:Name="cbbCameraList"
                                SelectionChanged="cbbCameraList_SelectionChanged"
                                FontWeight="SemiBold"
@@ -328,6 +328,7 @@
                                Margin="5 0 2 0" />
                     <ComboBox  Grid.Column="3"
                                Margin="0 2"
+                               Style="{DynamicResource ComboboxStyleBoardSetting}"
                                x:Name="cbbFrameList"
                                SelectionChanged="cbbFrameList_SelectionChanged"
                                FontSize="14"
@@ -350,6 +351,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="2"
+                          Style="{DynamicResource ComboboxStyleBoardSetting}"
                           FontWeight="SemiBold"
                           VerticalContentAlignment="Center"
                           Name="cbbTriggerMode"
@@ -368,6 +370,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="2"
+                          Style="{DynamicResource ComboboxStyleBoardSetting}"
                           FontWeight="SemiBold"
                           VerticalContentAlignment="Center"
                           Name="cbbTriggerSource"

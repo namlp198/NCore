@@ -116,11 +116,11 @@ namespace NCore.Wpf.BufferViewerSettingPRO
             scrollViewerExt_Basic.ImageExt_Basic = imageExt_Basic;
             scrollViewerExt_Basic.Grid = gridMain;
 
-            imageExt_Basic.SelectedROI += ImageExt_Basic_SelectedROI;
-            imageExt_Basic.SaveFullImage += ImageExt_Basic_SaveFullImage;
-            imageExt_Basic.SaveROIImage += ImageExt_Basic_SaveROIImage;
-            imageExt_Basic.TrainLocator += ImageExt_Basic_TrainLocator;
-            imageExt_Basic.Fit += ImageExt_Basic_Fit;
+            imageExt_Basic.SelectedROIEvent += ImageExt_Basic_SelectedROI;
+            imageExt_Basic.SaveFullImageEvent += ImageExt_Basic_SaveFullImage;
+            imageExt_Basic.SaveROIImageEvent += ImageExt_Basic_SaveROIImage;
+            imageExt_Basic.TrainLocatorEvent += ImageExt_Basic_TrainLocator;
+            imageExt_Basic.FitEvent += ImageExt_Basic_Fit;
             imageExt_Basic.MouseMoveEndEvent += ImageExt_Basic_MouseMoveEndEvent;
 
             // Try creating a new image with a custom palette.
