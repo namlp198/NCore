@@ -187,7 +187,7 @@
                                   MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
 
                                 <Border x:Name="DropDownBorder"
-                                        Background="#ffffff"
+                                        Background="#483D8B"
                                         BorderThickness="1"
                                         BorderBrush="#bbbbbb"
                                         CornerRadius="3" />

@@ -4457,4 +4457,191 @@
         </Setter>
     </Style>
 
+    <Style x:Key="NormalButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="#FFFFFF" />
+        <Setter Property="Width"
+                Value="60" />
+        <Setter Property="Height"
+                Value="20" />
+        <Setter Property="FontSize"
+                Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle x:Name="Rectangle"
+                                   Stroke="{x:Null}"
+                                   StrokeMiterLimit="1.000000"
+                                   StrokeThickness="0.500000"
+                                   RadiusX="5"
+                                   RadiusY="5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush EndPoint="0.501,0.039"
+                                                     StartPoint="0.501,0.971">
+                                    <GradientStop Color="#FF4A7DDB"
+                                                  Offset="0.335" />
+                                    <GradientStop Color="#FF75B5E0"
+                                                  Offset="0.879" />
+                                    <GradientStop Color="#FF04448C"
+                                                  Offset="0.011" />
+                                    <GradientStop Color="#FF75B5E0"
+                                                  Offset="0.986" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="Rectangle">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.501,0.039"
+                                                         StartPoint="0.501,0.971">
+                                        <GradientStop Color="#FF5287E8"
+                                                      Offset="0.335" />
+                                        <GradientStop Color="#FFA4D4F4"
+                                                      Offset="0.879" />
+                                        <GradientStop Color="#FF075AB7"
+                                                      Offset="0.011" />
+                                        <GradientStop Color="#FFA4D4F4"
+                                                      Offset="0.986" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BlackButtonStyle"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource NormalButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle Stroke="{x:Null}"
+                                   StrokeMiterLimit="1.000000"
+                                   StrokeThickness="0.500000"
+                                   RadiusX="5"
+                                   RadiusY="5"
+                                   x:Name="rectangle">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush EndPoint="0.501,0.039"
+                                                     StartPoint="0.501,0.971">
+                                    <GradientStop Color="#FF273763"
+                                                  Offset="0.277" />
+                                    <GradientStop Color="#FFA6B5BC"
+                                                  Offset="0.879" />
+                                    <GradientStop Color="#FF092644"
+                                                  Offset="0.011" />
+                                    <GradientStop Color="#FFA6B5BC"
+                                                  Offset="0.986" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="rectangle">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.501,0.039"
+                                                         StartPoint="0.501,0.971">
+                                        <GradientStop Color="#FF41599A"
+                                                      Offset="0.277" />
+                                        <GradientStop Color="#FFB6C7CF"
+                                                      Offset="0.879" />
+                                        <GradientStop Color="#FF124376"
+                                                      Offset="0.011" />
+                                        <GradientStop Color="#FFB6C7CF"
+                                                      Offset="0.986" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RedButtonStyle"
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource NormalButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle Stroke="#FF570606"
+                                   StrokeMiterLimit="1.000000"
+                                   StrokeThickness="0.500000"
+                                   RadiusX="5"
+                                   RadiusY="5"
+                                   x:Name="rectangle">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush EndPoint="0.501,0.039"
+                                                     StartPoint="0.501,0.971">
+                                    <GradientStop Color="#FF882119"
+                                                  Offset="0.234" />
+                                    <GradientStop Color="#FFC78A81"
+                                                  Offset="0.879" />
+                                    <GradientStop Color="#FF440D09"
+                                                  Offset="0.004" />
+                                    <GradientStop Color="#FFC78A81"
+                                                  Offset="0.986" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Fill"
+                                    TargetName="rectangle">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.501,0.039"
+                                                         StartPoint="0.501,0.971">
+                                        <GradientStop Color="#FFC72E23"
+                                                      Offset="0.234" />
+                                        <GradientStop Color="#FFEAA49A"
+                                                      Offset="0.879" />
+                                        <GradientStop Color="#FF9A2017"
+                                                      Offset="0.004" />
+                                        <GradientStop Color="#FFEAA49A"
+                                                      Offset="0.986" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

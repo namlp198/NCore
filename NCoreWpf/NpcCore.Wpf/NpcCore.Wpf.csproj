@@ -945,5 +945,13 @@
   <ItemGroup>
     <Resource Include="Resources\Images\logo_ntech.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_next_2.png" />
+    <Resource Include="Resources\Images\btn_prev_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\btn_next_3.png" />
+    <Resource Include="Resources\Images\btn_prev_3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
