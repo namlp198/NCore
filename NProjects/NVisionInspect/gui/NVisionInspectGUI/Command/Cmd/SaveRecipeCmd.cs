@@ -42,6 +42,17 @@ namespace NVisionInspectGUI.Command.Cmd
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseOffset = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_UseOffset == true ? 1 : 0;
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseLocator = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_UseLocator == true ? 1 : 0;
 
+                // DECODE
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_Decode.m_nMaxCodeCount = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.MaxCodeCount;
+
+                // HSV
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nHueMin = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.HueMin;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nHueMax = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.HueMax;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nSaturationMin = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.SaturationMin;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nSaturationMax = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.SaturationMax;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nValueMin = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.ValueMin;
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nValueMax = MainViewModel.Instance.SettingVM.NVisionInspectRecipeFakeCamPropertyGrid.ValueMax;
+
                 InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.
                 SaveRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
 

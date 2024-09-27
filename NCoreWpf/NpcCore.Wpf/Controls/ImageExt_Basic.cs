@@ -427,13 +427,31 @@ namespace NpcCore.Wpf.Controls
                 base.RemoveHandler(TemplateRotate, value);
             }
         }
+
+        public static readonly RoutedEvent Decode = EventManager.RegisterRoutedEvent(
+          "Decode",
+          RoutingStrategy.Bubble,
+          typeof(RoutedEventHandler),
+          typeof(ImageExt_Basic));
+        public event RoutedEventHandler DecodeEvent
+        {
+            add
+            {
+                base.AddHandler(Decode, value);
+            }
+            remove
+            {
+                base.RemoveHandler(Decode, value);
+            }
+        }
         #endregion
 
         #region Member Variables
         private bool m_bDrag;
-        private bool m_bCompletedSelectRoi;
-        private bool m_bEnableSelectROIRectTool;
-        private bool m_bEnableSelectROIPolygonTool;
+        private bool m_bCompletedSelectROI;
+        private bool m_bEnableSelectRectROITool;
+        private bool m_bEnableSelectPolygonROITool;
+        private bool m_bEnableSelectCircleROITool;
         private bool m_bEnableInspectTool;
         private bool m_bEnableMeasureSegLineTool;
         private bool m_bEnableMeasureCircleTool;
@@ -441,10 +459,13 @@ namespace NpcCore.Wpf.Controls
         private bool m_bEnableLocatorTool;
         private bool m_bEnableSelectRect;
         private bool m_bEnableSelectRectInside;
-        private bool m_bSelectingROIRect;
-        private bool m_bSelectingROIPolygon;
+        private bool m_bSelectingRectROI;
+        private bool m_bSelectingPolygonROI;
+        private bool m_bSelectingCircleROI;
         private bool m_bMeasuringSegLine;
         private bool m_bMeasuringCircle;
+        private bool m_bSelectedPt1CircleROI;
+        private bool m_bSelectedPt2CircleROI;
         private bool m_bMeasureSegLineSelectedPt1;
         private bool m_bMeasureSegLineSelectedPt2;
         private bool m_bMeasureCircleSelectedPt1;
@@ -468,6 +489,8 @@ namespace NpcCore.Wpf.Controls
         private Point m_centerPoint_MeasureCircleTool;
         private Point m_radiusPoint_MeasureCircleTool;
         private Point m_currentPoint;
+        private Point m_centerPointCircleROI;
+        private Point m_radiusPointCircleROI;
         private Size m_szDragSize;
         private Single m_rectRotation;
 
@@ -475,6 +498,7 @@ namespace NpcCore.Wpf.Controls
 
         private double m_dComWidth = 20;
         private double m_dComOffset = 10;
+        private double m_dRadiusCircleROI;
 
         private List<Point> m_listPointsPolygon;
 
@@ -529,69 +553,69 @@ namespace NpcCore.Wpf.Controls
 
             if (rectTopLeft.Contains(point) || rectTopLeftChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.TopLeft;
                 m_mouseHitType = HitType.TopLeftChild;
                 SetMouseCusor();
             }
             else if (rectTopRight.Contains(point) || rectTopRightChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.TopRight;
                 m_mouseHitType = HitType.TopRightChild;
                 SetMouseCusor();
             }
             else if (rectBottomLeft.Contains(point) || rectBottomLeftChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.BottomLeft;
                 m_mouseHitType = HitType.BottomLeftChild;
                 SetMouseCusor();
             }
             else if (rectBottomRight.Contains(point) || rectBottomRightChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.BottomRight;
                 m_mouseHitType = HitType.BottomRightChild;
                 SetMouseCusor();
             }
             else if (rectMidTop.Contains(point) || rectMidTopChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.MidTop;
                 m_mouseHitType = HitType.MidTopChild;
                 SetMouseCusor();
             }
             else if (rectMidBottom.Contains(point) || rectMidBottomChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.MidBottom;
                 m_mouseHitType = HitType.MidBottomChild;
                 SetMouseCusor();
             }
             else if (rectMidLeft.Contains(point) || rectMidLeftChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.MidLeft;
                 m_mouseHitType = HitType.MidLeftChild;
                 SetMouseCusor();
             }
             else if (rectMidRight.Contains(point) || rectMidRightChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.MidRight;
                 m_mouseHitType = HitType.MidRightChild;
                 SetMouseCusor();
             }
             else if (ellipse.FillContains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.Rotate;
                 SetMouseCusor();
             }
             else if (rect.Contains(point) || rectChild.Contains(point))
             {
-                m_bSelectingROIRect = true;
+                m_bSelectingRectROI = true;
                 m_mouseHitType = HitType.Body;
                 m_mouseHitType = HitType.BodyChild;
                 SetMouseCusor();
@@ -599,7 +623,7 @@ namespace NpcCore.Wpf.Controls
 
             else
             {
-                m_bSelectingROIRect = false;
+                m_bSelectingRectROI = false;
                 m_mouseHitType = HitType.None;
                 m_mouseHitType = HitType.NoneChild;
                 SetMouseCusor();
@@ -667,16 +691,6 @@ namespace NpcCore.Wpf.Controls
 
             Reset();
         }
-        private TranslateTransform GetTranslateTransform(UIElement element)
-        {
-            return (TranslateTransform)((TransformGroup)element.RenderTransform)
-              .Children.First(tr => tr is TranslateTransform);
-        }
-        private ScaleTransform GetScaleTransform(UIElement element)
-        {
-            return (ScaleTransform)((TransformGroup)element.RenderTransform)
-              .Children.First(tr => tr is ScaleTransform);
-        }
         public void Reset()
         {
             // reset zoom
@@ -689,8 +703,19 @@ namespace NpcCore.Wpf.Controls
             tt.X = 0.0;
             tt.Y = 0.0;
         }
+        private TranslateTransform GetTranslateTransform(UIElement element)
+        {
+            return (TranslateTransform)((TransformGroup)element.RenderTransform)
+              .Children.First(tr => tr is TranslateTransform);
+        }
+        private ScaleTransform GetScaleTransform(UIElement element)
+        {
+            return (ScaleTransform)((TransformGroup)element.RenderTransform)
+              .Children.First(tr => tr is ScaleTransform);
+        }
         private void InitializeAllRect()
         {
+            // Params: Rect ROI and Locator Tool
             m_rect = new Rect(new Point(100, 100), new Size(220, 160));
             m_rectReal = new Rect(new Point(m_rect.X + m_offsetRectPoint.X, m_rect.Y + m_offsetRectPoint.Y), new Size(m_rect.Width, m_rect.Height));
             m_rectInside = new Rect(new Point(m_rect.X + 60, m_rect.Y + 40), new Size(100, 80));
@@ -701,6 +726,13 @@ namespace NpcCore.Wpf.Controls
             m_centerPoint = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top + m_rect.Height / 2);
             m_centerPointReal = new Point(m_centerPoint.X + m_offsetRectPoint.X, m_centerPoint.Y + m_offsetRectPoint.Y);
         }
+        private void InitializeCircleTool()
+        {
+            // Param: Circle ROI
+            m_centerPointCircleROI = new Point(0, 0);
+            m_radiusPointCircleROI = new Point(0, 0);
+            m_dRadiusCircleROI = 0.0;
+        }
 
         #region "Cross and Dot Products"
         // Return the cross product AB x BC.
@@ -710,7 +742,7 @@ namespace NpcCore.Wpf.Controls
         // For two vectors in the X-Y plane, the result is a
         // vector with X and Y components 0 so the Z component
         // gives the vector's length and direction.
-        public static float CrossProductLength(float Ax, float Ay,
+        private float CrossProductLength(float Ax, float Ay,
             float Bx, float By, float Cx, float Cy)
         {
             // Get the vectors' coordinates.
@@ -743,7 +775,7 @@ namespace NpcCore.Wpf.Controls
         // Return a value between PI and -PI.
         // Note that the value is the opposite of what you might
         // expect because Y coordinates increase downward.
-        public float GetAngle(float Ax, float Ay, float Bx, float By, float Cx, float Cy)
+        private float GetAngle(float Ax, float Ay, float Bx, float By, float Cx, float Cy)
         {
             // Get the dot product.
             float dot_product = DotProduct(Ax, Ay, Bx, By, Cx, Cy);
@@ -755,7 +787,7 @@ namespace NpcCore.Wpf.Controls
             return (float)Math.Atan2(cross_product, dot_product);
         }
         // Return true if the point is in the polygon.
-        public bool PointInPolygon(float X, float Y)
+        private bool PointInPolygon(float X, float Y)
         {
             // Get the angle between the point and the
             // first and last vertices.
@@ -780,6 +812,20 @@ namespace NpcCore.Wpf.Controls
             // if the point is outside the polygon.
             return (Math.Abs(total_angle) > 0.000001);
         }
+        private bool CheckIsPointInsideCircle(Point pt, Point centerPt, double dRadius)
+        {
+            bool bRet = false;
+
+            double dDeltaX = Math.Abs(pt.X - centerPt.X );
+            double dDeltaY = Math.Abs(pt.Y - centerPt.Y);
+            double dHypoteuse = Math.Round(Math.Sqrt(dDeltaX * dDeltaX + dDeltaY * dDeltaY), 1);
+            if(dHypoteuse <= Math.Round(dRadius, 1))
+            {
+                bRet = true;
+            }
+
+            return bRet;
+        }
         #endregion
 
         #region Draw Polygon
@@ -789,7 +835,8 @@ namespace NpcCore.Wpf.Controls
         #region Constructor
         public ImageExt_Basic()
         {
-           InitializeAllRect();
+            InitializeAllRect();
+            InitializeCircleTool();
 
             m_listPointsPolygon = new List<Point>();
 
@@ -831,8 +878,9 @@ namespace NpcCore.Wpf.Controls
         private ContextMenu m_ctxMnuInspectTool;
 
         // Get roi and save image
-        private MenuItem m_getROIItem;
-        private MenuItem m_selectROIPolygonItem;
+        private MenuItem m_selectRectROIItem;
+        private MenuItem m_selectPolygonROIItem;
+        private MenuItem m_selectCircleROIItem;
 
         // default mode
         private MenuItem m_fitItem;
@@ -858,6 +906,7 @@ namespace NpcCore.Wpf.Controls
         private MenuItem m_svmItem;
         private MenuItem m_ocrItem;
         private MenuItem m_templateRotateItem;
+        private MenuItem m_decodeItem;
 
 
         // the chooses in locator contextmenu
@@ -868,32 +917,45 @@ namespace NpcCore.Wpf.Controls
         {
             m_ctxMnuRoiMode = new ContextMenu();
 
-            m_getROIItem = new MenuItem();
-            m_getROIItem.Header = "Select ROI Rect";
-            m_getROIItem.Name = "mnuGetROI";
-            m_getROIItem.Click += mnuGetROI_Click;
-            m_getROIItem.FontFamily = new FontFamily("Georgia");
-            m_getROIItem.FontWeight = FontWeights.Regular;
-            m_getROIItem.FontSize = 14;
-            m_getROIItem.Icon = new System.Windows.Controls.Image
+            m_selectRectROIItem = new MenuItem();
+            m_selectRectROIItem.Header = "Select Rect ROI";
+            m_selectRectROIItem.Name = "mnuSelectRectROI";
+            m_selectRectROIItem.Click += mnuSelectRectROI_Click;
+            m_selectRectROIItem.FontFamily = new FontFamily("Georgia");
+            m_selectRectROIItem.FontWeight = FontWeights.Regular;
+            m_selectRectROIItem.FontSize = 14;
+            m_selectRectROIItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_rectangle_n@3x.png", UriKind.RelativeOrAbsolute))
             };
 
-            m_selectROIPolygonItem = new MenuItem();
-            m_selectROIPolygonItem.Header = "Select ROI Polygon";
-            m_selectROIPolygonItem.Name = "mnuSelectROIPolygon";
-            m_selectROIPolygonItem.Click += mnuSelectROIPolygon_Click;
-            m_selectROIPolygonItem.FontFamily = new FontFamily("Georgia");
-            m_selectROIPolygonItem.FontWeight = FontWeights.Regular;
-            m_selectROIPolygonItem.FontSize = 14;
-            m_selectROIPolygonItem.Icon = new System.Windows.Controls.Image
+            m_selectPolygonROIItem = new MenuItem();
+            m_selectPolygonROIItem.Header = "Select Polygon ROI";
+            m_selectPolygonROIItem.Name = "mnuSelectPolygonROI";
+            m_selectPolygonROIItem.Click += mnuSelectPolygonROI_Click;
+            m_selectPolygonROIItem.FontFamily = new FontFamily("Georgia");
+            m_selectPolygonROIItem.FontWeight = FontWeights.Regular;
+            m_selectPolygonROIItem.FontSize = 14;
+            m_selectPolygonROIItem.Icon = new System.Windows.Controls.Image
             {
                 Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_ig_polygon_n@3x.png", UriKind.RelativeOrAbsolute))
             };
 
-            m_ctxMnuRoiMode.Items.Add(m_getROIItem);
-            m_ctxMnuRoiMode.Items.Add(m_selectROIPolygonItem);
+            m_selectCircleROIItem = new MenuItem();
+            m_selectCircleROIItem.Header = "Select Circle ROI";
+            m_selectCircleROIItem.Name = "mnuSelectCircleROI";
+            m_selectCircleROIItem.Click += mnuSelectCircleROI_Click;
+            m_selectCircleROIItem.FontFamily = new FontFamily("Georgia");
+            m_selectCircleROIItem.FontWeight = FontWeights.Regular;
+            m_selectCircleROIItem.FontSize = 14;
+            m_selectCircleROIItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_circle_n@3x.png", UriKind.RelativeOrAbsolute))
+            };
+
+            m_ctxMnuRoiMode.Items.Add(m_selectRectROIItem);
+            m_ctxMnuRoiMode.Items.Add(m_selectPolygonROIItem);
+            m_ctxMnuRoiMode.Items.Add(m_selectCircleROIItem);
         }
         private void InitContextMenuDefault()
         {
@@ -1149,6 +1211,19 @@ namespace NpcCore.Wpf.Controls
             m_templateRotateItem.FontWeight = FontWeights.Regular;
             m_templateRotateItem.FontSize = 14;
 
+            // Decode
+            m_decodeItem = new MenuItem();
+            m_decodeItem.Header = "Decode";
+            m_decodeItem.Name = "mnuDecode";
+            m_decodeItem.Click += mnuDecode_Click;
+            m_decodeItem.FontFamily = new FontFamily("Georgia");
+            m_decodeItem.FontWeight = FontWeights.Regular;
+            m_decodeItem.FontSize = 14;
+            m_decodeItem.Icon = new System.Windows.Controls.Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/NpcCore.Wpf;component/Resources/Images/ic_gt_barcode_s@3x.png", UriKind.RelativeOrAbsolute))
+            };
+
             // Save ROI
             m_saveROIImageItem = new MenuItem();
             m_saveROIImageItem.Header = "Save ROI Image";
@@ -1171,6 +1246,7 @@ namespace NpcCore.Wpf.Controls
             m_ctxMnuInspectTool.Items.Add(m_svmItem);
             m_ctxMnuInspectTool.Items.Add(m_ocrItem);
             m_ctxMnuInspectTool.Items.Add(m_templateRotateItem);
+            m_ctxMnuInspectTool.Items.Add(m_decodeItem);
             m_ctxMnuInspectTool.Items.Add(new Separator());
             m_ctxMnuInspectTool.Items.Add(m_saveROIImageItem);
 
@@ -1211,7 +1287,6 @@ namespace NpcCore.Wpf.Controls
         private void mnuSelectRect_Click(object sender, RoutedEventArgs e)
         {
             InitializeAllRect();
-            m_listPointsPolygon.Clear();
             EnableSelectROIRectTool = true;
         }
         private void mnuSelectPolygon_Click(object sender, RoutedEventArgs e)
@@ -1221,7 +1296,8 @@ namespace NpcCore.Wpf.Controls
         }
         private void mnuSelectCircle_Click(object sender, RoutedEventArgs e)
         {
-            m_listPointsPolygon.Clear();
+            InitializeCircleTool();
+            EnableSelectROICircleTool = true;
         }
         private void mnuSaveFullImage_Click(object sender, RoutedEventArgs e)
         {
@@ -1236,71 +1312,87 @@ namespace NpcCore.Wpf.Controls
         #endregion
 
         #region Functions Handle Event for ROI
-        private void mnuGetROI_Click(object sender, RoutedEventArgs e)
+        private void mnuSelectRectROI_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = true;
             EnableSelectROIRectTool = false;
+            IsSelectingRectROI = false;
             EnableInspectTool = true;
             RaiseEvent(new RoutedEventArgs(SelectedROI, this));
         }
-        private void mnuSelectROIPolygon_Click(object sender, RoutedEventArgs e)
+        private void mnuSelectPolygonROI_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = true;
             EnableSelectROIPolygonTool = false;
+            EnableInspectTool = true;
+            RaiseEvent(new RoutedEventArgs(SelectedROIPolygon, this));
+        }
+        private void mnuSelectCircleROI_Click(object sender, RoutedEventArgs e)
+        {
+            m_bCompletedSelectROI = true;
+            EnableSelectROICircleTool = false;
             EnableInspectTool = true;
             RaiseEvent(new RoutedEventArgs(SelectedROIPolygon, this));
         }
         private void mnuCntPixel_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(CountPixel, this));
         }
         private void mnuCntBlob_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(CountBlob, this));
         }
         private void mnuFindLine_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(FindLine, this));
         }
         private void mnuFindCircle_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(FindCircle, this));
         }
         private void mnuPCA_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(PCA, this));
         }
         private void mnuTrainKNearest_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(KNearest, this));
         }
         private void mnuTrainSVM_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(SVM, this));
         }
         private void mnuOCR_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(OCR, this));
         }
         private void mnuTemplateRotate_Click(object sender, RoutedEventArgs e)
         {
+            m_bCompletedSelectROI = false;
             EnableInspectTool = false;
-            m_bCompletedSelectRoi = false;
             RaiseEvent(new RoutedEventArgs(TemplateRotate, this));
+        }
+        private void mnuDecode_Click(object sender, RoutedEventArgs e)
+        {
+            m_bCompletedSelectROI = false;
+            EnableInspectTool = false;
+            RaiseEvent(new RoutedEventArgs(Decode, this));
         }
         #endregion
 
@@ -1309,8 +1401,8 @@ namespace NpcCore.Wpf.Controls
         #region Handle Event
         private void ImageEx_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!m_bEnableSelectROIRectTool && !m_bEnableLocatorTool && !m_bEnableInspectTool 
-                && !m_bEnableMeasureSegLineTool && !m_bEnableSelectROIPolygonTool)
+            if (!m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool 
+                && !m_bEnableLocatorTool && !m_bEnableInspectTool && !m_bEnableMeasureSegLineTool)
             {
                 m_ctxMnuDefault.IsOpen = true;
                 return;
@@ -1325,42 +1417,64 @@ namespace NpcCore.Wpf.Controls
             // Mouse point in Rectangle's space. 
             var point = mat.Transform(new Point(e.GetPosition(this).X, e.GetPosition(this).Y));
 
-            bool bInPoly = false;
+            bool bInsidePoly = false;
+            bool bInsideCircle = false; 
+
             if (m_listPointsPolygon.Count > 3)
             {
-               bInPoly = PointInPolygon((float)point.X, (float)point.Y);
+                bInsidePoly = PointInPolygon((float)point.X, (float)point.Y);
             }
 
-            if (bInPoly && !m_bEnableSelectROIRectTool && m_bEnableSelectROIPolygonTool
+            if(m_centerPointCircleROI != new Point(0,0) && m_dRadiusCircleROI > 0.0)
+            {
+                bInsideCircle = CheckIsPointInsideCircle(point, m_centerPointCircleROI, m_dRadiusCircleROI);
+            }
+
+            // Poly
+            if (bInsidePoly && !m_bEnableSelectRectROITool && m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool
                 && !m_bEnableLocatorTool && !m_bEnableInspectTool)
             {
                 m_ctxMnuRoiMode.IsOpen = true;
                 return;
             }
-            if (bInPoly && !m_bEnableSelectROIRectTool && !m_bEnableSelectROIPolygonTool
+            if (bInsidePoly && !m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool
                && !m_bEnableLocatorTool && m_bEnableInspectTool)
             {
                 m_ctxMnuInspectTool.IsOpen = true;
                 return;
             }
 
-            if (m_rect.Contains(point) && m_bEnableSelectROIRectTool && !m_bEnableSelectROIPolygonTool 
+            // Circle
+            if (bInsideCircle && !m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && m_bEnableSelectCircleROITool
+               && !m_bEnableLocatorTool && !m_bEnableInspectTool)
+            {
+                m_ctxMnuRoiMode.IsOpen = true;
+                return;
+            }
+            if (bInsideCircle && !m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool
+               && !m_bEnableLocatorTool && m_bEnableInspectTool)
+            {
+                m_ctxMnuInspectTool.IsOpen = true;
+                return;
+            }
+
+            if (m_rect.Contains(point) && m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool
                 && !m_bEnableLocatorTool && !m_bEnableInspectTool)
             {
                 m_ctxMnuRoiMode.IsOpen = true;
                 return;
             }
-            else if (m_rect.Contains(point) && !m_bEnableSelectROIRectTool && m_bEnableLocatorTool && !m_bEnableInspectTool)
+            else if (m_rect.Contains(point) && !m_bEnableSelectRectROITool && m_bEnableLocatorTool && !m_bEnableInspectTool)
             {
                 m_ctxMnuLocator.IsOpen = true;
                 return;
             }
-            else if (m_rect.Contains(point) && !m_bEnableSelectROIRectTool && !m_bEnableLocatorTool && m_bEnableInspectTool)
+            else if (m_rect.Contains(point) && !m_bEnableSelectRectROITool && !m_bEnableLocatorTool && m_bEnableInspectTool)
             {
                 m_ctxMnuInspectTool.IsOpen = true;
                 return;
             }
-            
+
         }
         private void ImageEx_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -1386,8 +1500,8 @@ namespace NpcCore.Wpf.Controls
         }
         private void ImageEx_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!m_bEnableSelectROIRectTool && !m_bEnableLocatorTool && !m_bEnableMeasureSegLineTool 
-                && !m_bEnableMeasureCircleTool && !m_bEnableSelectROIPolygonTool)
+            if (!m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool 
+                && !m_bEnableLocatorTool && !m_bEnableMeasureSegLineTool && !m_bEnableMeasureCircleTool)
                 return;
 
             if (m_bEnableMeasureSegLineTool && m_bMeasuringSegLine && m_bMeasureSegLineSelectedPt1 && m_bMeasureSegLineSelectedPt2)
@@ -1416,22 +1530,35 @@ namespace NpcCore.Wpf.Controls
                 return;
             }
 
-            if (m_bEnableSelectROIPolygonTool && m_bSelectingROIPolygon)
+            if (m_bEnableSelectPolygonROITool && m_bSelectingPolygonROI)
             {
                 int numberOfPoint = m_listPointsPolygon.Count;
                 if (numberOfPoint > 3)
                 {
-                    double dDeltaX = Math.Abs(Math.Round(m_listPointsPolygon[0].X - m_listPointsPolygon[numberOfPoint - 1].X, 2));
-                    double dDeltaY = Math.Abs(Math.Round(m_listPointsPolygon[0].Y - m_listPointsPolygon[numberOfPoint - 1].Y, 2));
+                    double dDeltaX = Math.Abs(Math.Round(m_listPointsPolygon[0].X - m_listPointsPolygon[numberOfPoint - 1].X, 1));
+                    double dDeltaY = Math.Abs(Math.Round(m_listPointsPolygon[0].Y - m_listPointsPolygon[numberOfPoint - 1].Y, 1));
 
-                    if (dDeltaX <= 1.1 && dDeltaY <= 1.1)
+                    if (dDeltaX <= 2.0 && dDeltaY <= 2.0)
                     {
-                        m_bCompletedSelectRoi = true;
-                        //this.InvalidateVisual();
-
-                        m_bSelectingROIPolygon = false;
+                        m_listPointsPolygon[numberOfPoint - 1] = m_listPointsPolygon[0];
+                        m_bSelectingPolygonROI = false;
                     }
                 }
+            }
+
+            if (m_bEnableSelectCircleROITool && m_bSelectingCircleROI && m_bSelectedPt1CircleROI && m_bSelectedPt2CircleROI)
+            {
+                double dDeltaX = Math.Round(Math.Abs(m_centerPointCircleROI.X - m_radiusPointCircleROI.X), 1);
+                double dDeltaY = Math.Round(Math.Abs(m_centerPointCircleROI.Y - m_radiusPointCircleROI.Y), 1);
+
+                m_dRadiusCircleROI = Math.Round(Math.Sqrt(dDeltaX * dDeltaX + dDeltaY * dDeltaY), 1);
+
+                m_bSelectedPt1CircleROI = false;
+                m_bSelectedPt2CircleROI = false;
+
+                m_bSelectingCircleROI = false;
+
+                return;
             }
 
             m_bDrag = false;
@@ -1442,7 +1569,7 @@ namespace NpcCore.Wpf.Controls
         }
         private void ImageEx_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!m_bEnableSelectROIRectTool && !m_bEnableLocatorTool && !m_bEnableSelectROIPolygonTool)
+            if (!m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool && !m_bEnableLocatorTool)
             {
                 if (m_bmp == null)
                     return;
@@ -1488,17 +1615,31 @@ namespace NpcCore.Wpf.Controls
             }
 
             // Select Polygon
-            if (m_bEnableSelectROIPolygonTool && m_bSelectingROIPolygon)
+            if (m_bEnableSelectPolygonROITool && m_bSelectingPolygonROI)
             {
                 if (m_bmp == null)
                     return;
 
                 m_bDrag = true;
 
-                var pointEnd = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
+                var pointCur = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
 
-                m_currentPoint = pointEnd;
+                m_currentPoint = pointCur;
                 //this.InvalidateVisual();
+
+                return;
+            }
+
+            // Select Circle
+            if (m_bEnableSelectCircleROITool && m_bSelectingCircleROI && m_bSelectedPt1CircleROI && !m_bSelectedPt2CircleROI)
+            {
+                if (m_bmp == null)
+                    return;
+
+                var pointCur = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
+
+                m_radiusPointCircleROI = pointCur;
+                this.InvalidateVisual();
 
                 return;
             }
@@ -1903,8 +2044,8 @@ namespace NpcCore.Wpf.Controls
         }
         private void ImageEx_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!m_bEnableSelectROIRectTool && !m_bEnableLocatorTool && !m_bEnableMeasureSegLineTool 
-                && !m_bEnableMeasureCircleTool && !m_bEnableSelectROIPolygonTool)
+            if (!m_bEnableSelectRectROITool && !m_bEnableSelectPolygonROITool && !m_bEnableSelectCircleROITool
+                && !m_bEnableLocatorTool && !m_bEnableMeasureSegLineTool && !m_bEnableMeasureCircleTool)
                 return;
 
             // Measure Segment Line
@@ -1960,14 +2101,40 @@ namespace NpcCore.Wpf.Controls
             }
 
             // Select Polygon
-            if (m_bEnableSelectROIPolygonTool)
+            if (m_bEnableSelectPolygonROITool)
             {
-                m_bSelectingROIPolygon = true;
+                m_bSelectingPolygonROI = true;
                 m_bDrag = false;
 
                 var pointCur = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
                 m_listPointsPolygon.Add(pointCur);
 
+                this.InvalidateVisual();
+
+                return;
+            }
+
+            // Select Circle
+            if (m_bEnableSelectCircleROITool)
+            {
+                var pointCur = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
+
+                if (m_centerPointCircleROI == new Point(0, 0) && m_radiusPointCircleROI == new Point(0, 0))
+                {
+                    // Measuring
+                    m_bSelectingCircleROI = true;
+
+                    // Select point 1
+                    m_bSelectedPt1CircleROI = true;
+
+                    m_centerPointCircleROI = pointCur;
+                    m_radiusPointCircleROI = pointCur;
+
+                    this.InvalidateVisual();
+                    return;
+                }
+
+                m_bSelectedPt2CircleROI = true;
                 this.InvalidateVisual();
 
                 return;
@@ -2037,7 +2204,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.TopLeft;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectTopLeftChild.Contains(point))
                 {
@@ -2046,7 +2213,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.TopLeftChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectTopRight.Contains(point))
                 {
@@ -2055,7 +2222,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.TopRight;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectTopRightChild.Contains(point))
                 {
@@ -2064,7 +2231,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.TopRightChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectBottomLeft.Contains(point))
                 {
@@ -2074,7 +2241,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.BottomLeft;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectBottomLeftChild.Contains(point))
                 {
@@ -2084,7 +2251,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.BottomLeftChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectBottomRight.Contains(point))
                 {
@@ -2093,7 +2260,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.BottomRight;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectBottomRightChild.Contains(point))
                 {
@@ -2102,7 +2269,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.BottomRightChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidTop.Contains(point))
                 {
@@ -2111,7 +2278,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidTop;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidTopChild.Contains(point))
                 {
@@ -2120,7 +2287,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidTopChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidBottom.Contains(point))
                 {
@@ -2129,7 +2296,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidBottom;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidBottomChild.Contains(point))
                 {
@@ -2138,7 +2305,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidBottomChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidLeft.Contains(point))
                 {
@@ -2147,7 +2314,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidLeft;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidLeftChild.Contains(point))
                 {
@@ -2156,7 +2323,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidLeftChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidRight.Contains(point))
                 {
@@ -2165,7 +2332,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidRight;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectMidRightChild.Contains(point))
                 {
@@ -2174,7 +2341,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.MidRightChild;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (ellipse.FillContains(point))
                 {
@@ -2183,7 +2350,7 @@ namespace NpcCore.Wpf.Controls
                     m_dragAnchor = AnchorPoint.Rotation;
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectOutside.Contains(point))
                 {
@@ -2193,7 +2360,7 @@ namespace NpcCore.Wpf.Controls
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
                     m_dragStartOffsetPoint = new Point(e.GetPosition(this).X - m_offsetRectPoint.X, e.GetPosition(this).Y - m_offsetRectPoint.Y);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else if (rectInside.Contains(point))
                 {
@@ -2203,7 +2370,7 @@ namespace NpcCore.Wpf.Controls
                     m_rectDrag = new Rect(m_rect.Left, m_rect.Top, m_rect.Width, m_rect.Height);
                     m_rectInsideDrag = new Rect(m_rectInside.Left, m_rectInside.Top, m_rectInside.Width, m_rectInside.Height);
                     m_dragStartOffsetPoint = new Point(e.GetPosition(this).X - m_offsetRectPoint.X, e.GetPosition(this).Y - m_offsetRectPoint.Y);
-                    m_bSelectingROIRect = true;
+                    m_bSelectingRectROI = true;
                 }
                 else
                 {
@@ -2212,7 +2379,7 @@ namespace NpcCore.Wpf.Controls
                     //origin = new Point(tt.X, tt.Y);
                     //this.Cursor = Cursors.Hand;
                     //this.CaptureMouse();
-                    m_bSelectingROIRect = false;
+                    m_bSelectingRectROI = false;
                 }
             }
         }
@@ -2243,10 +2410,10 @@ namespace NpcCore.Wpf.Controls
                 {
                     if (m_bEnableLocatorTool)
                     {
-                        m_bEnableSelectROIRectTool = false;
-                        m_bEnableSelectROIPolygonTool = false;
+                        m_bEnableSelectRectROITool = false;
+                        m_bEnableSelectPolygonROITool = false;
                         m_bEnableMeasureSegLineTool = false;
-                        m_bSelectingROIRect = false;
+                        m_bSelectingRectROI = false;
                         m_bMeasuringSegLine = false;
                         m_bEnableSelectRect = false;
                         m_bEnableRotate = false;
@@ -2261,23 +2428,25 @@ namespace NpcCore.Wpf.Controls
         }
         public bool EnableSelectROIRectTool
         {
-            get => m_bEnableSelectROIRectTool;
+            get => m_bEnableSelectRectROITool;
             set
             {
-                if (SetProperty(ref m_bEnableSelectROIRectTool, value))
+                if (SetProperty(ref m_bEnableSelectRectROITool, value))
                 {
-                    if (m_bEnableSelectROIRectTool)
+                    if (m_bEnableSelectRectROITool)
                     {
                         m_bEnableLocatorTool = false;
-                        m_bEnableSelectROIPolygonTool = false;
+                        m_bEnableSelectCircleROITool = false;
+                        m_bEnableSelectPolygonROITool = false;
                         m_bEnableMeasureSegLineTool = false;
-                        m_bMeasuringSegLine = false;
-                        m_bSelectingROIRect = true;
+                        m_bEnableMeasureCircleTool = false;
+                        m_bEnableInspectTool = false;
+
                         m_bEnableSelectRect = true;
-                        //_enableRotate = true;
+                        m_bEnableRotate = false;
                         m_bDrag = true;
 
-                        ToolType = emToolType.ToolType_SelectRoiTool;
+                        ToolType = emToolType.ToolType_SelectROITool;
 
                         this.InvalidateVisual();
                     }
@@ -2286,19 +2455,44 @@ namespace NpcCore.Wpf.Controls
         }
         public bool EnableSelectROIPolygonTool
         {
-            get => m_bEnableSelectROIPolygonTool;
+            get => m_bEnableSelectPolygonROITool;
             set
             {
-                if (SetProperty(ref m_bEnableSelectROIPolygonTool, value))
+                if (SetProperty(ref m_bEnableSelectPolygonROITool, value))
                 {
-                    if (m_bEnableSelectROIPolygonTool)
+                    if (m_bEnableSelectPolygonROITool)
                     {
                         m_bEnableLocatorTool = false;
-                        m_bEnableSelectROIRectTool = false;
+                        m_bEnableSelectRectROITool = false;
+                        m_bEnableSelectCircleROITool = false;
                         m_bEnableMeasureSegLineTool = false;
-                        m_bMeasuringSegLine = false;
+                        m_bEnableMeasureCircleTool = false;
+                        m_bEnableInspectTool = false;
 
-                        ToolType = emToolType.ToolType_SelectRoiTool;
+                        ToolType = emToolType.ToolType_SelectROITool;
+
+                        this.InvalidateVisual();
+                    }
+                }
+            }
+        }
+        public bool EnableSelectROICircleTool
+        {
+            get => m_bEnableSelectCircleROITool;
+            set
+            {
+                if (SetProperty(ref m_bEnableSelectCircleROITool, value))
+                {
+                    if (m_bEnableSelectCircleROITool)
+                    {
+                        m_bEnableLocatorTool = false;
+                        m_bEnableSelectRectROITool = false;
+                        m_bEnableSelectPolygonROITool = false;
+                        m_bEnableMeasureSegLineTool = false;
+                        m_bEnableMeasureCircleTool = false;
+                        m_bEnableInspectTool = false;
+
+                        ToolType = emToolType.ToolType_SelectROITool;
 
                         this.InvalidateVisual();
                     }
@@ -2326,10 +2520,10 @@ namespace NpcCore.Wpf.Controls
                     if (m_bEnableMeasureSegLineTool)
                     {
                         m_bEnableLocatorTool = false;
-                        m_bEnableSelectROIRectTool = false;
-                        m_bEnableSelectROIPolygonTool = false;
+                        m_bEnableSelectRectROITool = false;
+                        m_bEnableSelectPolygonROITool = false;
                         m_bEnableMeasureCircleTool = false;
-                        m_bSelectingROIRect = false;
+                        m_bSelectingRectROI = false;
                         m_bEnableSelectRect = false;
 
                         ToolType = emToolType.ToolType_MeasurementTool;
@@ -2349,10 +2543,10 @@ namespace NpcCore.Wpf.Controls
                     if (m_bEnableMeasureCircleTool)
                     {
                         m_bEnableLocatorTool = false;
-                        m_bEnableSelectROIRectTool = false;
-                        m_bEnableSelectROIPolygonTool = false;
+                        m_bEnableSelectRectROITool = false;
+                        m_bEnableSelectPolygonROITool = false;
                         m_bEnableMeasureSegLineTool = false;
-                        m_bSelectingROIRect = false;
+                        m_bSelectingRectROI = false;
                         m_bEnableSelectRect = false;
 
                         ToolType = emToolType.ToolType_MeasurementTool;
@@ -2367,15 +2561,20 @@ namespace NpcCore.Wpf.Controls
             get => m_bEnableRotate;
             set => m_bEnableRotate = value;
         }
-        public bool IsSelectingRoi
+        public bool IsSelectingRectROI
         {
-            get => m_bSelectingROIRect;
-            set => m_bSelectingROIRect = value;
+            get => m_bSelectingRectROI;
+            set => m_bSelectingRectROI = value;
         }
-        public bool IsSelectingPolygon
+        public bool IsSelectingPolygonROI
         {
-            get => m_bSelectingROIPolygon;
-            set => m_bSelectingROIPolygon = value;
+            get => m_bSelectingPolygonROI;
+            set => m_bSelectingPolygonROI = value;
+        }
+        public bool IsSelectingCircleROI
+        {
+            get => m_bSelectingCircleROI;
+            set => m_bSelectingCircleROI = value;
         }
         public bool IsMeasuringSegLine
         {
@@ -2387,40 +2586,20 @@ namespace NpcCore.Wpf.Controls
             get => m_bMeasuringCircle;
             set => m_bMeasuringCircle = value;
         }
-        public Point CenterPoint
-        {
-            get => m_centerPoint;
-            set => m_centerPoint = value;
-        }
-        public Point CenterPointReal
-        {
-            get => m_centerPointReal;
-            set => m_centerPointReal = value;
-        }
         public bool Drag
         {
             get => m_bDrag;
             set => m_bDrag = value;
         }
-        public bool CompletedSelectRoi
+        public bool CompletedSelectROI
         {
-            get => m_bCompletedSelectRoi;
-            set => m_bCompletedSelectRoi = value;
+            get => m_bCompletedSelectROI;
+            set => m_bCompletedSelectROI = value;
         }
-        public Size DragSize
+        public double RadiusCircleROI
         {
-            get => m_szDragSize;
-            set => m_szDragSize = value;
-        }
-        public Point DragStart
-        {
-            get => m_dragStartPoint;
-            set => m_dragStartPoint = value;
-        }
-        public Point DragStartOffset
-        {
-            get => m_dragStartOffsetPoint;
-            set => m_dragStartOffsetPoint = value;
+            get => m_dRadiusCircleROI;
+            set => m_dRadiusCircleROI = value;
         }
         public Rect DragRect
         {
@@ -2431,11 +2610,6 @@ namespace NpcCore.Wpf.Controls
         {
             get => m_rectInsideDrag;
             set => m_rectInsideDrag = value;
-        }
-        public AnchorPoint DragAnchor
-        {
-            get => m_dragAnchor;
-            set => m_dragAnchor = value;
         }
         public Rect Rect
         {
@@ -2457,6 +2631,31 @@ namespace NpcCore.Wpf.Controls
             get => m_rectTransform;
             set => m_rectTransform = value;
         }
+        public Point CenterPoint
+        {
+            get => m_centerPoint;
+            set => m_centerPoint = value;
+        }
+        public Point CenterPointReal
+        {
+            get => m_centerPointReal;
+            set => m_centerPointReal = value;
+        }
+        public Point CenterPointCircleROI
+        {
+            get => m_centerPointCircleROI;
+            set => m_centerPointCircleROI = value;
+        }
+        public Point DragStart
+        {
+            get => m_dragStartPoint;
+            set => m_dragStartPoint = value;
+        }
+        public Point DragStartOffset
+        {
+            get => m_dragStartOffsetPoint;
+            set => m_dragStartOffsetPoint = value;
+        }
         public Point OffsetRect
         {
             get => m_offsetRectPoint;
@@ -2476,6 +2675,16 @@ namespace NpcCore.Wpf.Controls
         {
             get => m_rectRotation;
             set => m_rectRotation = value;
+        }
+        public Size DragSize
+        {
+            get => m_szDragSize;
+            set => m_szDragSize = value;
+        }
+        public AnchorPoint DragAnchor
+        {
+            get => m_dragAnchor;
+            set => m_dragAnchor = value;
         }
         public emToolType ToolType
         {
@@ -2499,7 +2708,7 @@ namespace NpcCore.Wpf.Controls
                 }
             }
         }
-        public List<Point> PointListPolygon
+        public List<Point> PointsPolygon
         {
             get => m_listPointsPolygon;
             set => m_listPointsPolygon = value;
@@ -2540,7 +2749,7 @@ namespace NpcCore.Wpf.Controls
             p1.Y = (int)(p2.Y + 9 * Math.Sin(angle - Math.PI / 4));
             dc.DrawLine(new Pen(Brushes.LightCoral, 1), p1, p2);
         }
-        private void RenderSelectRectTool(DrawingContext dc)
+        private void RenderSelectRectROITool(DrawingContext dc)
         {
             //calculate center point
             m_centerPoint = new Point(m_rect.Left + m_rect.Width / 2, m_rect.Top + m_rect.Height / 2);
@@ -2623,7 +2832,7 @@ namespace NpcCore.Wpf.Controls
         }
         private void RenderSelectRoiTool(DrawingContext dc)
         {
-            RenderSelectRectTool(dc);
+            RenderSelectRectROITool(dc);
         }
         private void RenderLocatorTool(DrawingContext dc)
         {
@@ -2710,7 +2919,7 @@ namespace NpcCore.Wpf.Controls
             }
             dc.Pop();
         }
-        private void RenderSelectPolyTool(DrawingContext dc)
+        private void RenderSelectPolyROITool(DrawingContext dc)
         {
             if (BMP == null)
                 return;
@@ -2730,20 +2939,20 @@ namespace NpcCore.Wpf.Controls
 
             Point startPt = m_listPointsPolygon[nIdxPtEnd];
 
-            if(!m_bCompletedSelectRoi && m_bDrag)
+            if (!m_bCompletedSelectROI && m_bDrag)
             {
                 dc.DrawLine(penDash, startPt, m_currentPoint);
 
                 dc.DrawEllipse(Brushes.Red, null, startPt, 3d, 3d);
                 dc.DrawEllipse(Brushes.Red, null, m_currentPoint, 3d, 3d);
             }
-            else if(!m_bCompletedSelectRoi && !m_bDrag)
+            else if (!m_bCompletedSelectROI && !m_bDrag)
             {
                 if (m_listPointsPolygon.Count < 2)
                     return;
 
                 Point startPoint = m_listPointsPolygon[0];
-                Point nextPoint = m_listPointsPolygon[1]; 
+                Point nextPoint = m_listPointsPolygon[1];
                 for (int i = 1; i < m_listPointsPolygon.Count; i++)
                 {
                     nextPoint = m_listPointsPolygon[i];
@@ -2756,6 +2965,48 @@ namespace NpcCore.Wpf.Controls
                 }
             }
 
+
+            dc.Pop();
+        }
+        private void RenderSelectCircleROITool(DrawingContext dc)
+        {
+            if (BMP == null)
+                return;
+
+            dc.PushOpacity(1.0);
+            double dThicknessPen = 2.0;
+
+            Pen penDash = new Pen(colorCrossLine, dThicknessPen);
+            penDash.DashStyle = DashStyles.Dash;
+            penDash.DashCap = PenLineCap.Flat;
+            penDash.LineJoin = PenLineJoin.Miter;
+
+            double dDeltaX = Math.Round(Math.Abs(m_centerPointCircleROI.X - m_radiusPointCircleROI.X), 1);
+            double dDeltaY = Math.Round(Math.Abs(m_centerPointCircleROI.Y - m_radiusPointCircleROI.Y), 1);
+            double dRadius = Math.Round(Math.Sqrt(dDeltaX * dDeltaX + dDeltaY * dDeltaY), 1);
+
+            if (m_bSelectedPt1CircleROI && !m_bSelectedPt2CircleROI)
+            {
+                // draw dash line center to radius point
+                dc.DrawLine(penDash, m_centerPointCircleROI, m_radiusPointCircleROI);
+
+                // draw Circle
+                dc.DrawEllipse(null, new Pen(colorCrossLine, dThicknessPen), m_centerPointCircleROI, (int)dRadius, (int)dRadius);
+
+                // draw center point
+                dc.DrawEllipse(Brushes.Red, null, m_centerPointCircleROI, 3d, 3d);
+
+                // draw radius point
+                dc.DrawEllipse(Brushes.Red, null, m_radiusPointCircleROI, 3d, 3d);
+            }
+
+            if (m_bSelectedPt1CircleROI && m_bSelectedPt2CircleROI)
+            {
+                dc.PushOpacity(0.6);
+
+                // draw Circle
+                dc.DrawEllipse(colorBgRect, new Pen(Brushes.Cyan, dThicknessPen), m_centerPointCircleROI, (int)dRadius, (int)dRadius);
+            }
 
             dc.Pop();
         }
@@ -2877,7 +3128,7 @@ namespace NpcCore.Wpf.Controls
             dc.DrawLine(penDash, m_centerPoint_MeasureCircleTool, m_radiusPoint_MeasureCircleTool);
 
             // draw Circle
-            dc.DrawEllipse(null, new Pen(Brushes.Green, dThicknessPen), m_centerPoint_MeasureCircleTool, (int)dRadius, (int)dRadius);
+            dc.DrawEllipse(null, new Pen(Brushes.Cyan, dThicknessPen), m_centerPoint_MeasureCircleTool, (int)dRadius, (int)dRadius);
 
             // draw center point
             dc.DrawEllipse(Brushes.Red, null, m_centerPoint_MeasureCircleTool, 3d, 3d);
@@ -2911,11 +3162,11 @@ namespace NpcCore.Wpf.Controls
         {
             base.OnRender(dc);
 
-            if (m_bEnableSelectROIRectTool && !m_bCompletedSelectRoi)
+            if (m_bEnableSelectRectROITool && !m_bCompletedSelectROI)
             {
                 RenderSelectRoiTool(dc);
             }
-            else if (m_bEnableLocatorTool && !m_bCompletedSelectRoi)
+            else if (m_bEnableLocatorTool && !m_bCompletedSelectROI)
             {
                 RenderLocatorTool(dc);
             }
@@ -2927,16 +3178,20 @@ namespace NpcCore.Wpf.Controls
             {
                 RenderMeasureCircleTool(dc);
             }
-            else if (m_bEnableSelectROIPolygonTool)
+            else if (m_bEnableSelectPolygonROITool)
             {
-                RenderSelectPolyTool(dc);
+                RenderSelectPolyROITool(dc);
+            }
+            else if(m_bEnableSelectCircleROITool)
+            {
+                RenderSelectCircleROITool(dc);
             }
         }
     }
     public enum emToolType
     {
         ToolType_Default,
-        ToolType_SelectRoiTool,
+        ToolType_SelectROITool,
         ToolType_LocatorTool,
         ToolType_MeasurementTool,
     }

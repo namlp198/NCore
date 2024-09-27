@@ -31,11 +31,13 @@ interface INVisionInspectCoreToParent
 	virtual CNVisionInspectResult_FakeCam*         GetResult_FakeCamControl() = 0;
 	virtual CNVisionInspectStatus*                 GetStatusControl(int nCamIdx) = 0;
 	virtual LPBYTE                                 GetSimulatorBuffer(int nBuff, int nFrame) = 0;
+	virtual LPBYTE                                 GetSimulatorBuffer_FakeCam(int nFrame) = 0;
 	virtual BOOL                                   SetResultBuffer(int nBuff, int nFrame, BYTE* buff) = 0;
 	virtual BOOL                                   SetResultBuffer_FakeCam(int nFrame, BYTE* buff) = 0;
 	virtual void                                   InspectComplete(int nCamIdx, BOOL bSetting) = 0;
 	virtual void                                   InspectComplete_FakeCam(emInspectTool eInspTool) = 0;
 	virtual void                                   LocatorTrainComplete(int CamIdx) = 0;
+	virtual void                                   HSVTrainComplete(int nCamIdx) = 0;
 };
 
 class AFX_EXT_CLASS CNVisionInspectCoreThreadData : public CWorkThreadData
@@ -77,6 +79,7 @@ public:
 	void                       Inspect_Simulation(emCameraBrand camBrand, int nCamIdx, int nBuff, int nFrame);
 	void                       Inspect_Reality(emCameraBrand camBrand, int nCamIdx, LPBYTE pBuffer);
 	void                       LocatorTool_Train(int nCamIdx, LPBYTE pBuffer);
+	void                       HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
 
 public:
 	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
@@ -85,6 +88,7 @@ public:
 public:
 	// INSPECT TOOL
 	BOOL                       Algorithm_CountPixel();
+	BOOL                       Algorithm_Decode();
 
 	// Process Hik Cam
 private:

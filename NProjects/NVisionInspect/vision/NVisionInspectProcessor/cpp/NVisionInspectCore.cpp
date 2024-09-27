@@ -165,7 +165,7 @@ void CNVisionInspectCore::Inspect_Reality(emCameraBrand camBrand, int nCamIdx, L
 
 	int nCamIndex = 0;
 	int nHikCamCount = 0;
-	
+
 	switch (camBrand)
 	{
 	case CameraBrand_Hik:
@@ -175,9 +175,9 @@ void CNVisionInspectCore::Inspect_Reality(emCameraBrand camBrand, int nCamIdx, L
 		nHikCamCount = m_pInterface->GetVecCameras().at(0); // Index 0 is number of Hik Cam
 		nCamIndex = nHikCamCount + nCamIdx;
 		break;
-	case CameraBrand_Jai: 
+	case CameraBrand_Jai:
 		break;
-	case CameraBrand_IRayple: 
+	case CameraBrand_IRayple:
 		break;
 	}
 
@@ -362,6 +362,53 @@ void CNVisionInspectCore::LocatorTool_Train(int nCamIdx, LPBYTE pBuffer)
 
 	// inform that locator trained succsess
 	m_pInterface->LocatorTrainComplete(nCamIdx);
+}
+
+void CNVisionInspectCore::HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV)
+{
+	Sleep(5);
+
+	if (nCamIdx < 0)
+		return;
+
+	LPBYTE pBuffer = NULL;
+
+	// Fake Cam
+	if (nCamIdx >= m_pInterface->GetSystemSettingControl()->m_nNumberOfInspectionCamera)
+	{
+		pBuffer = m_pInterface->GetSimulatorBuffer_FakeCam(nFrame);
+		if (pBuffer == NULL)
+			return;
+
+		int nWidth = m_pInterface->GetFakeCameraSettingControl()->m_nFrameWidth;
+		int nHeight = m_pInterface->GetFakeCameraSettingControl()->m_nFrameHeight;
+
+		cv::Mat matSrc(nHeight, nWidth, CV_8UC3, pBuffer);
+
+		cv::Mat matHSV, matResultHSV, maskHSV;
+
+		int nHueMin = pRecipeHSV->m_nHueMin;
+		int nHueMax = pRecipeHSV->m_nHueMax;
+		int nSatMin = pRecipeHSV->m_nSaturationMin;
+		int nSatMax = pRecipeHSV->m_nSaturationMax;
+		int nValMin = pRecipeHSV->m_nValueMin;
+		int nValMax = pRecipeHSV->m_nValueMax;
+
+		cv::Scalar minHSV, maxHSV;
+		cv::cvtColor(matSrc, matHSV, cv::COLOR_BGR2HSV);
+		matResultHSV = cv::Mat::zeros(matSrc.rows, matSrc.cols, CV_8UC3);
+
+		minHSV = cv::Scalar(nHueMin, nSatMin, nValMin);
+		maxHSV = cv::Scalar(nHueMax, nSatMax, nValMax);
+
+		cv::inRange(matHSV, minHSV, maxHSV, maskHSV);
+		cv::bitwise_and(matSrc, matSrc, matResultHSV, maskHSV);
+
+		m_pInterface->SetResultBuffer_FakeCam(nFrame, matResultHSV.data);
+		m_pInterface->HSVTrainComplete(nCamIdx);
+
+		Sleep(1);
+	}
 }
 
 void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
@@ -656,6 +703,79 @@ BOOL CNVisionInspectCore::Algorithm_CountPixel()
 	}
 }
 
+BOOL CNVisionInspectCore::Algorithm_Decode()
+{
+	if (m_pMat.empty())
+		return FALSE;
+
+	if (m_pMatROI.empty())
+		return FALSE;
+
+	if (m_pRectROI.empty())
+		return FALSE;
+
+	int nFrame = 0;
+
+	cv::Mat matBGR;
+	m_pMat.copyTo(matBGR);
+
+	BOOL bRet = FALSE;
+	CString csRet;
+
+	CNVisionInspectResult_Decode* pDecodeRes = &m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResDecode;
+
+	auto barcodes = ReadBarcodes(m_pMatROI);
+
+	if (!barcodes.empty())
+	{
+		if (barcodes.size() == m_pInterface->GetRecipe_FakeCamControl()->m_NVisionInspectRecipe_Decode.m_nMaxCodeCount)
+		{
+			bRet = TRUE;
+		}
+		else
+		{
+			bRet = FALSE;
+		}
+
+		std::string sRet;
+		const char* const delim = ";";
+		for (auto& barcode : barcodes) {
+			DrawBarcode(matBGR, m_pRectROI, barcode);
+			if (!sRet.empty())
+				sRet += delim;
+
+			sRet += barcode.text();
+		}
+		csRet = (CString)sRet.c_str();
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+	if (bRet == TRUE)
+	{
+		cv::rectangle(matBGR, m_pRectROI, GREEN_COLOR, 2, cv::LINE_AA);
+
+		pDecodeRes->m_bInspectCompleted = TRUE;
+		pDecodeRes->m_bResultStatus = TRUE;
+		ZeroMemory(pDecodeRes->m_sResultString, sizeof(pDecodeRes->m_sResultString));
+		wsprintf(pDecodeRes->m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
+	}
+	else
+	{
+		cv::rectangle(matBGR, m_pRectROI, RED_COLOR, 2, cv::LINE_AA);
+
+		pDecodeRes->m_bInspectCompleted = TRUE;
+		pDecodeRes->m_bResultStatus = FALSE;
+	}
+
+	m_pInterface->SetResultBuffer_FakeCam(nFrame, matBGR.data);
+	m_pInterface->InspectComplete_FakeCam(InspectTool_Decode);
+
+	return bRet;
+}
+
 #pragma region Functions handle Frame Cam
 void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 {
@@ -715,7 +835,7 @@ void CNVisionInspectCore::ProcessFrame_Cam1(LPBYTE pBuffer)
 		std::string sRet;
 		const char* const delim = ";";
 		for (auto& barcode : barcodes) {
-			DrawBarcode(matResult, barcode);
+			DrawBarcode(matResult, m_pRectROI, barcode);
 			if (!sRet.empty())
 				sRet += delim;
 
@@ -776,7 +896,7 @@ void CNVisionInspectCore::ProcessFrame_Cam2(LPBYTE pBuffer)
 		std::string sRet;
 		const char* const delim = ";";
 		for (auto& barcode : barcodes) {
-			DrawBarcode(matResult, barcode);
+			DrawBarcode(matResult, m_pRectROI, barcode);
 			if (!sRet.empty())
 				sRet += delim;
 

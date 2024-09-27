@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NVisionInspectGUI.Views.UcViews"
              xmlns:BuffSet="clr-namespace:NCore.Wpf.BufferViewerSettingPRO;assembly=NCore.Wpf.BufferViewerSettingPRO"
+             xmlns:Controls="clr-namespace:NpcCore.Wpf.Controls;assembly=NpcCore.Wpf"
              xmlns:cvt="clr-namespace:NVisionInspectGUI.Converter"
              mc:Ignorable="d"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:NVisionInspectGUI.ViewModels"
              d:DataContext="{d:DesignInstance vm:SettingViewModel}"
-             d:DesignHeight="450"
-             d:DesignWidth="1000"
+             d:DesignHeight="1000"
+             d:DesignWidth="1900"
              Background="{DynamicResource RGB_Night_33_41_57}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -48,6 +49,7 @@
                                    FontSize="14"
                                    FontWeight="Bold" />
                         <ComboBox  Margin="3"
+                                   Style="{DynamicResource ComboboxStyleBoardSetting}"
                                    x:Name="cbbImageSource"
                                    FontSize="14"
                                    FontWeight="Bold"
@@ -65,6 +67,7 @@
                                    FontSize="14"
                                    FontWeight="Bold" />
                         <ComboBox  Margin="3"
+                                   Style="{DynamicResource ComboboxStyleBoardSetting}"
                                    x:Name="cbbROI"
                                    FontSize="14"
                                    FontWeight="Bold"
@@ -74,6 +77,7 @@
                     </DockPanel>
                     <Separator Margin="3" />
                     <Button x:Name="btnOpenColorSpace"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding ColorSpaceCmd}"
                             Margin="5 0 5 0"
                             Width="120">
@@ -93,6 +97,7 @@
                     </Button>
                     <Separator Margin="3" />
                     <Button x:Name="btnCalibration"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding CalibrationCmd}"
                             Margin="5 0 5 0"
                             Width="110">
@@ -112,6 +117,7 @@
                     </Button>
                     <Separator Margin="3" />
                     <Button x:Name="btnInspect"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding InspectCmd}"
                             Margin="5 0 5 0"
                             Width="100">
@@ -132,10 +138,11 @@
                     <Separator Margin="3"/>
                     <Button Background="{DynamicResource RGB_Cold_77_136_255}"
                             Name="btnStartAcq"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             ToolTip="Start Acquisition"
                             Command="{Binding StartAcquisitionCmd}"
                             Margin="5 0 0 0"
-                            Width="50">
+                            Width="65">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
                                           Mode="OneWay">
@@ -159,9 +166,10 @@
                     </Button>
                     <Button Background="WhiteSmoke"
                             Name="btnContinuousGrab"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding ContinuousGrabCmd}"
                             Margin="5 0 0 0"
-                            Width="60">
+                            Width="65">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
                                           Mode="OneWay">
@@ -185,6 +193,7 @@
                     </Button>
                     <Button Background="WhiteSmoke"
                             Name="btnSingleGrab"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding SingleGrabCmd}"
                             Margin="5 0 0 0"
                             Width="60">
@@ -212,9 +221,10 @@
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnLoadImage"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding LoadImageCmd}"
                             CommandParameter="{Binding ElementName=btnLoadImage, Path=Name}"
-                            Width="60">
+                            Width="65">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
                                           Mode="OneWay">
@@ -239,9 +249,10 @@
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnLoadAllImage"
+                            Style="{DynamicResource NormalButtonStyle}"
                             Command="{Binding LoadImageCmd}"
                             CommandParameter="{Binding ElementName=btnLoadAllImage, Path=Name}"
-                            Width="100"
+                            Width="110"
                             Height="35">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
@@ -259,7 +270,7 @@
                         </Button.Opacity>
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Load All Image"
+                                <TextBlock Text="LOAD ALL IMAGE"
                                            FontSize="12"
                                            FontWeight="SemiBold"/>
                             </StackPanel>
@@ -268,36 +279,42 @@
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnPrevImage"
+                            Style="{DynamicResource NormalButtonStyle}"
                             IsEnabled="{Binding ElementName=btnLoadAllImage, Path=IsEnabled}"
                             Command="{Binding NextPrevCmd}"
                             CommandParameter="{Binding ElementName=btnPrevImage, Path=Name}"
-                            Width="50">
+                            Width="50"
+                            Height="35">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_PrevBtn_1}"
-                                       Margin="3" />
+                                <Image Source="{DynamicResource IMG_Prev_3}"
+                                       Margin="6"/>
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnNextImage"
+                            Style="{DynamicResource NormalButtonStyle}"
                             IsEnabled="{Binding ElementName=btnLoadAllImage, Path=IsEnabled}"
                             Command="{Binding NextPrevCmd}"
                             CommandParameter="{Binding ElementName=btnNextImage, Path=Name}"
-                            Width="50">
+                            Width="50"
+                            Height="35">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_NextBtn_1}"
-                                       Margin="3" />
+                                <Image Source="{DynamicResource IMG_Next_3}"
+                                       Margin="6" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <Button Background="{DynamicResource RGB_Cold_92_184_92}"
                             x:Name="btnSaveImage"
+                            Style="{DynamicResource RedButtonStyle}"
                             Command="{Binding SaveImageCmd}"
                             Margin="5 0 5 0"
-                            Width="100">
+                            Width="110"
+                            Height="35">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{DynamicResource IMG_SaveIcon}"
@@ -390,7 +407,254 @@
                            Placement="Right"
                            PopupAnimation="Fade"
                            IsOpen="{Binding OpenPopupColorSpace}">
-                        
+                        <Grid Margin="5"
+                              Background="{DynamicResource RGB_Night_33_41_57}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       Text="HSV"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White" />
+                            <Grid Grid.Row="1"
+                                  Background="#293247"
+                                  Margin="0 10 0 10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0"
+                                      Margin="15 10 15 0">
+                                    <TextBlock Text="Hue(0~180)"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Foreground="White" />
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Min"
+                                                   FontSize="12"
+                                                   Foreground="White"
+                                                   Margin="0 0 5 0" />
+                                        <Controls:TextBoxControl Width="40"
+                                                                 Height="20"
+                                                                 FontSize="12"
+                                                                 Foreground="White"
+                                                                 Text="{Binding HueMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0"
+                                                                 Style="{DynamicResource TextBoxWithPlaceHolderStyle}"
+                                                                 BorderThickness="1"
+                                                                 CornerRadius="2"
+                                                                 Background="#2f3546"
+                                                                 BorderBrush="#465168" />
+                                        <TextBlock Text="Max"
+                                                   FontSize="12"
+                                                   Foreground="White"
+                                                   Margin="0 0 5 0" />
+                                        <Controls:TextBoxControl Width="40"
+                                                                 Height="20"
+                                                                 FontSize="12"
+                                                                 Foreground="White"
+                                                                 Text="{Binding HueMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0"
+                                                                 Style="{DynamicResource TextBoxWithPlaceHolderStyle}"
+                                                                 BorderThickness="1"
+                                                                 CornerRadius="2"
+                                                                 Background="#2f3546"
+                                                                 BorderBrush="#465168" />
+                                        <Controls:CheckBoxControl Width="20"
+                                                                  Height="20"
+                                                                  HorizontalAlignment="Right"
+                                                                  VerticalAlignment="Center"
+                                                                  x:Name="CbReverseHue"
+                                                                  Content=""
+                                                                  FontSize="12"
+                                                                  Foreground="Black"
+                                                                  Background="White"
+                                                                  Style="{StaticResource CheckBoxStyle}"
+                                                                  BorderBrush="#878a9a" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="1"
+                                      Margin="20 10 15 0">
+                                    <Controls:SliderControl x:Name="SliderControlHue"
+                                                            Style="{DynamicResource HueSliderStyle}"
+                                                            HighlightBackground="#a3a6b7"
+                                                            UnHighlightBackground="Transparent"
+                                                            BorderControlSliderVisible="True"
+                                                            ShowInputValue="True"
+                                                            Minimum="0"
+                                                            Maximum="180"
+                                                            Start="{Binding HueMin}"
+                                                            End="{Binding HueMax}" />
+                                </Grid>
+                                <Grid Grid.Row="2"
+                                      Margin="15 10 15 0">
+                                    <TextBlock Text="Staturation(0~255)"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Foreground="White" />
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Min"
+                                                   FontSize="12"
+                                                   Foreground="White"
+                                                   Margin="0 0 5 0" />
+                                        <Controls:TextBoxControl Width="40"
+                                                                 Height="20"
+                                                                 FontSize="12"
+                                                                 Foreground="White"
+                                                                 Text="{Binding SaturationMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0"
+                                                                 Style="{DynamicResource TextBoxWithPlaceHolderStyle}"
+                                                                 BorderThickness="1"
+                                                                 CornerRadius="2"
+                                                                 Background="#2f3546"
+                                                                 BorderBrush="#465168" />
+                                        <TextBlock Text="Max"
+                                                   FontSize="12"
+                                                   Foreground="White"
+                                                   Margin="0 0 5 0" />
+                                        <Controls:TextBoxControl Width="40"
+                                                                 Height="20"
+                                                                 FontSize="12"
+                                                                 Foreground="White"
+                                                                 Text="{Binding SaturationMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0"
+                                                                 Style="{DynamicResource TextBoxWithPlaceHolderStyle}"
+                                                                 BorderThickness="1"
+                                                                 CornerRadius="2"
+                                                                 Background="#2f3546"
+                                                                 BorderBrush="#465168" />
+
+                                        <Controls:CheckBoxControl Width="20"
+                                                                  Height="20"
+                                                                  HorizontalAlignment="Right"
+                                                                  VerticalAlignment="Center"
+                                                                  Content=""
+                                                                  FontSize="12"
+                                                                  Foreground="Black"
+                                                                  Background="White"
+                                                                  Style="{StaticResource CheckBoxStyle}"
+                                                                  BorderBrush="#878a9a" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="3"
+                                      Margin="20 10 15 0">
+                                    <Controls:SliderControl x:Name="SliderControlSaturation"
+                                                            Style="{DynamicResource SaturationSliderStyle}"
+                                                            HighlightBackground="#a3a6b7"
+                                                            UnHighlightBackground="Transparent"
+                                                            BorderControlSliderVisible="True"
+                                                            ShowInputValue="True"
+                                                            Minimum="0"
+                                                            Maximum="255"
+                                                            Start="{Binding SaturationMin}"
+                                                            End="{Binding SaturationMax}"
+                                                            />
+                                </Grid>
+                                <Grid Grid.Row="4"
+                                      Margin="15 10 15 0">
+                                    <TextBlock Text="Value(0~255)"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               Foreground="White" />
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="Min"
+                                                   FontSize="12"
+                                                   Foreground="White"
+                                                   Margin="0 0 5 0" />
+                                        <Controls:TextBoxControl Width="40"
+                                                                 Height="20"
+                                                                 FontSize="12"
+                                                                 Foreground="White"
+                                                                 Text="{Binding ValueMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0"
+                                                                 Style="{DynamicResource TextBoxWithPlaceHolderStyle}"
+                                                                 BorderThickness="1"
+                                                                 CornerRadius="2"
+                                                                 Background="#2f3546"
+                                                                 BorderBrush="#465168" />
+                                        <TextBlock Text="Max"
+                                                   FontSize="12"
+                                                   Foreground="White"
+                                                   Margin="0 0 5 0" />
+                                        <Controls:TextBoxControl Width="40"
+                                                                 Height="20"
+                                                                 FontSize="12"
+                                                                 Foreground="White"
+                                                                 Text="{Binding ValueMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                 HorizontalAlignment="Right"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 5 0"
+                                                                 Style="{DynamicResource TextBoxWithPlaceHolderStyle}"
+                                                                 BorderThickness="1"
+                                                                 CornerRadius="2"
+                                                                 Background="#2f3546"
+                                                                 BorderBrush="#465168" />
+                                        <Button Width="20"
+                                                Height="20"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="5"
+                                      Margin="20 10 15 15">
+                                    <Controls:SliderControl Style="{DynamicResource HueSliderStyle}"
+                                                            Tag="Value"
+                                                            HighlightBackground="#a3a6b7"
+                                                            UnHighlightBackground="Transparent"
+                                                            BorderControlSliderVisible="True"
+                                                            ShowInputValue="True"
+                                                            Minimum="0"
+                                                            Maximum="255"
+                                                            Start="{Binding ValueMin}"
+                                                            End="{Binding ValueMax}" />
+                                </Grid>
+                            </Grid>
+                            <Grid Grid.Row="2">
+                                <!--Button-->
+                                <Button Grid.Row="2"
+                                        x:Name="btnApplyHSV_PropertyGrid"
+                                        Style="{DynamicResource NormalButtonStyle}"
+                                        Margin="5 5 10 5"
+                                        Width="130"
+                                        Height="50"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Background="{DynamicResource RGB_Cold_77_136_255}"
+                                        Command="{Binding ApplyHSVParamCmd}"
+                                        CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Text="Apply" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Popup>
                     <Popup Name="popupCalibration"
                            Width="{Binding ElementName=gridSetting, Path=ActualWidth}"
@@ -427,9 +691,11 @@
                                 <!--Button-->
                                 <Button Grid.Row="2"
                                         x:Name="btnSaveSystemSetting_PropertyGrid"
+                                        Style="{DynamicResource RedButtonStyle}"
                                         Command="{Binding SaveSysSettingCmd}"
                                         Margin="5 5 10 5"
                                         Width="130"
+                                        Height="50"
                                         HorizontalAlignment="Right"
                                         Foreground="White"
                                         Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -477,10 +743,12 @@
                                         <!--Button-->
                                         <Button Grid.Row="2"
                                                 x:Name="btnSaveFakeCamSetting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -519,11 +787,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera1Setting_PropertyGrid"
+                                                x:Name="btnSaveCam1Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -562,11 +832,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera2Setting_PropertyGrid"
+                                                x:Name="btnSaveCam2Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -605,11 +877,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera3Setting_PropertyGrid"
+                                                x:Name="btnSaveCam3Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -648,11 +922,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera4Setting_PropertyGrid"
+                                                x:Name="btnSaveCam4Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -691,11 +967,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera5Setting_PropertyGrid"
+                                                x:Name="btnSaveCam5Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -734,11 +1012,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera6Setting_PropertyGrid"
+                                                x:Name="btnSaveCam6Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -777,11 +1057,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera7Setting_PropertyGrid"
+                                                x:Name="btnSaveCam7Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -820,11 +1102,13 @@
                                         </xctk:PropertyGrid>
                                         <!--Button-->
                                         <Button Grid.Row="2"
-                                                x:Name="btnSaveCamera8Setting_PropertyGrid"
+                                                x:Name="btnSaveCam8Setting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
-                                                CommandParameter="{Binding SettingView.buffSettingPRO.CameraIndex}"
+                                                CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -875,7 +1159,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -916,7 +1202,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -957,7 +1245,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -998,7 +1288,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1039,7 +1331,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1080,7 +1374,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1121,7 +1417,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1162,7 +1460,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1203,7 +1503,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1246,7 +1548,9 @@
                                         x:Name="btnSavePLCSetting_PropertyGrid"
                                         Command="{Binding SavePlcSettingCmd}"
                                         Margin="5 5 10 5"
+                                        Style="{DynamicResource RedButtonStyle}"
                                         Width="130"
+                                        Height="50"
                                         HorizontalAlignment="Right"
                                         Foreground="White"
                                         Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1287,7 +1591,9 @@
                                         x:Name="btnSaveLightSetting_PropertyGrid"
                                         Command="{Binding SaveLightSettingCmd}"
                                         Margin="5 5 10 5"
+                                        Style="{DynamicResource RedButtonStyle}"
                                         Width="130"
+                                        Height="50"
                                         HorizontalAlignment="Right"
                                         Foreground="White"
                                         Background="{DynamicResource RGB_Cold_77_136_255}">

@@ -36,15 +36,20 @@ namespace NVisionInspectGUI.Manager.Class
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void CallbackInsComplete_FakeCamFunc(int nInspTool);
 
+    // HSV complete train Callback
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate void CallbackHSVTrainCompleteFunc(int nCamIdx);
+
     public class NVisionInspectProcessorDll
     {
         IntPtr m_NVisionInspectProcessor;
 
-        public static CallbackLogFunc m_RegLogCallBack;
-        public static CallbackAlarmFunc m_RegAlarmCallBack;
-        public static CallbackInsCompleteFunc m_RegInsCompleteCallBack;
-        public static CallbackLocatorTrainCompleteFunc m_RegLocatorTrainCompleteCallBack;
-        public static CallbackInsComplete_FakeCamFunc m_RegInsComplete_FakeCamCallBack;
+        public static CallbackLogFunc m_RegLogCallback;
+        public static CallbackAlarmFunc m_RegAlarmCallback;
+        public static CallbackInsCompleteFunc m_RegInsCompleteCallback;
+        public static CallbackLocatorTrainCompleteFunc m_RegLocatorTrainCompleteCallback;
+        public static CallbackInsComplete_FakeCamFunc m_RegInsComplete_FakeCamCallback;
+        public static CallbackHSVTrainCompleteFunc m_RegHsvCompleteCallback;
         public NVisionInspectProcessorDll()
         {
             m_NVisionInspectProcessor = CreateNVisionInspectProcessor();
@@ -266,7 +271,24 @@ namespace NVisionInspectGUI.Manager.Class
         **********************************/
 
 
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool HSVTrain(IntPtr NVisionInspectProcessor, int nCamIdx, int nFrame, IntPtr pRecipeHSV);
+        public bool HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV recipeHSV)
+        {
+            IntPtr pPointer = Marshal.AllocHGlobal(Marshal.SizeOf(recipeHSV));
+            Marshal.StructureToPtr(recipeHSV, pPointer, false);
+
+            bool bRet = HSVTrain(m_NVisionInspectProcessor, nCamIdx, nFrame, pPointer);
+
+            return bRet;
+        }
         #endregion
+
+
 
         #region Load Setting and Recipe
 #if DEBUG
@@ -538,9 +560,9 @@ namespace NVisionInspectGUI.Manager.Class
         private static extern void RegCallBackAlarmFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackAlarmFunc callbackPointer);
         public void RegCallBackAlarmFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackAlarmFunc callbackPointer)
         {
-            m_RegAlarmCallBack = callbackPointer;
+            m_RegAlarmCallback = callbackPointer;
 
-            RegCallBackAlarmFunc(m_NVisionInspectProcessor, m_RegAlarmCallBack);
+            RegCallBackAlarmFunc(m_NVisionInspectProcessor, m_RegAlarmCallback);
         }
         /**********************************
        - Register Alarm Message CallBack
@@ -556,9 +578,9 @@ namespace NVisionInspectGUI.Manager.Class
         private static extern void RegCallBackLogFunc(IntPtr pInstance, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackLogFunc callbackPointer);
         public void RegCallBackLogFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackLogFunc callbackPointer)
         {
-            m_RegLogCallBack = callbackPointer;
+            m_RegLogCallback = callbackPointer;
 
-            RegCallBackLogFunc(m_NVisionInspectProcessor, m_RegLogCallBack);
+            RegCallBackLogFunc(m_NVisionInspectProcessor, m_RegLogCallback);
         }
         /**********************************
          - Register System Message CallBack
@@ -574,9 +596,9 @@ namespace NVisionInspectGUI.Manager.Class
         private static extern void RegCallBackInspectCompleteFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCompleteFunc callbackPointer);
         public void RegCallBackInspectCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsCompleteFunc callbackPointer)
         {
-            m_RegInsCompleteCallBack = callbackPointer;
+            m_RegInsCompleteCallback = callbackPointer;
 
-            RegCallBackInspectCompleteFunc(m_NVisionInspectProcessor, m_RegInsCompleteCallBack);
+            RegCallBackInspectCompleteFunc(m_NVisionInspectProcessor, m_RegInsCompleteCallback);
         }
         /**********************************
          - Register Inspection Complete CallBack
@@ -591,9 +613,9 @@ namespace NVisionInspectGUI.Manager.Class
         private static extern void RegCallBackLocatorTrainCompleteFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainCompleteFunc callbackPointer);
         public void RegCallBackLocatorTrainCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackLocatorTrainCompleteFunc callbackPointer)
         {
-            m_RegLocatorTrainCompleteCallBack = callbackPointer;
+            m_RegLocatorTrainCompleteCallback = callbackPointer;
 
-            RegCallBackLocatorTrainCompleteFunc(m_NVisionInspectProcessor, m_RegLocatorTrainCompleteCallBack);
+            RegCallBackLocatorTrainCompleteFunc(m_NVisionInspectProcessor, m_RegLocatorTrainCompleteCallback);
         }
         /**********************************
          - Register Locator Trained CallBack
@@ -609,12 +631,30 @@ namespace NVisionInspectGUI.Manager.Class
         private static extern void RegCallbackInspComplete_FakeCamFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsComplete_FakeCamFunc callbackPointer);
         public void RegCallbackInspComplete_FakeCamFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackInsComplete_FakeCamFunc callbackPointer)
         {
-            m_RegInsComplete_FakeCamCallBack = callbackPointer;
+            m_RegInsComplete_FakeCamCallback = callbackPointer;
 
-            RegCallbackInspComplete_FakeCamFunc(m_NVisionInspectProcessor, m_RegInsComplete_FakeCamCallBack);
+            RegCallbackInspComplete_FakeCamFunc(m_NVisionInspectProcessor, m_RegInsComplete_FakeCamCallback);
         }
         /**********************************
          - Register Inspect Tool Fake Cam CallBack
+         - Parameter : CallBack Func Pointer
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void RegCallbackHSVTrainCompleteFunc(IntPtr NVisionInspectProcessor, [MarshalAs(UnmanagedType.FunctionPtr)] CallbackHSVTrainCompleteFunc callbackPointer);
+        public void RegCallbackHSVTrainCompleteFunc([MarshalAs(UnmanagedType.FunctionPtr)] CallbackHSVTrainCompleteFunc callbackPointer)
+        {
+            m_RegHsvCompleteCallback = callbackPointer;
+
+            RegCallbackHSVTrainCompleteFunc(m_NVisionInspectProcessor, m_RegHsvCompleteCallback);
+        }
+        /**********************************
+         - Register HSV Train Complete CallBack
          - Parameter : CallBack Func Pointer
         **********************************/
         #endregion

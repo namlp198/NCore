@@ -62,6 +62,8 @@ extern "C"
 
 	__declspec(dllexport) void                          CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool);
 
+	__declspec(dllexport) bool                          HSVTrain(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
+
 	/************************** Callback **************************/
 
 	__declspec(dllexport) void			                RegCallBackInspectCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete* pFunc);
@@ -73,6 +75,8 @@ extern "C"
 	__declspec(dllexport) void			                RegCallBackLocatorTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackLocatorTrainComplete* pFunc);
 
 	__declspec(dllexport) void			                RegCallbackInspComplete_FakeCamFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete_FakeCam* pFunc);
+
+	__declspec(dllexport) void                          RegCallbackHSVTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackHSVTrainComplete* pFunc);
 
 	/************************** Load Setting and Recipe **************************/
 

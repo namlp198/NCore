@@ -304,6 +304,16 @@ void CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspToo
 	pProcessor->CallInspectTool(inspTool);
 }
 
+bool HSVTrain(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->HSVTrain(nCamIdx, nFrame, pRecipeHSV);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
 void RegCallBackInspectCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackInspectComplete* pFunc)
 {
 	if (pProcessor == NULL)
@@ -342,6 +352,14 @@ void RegCallbackInspComplete_FakeCamFunc(CNVisionInspectProcessor* pProcessor, C
 		return;
 
 	pProcessor->RegCallbackInspComplete_FakeCamFunc(pFunc);
+}
+
+void RegCallbackHSVTrainCompleteFunc(CNVisionInspectProcessor* pProcessor, CallbackHSVTrainComplete* pFunc)
+{
+	if (pProcessor == NULL)
+		return;
+
+	pProcessor->RegCallbackHSVTrainCompleteFunc(pFunc);
 }
 
 bool LoadSystemSettings(CNVisionInspectProcessor* pProcessor, CNVisionInspectSystemSetting* pSysSetting)

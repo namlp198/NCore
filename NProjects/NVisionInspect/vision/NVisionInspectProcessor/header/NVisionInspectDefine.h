@@ -60,4 +60,5 @@ typedef enum
 	InspectTool_TrainOCR = 8,
 	InspectTool_OCR = 9,
 	InspectTool_TemplateMatchingRotate = 10,
+	InspectTool_Decode = 11
 } emInspectTool;

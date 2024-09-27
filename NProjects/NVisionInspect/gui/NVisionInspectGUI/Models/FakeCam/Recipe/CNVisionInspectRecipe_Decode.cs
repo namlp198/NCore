@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 namespace NVisionInspectGUI.Models.FakeCam.Recipe
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct CNVisionInspectRecipe_FakeCam
+    public struct CNVisionInspectRecipe_Decode
     {
-        public CNVisionInspectRecipe_CountPixel m_NVisionInspRecipe_CountPixel;
-        public CNVisionInspectRecipe_Decode m_NVisionInspRecipe_Decode;
-        public CNVisionInspectRecipe_HSV m_NVisionInspRecipe_HSV;
+        public int m_nMaxCodeCount;
     }
 }
