@@ -799,6 +799,14 @@
                  UriSource="/NpcCore.Wpf;component/Resources/Images/ntech.jpg" />
     <BitmapImage x:Key="IMG_Logo_NTech_2"
                  UriSource="/NpcCore.Wpf;component/Resources/Images/logo_ntech.png" />
+    <BitmapImage x:Key="IMG_Next_2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_next_2.png" />
+    <BitmapImage x:Key="IMG_Prev_2"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_prev_2.png" />
+    <BitmapImage x:Key="IMG_Next_3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_next_3.png" />
+    <BitmapImage x:Key="IMG_Prev_3"
+                 UriSource="/NpcCore.Wpf;component/Resources/Images/btn_prev_3.png" />
 
     <Style x:Key="ImageButtonInforStyle"
            TargetType="{x:Type Image}">

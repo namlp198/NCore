@@ -13,8 +13,8 @@ namespace NpcCore.Wpf.Controls
 {
     public class ScrollViewerExt_Basic : ScrollViewer
     {
-        private ImageExt_Basic _imageExt_Basic;
-        private Grid _grid;
+        private ImageExt_Basic m_imageExt_Basic;
+        private Grid m_grid;
         private int zoomLevel = 1;
 
         Point? lastCenterPositionOnTarget;
@@ -42,12 +42,12 @@ namespace NpcCore.Wpf.Controls
         public void Reset()
         {
             // reset zoom
-            var st = GetScaleTransform(_grid);
+            var st = GetScaleTransform(m_grid);
             st.ScaleX = 1.0;
             st.ScaleY = 1.0;
 
             // reset pan
-            var tt = GetTranslateTransform(_grid);
+            var tt = GetTranslateTransform(m_grid);
             tt.X = 0.0;
             tt.Y = 0.0;
         }
@@ -81,14 +81,14 @@ namespace NpcCore.Wpf.Controls
 
         private void ScrollViewerEx_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            var st = GetScaleTransform(_grid);
-            var tt = GetTranslateTransform(_grid);
+            var st = GetScaleTransform(m_grid);
+            var tt = GetTranslateTransform(m_grid);
 
             double zoom = e.Delta > 0 ? .2 : -.2;
             if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
                 return;
 
-            Point relative = Mouse.GetPosition(_grid);
+            Point relative = Mouse.GetPosition(m_grid);
             lastMousePositionOnTarget = relative;
             double absoluteX;
             double absoluteY;
@@ -103,15 +103,16 @@ namespace NpcCore.Wpf.Controls
             tt.Y = absoluteY - relative.Y * st.ScaleY;
 
             var centerOfViewport = new Point(this.ViewportWidth / 2, this.ViewportHeight / 2);
-            lastCenterPositionOnTarget = this.TranslatePoint(centerOfViewport, _grid);
+            lastCenterPositionOnTarget = this.TranslatePoint(centerOfViewport, m_grid);
             e.Handled = true;
         }
 
         private void ScrollViewerEx_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_imageExt_Basic.IsSelectingRoi || _imageExt_Basic.EnableMeasureSegLineTool || 
-                _imageExt_Basic.IsMeasuringSegLine || _imageExt_Basic.EnableMeasureCircleTool || 
-                _imageExt_Basic.IsMeasuringCircle)
+            if (m_imageExt_Basic.IsSelectingRoi || m_imageExt_Basic.EnableMeasureSegLineTool || 
+                m_imageExt_Basic.IsMeasuringSegLine || m_imageExt_Basic.EnableMeasureCircleTool || 
+                m_imageExt_Basic.IsMeasuringCircle || m_imageExt_Basic.EnableSelectROIPolygonTool || 
+                m_imageExt_Basic.IsSelectingPolygon)
                 return;
             var mousePos = e.GetPosition(this);
             if (mousePos.X <= this.ViewportWidth && mousePos.Y < this.ViewportHeight) //make sure we still can use the scrollbars
@@ -141,7 +142,7 @@ namespace NpcCore.Wpf.Controls
                     if (lastCenterPositionOnTarget.HasValue)
                     {
                         var centerOfViewport = new Point(this.ViewportWidth / 2, this.ViewportHeight / 2);
-                        Point centerOfTargetNow = this.TranslatePoint(centerOfViewport, _grid);
+                        Point centerOfTargetNow = this.TranslatePoint(centerOfViewport, m_grid);
 
                         targetBefore = lastCenterPositionOnTarget;
                         targetNow = centerOfTargetNow;
@@ -150,7 +151,7 @@ namespace NpcCore.Wpf.Controls
                 else
                 {
                     targetBefore = lastMousePositionOnTarget;
-                    targetNow = Mouse.GetPosition(_grid);
+                    targetNow = Mouse.GetPosition(m_grid);
 
                     lastMousePositionOnTarget = null;
                 }
@@ -160,8 +161,8 @@ namespace NpcCore.Wpf.Controls
                     double dXInTargetPixels = targetNow.Value.X - targetBefore.Value.X;
                     double dYInTargetPixels = targetNow.Value.Y - targetBefore.Value.Y;
 
-                    double multiplicatorX = e.ExtentWidth / _grid.Width;
-                    double multiplicatorY = e.ExtentHeight / _grid.Height;
+                    double multiplicatorX = e.ExtentWidth / m_grid.Width;
+                    double multiplicatorY = e.ExtentHeight / m_grid.Height;
 
                     double newOffsetX = this.HorizontalOffset - dXInTargetPixels * multiplicatorX;
                     double newOffsetY = this.VerticalOffset - dYInTargetPixels * multiplicatorY;
@@ -188,18 +189,18 @@ namespace NpcCore.Wpf.Controls
         }
         public Grid Grid
         {
-            get { return _grid; }
-            set { _grid = value; }
+            get { return m_grid; }
+            set { m_grid = value; }
         }
         public ImageExt_Basic ImageExt_Basic
         {
             get
             {
-                if (_imageExt_Basic != null)
-                    return _imageExt_Basic;
+                if (m_imageExt_Basic != null)
+                    return m_imageExt_Basic;
                 else return null;
             }
-            set { _imageExt_Basic = value; }
+            set { m_imageExt_Basic = value; }
         }
         public int ZoomLevel
         {

@@ -10,8 +10,8 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:NVisionInspectGUI.ViewModels"
              d:DataContext="{d:DesignInstance vm:SettingViewModel}"
-             d:DesignHeight="450"
-             d:DesignWidth="1000"
+             d:DesignHeight="1000"
+             d:DesignWidth="1900"
              Background="{DynamicResource RGB_Night_33_41_57}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -48,6 +48,7 @@
                                    FontSize="14"
                                    FontWeight="Bold" />
                         <ComboBox  Margin="3"
+                                   Style="{DynamicResource ComboboxStyleBoardSetting}"
                                    x:Name="cbbImageSource"
                                    FontSize="14"
                                    FontWeight="Bold"
@@ -65,6 +66,7 @@
                                    FontSize="14"
                                    FontWeight="Bold" />
                         <ComboBox  Margin="3"
+                                   Style="{DynamicResource ComboboxStyleBoardSetting}"
                                    x:Name="cbbROI"
                                    FontSize="14"
                                    FontWeight="Bold"
@@ -74,6 +76,7 @@
                     </DockPanel>
                     <Separator Margin="3" />
                     <Button x:Name="btnOpenColorSpace"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding ColorSpaceCmd}"
                             Margin="5 0 5 0"
                             Width="120">
@@ -93,6 +96,7 @@
                     </Button>
                     <Separator Margin="3" />
                     <Button x:Name="btnCalibration"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding CalibrationCmd}"
                             Margin="5 0 5 0"
                             Width="110">
@@ -112,6 +116,7 @@
                     </Button>
                     <Separator Margin="3" />
                     <Button x:Name="btnInspect"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding InspectCmd}"
                             Margin="5 0 5 0"
                             Width="100">
@@ -132,10 +137,11 @@
                     <Separator Margin="3"/>
                     <Button Background="{DynamicResource RGB_Cold_77_136_255}"
                             Name="btnStartAcq"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             ToolTip="Start Acquisition"
                             Command="{Binding StartAcquisitionCmd}"
                             Margin="5 0 0 0"
-                            Width="50">
+                            Width="65">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
                                           Mode="OneWay">
@@ -159,9 +165,10 @@
                     </Button>
                     <Button Background="WhiteSmoke"
                             Name="btnContinuousGrab"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding ContinuousGrabCmd}"
                             Margin="5 0 0 0"
-                            Width="60">
+                            Width="65">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToBooleanMultiConverter}"
                                           Mode="OneWay">
@@ -185,6 +192,7 @@
                     </Button>
                     <Button Background="WhiteSmoke"
                             Name="btnSingleGrab"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding SingleGrabCmd}"
                             Margin="5 0 0 0"
                             Width="60">
@@ -212,9 +220,10 @@
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnLoadImage"
+                            Style="{DynamicResource NewPopupButtonStyle}"
                             Command="{Binding LoadImageCmd}"
                             CommandParameter="{Binding ElementName=btnLoadImage, Path=Name}"
-                            Width="60">
+                            Width="65">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
                                           Mode="OneWay">
@@ -239,9 +248,10 @@
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnLoadAllImage"
+                            Style="{DynamicResource NormalButtonStyle}"
                             Command="{Binding LoadImageCmd}"
                             CommandParameter="{Binding ElementName=btnLoadAllImage, Path=Name}"
-                            Width="100"
+                            Width="110"
                             Height="35">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource EnumBooleanToReverseBooleanMultiConverter}"
@@ -259,7 +269,7 @@
                         </Button.Opacity>
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Load All Image"
+                                <TextBlock Text="LOAD ALL IMAGE"
                                            FontSize="12"
                                            FontWeight="SemiBold"/>
                             </StackPanel>
@@ -268,36 +278,42 @@
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnPrevImage"
+                            Style="{DynamicResource NormalButtonStyle}"
                             IsEnabled="{Binding ElementName=btnLoadAllImage, Path=IsEnabled}"
                             Command="{Binding NextPrevCmd}"
                             CommandParameter="{Binding ElementName=btnPrevImage, Path=Name}"
-                            Width="50">
+                            Width="50"
+                            Height="35">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_PrevBtn_1}"
-                                       Margin="3" />
+                                <Image Source="{DynamicResource IMG_Prev_3}"
+                                       Margin="6"/>
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <Button Background="WhiteSmoke"
                             Margin="5 0 0 0"
                             x:Name="btnNextImage"
+                            Style="{DynamicResource NormalButtonStyle}"
                             IsEnabled="{Binding ElementName=btnLoadAllImage, Path=IsEnabled}"
                             Command="{Binding NextPrevCmd}"
                             CommandParameter="{Binding ElementName=btnNextImage, Path=Name}"
-                            Width="50">
+                            Width="50"
+                            Height="35">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{DynamicResource IMG_NextBtn_1}"
-                                       Margin="3" />
+                                <Image Source="{DynamicResource IMG_Next_3}"
+                                       Margin="6" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
                     <Button Background="{DynamicResource RGB_Cold_92_184_92}"
                             x:Name="btnSaveImage"
+                            Style="{DynamicResource RedButtonStyle}"
                             Command="{Binding SaveImageCmd}"
                             Margin="5 0 5 0"
-                            Width="100">
+                            Width="110"
+                            Height="35">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{DynamicResource IMG_SaveIcon}"
@@ -427,9 +443,11 @@
                                 <!--Button-->
                                 <Button Grid.Row="2"
                                         x:Name="btnSaveSystemSetting_PropertyGrid"
+                                        Style="{DynamicResource RedButtonStyle}"
                                         Command="{Binding SaveSysSettingCmd}"
                                         Margin="5 5 10 5"
                                         Width="130"
+                                        Height="50"
                                         HorizontalAlignment="Right"
                                         Foreground="White"
                                         Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -477,10 +495,12 @@
                                         <!--Button-->
                                         <Button Grid.Row="2"
                                                 x:Name="btnSaveFakeCamSetting_PropertyGrid"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Command="{Binding SaveCamSettingCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -875,7 +895,9 @@
                                                 Command="{Binding SaveRecipeCmd}"
                                                 CommandParameter="{Binding ElementName=buffSettingPRO, Path=CameraIndex}"
                                                 Margin="5 5 10 5"
+                                                Style="{DynamicResource RedButtonStyle}"
                                                 Width="130"
+                                                Height="50"
                                                 HorizontalAlignment="Right"
                                                 Foreground="White"
                                                 Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1246,7 +1268,9 @@
                                         x:Name="btnSavePLCSetting_PropertyGrid"
                                         Command="{Binding SavePlcSettingCmd}"
                                         Margin="5 5 10 5"
+                                        Style="{DynamicResource RedButtonStyle}"
                                         Width="130"
+                                        Height="50"
                                         HorizontalAlignment="Right"
                                         Foreground="White"
                                         Background="{DynamicResource RGB_Cold_77_136_255}">
@@ -1287,7 +1311,9 @@
                                         x:Name="btnSaveLightSetting_PropertyGrid"
                                         Command="{Binding SaveLightSettingCmd}"
                                         Margin="5 5 10 5"
+                                        Style="{DynamicResource RedButtonStyle}"
                                         Width="130"
+                                        Height="50"
                                         HorizontalAlignment="Right"
                                         Foreground="White"
                                         Background="{DynamicResource RGB_Cold_77_136_255}">
