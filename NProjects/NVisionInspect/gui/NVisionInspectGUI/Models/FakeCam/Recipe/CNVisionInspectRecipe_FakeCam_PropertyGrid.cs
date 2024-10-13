@@ -97,5 +97,44 @@ namespace NVisionInspectGUI.Models.FakeCam.Recipe
         [Description("")]
         public bool CountPixel_UseLocator { get; set; }
         #endregion
+        #region DECODE
+        [Category("Decode")]
+        [PropertyOrder(1)]
+        [DisplayName("Max Code Count")]
+        [Description("Maximum code number that can be decoded")]
+        public int MaxCodeCount { get; set; }
+        #endregion
+        #region HSV
+        [Category("HSV")]
+        [PropertyOrder(1)]
+        [DisplayName("Hue Min")]
+        [Description("")]
+        public int HueMin { get; set; }
+        [Category("HSV")]
+        [PropertyOrder(2)]
+        [DisplayName("Hue Max")]
+        [Description("")]
+        public int HueMax { get; set; }
+        [Category("HSV")]
+        [PropertyOrder(3)]
+        [DisplayName("Saturation Min")]
+        [Description("")]
+        public int SaturationMin { get; set; }
+        [Category("HSV")]
+        [PropertyOrder(4)]
+        [DisplayName("Saturation Max")]
+        [Description("")]
+        public int SaturationMax { get; set; }
+        [Category("HSV")]
+        [PropertyOrder(5)]
+        [DisplayName("Value Min")]
+        [Description("")]
+        public int ValueMin { get; set; }
+        [Category("HSV")]
+        [PropertyOrder(6)]
+        [DisplayName("Value Max")]
+        [Description("")]
+        public int ValueMax { get; set; }
+        #endregion
     }
 }

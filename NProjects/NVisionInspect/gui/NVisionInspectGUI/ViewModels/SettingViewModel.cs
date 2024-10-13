@@ -29,6 +29,8 @@ using System.Windows.Controls;
 using System.Runtime.InteropServices;
 using NVisionInspectGUI.Models.FakeCam.Setting;
 using NVisionInspectGUI.Models.FakeCam.Recipe;
+using NpcCore.Wpf.Controls;
+using System.Collections.ObjectModel;
 
 namespace NVisionInspectGUI.ViewModels
 {
@@ -64,6 +66,14 @@ namespace NVisionInspectGUI.ViewModels
 
         private int m_nROIIdx = -1;
         private int m_nCameraCount = 0;
+
+        // HSV
+        private int m_nHueMin = 0;
+        private int m_nHueMax = 0;
+        private int m_nSaturationMin = 0;
+        private int m_nSaturationMax = 0;
+        private int m_nValueMin = 0;
+        private int m_nValueMax = 0;
 
         private List<string> m_cameraLst = new List<string>();
         private List<string> m_lstImageSource = new List<string>();
@@ -103,7 +113,9 @@ namespace NVisionInspectGUI.ViewModels
             InterfaceManager.LocatorTrainComplete += new InterfaceManager.LocatorTrainComplete_Handler(LocatorTrainComplete);
             InterfaceManager.InspectComplete_FakeCam += new InterfaceManager.InspectComplete_FakeCam_Handler(InspectComplete_FakeCam);
             InterfaceManager.AlarmEvent += new InterfaceManager.Alarm_Handler(AlarmHandlerFunc);
+            InterfaceManager.HSVTrainComplete += new InterfaceManager.HSVTrainComplete_Handler(HSVTrainComplete);
 
+            this.ApplyHSVParamCmd = new ApplyHSVParamCmd();
             this.ColorSpaceCmd = new ColorSpaceCmd();
             this.CalibrationCmd = new CalibrationCmd();
             this.SaveRecipeCmd = new SaveRecipeCmd();
@@ -139,6 +151,7 @@ namespace NVisionInspectGUI.ViewModels
             SettingView.buffSettingPRO.TrainLocator += BuffSettingPRO_TrainLocator;
             SettingView.buffSettingPRO.ROISelectionDone += BuffSettingPRO_ROISelectionDone;
             SettingView.buffSettingPRO.IMAGE_EXT_BASIC.CountPixelEvent += IMAGE_EXT_BASIC_CountPixelEvent;
+            SettingView.buffSettingPRO.IMAGE_EXT_BASIC.DecodeEvent += IMAGE_EXT_BASIC_DecodeEvent;
 
             #endregion
 
@@ -437,6 +450,11 @@ namespace NVisionInspectGUI.ViewModels
         {
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_CountPixel);
         }
+        private void IMAGE_EXT_BASIC_DecodeEvent(object sender, RoutedEventArgs e)
+        {
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_Decode);
+        }
+
         #endregion
 
         #region Methods
@@ -856,6 +874,24 @@ namespace NVisionInspectGUI.ViewModels
             NVIRecipe_FakeCam_PropGrid.CountPixel_UseOffset = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseOffset == 1 ? true : false;
             NVIRecipe_FakeCam_PropGrid.CountPixel_UseLocator = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_CountPixel.m_bCountPixel_UseLocator == 1 ? true : false;
 
+            // DECODE
+            NVIRecipe_FakeCam_PropGrid.MaxCodeCount = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_Decode.m_nMaxCodeCount;
+
+            // HSV
+            NVIRecipe_FakeCam_PropGrid.HueMin = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nHueMin;
+            NVIRecipe_FakeCam_PropGrid.HueMax = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nHueMax;
+            NVIRecipe_FakeCam_PropGrid.SaturationMin = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nSaturationMin;
+            NVIRecipe_FakeCam_PropGrid.SaturationMax = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nSaturationMax;
+            NVIRecipe_FakeCam_PropGrid.ValueMin = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nValueMin;
+            NVIRecipe_FakeCam_PropGrid.ValueMax = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam.m_NVisionInspRecipe_HSV.m_nValueMax;
+
+            HueMin = NVIRecipe_FakeCam_PropGrid.HueMin;
+            HueMax = NVIRecipe_FakeCam_PropGrid.HueMax;
+            SaturationMin = NVIRecipe_FakeCam_PropGrid.SaturationMin;
+            SaturationMax = NVIRecipe_FakeCam_PropGrid.SaturationMax;
+            ValueMin = NVIRecipe_FakeCam_PropGrid.ValueMin;
+            ValueMax = NVIRecipe_FakeCam_PropGrid.ValueMax;
+
             NVisionInspectRecipeFakeCamPropertyGrid = NVIRecipe_FakeCam_PropGrid;
         }
         public async void SimulationThread_UpdateUI(int nBuff, int nFrame)
@@ -986,7 +1022,30 @@ namespace NVisionInspectGUI.ViewModels
                     break;
                 case emInspectTool.InspectTool_TemplateMatchingRotate:
                     break;
+                case emInspectTool.InspectTool_Decode:
+                    InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectToolResult_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult_FakeCam);
+                    if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult_FakeCam.m_NVisionInspRes_Decode.m_bResultStatus == 1)
+                    {
+                        SettingView.buffSettingPRO.InspectResult = emInspectResult.InspectResult_OK;
+                    }
+                    else
+                    {
+                        SettingView.buffSettingPRO.InspectResult = emInspectResult.InspectResult_NG;
+                    }
+
+                    SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer_FakeCam(nFrame);
+                    await SettingView.buffSettingPRO.UpdateImage();
+                    break;
             }
+        }
+        private async void HSVTrainComplete(int nCamIdx)
+        {
+            int nFrame = 0;
+
+            SettingView.buffSettingPRO.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer_FakeCam(nFrame);
+            await SettingView.buffSettingPRO.UpdateImage();
+
+            Thread.Sleep(2);
         }
         private void AlarmHandlerFunc(string alarm)
         {
@@ -1025,6 +1084,23 @@ namespace NVisionInspectGUI.ViewModels
                     break;
             }
 
+        }
+        private void UpdateHSVTrain()
+        {
+            CNVisionInspectRecipe_HSV recipeHSV = new CNVisionInspectRecipe_HSV();
+
+            recipeHSV.m_nHueMin = NVisionInspectRecipeFakeCamPropertyGrid.HueMin = HueMin;
+            recipeHSV.m_nHueMax = NVisionInspectRecipeFakeCamPropertyGrid.HueMax = HueMax;
+            recipeHSV.m_nSaturationMin = NVisionInspectRecipeFakeCamPropertyGrid.SaturationMin = SaturationMin;
+            recipeHSV.m_nSaturationMax = NVisionInspectRecipeFakeCamPropertyGrid.SaturationMax = SaturationMax;
+            recipeHSV.m_nValueMin = NVisionInspectRecipeFakeCamPropertyGrid.ValueMin = ValueMin;
+            recipeHSV.m_nValueMax = NVisionInspectRecipeFakeCamPropertyGrid.ValueMax = ValueMax;
+
+            int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+            int nFrame = 0;
+
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.HSVTrain(nCamIdx, nFrame, recipeHSV);
+            Thread.Sleep(50);
         }
         #endregion
 
@@ -1281,6 +1357,72 @@ namespace NVisionInspectGUI.ViewModels
                 }
             }
         }
+        public int HueMin
+        {
+            get => m_nHueMin;
+            set
+            {
+                if(SetProperty(ref m_nHueMin, value))
+                {
+                    UpdateHSVTrain();
+                }
+            }
+        }
+        public int HueMax
+        {
+            get => m_nHueMax;
+            set
+            {
+                if (SetProperty(ref m_nHueMax, value))
+                {
+                    UpdateHSVTrain();
+                }
+            }
+        }
+        public int SaturationMin
+        {
+            get => m_nSaturationMin;
+            set
+            {
+                if (SetProperty(ref m_nSaturationMin, value))
+                {
+                    UpdateHSVTrain();
+                }
+            }
+        }
+        public int SaturationMax
+        {
+            get => m_nSaturationMax;
+            set
+            {
+                if (SetProperty(ref m_nSaturationMax, value))
+                {
+                    UpdateHSVTrain();
+                }
+            }
+        }
+        public int ValueMin
+        {
+            get => m_nValueMin;
+            set
+            {
+                if (SetProperty(ref m_nValueMin, value))
+                {
+                    UpdateHSVTrain();
+                }
+            }
+        }
+        public int ValueMax
+        {
+            get => m_nValueMax;
+            set
+            {
+                if (SetProperty(ref m_nValueMax, value))
+                {
+                    UpdateHSVTrain();
+                }
+            }
+        }
         public emImageSource FromImageSource
         {
             get => m_fromImageSource;
@@ -1326,6 +1468,7 @@ namespace NVisionInspectGUI.ViewModels
         #endregion
 
         #region Commands
+        public ICommand ApplyHSVParamCmd { get; }
         public ICommand ColorSpaceCmd { get; }
         public ICommand CalibrationCmd { get; }
         public ICommand SaveLightSettingCmd { get; }

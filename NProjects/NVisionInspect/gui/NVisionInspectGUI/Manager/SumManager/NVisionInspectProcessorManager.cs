@@ -46,6 +46,7 @@ namespace NVisionInspectGUI.Manager.SumManager
             m_NVisionInspectProcessorDll.RegCallBackLogFunc(InterfaceManager.Instance.CallbackWriteLogFunc);
             m_NVisionInspectProcessorDll.RegCallBackInspectCompleteFunc(InterfaceManager.Instance.CallbackInsCompleteFunc);
             m_NVisionInspectProcessorDll.RegCallbackInspComplete_FakeCamFunc(InterfaceManager.Instance.CallbackInsComplete_FakeCamFunc);
+            m_NVisionInspectProcessorDll.RegCallbackHSVTrainCompleteFunc(InterfaceManager.Instance.CallbackHSVTrainCompleteFunc);
             m_NVisionInspectProcessorDll.Initialize();
         }
 

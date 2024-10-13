@@ -60,6 +60,13 @@ public:
 	BOOL m_bInspectCompleted;
 	float m_fNumberOfPixel;
 };
+struct CNVisionInspectResult_Decode
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+	TCHAR m_sResultString[MAX_STRING_SIZE_RESULT];
+};
 #pragma endregion
 
 class AFX_EXT_CLASS CNVisionInspectResult
@@ -84,4 +91,5 @@ public:
 	~CNVisionInspectResult_FakeCam(void);
 public:
 	CNVisionInspectResult_CountPixel m_NVisonInspectResCntPxl;
+	CNVisionInspectResult_Decode m_NVisonInspectResDecode;
 };

@@ -26,14 +26,17 @@ inline ZXing::Barcodes ReadBarcodes(const cv::Mat& image, const ZXing::ReaderOpt
 	return ZXing::ReadBarcodes(ImageViewFromMat(image), options);
 }
 
-inline void DrawBarcode(cv::Mat& img, ZXing::Barcode barcode)
+inline void DrawBarcode(cv::Mat& img, cv::Rect& rectROI, ZXing::Barcode barcode)
 {
 	auto pos = barcode.position();
 	auto zx2cv = [](ZXing::PointI p) { return cv::Point(p.x, p.y); };
-	auto contour = std::vector<cv::Point>{ zx2cv(pos[0]), zx2cv(pos[1]), zx2cv(pos[2]), zx2cv(pos[3]) };
+	auto contour = std::vector<cv::Point>{ cv::Point(zx2cv(pos[0]).x + rectROI.x, zx2cv(pos[0]).y + rectROI.y), 
+		                                   cv::Point(zx2cv(pos[1]).x + rectROI.x, zx2cv(pos[1]).y + rectROI.y), 
+										   cv::Point(zx2cv(pos[2]).x + rectROI.x, zx2cv(pos[2]).y + rectROI.y), 
+										   cv::Point(zx2cv(pos[3]).x + rectROI.x, zx2cv(pos[3]).y + rectROI.y) };
 	const auto* pts = contour.data();
 	int npts = contour.size();
 
 	cv::polylines(img, &pts, &npts, 1, true, CV_RGB(0, 255, 0));
-	cv::putText(img, barcode.text(), zx2cv(pos[3]) + cv::Point(0, 20), cv::FONT_HERSHEY_DUPLEX, 0.8, CV_RGB(0, 255, 0));
+	cv::putText(img, barcode.text(), cv::Point(zx2cv(pos[2]).x + rectROI.x, zx2cv(pos[2]).y + rectROI.y - 30), cv::FONT_HERSHEY_DUPLEX, 0.8, CV_RGB(0, 255, 0));
 }

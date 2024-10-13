@@ -173,6 +173,19 @@ struct CNVisionInspectRecipe_CountPixel
 	BOOL               m_bCountPixel_UseOffset;
 	BOOL               m_bCountPixel_UseLocator;
 };
+struct CNVisionInspectRecipe_HSV
+{
+	int m_nHueMin;
+	int m_nHueMax;
+	int m_nSaturationMin;
+	int m_nSaturationMax;
+	int m_nValueMin;
+	int m_nValueMax;
+};
+struct CNVisionInspectRecipe_Decode
+{
+	int m_nMaxCodeCount;
+};
 
 class AFX_EXT_CLASS CNVisionInspectRecipe
 {
@@ -196,4 +209,6 @@ public:
 	~CNVisionInspectRecipe_FakeCam(void);
 public:
 	CNVisionInspectRecipe_CountPixel m_NVisionInspectRecipe_CountPixel;
+	CNVisionInspectRecipe_Decode m_NVisionInspectRecipe_Decode;
+	CNVisionInspectRecipe_HSV m_NVisionInspectRecipe_HSV;
 };

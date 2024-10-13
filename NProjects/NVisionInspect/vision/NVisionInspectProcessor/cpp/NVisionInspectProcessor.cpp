@@ -789,6 +789,17 @@ BOOL CNVisionInspectProcessor::LoadRecipe_FakeCam(CNVisionInspectRecipe_FakeCam*
 	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_USE_LOCATOR"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseLocator, 1);
 	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_USE_OFFSET"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseOffset, 1);
 
+	// DECODE
+	recipeFile_FakeCam.GetItemValue(_T("DECODE_MAX_CODE_COUNT"), readRecipeFakeCam.m_NVisionInspectRecipe_Decode.m_nMaxCodeCount, 1);
+
+	// HSV
+	recipeFile_FakeCam.GetItemValue(_T("HSV_HUE_MIN"), readRecipeFakeCam.m_NVisionInspectRecipe_HSV.m_nHueMin, 0);
+	recipeFile_FakeCam.GetItemValue(_T("HSV_HUE_MAX"), readRecipeFakeCam.m_NVisionInspectRecipe_HSV.m_nHueMax, 180);
+	recipeFile_FakeCam.GetItemValue(_T("HSV_SATURATION_MIN"), readRecipeFakeCam.m_NVisionInspectRecipe_HSV.m_nSaturationMin, 0);
+	recipeFile_FakeCam.GetItemValue(_T("HSV_SATURATION_MAX"), readRecipeFakeCam.m_NVisionInspectRecipe_HSV.m_nSaturationMax, 255);
+	recipeFile_FakeCam.GetItemValue(_T("HSV_VALUE_MIN"), readRecipeFakeCam.m_NVisionInspectRecipe_HSV.m_nValueMin, 0);
+	recipeFile_FakeCam.GetItemValue(_T("HSV_VALUE_MAX"), readRecipeFakeCam.m_NVisionInspectRecipe_HSV.m_nValueMax, 255);
+
 	*(m_pNVisionInspectRecipe_FakeCam) = readRecipeFakeCam;
 	*(pRecipeFakeCam) = *(m_pNVisionInspectRecipe_FakeCam);
 
@@ -1277,6 +1288,17 @@ BOOL CNVisionInspectProcessor::SaveRecipe_FakeCam(CNVisionInspectRecipe_FakeCam*
 	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_USE_LOCATOR"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseLocator);
 	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_USE_OFFSET"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseOffset);
 
+	// DECODE
+	recipeFile_FakeCam.SetItemValue(_T("DECODE_MAX_CODE_COUNT"), pRecipeFakeCam->m_NVisionInspectRecipe_Decode.m_nMaxCodeCount);
+
+	// HSV
+	recipeFile_FakeCam.SetItemValue(_T("HSV_HUE_MIN"), pRecipeFakeCam->m_NVisionInspectRecipe_HSV.m_nHueMin);
+	recipeFile_FakeCam.SetItemValue(_T("HSV_HUE_MAX"), pRecipeFakeCam->m_NVisionInspectRecipe_HSV.m_nHueMax);
+	recipeFile_FakeCam.SetItemValue(_T("HSV_SATURATION_MIN"), pRecipeFakeCam->m_NVisionInspectRecipe_HSV.m_nSaturationMin);
+	recipeFile_FakeCam.SetItemValue(_T("HSV_SATURATION_MAX"), pRecipeFakeCam->m_NVisionInspectRecipe_HSV.m_nSaturationMax);
+	recipeFile_FakeCam.SetItemValue(_T("HSV_VALUE_MIN"), pRecipeFakeCam->m_NVisionInspectRecipe_HSV.m_nValueMin);
+	recipeFile_FakeCam.SetItemValue(_T("HSV_VALUE_MAX"), pRecipeFakeCam->m_NVisionInspectRecipe_HSV.m_nValueMax);
+
 	recipeFile_FakeCam.WriteToFile();
 
 	*(m_pNVisionInspectRecipe_FakeCam) = *pRecipeFakeCam;
@@ -1537,6 +1559,11 @@ void CNVisionInspectProcessor::RegCallbackInspComplete_FakeCamFunc(CallbackInspe
 	m_pCallbackInspComplete_FakeCamFunc = pFunc;
 }
 
+void CNVisionInspectProcessor::RegCallbackHSVTrainCompleteFunc(CallbackHSVTrainComplete* pFunc)
+{
+	m_pCallbackHSVCompleteFunc = pFunc;
+}
+
 void CNVisionInspectProcessor::InspectComplete(int nCamIdx, BOOL bSetting)
 {
 	if (m_pCallbackInsCompleteFunc == NULL)
@@ -1561,6 +1588,14 @@ void CNVisionInspectProcessor::InspectComplete_FakeCam(emInspectTool eInspTool)
 		return;
 
 	(m_pCallbackInspComplete_FakeCamFunc)(eInspTool);
+}
+
+void CNVisionInspectProcessor::HSVTrainComplete(int nCamIdx)
+{
+	if (m_pCallbackHSVCompleteFunc == NULL)
+		return;
+
+	(m_pCallbackHSVCompleteFunc)(nCamIdx);
 }
 
 void CNVisionInspectProcessor::LogMessage(char* strMessage)
@@ -1836,6 +1871,23 @@ BOOL CNVisionInspectProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFr
 	return TRUE;
 }
 
+BOOL CNVisionInspectProcessor::HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV)
+{
+	if (nCamIdx < 0)
+		return FALSE;
+
+	if (nFrame < 0)
+		return FALSE;
+
+	// Fake Cam
+	if (nCamIdx >= m_pNVisionInspectSystemSetting->m_nNumberOfInspectionCamera)
+	{
+		m_pNVisionInspectCore_FakeCam->HSVTrain(nCamIdx, nFrame, pRecipeHSV);
+
+		return TRUE;
+	}
+}
+
 BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom)
 {
 	int nSimuBuff = nCamIdx;
@@ -1913,6 +1965,9 @@ void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool)
 	case InspectTool_OCR:
 		break;
 	case InspectTool_TemplateMatchingRotate:
+		break;
+	case InspectTool_Decode:
+		m_pNVisionInspectCore_FakeCam->Algorithm_Decode();
 		break;
 	}
 }

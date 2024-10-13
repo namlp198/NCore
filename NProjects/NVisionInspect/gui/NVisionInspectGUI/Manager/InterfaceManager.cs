@@ -24,6 +24,9 @@ namespace NVisionInspectGUI.Manager
         public delegate void LocatorTrainComplete_Handler(int nCamIdx);
         public static event LocatorTrainComplete_Handler LocatorTrainComplete;
 
+        public delegate void HSVTrainComplete_Handler (int nCamIdx);
+        public static event HSVTrainComplete_Handler HSVTrainComplete;
+
         public NVisionInspectProcessorManager m_processorManager = new NVisionInspectProcessorManager();
         public SimulationThread m_simulationThread = new SimulationThread();
 
@@ -64,6 +67,11 @@ namespace NVisionInspectGUI.Manager
         public void CallbackAlarmFunc(string alarm)
         {
             AlarmEvent?.Invoke(alarm);
+        }
+
+        public void CallbackHSVTrainCompleteFunc(int nCamIdx)
+        {
+            HSVTrainComplete?.Invoke(nCamIdx);
         }
     }
 }

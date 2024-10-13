@@ -24,6 +24,7 @@ typedef void _stdcall CallbackAlarmFunc(char* strAlarmMessage);
 typedef void _stdcall CallbackInspectComplete(int nCamIdx, BOOL bSetting);
 typedef void _stdcall CallbackLocatorTrainComplete(int nCamIdx);
 typedef void _stdcall CallbackInspectComplete_FakeCam(emInspectTool inspTool);
+typedef void _stdcall CallbackHSVTrainComplete(int nCamIdx);
 
 class AFX_EXT_CLASS CNVisionInspectProcessor : public INVisionInspectHikCamToParent,
 	                                           public INVisionInspectBaslerCamToParent,
@@ -84,6 +85,7 @@ public:
 	void                       RegCallbackAlarmFunc(CallbackAlarmFunc* pFunc);
 	void                       RegCallbackLocatorTrainCompleteFunc(CallbackLocatorTrainComplete* pFunc);
 	void                       RegCallbackInspComplete_FakeCamFunc(CallbackInspectComplete_FakeCam* pFunc);
+	void                       RegCallbackHSVTrainCompleteFunc(CallbackHSVTrainComplete* pFunc);
 
 public:
 	void						      LogMessage(char* strMessage);
@@ -105,6 +107,8 @@ public:
 	BOOL                              LoadSimulatorBuffer_FakeCam(int nFrame, CString strFilePath);
 	BOOL                              LocatorTool_Train(int nCamIdx);
 	BOOL                              LocatorToolSimulator_Train(int nSimuBuff, int nFrame);
+	BOOL                              HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
+
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
 	virtual LPBYTE                    GetSimulatorBuffer_FakeCam(int nFrame);
 	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom); /*0: From Image, 1: From Camera*/
@@ -122,6 +126,7 @@ private:
 	virtual void		              InspectComplete(int nCamIdx, BOOL bSetting);
 	virtual void                      LocatorTrainComplete(int nCamIdx);
 	virtual void                      InspectComplete_FakeCam(emInspectTool eInspTool);
+	virtual void                      HSVTrainComplete(int nCamIdx);
 
 private:
 
@@ -134,6 +139,8 @@ private:
 	CallbackLocatorTrainComplete*               m_pCallbackLocatorTrainCompleteFunc;
 
 	CallbackInspectComplete_FakeCam*            m_pCallbackInspComplete_FakeCamFunc;
+
+	CallbackHSVTrainComplete*                   m_pCallbackHSVCompleteFunc;
 
 	// UI						                            
 	CLogView*                                   m_pLogView;

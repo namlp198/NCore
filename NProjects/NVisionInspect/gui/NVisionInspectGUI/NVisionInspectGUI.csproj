@@ -146,6 +146,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\Cmd\ApplyHSVParamCmd.cs" />
     <Compile Include="Command\Cmd\CalibrationCmd.cs" />
     <Compile Include="Command\Cmd\ContinuousGrabCmd.cs" />
     <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
@@ -183,6 +184,8 @@
     <Compile Include="Manager\InterfaceManager.cs" />
     <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\NVisionInspectProcessorManager.cs" />
+    <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_Decode.cs" />
+    <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_HSV.cs" />
     <Compile Include="Models\FakeCam\Setting\CNVisionInspect_FakeCameraSetting_PropertyGrid.cs" />
     <Compile Include="Models\FakeCam\Setting\CNVisionInspect_FakeCameraSetting.cs" />
     <Compile Include="Models\CamSetting\CNVisionInspectCameraSetting.cs" />
