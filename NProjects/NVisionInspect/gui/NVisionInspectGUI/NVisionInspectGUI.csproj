@@ -184,6 +184,7 @@
     <Compile Include="Manager\InterfaceManager.cs" />
     <Compile Include="Manager\SimulationThread.cs" />
     <Compile Include="Manager\SumManager\NVisionInspectProcessorManager.cs" />
+    <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_Locator.cs" />
     <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_Decode.cs" />
     <Compile Include="Models\FakeCam\Recipe\CNVisionInspectRecipe_HSV.cs" />
     <Compile Include="Models\FakeCam\Setting\CNVisionInspect_FakeCameraSetting_PropertyGrid.cs" />

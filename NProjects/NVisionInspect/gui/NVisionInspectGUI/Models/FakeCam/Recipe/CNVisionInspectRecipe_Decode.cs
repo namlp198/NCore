@@ -10,6 +10,10 @@ namespace NVisionInspectGUI.Models.FakeCam.Recipe
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectRecipe_Decode
     {
+        public int m_nDecode_ROI_X;
+        public int m_nDecode_ROI_Y;
+        public int m_nDecode_ROI_Width;
+        public int m_nDecode_ROI_Height;
         public int m_nMaxCodeCount;
     }
 }
