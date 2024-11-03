@@ -9,6 +9,16 @@ using NVisionInspectGUI.Commons;
 namespace NVisionInspectGUI.Models.FakeCam.Result
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct CNVisionInspectResult_Locator
+    {
+        public int m_bResultStatus;
+        public int m_bInspectCompleted;
+        public int m_nCoordinateX;
+        public int m_nCoordinateY;
+        public double m_dMatchingRate;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectResult_CountPixel
     {
         public int m_bResultStatus;
@@ -28,6 +38,7 @@ namespace NVisionInspectGUI.Models.FakeCam.Result
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectResult_FakeCam
     {
+        public CNVisionInspectResult_Locator m_NVisionInspRes_Locator;
         public CNVisionInspectResult_CountPixel m_NVisionInspRes_CntPxl;
         public CNVisionInspectResult_Decode m_NVisionInspRes_Decode;
     }

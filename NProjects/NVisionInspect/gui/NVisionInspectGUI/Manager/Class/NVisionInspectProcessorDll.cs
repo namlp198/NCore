@@ -250,8 +250,21 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool SelectROI(IntPtr NVisionInspectProcessor, int nCamIdx, int nROIIdx, int nFrom);
-        public bool SelectROI(int nCamIdx, int nROIIdx, int nFrom) { return SelectROI(m_NVisionInspectProcessor, nCamIdx, nROIIdx, nFrom); }
+        extern private static bool LocatorToolFakeCam_Train(IntPtr NVisionInspectProcessor, int nFrame);
+        public bool LocatorToolFakeCam_Train(int nFrame) { return LocatorToolFakeCam_Train(m_NVisionInspectProcessor, nFrame); }
+        /**********************************
+       - Train Locator Tool Fake Camera
+       - Parameter : Instance Pointer, Frame Index
+        **********************************/
+
+
+#if DEBUG
+        [DllImport("NVisionInspectProcessor_Debug64.dll", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        extern private static bool SelectROI(IntPtr NVisionInspectProcessor, int nCamIdx, int nROIIdx, int nFrom, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
+        public bool SelectROI(int nCamIdx, int nROIIdx, int nFrom, int nROIX, int nROIY, int nROIWidth, int nROIHeight) { return SelectROI(m_NVisionInspectProcessor, nCamIdx, nROIIdx, nFrom, nROIX, nROIY, nROIWidth, nROIHeight); }
         /**********************************
        - Select ROI
        - Parameter : Instance Pointer, Camera Index, ROI Index, From Index
@@ -287,8 +300,6 @@ namespace NVisionInspectGUI.Manager.Class
             return bRet;
         }
         #endregion
-
-
 
         #region Load Setting and Recipe
 #if DEBUG

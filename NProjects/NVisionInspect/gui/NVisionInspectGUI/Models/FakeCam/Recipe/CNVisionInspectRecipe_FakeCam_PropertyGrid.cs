@@ -12,6 +12,72 @@ namespace NVisionInspectGUI.Models.FakeCam.Recipe
     [DisplayName("Recipe Fake Cam")]
     public class CNVisionInspectRecipe_FakeCam_PropertyGrid
     {
+        #region LOCATOR
+        [Category("LOCATOR")]
+        [PropertyOrder(1)]
+        [DisplayName("Outer X")]
+        [Description("")]
+        public int OuterX { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(2)]
+        [DisplayName("Outer Y")]
+        [Description("")]
+        public int OuterY { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(3)]
+        [DisplayName("Outer Width")]
+        [Description("")]
+        public int Outer_Width { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(4)]
+        [DisplayName("Outer Height")]
+        [Description("")]
+        public int Outer_Height { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(5)]
+        [DisplayName("Inner X")]
+        [Description("")]
+        public int InnerX { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(6)]
+        [DisplayName("Inner Y")]
+        [Description("")]
+        public int InnerY { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(7)]
+        [DisplayName("Inner Width")]
+        [Description("")]
+        public int Inner_Width { get; set; }
+        [Category("LOCATOR")]
+        [PropertyOrder(8)]
+        [DisplayName("Inner Height")]
+        [Description("")]
+        public int Inner_Height { get; set; }
+
+        [Category("LOCATOR")]
+        [PropertyOrder(9)]
+        [DisplayName("Coordinate X")]
+        [Description("")]
+        public int CoordinateX { get; set; }
+
+        [Category("LOCATOR")]
+        [PropertyOrder(10)]
+        [DisplayName("Coordinate Y")]
+        [Description("")]
+        public int CoordinateY { get; set; }
+
+        [Category("LOCATOR")]
+        [PropertyOrder(11)]
+        [DisplayName("Matching Rate")]
+        [Description("")]
+        public double MatchingRate { get; set; }
+
+        [Category("LOCATOR")]
+        [PropertyOrder(12)]
+        [DisplayName("Show Graphics")]
+        [Description("")]
+        public bool Is_Show_Graphics { get; set; }
+        #endregion
         #region COUNT PIXEL
         [Category("COUNT PIXEL")]
         [PropertyOrder(1)]
@@ -98,11 +164,35 @@ namespace NVisionInspectGUI.Models.FakeCam.Recipe
         public bool CountPixel_UseLocator { get; set; }
         #endregion
         #region DECODE
-        [Category("Decode")]
+        [Category("DECODE")]
         [PropertyOrder(1)]
+        [DisplayName("ROI X")]
+        [Description("")]
+        public int Decode_ROI_X { get; set; }
+
+        [Category("DECODE")]
+        [PropertyOrder(2)]
+        [DisplayName("ROI Y")]
+        [Description("")]
+        public int Decode_ROI_Y { get; set; }
+
+        [Category("DECODE")]
+        [PropertyOrder(3)]
+        [DisplayName("ROI Width")]
+        [Description("")]
+        public int Decode_ROI_Width { get; set; }
+
+        [Category("DECODE")]
+        [PropertyOrder(4)]
+        [DisplayName("ROI Height")]
+        [Description("")]
+        public int Decode_ROI_Height { get; set; }
+
+        [Category("DECODE")]
+        [PropertyOrder(5)]
         [DisplayName("Max Code Count")]
         [Description("Maximum code number that can be decoded")]
-        public int MaxCodeCount { get; set; }
+        public int Decode_MaxCodeCount { get; set; }
         #endregion
         #region HSV
         [Category("HSV")]

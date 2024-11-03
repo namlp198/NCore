@@ -184,7 +184,27 @@ struct CNVisionInspectRecipe_HSV
 };
 struct CNVisionInspectRecipe_Decode
 {
+	int m_nDecode_ROI_X;
+	int m_nDecode_ROI_Y;
+	int m_nDecode_ROI_Width;
+	int m_nDecode_ROI_Height;
 	int m_nMaxCodeCount;
+};
+struct CNVisionInspectRecipe_Locator
+{
+	// params ROI of Template Matching
+	int                m_nTemplateROI_OuterX;
+	int                m_nTemplateROI_OuterY;
+	int                m_nTemplateROI_Outer_Width;
+	int                m_nTemplateROI_Outer_Height;
+	int                m_nTemplateROI_InnerX;
+	int                m_nTemplateROI_InnerY;
+	int                m_nTemplateROI_Inner_Width;
+	int                m_nTemplateROI_Inner_Height;
+	int                m_nTemplateCoordinatesX;
+	int                m_nTemplateCoordinatesY;
+	double             m_dTemplateMatchingRate;
+	BOOL               m_bTemplateShowGraphics;
 };
 
 class AFX_EXT_CLASS CNVisionInspectRecipe
@@ -208,6 +228,7 @@ public:
 	CNVisionInspectRecipe_FakeCam(void);
 	~CNVisionInspectRecipe_FakeCam(void);
 public:
+	CNVisionInspectRecipe_Locator m_NVisionInspectRecipe_Locator;
 	CNVisionInspectRecipe_CountPixel m_NVisionInspectRecipe_CountPixel;
 	CNVisionInspectRecipe_Decode m_NVisionInspectRecipe_Decode;
 	CNVisionInspectRecipe_HSV m_NVisionInspectRecipe_HSV;

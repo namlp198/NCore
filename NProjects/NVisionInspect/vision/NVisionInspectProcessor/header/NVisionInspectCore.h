@@ -79,11 +79,12 @@ public:
 	void                       Inspect_Simulation(emCameraBrand camBrand, int nCamIdx, int nBuff, int nFrame);
 	void                       Inspect_Reality(emCameraBrand camBrand, int nCamIdx, LPBYTE pBuffer);
 	void                       LocatorTool_Train(int nCamIdx, LPBYTE pBuffer);
+	void                       LocatorTool_FakeCam_Train(LPBYTE pBuffer);
 	void                       HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
 
 public:
 	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
-	void                       MakeROI_FakeCam(LPBYTE pBuffer);
+	void                       MakeROI_FakeCam(LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
 
 public:
 	// INSPECT TOOL
@@ -104,6 +105,7 @@ private:
 
 private:
 	void                       SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx);
+	void                       SaveTemplateImage_FakeCam(cv::Mat& matTemplate);
 	void                       SaveROIImage(cv::Mat& matROI, int nCamIdx, int nROIIdx);
 	void                       SaveROIImage(cv::Mat& matROI, CString strFilePath);
 
