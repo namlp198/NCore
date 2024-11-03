@@ -364,6 +364,115 @@ void CNVisionInspectCore::LocatorTool_Train(int nCamIdx, LPBYTE pBuffer)
 	m_pInterface->LocatorTrainComplete(nCamIdx);
 }
 
+void CNVisionInspectCore::LocatorTool_FakeCam_Train(LPBYTE pBuffer)
+{
+	if (pBuffer == NULL)
+		return;
+
+	CNVisionInspect_FakeCameraSetting* pFakeCamSetting = m_pInterface->GetFakeCameraSettingControl();
+	CNVisionInspectRecipe_FakeCam* pRecipeFakeCam = m_pInterface->GetRecipe_FakeCamControl();
+
+	int nFrame = 0;
+
+	cv::Mat matGray, matBGR;
+	cv::Mat matSrc(pFakeCamSetting->m_nFrameHeight, pFakeCamSetting->m_nFrameWidth, CV_8UC3, pBuffer);
+
+	cv::cvtColor(matSrc, matGray, cv::COLOR_BGR2GRAY);
+	matSrc.copyTo(matBGR);
+
+	//cv::imshow("gray", matGray);
+
+	int nRectInner_X = 0;
+	int nRectInner_Y = 0;
+	int nRectInner_Width = 0;
+	int nRectInner_Height = 0;
+
+	int nRectOuter_X = 0;
+	int nRectOuter_Y = 0;
+	int nRectOuter_Width = 0;
+	int nRectOuter_Height = 0;
+
+	double dMatchingRateLimit = 0.0;
+
+	nRectInner_X = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_InnerX;
+	nRectInner_Y = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_InnerY;
+	nRectInner_Width = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Inner_Width;
+	nRectInner_Height = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Inner_Height;
+
+	nRectOuter_X = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_OuterX;
+	nRectOuter_Y = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_OuterY;
+	nRectOuter_Width = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Outer_Width;
+	nRectOuter_Height = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Outer_Height;
+
+	dMatchingRateLimit = pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_dTemplateMatchingRate;
+
+	// 2. Get image template
+	cv::Mat imgTemplate(nRectInner_Height, nRectInner_Width, CV_8UC1);
+	for (size_t i = 0; i < imgTemplate.rows; i++)
+		memcpy(&imgTemplate.data[i * imgTemplate.step1()], &matGray.data[(i + nRectInner_Y) * matGray.step1() + nRectInner_X], imgTemplate.cols);
+
+	//cv::imshow("template", imgTemplate);
+
+	// 3. Crop Image Outer
+	cv::Mat imgOuter(nRectOuter_Height, nRectOuter_Width, CV_8UC1);
+	for (int i = 0; i < imgOuter.rows; i++)
+		memcpy(&imgOuter.data[i * imgOuter.step1()], &matGray.data[(i + nRectOuter_Y) * matGray.step1() + nRectOuter_X], imgOuter.cols);
+
+	SaveTemplateImage_FakeCam(imgTemplate);
+
+	//m_pInterface->AlarmMessage(_T("Saved Image Template Success!"));
+
+	// make inner ROI, outer ROI and draw
+	cv::Rect rectInner(nRectInner_X, nRectInner_Y, nRectInner_Width, nRectInner_Height);
+	cv::Rect rectOuter(nRectOuter_X, nRectOuter_Y, nRectOuter_Width, nRectOuter_Height);
+	cv::rectangle(matBGR, rectInner, GREEN_COLOR, 2, cv::LINE_AA);
+	cv::rectangle(matBGR, rectOuter, BLUE_COLOR, 2, cv::LINE_AA);
+
+	// 3. Find center
+	// Template matching
+	cv::Mat C = cv::Mat::zeros(imgOuter.rows - imgTemplate.rows + 1, imgOuter.cols - imgTemplate.cols + 1, CV_32FC1);
+
+	double dMin = 0.0;
+	double dMatchingRate = 0.0;
+	cv::Point ptLeftTop;
+	cv::Point ptFindResult;
+
+	cv::matchTemplate(imgOuter, imgTemplate, C, cv::TM_CCOEFF_NORMED);
+	cv::minMaxLoc(C, &dMin, &dMatchingRate, NULL, &ptLeftTop);
+
+	ptFindResult.x = float(ptLeftTop.x) + (imgTemplate.cols / 2.0);
+	ptFindResult.y = float(ptLeftTop.y) + (imgTemplate.rows / 2.0);
+	dMatchingRate = dMatchingRate * 100.0;
+
+	if (dMatchingRate < dMatchingRateLimit)
+	{
+		cv::putText(matBGR, "Can't Find Template", cv::Point(matBGR.rows - 20, 80), cv::FONT_HERSHEY_SIMPLEX, 2.0, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+		m_pInterface->SetResultBuffer(0, 0, matBGR.data);
+
+		return;
+	}
+
+	int ptResult_X = ptFindResult.x + nRectOuter_X;
+	int ptResult_Y = ptFindResult.y + nRectOuter_Y;
+
+	pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateCoordinatesX = ptResult_X;
+	pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateCoordinatesY = ptResult_Y;
+
+	// draw center pt result
+	cv::circle(matBGR, cv::Point(ptResult_X, ptResult_Y), 3, YELLOW_COLOR, cv::FILLED);
+
+	// draw center pt text
+	char ch2[256];
+	sprintf_s(ch2, sizeof(ch2), "(x: %d, y: %d)", ptResult_X, ptResult_Y);
+	cv::putText(matBGR, ch2, cv::Point(ptResult_X + 10, ptResult_Y - 10), cv::FONT_HERSHEY_PLAIN, 1.0, CYAN_COLOR);
+
+	// set result to buffer
+	m_pInterface->SetResultBuffer_FakeCam(nFrame, matBGR.data);
+
+	// inform that locator trained succsess
+	m_pInterface->LocatorTrainComplete(8);
+}
+
 void CNVisionInspectCore::HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV)
 {
 	Sleep(5);
@@ -588,7 +697,7 @@ void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
 	m_pInterface->SetResultBuffer(nCamIdx, 0, matBGR.data);
 }
 
-void CNVisionInspectCore::MakeROI_FakeCam(LPBYTE pBuffer)
+void CNVisionInspectCore::MakeROI_FakeCam(LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight)
 {
 	cv::Mat matGray, matBGR, matROI;
 	cv::Rect rectROI;
@@ -602,10 +711,10 @@ void CNVisionInspectCore::MakeROI_FakeCam(LPBYTE pBuffer)
 
 	CNVisionInspectRecipe_FakeCam* pRecipeFakeCam = m_pInterface->GetRecipe_FakeCamControl();
 
-	int nROI_X = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_X;
-	int nROI_Y = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Y;
-	int nROI_Width = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Width;
-	int nROI_Height = pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Height;
+	int nROI_X = nROIX;
+	int nROI_Y = nROIY;
+	int nROI_Width = nROIWidth;
+	int nROI_Height = nROIHeight;
 
 	rectROI.x = nROI_X;
 	rectROI.y = nROI_Y;
@@ -949,6 +1058,18 @@ void CNVisionInspectCore::SaveTemplateImage(cv::Mat& matTemplate, int nCamIdx)
 	USES_CONVERSION;
 	char chImgTemplatePath[1000] = {};
 	sprintf_s(chImgTemplatePath, "%s%s", W2A(m_pInterface->GetCameraSettingControl(nCamIdx)->m_sTemplateImagePath), "template.png");
+
+	cv::imwrite(chImgTemplatePath, matTemplate);
+}
+
+void CNVisionInspectCore::SaveTemplateImage_FakeCam(cv::Mat& matTemplate)
+{
+	if (matTemplate.empty())
+		return;
+
+	USES_CONVERSION;
+	char chImgTemplatePath[1000] = {};
+	sprintf_s(chImgTemplatePath, "%s%s", W2A(m_pInterface->GetFakeCameraSettingControl()->m_sTemplateImagePath), "template_fakecam.png");
 
 	cv::imwrite(chImgTemplatePath, matTemplate);
 }

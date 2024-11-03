@@ -772,6 +772,19 @@ BOOL CNVisionInspectProcessor::LoadRecipe_FakeCam(CNVisionInspectRecipe_FakeCam*
 
 		bNoFile = TRUE;
 	}
+	// LOCATOR
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_OUTER_X"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_OuterX, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_OUTER_Y"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_OuterY, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_OUTER_WIDTH"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_Outer_Width, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_OUTER_HEIGHT"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_Outer_Height, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_INNER_X"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_InnerX, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_INNER_Y"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_InnerY, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_INNER_WIDTH"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_Inner_Width, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_INNER_HEIGHT"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateROI_Inner_Height, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_COORDINATE_X"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateCoordinatesX, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_COORDINATE_Y"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_nTemplateCoordinatesY, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_MATCHING_RATE"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_dTemplateMatchingRate, 1);
+	recipeFile_FakeCam.GetItemValue(_T("LOCATOR_SHOW_GRAPHICS"), readRecipeFakeCam.m_NVisionInspectRecipe_Locator.m_bTemplateShowGraphics, 1);
 
 	// COUNT PIXEL
 	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_ROI_X"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_X, 1);
@@ -790,6 +803,10 @@ BOOL CNVisionInspectProcessor::LoadRecipe_FakeCam(CNVisionInspectRecipe_FakeCam*
 	recipeFile_FakeCam.GetItemValue(_T("COUNTPIXEL_USE_OFFSET"), readRecipeFakeCam.m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseOffset, 1);
 
 	// DECODE
+	recipeFile_FakeCam.GetItemValue(_T("DECODE_ROI_X"), readRecipeFakeCam.m_NVisionInspectRecipe_Decode.m_nDecode_ROI_X, 1);
+	recipeFile_FakeCam.GetItemValue(_T("DECODE_ROI_Y"), readRecipeFakeCam.m_NVisionInspectRecipe_Decode.m_nDecode_ROI_Y, 1);
+	recipeFile_FakeCam.GetItemValue(_T("DECODE_ROI_WIDTH"), readRecipeFakeCam.m_NVisionInspectRecipe_Decode.m_nDecode_ROI_Width, 1);
+	recipeFile_FakeCam.GetItemValue(_T("DECODE_ROI_HEIGHT"), readRecipeFakeCam.m_NVisionInspectRecipe_Decode.m_nDecode_ROI_Height, 1);
 	recipeFile_FakeCam.GetItemValue(_T("DECODE_MAX_CODE_COUNT"), readRecipeFakeCam.m_NVisionInspectRecipe_Decode.m_nMaxCodeCount, 1);
 
 	// HSV
@@ -1274,6 +1291,20 @@ BOOL CNVisionInspectProcessor::SaveRecipe_FakeCam(CNVisionInspectRecipe_FakeCam*
 
 	USES_CONVERSION;
 
+	// LOCATOR
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_OUTER_X"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_OuterX);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_OUTER_Y"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_OuterY);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_OUTER_WIDTH"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Outer_Width);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_OUTER_HEIGHT"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Outer_Height);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_INNER_X"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_InnerX);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_INNER_Y"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_InnerY);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_INNER_WIDTH"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Inner_Width);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_INNER_HEIGHT"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateROI_Inner_Height);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_COORDINATE_X"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateCoordinatesX);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_COORDINATE_Y"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_nTemplateCoordinatesY);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_MATCHING_RATE"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_dTemplateMatchingRate);
+	recipeFile_FakeCam.SetItemValue(_T("LOCATOR_SHOW_GRAPHICS"), pRecipeFakeCam->m_NVisionInspectRecipe_Locator.m_bTemplateShowGraphics);
+
 	// COUNT PIXEL
 	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_X"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_X);
 	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_ROI_Y"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_nCountPixel_ROI_Y);
@@ -1289,6 +1320,10 @@ BOOL CNVisionInspectProcessor::SaveRecipe_FakeCam(CNVisionInspectRecipe_FakeCam*
 	recipeFile_FakeCam.SetItemValue(_T("COUNTPIXEL_USE_OFFSET"), pRecipeFakeCam->m_NVisionInspectRecipe_CountPixel.m_bCountPixel_UseOffset);
 
 	// DECODE
+	recipeFile_FakeCam.SetItemValue(_T("DECODE_ROI_X"), pRecipeFakeCam->m_NVisionInspectRecipe_Decode.m_nDecode_ROI_X);
+	recipeFile_FakeCam.SetItemValue(_T("DECODE_ROI_Y"), pRecipeFakeCam->m_NVisionInspectRecipe_Decode.m_nDecode_ROI_Y);
+	recipeFile_FakeCam.SetItemValue(_T("DECODE_ROI_WIDTH"), pRecipeFakeCam->m_NVisionInspectRecipe_Decode.m_nDecode_ROI_Width);
+	recipeFile_FakeCam.SetItemValue(_T("DECODE_ROI_HEIGHT"), pRecipeFakeCam->m_NVisionInspectRecipe_Decode.m_nDecode_ROI_Height);
 	recipeFile_FakeCam.SetItemValue(_T("DECODE_MAX_CODE_COUNT"), pRecipeFakeCam->m_NVisionInspectRecipe_Decode.m_nMaxCodeCount);
 
 	// HSV
@@ -1871,6 +1906,18 @@ BOOL CNVisionInspectProcessor::LocatorToolSimulator_Train(int nSimuBuff, int nFr
 	return TRUE;
 }
 
+BOOL CNVisionInspectProcessor::LocatorToolFakeCam_Train(int nFrame)
+{
+	LPBYTE pBuffer = GetSimulatorBuffer_FakeCam(nFrame);
+
+	if (pBuffer == NULL)
+		return FALSE;
+
+	m_pNVisionInspectCore_FakeCam->LocatorTool_FakeCam_Train(pBuffer);
+
+	return TRUE;
+}
+
 BOOL CNVisionInspectProcessor::HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV)
 {
 	if (nCamIdx < 0)
@@ -1888,7 +1935,7 @@ BOOL CNVisionInspectProcessor::HSVTrain(int nCamIdx, int nFrame, CNVisionInspect
 	}
 }
 
-BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom)
+BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom, int nROIX, int nROIY, int nROIWidth, int nROIHeight)
 {
 	int nSimuBuff = nCamIdx;
 	int nCoreIdx = nCamIdx;
@@ -1902,7 +1949,7 @@ BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom)
 		if (pBuffer == NULL)
 			return FALSE;
 
-		m_pNVisionInspectCore_FakeCam->MakeROI_FakeCam(pBuffer);
+		m_pNVisionInspectCore_FakeCam->MakeROI_FakeCam(pBuffer, nROIX, nROIY, nROIWidth, nROIHeight);
 
 		return TRUE;
 	}

@@ -53,6 +53,15 @@ public:
 };
 
 #pragma region Fake Camera
+struct CNVisionInspectResult_Locator
+{
+	int m_bResultStatus;
+	int m_bInspectCompleted;
+	int m_nCoordinateX;
+	int m_nCoordinateY;
+	double m_dMatchingRate;
+};
+
 struct CNVisionInspectResult_CountPixel 
 {
 public:
@@ -90,6 +99,7 @@ public:
 	CNVisionInspectResult_FakeCam(void);
 	~CNVisionInspectResult_FakeCam(void);
 public:
+	CNVisionInspectResult_Locator m_NVisonInspectResLocator;
 	CNVisionInspectResult_CountPixel m_NVisonInspectResCntPxl;
 	CNVisionInspectResult_Decode m_NVisonInspectResDecode;
 };

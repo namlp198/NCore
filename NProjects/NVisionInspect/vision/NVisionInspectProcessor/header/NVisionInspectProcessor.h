@@ -107,11 +107,12 @@ public:
 	BOOL                              LoadSimulatorBuffer_FakeCam(int nFrame, CString strFilePath);
 	BOOL                              LocatorTool_Train(int nCamIdx);
 	BOOL                              LocatorToolSimulator_Train(int nSimuBuff, int nFrame);
+	BOOL                              LocatorToolFakeCam_Train(int nFrame);
 	BOOL                              HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
 
 	virtual LPBYTE                    GetSimulatorBuffer(int nBuff, int nFrame);
 	virtual LPBYTE                    GetSimulatorBuffer_FakeCam(int nFrame);
-	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom); /*0: From Image, 1: From Camera*/
+	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom, int nROIX, int nROIY, int nROIWidth, int nROIHeight); /*0: From Image, 1: From Camera*/
 
 	void                              CallInspectTool(emInspectTool inspTool);
 

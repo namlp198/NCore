@@ -180,12 +180,22 @@ bool LocatorToolSimulator_Train(CNVisionInspectProcessor* pProcessor, int nSimuB
 	else               return true;
 }
 
-bool SelectROI(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nROIIdx, int nFrom)
+bool LocatorToolFakeCam_Train(CNVisionInspectProcessor* pProcessor, int nFrame)
 {
 	if (pProcessor == NULL)
 		return false;
 
-	BOOL bRet = pProcessor->SelectROI(nCamIdx, nROIIdx, nFrom);
+	BOOL bRet = pProcessor->LocatorToolFakeCam_Train(nFrame);
+	if (bRet == FALSE) return false;
+	else               return true;
+}
+
+bool SelectROI(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nROIIdx, int nFrom, int nROIX, int nROIY, int nROIWidth, int nROIHeight)
+{
+	if (pProcessor == NULL)
+		return false;
+
+	BOOL bRet = pProcessor->SelectROI(nCamIdx, nROIIdx, nFrom, nROIX, nROIY, nROIWidth, nROIHeight);
 	if (bRet == FALSE) return false;
 	else               return true;
 }
