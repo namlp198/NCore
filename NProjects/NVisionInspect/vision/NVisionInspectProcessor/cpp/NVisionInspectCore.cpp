@@ -219,7 +219,7 @@ void CNVisionInspectCore::LocatorTool_Train(int nCamIdx, LPBYTE pBuffer)
 	{
 	case 0:
 	{
-		nRectInner_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerX;
+		/*nRectInner_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerX;
 		nRectInner_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_InnerY;
 		nRectInner_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Width;
 		nRectInner_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Inner_Height;
@@ -229,7 +229,7 @@ void CNVisionInspectCore::LocatorTool_Train(int nCamIdx, LPBYTE pBuffer)
 		nRectOuter_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Width;
 		nRectOuter_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateROI_Outer_Height;
 
-		dMatchingRateLimit = pRecipe->m_NVisionInspRecipe_Cam1.m_dTemplateMatchingRate;
+		dMatchingRateLimit = pRecipe->m_NVisionInspRecipe_Cam1.m_dTemplateMatchingRate;*/
 		break;
 	}
 	case 1:
@@ -315,8 +315,8 @@ void CNVisionInspectCore::LocatorTool_Train(int nCamIdx, LPBYTE pBuffer)
 	{
 	case 0:
 	{
-		pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX = ptResult_X;
-		pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY = ptResult_Y;
+		/*pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX = ptResult_X;
+		pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY = ptResult_Y;*/
 		break;
 	}
 	case 1:
@@ -558,7 +558,7 @@ void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
 	{
 	case 0:
 	{
-		nTempCntPt_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX;
+		/*nTempCntPt_X = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesX;
 		nTempCntPt_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_nTemplateCoordinatesY;
 
 		switch (nROIIdx)
@@ -647,8 +647,7 @@ void CNVisionInspectCore::MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
 			}
 			break;
 		}
-		// more
-		}
+		}*/
 		break;
 	}
 	case 1:
@@ -902,68 +901,7 @@ void CNVisionInspectCore::ProcessFrame(int nCamIdx, LPBYTE pBuffer)
 }
 void CNVisionInspectCore::ProcessFrame_Cam1(LPBYTE pBuffer)
 {
-	if (pBuffer == NULL)
-		return;
 
-	int nCamIdx = 0;
-	int nFrame = 0;
-
-	CNVisionInspectCameraSetting* pCamSetting = m_pInterface->GetCameraSettingControl(nCamIdx);
-	CNVisionInspectStatus* pStatus = m_pInterface->GetStatusControl(nCamIdx);
-	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
-	CNVisionInspectResult* pResult = m_pInterface->GetResultControl();
-
-	cv::Mat matSrc(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC1);
-	cv::Mat matResult(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC3);
-
-	DWORD dFrameSize = pCamSetting->m_nFrameHeight * pCamSetting->m_nFrameWidth * pCamSetting->m_nChannels;
-	memcpy(matSrc.data, (LPBYTE)pBuffer, dFrameSize);
-
-	/*char pathSaveImage[200] = { };
-	sprintf_s(pathSaveImage, "%s%s_%d.bmp", "D:\\entry\\NCore\\NProjects\\ReadCodeMachine\\bin\\SaveImages\\", "Code_", nNextFrameIdx);
-	cv::imwrite(pathSaveImage, matSrc);*/
-
-	cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
-
-	BOOL bRet = FALSE;
-	CString csRet;
-
-	auto barcodes = ReadBarcodes(matSrc);
-
-	if (!barcodes.empty())
-	{
-		if (barcodes.size() == pRecipe->m_NVisionInspRecipe_Cam1.m_nMaxCodeCount)
-		{
-			bRet = TRUE;
-		}
-		else
-		{
-			bRet = FALSE;
-		}
-
-		std::string sRet;
-		const char* const delim = ";";
-		for (auto& barcode : barcodes) {
-			DrawBarcode(matResult, m_pRectROI, barcode);
-			if (!sRet.empty())
-				sRet += delim;
-
-			sRet += barcode.text();
-		}
-		csRet = (CString)sRet.c_str();
-	}
-
-	m_pInterface->SetResultBuffer(nCamIdx, nFrame, matResult.data); // cause the buffer just have a frame should be frame index = 0
-
-	pResult->m_NVisionInspRes_Cam1.m_bInspectCompleted = TRUE;
-	pResult->m_NVisionInspRes_Cam1.m_bResultStatus = bRet;
-	ZeroMemory(pResult->m_NVisionInspRes_Cam1.m_sResultString, sizeof(pResult->m_NVisionInspRes_Cam1.m_sResultString));
-	wsprintf(pResult->m_NVisionInspRes_Cam1.m_sResultString, _T("%s"), (TCHAR*)(LPCTSTR)csRet);
-
-	if (pStatus->GetInspectRunning() == TRUE)
-		m_pInterface->InspectComplete(nCamIdx, FALSE);
-	else
-		m_pInterface->InspectComplete(nCamIdx, TRUE);
 }
 void CNVisionInspectCore::ProcessFrame_Cam2(LPBYTE pBuffer)
 {
