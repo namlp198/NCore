@@ -34,6 +34,12 @@
 #define WHITE_COLOR cv::Scalar(255, 255, 255)
 #define GRAY_COLOR cv::Scalar(128, 128, 128)
 
+// RECIPE
+
+#pragma region CAM1
+#define MAX_COUNT_PIXEL_TOOL_COUNT_CAM1 3
+#pragma endregion
+
 #define	PI							3.1415926535897932384626433832795
 #define	RAD2DEG(radian)				((radian*180.0)/PI)
 #define	DEG2RAD(degree)				((degree*PI)/180.0)

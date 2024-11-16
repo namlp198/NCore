@@ -58,5 +58,10 @@ namespace NVisionInspectGUI.Commons
         public const int MAX_STRING_SIZE = 256;
         public const int MAX_STRING_SIZE_RESULT = 1000;
         public const int MAX_CAMERA_INSPECT_COUNT = 8;
+
+        // RECIPE
+        #region CAM1
+        public const int MAX_COUNT_PIXEL_TOOL_COUNT_CAM1 = 3;
+        #endregion
     }
 }
