@@ -1906,7 +1906,7 @@ BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom, in
 	if (pBuffer == NULL)
 		return FALSE;
 
-	m_pNVisionInspectCore[nCoreIdx]->MakeROI(nCamIdx, nROIIdx, pBuffer);
+	m_pNVisionInspectCore[nCoreIdx]->MakeROI(nCamIdx, nROIIdx, pBuffer, nROIX, nROIY, nROIWidth, nROIHeight);
 
 	return TRUE;
 }
@@ -1927,12 +1927,38 @@ LPBYTE CNVisionInspectProcessor::GetSimulatorBuffer_FakeCam(int nFrame)
 	return m_pSimulatorBuffer_FakeCam->GetFrameImage(nFrame);
 }
 
-void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool)
+void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool, int nCamIdx, int nROIIdx, int nFrom)
 {
+	int nSimuBuff = nCamIdx;
+	int nCoreIdx = nCamIdx;
+	int nFrame = 0;
+	LPBYTE pBuffer = NULL;
+
+	// Fake Cam
+	if (nCamIdx >= m_pNVisionInspectSystemSetting->m_nNumberOfInspectionCamera)
+	{
+		pBuffer = GetSimulatorBuffer_FakeCam(nFrame);
+		if (pBuffer == NULL)
+			return;
+	}
+
+	switch (nFrom)
+	{
+	case 0:
+		pBuffer = GetSimulatorBuffer(nSimuBuff, nFrame);
+		break;
+	case 1:
+		pBuffer = GetImageBufferHikCam(nCamIdx);
+		break;
+	}
+
+	if (pBuffer == NULL)
+		return;
+
 	switch (inspTool)
 	{
 	case InspectTool_CountPixel:
-		m_pNVisionInspectCore_FakeCam->Algorithm_CountPixel();
+		m_pNVisionInspectCore_FakeCam->Algorithm_CountPixel(nCamIdx, nROIIdx, pBuffer);
 		break;
 	case InspectTool_CountBlob:
 		break;
@@ -1953,7 +1979,7 @@ void CNVisionInspectProcessor::CallInspectTool(emInspectTool inspTool)
 	case InspectTool_TemplateMatchingRotate:
 		break;
 	case InspectTool_Decode:
-		m_pNVisionInspectCore_FakeCam->Algorithm_Decode();
+		m_pNVisionInspectCore_FakeCam->Algorithm_Decode(nCamIdx, nROIIdx, pBuffer);
 		break;
 	}
 }

@@ -114,7 +114,7 @@ public:
 	virtual LPBYTE                    GetSimulatorBuffer_FakeCam(int nFrame);
 	BOOL                              SelectROI(int nCamIdx, int nROIIdx, int nFrom, int nROIX, int nROIY, int nROIWidth, int nROIHeight); /*0: From Image, 1: From Camera*/
 
-	void                              CallInspectTool(emInspectTool inspTool);
+	void                              CallInspectTool(emInspectTool inspTool, int nCamIdx, int nROIIdx, int nFrom);
 
 private:
 	virtual void				      AlarmMessage(CString strAlarmMessage);

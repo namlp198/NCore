@@ -62,7 +62,7 @@ extern "C"
 
 	__declspec(dllexport) BYTE*                         GetSimulatorBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFrame);
 
-	__declspec(dllexport) void                          CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool);
+	__declspec(dllexport) void                          CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool, int nCamIdx, int nROIIdx, int nFrom);
 
 	__declspec(dllexport) bool                          HSVTrain(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
 

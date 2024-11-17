@@ -306,12 +306,12 @@ BYTE* GetSimulatorBuffer_FakeCam(CNVisionInspectProcessor* pProcessor, int nFram
 	return pProcessor->GetSimulatorBuffer_FakeCam(nFrame);
 }
 
-void CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool)
+void CallInspectTool(CNVisionInspectProcessor* pProcessor, emInspectTool inspTool, int nCamIdx, int nROIIdx, int nFrom)
 {
 	if (pProcessor == NULL)
 		return;
 
-	pProcessor->CallInspectTool(inspTool);
+	pProcessor->CallInspectTool(inspTool, nCamIdx, nROIIdx, nFrom);
 }
 
 bool HSVTrain(CNVisionInspectProcessor* pProcessor, int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV)

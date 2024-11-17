@@ -1,12 +1,40 @@
 #pragma once
 #include "NVisionInspectDefine.h"
 
-struct CNVisionInspectResult_Cam1
+#pragma region Fake Camera
+struct CNVisionInspectResult_Locator
+{
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+	int m_nCoordinateX;
+	int m_nCoordinateY;
+	double m_dMatchingRate;
+};
+
+struct CNVisionInspectResult_CountPixel
+{
+public:
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
+	float m_fNumberOfPixel;
+};
+struct CNVisionInspectResult_Decode
 {
 public:
 	BOOL m_bResultStatus;
 	BOOL m_bInspectCompleted;
 	TCHAR m_sResultString[MAX_STRING_SIZE_RESULT];
+};
+#pragma endregion
+
+struct CNVisionInspectResult_Cam1
+{
+public:
+	CNVisionInspectResult_Locator m_NVisonInspectResLocator;
+	CNVisionInspectResult_CountPixel m_NVisonInspectResCntPxl[MAX_COUNT_PIXEL_TOOL_COUNT_CAM1];
+
+	BOOL m_bResultStatus;
+	BOOL m_bInspectCompleted;
 };
 struct CNVisionInspectResult_Cam2
 {
@@ -51,32 +79,6 @@ public:
 	BOOL m_bResultStatus;
 	BOOL m_bInspectCompleted;
 };
-
-#pragma region Fake Camera
-struct CNVisionInspectResult_Locator
-{
-	int m_bResultStatus;
-	int m_bInspectCompleted;
-	int m_nCoordinateX;
-	int m_nCoordinateY;
-	double m_dMatchingRate;
-};
-
-struct CNVisionInspectResult_CountPixel 
-{
-public:
-	BOOL m_bResultStatus;
-	BOOL m_bInspectCompleted;
-	float m_fNumberOfPixel;
-};
-struct CNVisionInspectResult_Decode
-{
-public:
-	BOOL m_bResultStatus;
-	BOOL m_bInspectCompleted;
-	TCHAR m_sResultString[MAX_STRING_SIZE_RESULT];
-};
-#pragma endregion
 
 class AFX_EXT_CLASS CNVisionInspectResult
 {
