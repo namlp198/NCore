@@ -5,16 +5,19 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using NVisionInspectGUI.Commons;
+using NVisionInspectGUI.Models.FakeCam.Result;
 
 namespace NVisionInspectGUI.Models.Result
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectResult_Cam1
     {
+        public CNVisionInspectResult_Locator m_NVisonInspectResLocator;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = Defines.MAX_COUNT_PIXEL_TOOL_COUNT_CAM1)]
+        public CNVisionInspectResult_CountPixel[] m_NVisonInspectResCntPxl;
+
         public int m_bResultStatus;
         public int m_bInspectCompleted;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Defines.MAX_STRING_SIZE_RESULT)]
-        public string m_sResultString;
     }
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct CNVisionInspectResult_Cam2

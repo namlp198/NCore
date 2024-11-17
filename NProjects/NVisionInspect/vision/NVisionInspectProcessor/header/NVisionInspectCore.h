@@ -83,13 +83,14 @@ public:
 	void                       HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
 
 public:
-	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
 	void                       MakeROI_FakeCam(LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
 
 public:
 	// INSPECT TOOL
-	BOOL                       Algorithm_CountPixel();
-	BOOL                       Algorithm_Decode();
+	BOOL                       Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+	BOOL                       Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+	BOOL                       Algorithm_Locator(int nCamIdx, LPBYTE pBuffer);
 
 	// Process Hik Cam
 private:
@@ -117,6 +118,7 @@ private:
 	UINT								m_nThreadCount;
 	BOOL                                m_bSimulator;
 	BOOL								m_bRunningThread[MAX_THREAD_COUNT];
+	BOOL                                m_bIsFakeCam;
 
 	std::vector<BOOL>					m_vecProcessedFrame;
 
@@ -125,7 +127,6 @@ private:
 
 	CCriticalSection					m_csPostProcessing;
 
-	cv::Mat                             m_pMat;
-	cv::Mat                             m_pMatROI;
-	cv::Rect                            m_pRectROI;
+	cv::Mat                             m_matROI;
+	cv::Rect                            m_rectROI;
 };

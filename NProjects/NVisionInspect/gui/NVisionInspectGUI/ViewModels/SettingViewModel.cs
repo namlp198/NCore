@@ -402,7 +402,7 @@ namespace NVisionInspectGUI.ViewModels
                 case 0:
                     switch (ROIIdx)
                     {
-                        case 1:
+                        case 0:
                             if (NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_UseOffset == false)
                             {
                                 NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_X = (int)SettingView.buffSettingPRO.ROISelected.X;
@@ -412,7 +412,7 @@ namespace NVisionInspectGUI.ViewModels
                                 NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_AngleRotate = SettingView.buffSettingPRO.AngleRotate;
                             }
                             break;
-                        case 2:
+                        case 1:
                             if (NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_UseOffset == false)
                             {
                                 NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_X = (int)SettingView.buffSettingPRO.ROISelected.X;
@@ -422,7 +422,7 @@ namespace NVisionInspectGUI.ViewModels
                                 NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_AngleRotate = SettingView.buffSettingPRO.AngleRotate;
                             }
                             break;
-                        case 3:
+                        case 2:
                             if (NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_UseOffset == false)
                             {
                                 NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_X = (int)SettingView.buffSettingPRO.ROISelected.X;
@@ -451,14 +451,14 @@ namespace NVisionInspectGUI.ViewModels
             }
 
             // save recipe
-            SaveRecipeCmd.Execute(nCamIdx);
+            //SaveRecipeCmd.Execute(nCamIdx);
 
             // reload recipe
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(CameraCount, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
-            LoadRecipe(CameraCount);
+            //InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(CameraCount, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+            //LoadRecipe(CameraCount);
 
             // update PropertyGrid UI
-            UpdatePropertyGridUI(nCamIdx);
+            //UpdatePropertyGridUI(nCamIdx);
 
             // select ROI
             InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.SelectROI(nCamIdx, nROIIdx, nFrom, nROIX, nROIY, nROIWidth, nROIHeight);
@@ -472,6 +472,9 @@ namespace NVisionInspectGUI.ViewModels
         private void IMAGE_EXT_BASIC_CountPixelEvent(object sender, RoutedEventArgs e)
         {
             int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+            int nROIIdx = ROIIdx;
+            int nFrom = (int)FromImageSource;
+            int nFrame = 0;
 
             if (nCamIdx == -1)
                 return;
@@ -482,27 +485,104 @@ namespace NVisionInspectGUI.ViewModels
             int nROIHeight = (int)SettingView.buffSettingPRO.ROISelected.Height;
             double dAngleRotate = SettingView.buffSettingPRO.AngleRotate;
 
-            NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_X = nROIX;
-            NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Y = nROIY;
-            NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Width = nROIWidth;
-            NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Height = nROIHeight;
-            NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_AngleRotate = dAngleRotate;
+            // Fake Cam
+            if (nCamIdx >= CameraCount)
+            {
+                NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_X = nROIX;
+                NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Y = nROIY;
+                NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Width = nROIWidth;
+                NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_Height = nROIHeight;
+                NVisionInspectRecipeFakeCamPropertyGrid.CountPixel_ROI_AngleRotate = dAngleRotate;
+
+                // Save recipe
+                SaveRecipeCmd.Execute(nCamIdx);
+
+                // Reload recipe Fake Cam
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
+                LoadRecipe_FakeCam();
+
+                // Update PropertyGrid UI
+                UpdatePropertyGridUI(nCamIdx);
+
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_CountPixel, nCamIdx, ROIIdx, nFrom);
+
+                return;
+            }
+
+            if (nROIIdx == -1)
+                return;
+
+            switch (nCamIdx)
+            {
+                case 0:
+                    switch (nROIIdx)
+                    {
+                        case 0:
+                            if (NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_UseOffset == false)
+                            {
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_X = (int)SettingView.buffSettingPRO.ROISelected.X;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_Y = (int)SettingView.buffSettingPRO.ROISelected.Y;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_Width = (int)SettingView.buffSettingPRO.ROISelected.Width;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_Height = (int)SettingView.buffSettingPRO.ROISelected.Height;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_AngleRotate = SettingView.buffSettingPRO.AngleRotate;
+                            }
+                            break;
+                        case 1:
+                            if (NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_UseOffset == false)
+                            {
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_X = (int)SettingView.buffSettingPRO.ROISelected.X;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_Y = (int)SettingView.buffSettingPRO.ROISelected.Y;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_Width = (int)SettingView.buffSettingPRO.ROISelected.Width;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_Height = (int)SettingView.buffSettingPRO.ROISelected.Height;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_AngleRotate = SettingView.buffSettingPRO.AngleRotate;
+                            }
+                            break;
+                        case 2:
+                            if (NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_UseOffset == false)
+                            {
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_X = (int)SettingView.buffSettingPRO.ROISelected.X;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_Y = (int)SettingView.buffSettingPRO.ROISelected.Y;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_Width = (int)SettingView.buffSettingPRO.ROISelected.Width;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_Height = (int)SettingView.buffSettingPRO.ROISelected.Height;
+                                NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_AngleRotate = SettingView.buffSettingPRO.AngleRotate;
+                            }
+                            break;
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+            }
 
             // Save recipe
             SaveRecipeCmd.Execute(nCamIdx);
 
-            // Reload recipe Fake Cam
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
-            LoadRecipe_FakeCam();
+            // Reload recipe Cam
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(CameraCount, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+            LoadRecipe(CameraCount);
 
             // Update PropertyGrid UI
             UpdatePropertyGridUI(nCamIdx);
 
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_CountPixel);
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_CountPixel, nCamIdx, ROIIdx, nFrom);
         }
         private void IMAGE_EXT_BASIC_DecodeEvent(object sender, RoutedEventArgs e)
         {
             int nCamIdx = SettingView.buffSettingPRO.CameraIndex;
+            int nROIIdx = ROIIdx;
+            int nFrom = (int)FromImageSource;
+            int nFrame = 0;
 
             if (nCamIdx == -1)
                 return;
@@ -513,22 +593,75 @@ namespace NVisionInspectGUI.ViewModels
             int nROIHeight = (int)SettingView.buffSettingPRO.ROISelected.Height;
             double dAngleRotate = SettingView.buffSettingPRO.AngleRotate;
 
-            NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_X = nROIX;
-            NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_Y = nROIY;
-            NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_Width = nROIWidth;
-            NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_Height = nROIHeight;
+            // Fake Cam
+            if (nCamIdx >= CameraCount)
+            {
+                NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_X = nROIX;
+                NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_Y = nROIY;
+                NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_Width = nROIWidth;
+                NVisionInspectRecipeFakeCamPropertyGrid.Decode_ROI_Height = nROIHeight;
+
+                // Save recipe
+                SaveRecipeCmd.Execute(nCamIdx);
+
+                // Reload recipe Fake Cam
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
+                LoadRecipe_FakeCam();
+
+                // Update PropertyGrid UI
+                UpdatePropertyGridUI(nCamIdx);
+
+                InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_Decode, nCamIdx, nROIIdx, nFrom);
+
+                return;
+            }
+
+            if (nROIIdx == -1)
+                return;
+
+            switch (nCamIdx)
+            {
+                case 0:
+                    switch (nROIIdx)
+                    {
+                        case 0:
+                            
+                            break;
+                        case 1:
+                            
+                            break;
+                        case 2:
+                            
+                            break;
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+            }
 
             // Save recipe
             SaveRecipeCmd.Execute(nCamIdx);
 
-            // Reload recipe Fake Cam
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe_FakeCam(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe_FakeCam);
-            LoadRecipe_FakeCam();
+            // Reload recipe Cam
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.LoadRecipe(CameraCount, ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe);
+            LoadRecipe(CameraCount);
 
             // Update PropertyGrid UI
             UpdatePropertyGridUI(nCamIdx);
 
-            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_Decode);
+            InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.CallInspectTool((int)emInspectTool.InspectTool_Decode, nCamIdx, nROIIdx, nFrom);
         }
 
         #endregion
@@ -1033,7 +1166,7 @@ namespace NVisionInspectGUI.ViewModels
 
                 switch (nCamIdx)
                 {
-                    case 1:
+                    case 0:
                         if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
                         {
                             SettingView.buffSettingPRO.InspectResult = emInspectResult.InspectResult_OK;
@@ -1042,8 +1175,8 @@ namespace NVisionInspectGUI.ViewModels
                         {
                             SettingView.buffSettingPRO.InspectResult = emInspectResult.InspectResult_NG;
                         }
-
-                        string resStr = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_sResultString;
+                        break;
+                    case 1:
                         break;
                     case 2:
                         break;
@@ -1056,8 +1189,6 @@ namespace NVisionInspectGUI.ViewModels
                     case 6:
                         break;
                     case 7:
-                        break;
-                    case 8:
                         break;
                 }
             }
@@ -1368,7 +1499,7 @@ namespace NVisionInspectGUI.ViewModels
             {
                 if (SetProperty(ref m_strROISelected, value))
                 {
-                    ROIIdx = SettingView.cbbROI.SelectedIndex + 1;
+                    ROIIdx = SettingView.cbbROI.SelectedIndex;
                 }
             }
         }

@@ -276,8 +276,8 @@ namespace NVisionInspectGUI.Manager.Class
 #else
         [DllImport("NVisionInspectProcessor_Release64.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        extern private static bool CallInspectTool(IntPtr NVisionInspectProcessor, int nInspTool);
-        public void CallInspectTool(int nInspTool) { CallInspectTool(m_NVisionInspectProcessor, nInspTool); }
+        extern private static bool CallInspectTool(IntPtr NVisionInspectProcessor, int nInspTool, int nCamIdx, int nROIIdx, int nFrom);
+        public void CallInspectTool(int nInspTool, int nCamIdx, int nROIIdx, int nFrom) { CallInspectTool(m_NVisionInspectProcessor, nInspTool, nCamIdx, nROIIdx, nFrom); }
         /**********************************
        - Call Inspect Tool
        - Parameter : Instance Pointer, Inspect Tool Index

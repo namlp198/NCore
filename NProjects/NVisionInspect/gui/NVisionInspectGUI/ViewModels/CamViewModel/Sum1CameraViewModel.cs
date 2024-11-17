@@ -65,7 +65,7 @@ namespace NVisionInspectGUI.ViewModels
 
                 switch (nCamIdx)
                 {
-                    case 0:
+                    /*case 0:
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
 
                         Sum1CameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
@@ -139,6 +139,24 @@ namespace NVisionInspectGUI.ViewModels
                                     m_nIndex++;
                                 }
                             }
+                        }
+                        break;*/
+
+                    case 0:
+                        InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
+
+                        Sum1CameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
+                        await Sum1CameraView.buffCam.UpdateImage();
+
+                        MainViewModel.Instance.RunVM.ResultVM.CountTotal++;
+
+                        if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_bResultStatus == 1)
+                        {
+                            MainViewModel.Instance.RunVM.ResultVM.CountOK++;
+                        }
+                        else
+                        {
+                            MainViewModel.Instance.RunVM.ResultVM.CountNG++;
                         }
                         break;
                 }
