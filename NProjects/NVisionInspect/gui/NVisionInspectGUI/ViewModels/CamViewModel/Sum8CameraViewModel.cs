@@ -120,7 +120,7 @@ namespace NVisionInspectGUI.ViewModels
 
                 switch (nCamIdx)
                 {
-                    case 0:
+                    /*case 0:
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
 
                         Sum8CameraView.buffCam1.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
@@ -195,8 +195,8 @@ namespace NVisionInspectGUI.ViewModels
                                 }
                             }
                         }
-                        break;
-                    case 1:
+                        break;*/
+                    /*case 1:
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
 
                         Sum8CameraView.buffCam2.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
@@ -271,7 +271,7 @@ namespace NVisionInspectGUI.ViewModels
                                 }
                             }
                         }
-                        break;
+                        break;*/
                     case 2:
                         break;
                     case 3:
