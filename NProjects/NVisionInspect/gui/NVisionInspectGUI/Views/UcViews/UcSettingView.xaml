@@ -118,7 +118,7 @@
                     <Separator Margin="3" />
                     <Button x:Name="btnInspect"
                             Style="{DynamicResource NewPopupButtonStyle}"
-                            Command="{Binding InspectCmd}"
+                            Command="{Binding InspectSimulatorCmd}"
                             Margin="5 0 5 0"
                             Width="100">
                         <Button.Content>
