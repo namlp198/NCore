@@ -87,10 +87,15 @@ public:
 	void                       MakeROI_FakeCam(LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
 
 public:
+	void                       Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+	void                       Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
+	void                       Algorithm_Locator(int nCamIdx, LPBYTE pBuffer);
+
+private:
 	// INSPECT TOOL
-	BOOL                       Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
-	BOOL                       Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer);
-	BOOL                       Algorithm_Locator(int nCamIdx, LPBYTE pBuffer);
+	BOOL                       Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer, cv::Mat& matRes);
+	BOOL                       Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer, cv::Mat& matRes);
+	BOOL                       Algorithm_Locator(int nCamIdx, LPBYTE pBuffer, cv::Mat& matRes);
 
 	// Process Hik Cam
 private:
@@ -128,5 +133,6 @@ private:
 	CCriticalSection					m_csPostProcessing;
 
 	cv::Mat                             m_matROI;
+	cv::Mat                             m_matResult;
 	cv::Rect                            m_rectROI;
 };

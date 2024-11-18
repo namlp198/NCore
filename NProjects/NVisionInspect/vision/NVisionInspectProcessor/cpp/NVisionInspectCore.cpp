@@ -10,7 +10,7 @@ CNVisionInspectCore::CNVisionInspectCore(INVisionInspectCoreToParent* pInterface
 
 CNVisionInspectCore::~CNVisionInspectCore()
 {
-	
+
 }
 
 void CNVisionInspectCore::CreateInspectThread(int nThreadCount)
@@ -669,12 +669,36 @@ void CNVisionInspectCore::MakeROI_FakeCam(LPBYTE pBuffer, int nROIX, int nROIY, 
 	m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
 }
 
-BOOL CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
+void CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
+{
+	if (pBuffer == NULL)
+		return;
+
+	Algorithm_CountPixel(nCamIdx, nROIIdx, pBuffer, m_matResult);
+}
+
+void CNVisionInspectCore::Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
+{
+	if (pBuffer == NULL)
+		return;
+
+	Algorithm_Decode(nCamIdx, nROIIdx, pBuffer, m_matResult);
+}
+
+void CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer)
+{
+	if (pBuffer == NULL)
+		return;
+
+	Algorithm_Locator(nCamIdx, pBuffer, m_matResult);
+}
+
+BOOL CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE pBuffer, cv::Mat& matRes)
 {
 	if (pBuffer == NULL)
 		return FALSE;
 
-	cv::Mat matBGR, matSrc;
+	cv::Mat matSrc;
 
 	int nWidth = 0;
 	int nHeight = 0;
@@ -721,7 +745,8 @@ BOOL CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE 
 	MakeROI(nCamIdx, nROIIdx, pBuffer, nROIX, nROIY, nROIWidth, nROIHeight);
 
 	matSrc = cv::Mat(nHeight, nWidth, CV_8UC3, pBuffer);
-	matSrc.copyTo(matBGR);
+	if (matRes.empty())
+		matSrc.copyTo(matRes);
 
 	int count = 0;
 	for (int row = 0; row < m_matROI.rows; row++)
@@ -731,9 +756,9 @@ BOOL CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE 
 			int gray = m_matROI.at<uchar>(row, col);
 			if (gray >= nMinThreshold && gray <= nMaxThreshold)
 			{
-				matBGR.at<cv::Vec3b>(row + m_rectROI.y, col + m_rectROI.x)[0] = 0;
-				matBGR.at<cv::Vec3b>(row + m_rectROI.y, col + m_rectROI.x)[1] = 128;
-				matBGR.at<cv::Vec3b>(row + m_rectROI.y, col + m_rectROI.x)[2] = 255;
+				matRes.at<cv::Vec3b>(row + m_rectROI.y, col + m_rectROI.x)[0] = 0;
+				matRes.at<cv::Vec3b>(row + m_rectROI.y, col + m_rectROI.x)[1] = 128;
+				matRes.at<cv::Vec3b>(row + m_rectROI.y, col + m_rectROI.x)[2] = 255;
 				count++;
 			}
 		}
@@ -761,27 +786,23 @@ BOOL CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE 
 		// NG
 		if (bRes == FALSE)
 		{
-			cv::rectangle(matBGR, m_rectROI, RED_COLOR, 2, cv::LINE_AA);
+			cv::rectangle(matRes, m_rectROI, RED_COLOR, 2, cv::LINE_AA);
 
 			char chTemp[256] = {};
 			sprintf_s(chTemp, "%i", count);
-			cv::putText(matBGR, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, RED_COLOR, 2, cv::LINE_AA);
+			cv::putText(matRes, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, RED_COLOR, 2, cv::LINE_AA);
 
-			m_pInterface->SetResultBuffer(nCamIdx, 0, matBGR.data);
-			m_pInterface->InspectComplete(nCamIdx, TRUE);
 		}
 
 		// OK
 		else if (bRes == TRUE)
 		{
-			cv::rectangle(matBGR, m_rectROI, GREEN_COLOR, 2, cv::LINE_AA);
+			cv::rectangle(matRes, m_rectROI, GREEN_COLOR, 2, cv::LINE_AA);
 
 			char chTemp[256] = {};
 			sprintf_s(chTemp, "%i", count);
-			cv::putText(matBGR, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, GREEN_COLOR, 2, cv::LINE_AA);
+			cv::putText(matRes, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, GREEN_COLOR, 2, cv::LINE_AA);
 
-			m_pInterface->SetResultBuffer(nCamIdx, 0, matBGR.data);
-			m_pInterface->InspectComplete(nCamIdx, TRUE);
 		}
 
 		return bRes;
@@ -790,41 +811,41 @@ BOOL CNVisionInspectCore::Algorithm_CountPixel(int nCamIdx, int nROIIdx, LPBYTE 
 	// NG
 	if (bRes == FALSE)
 	{
-		cv::rectangle(matBGR, m_rectROI, RED_COLOR, 2, cv::LINE_AA);
+		cv::rectangle(matRes, m_rectROI, RED_COLOR, 2, cv::LINE_AA);
 
 		char chTemp[256] = {};
 		sprintf_s(chTemp, "%i", count);
-		cv::putText(matBGR, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, RED_COLOR, 2, cv::LINE_AA);
+		cv::putText(matRes, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, RED_COLOR, 2, cv::LINE_AA);
 
 		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bInspectCompleted = TRUE;
 		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bResultStatus = FALSE;
 		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_fNumberOfPixel = count;
 
-		m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
+		m_pInterface->SetResultBuffer_FakeCam(0, matRes.data);
 		m_pInterface->InspectComplete_FakeCam(InspectTool_CountPixel);
 	}
 
 	// OK
 	else if (bRes == TRUE)
 	{
-		cv::rectangle(matBGR, m_rectROI, GREEN_COLOR, 2, cv::LINE_AA);
+		cv::rectangle(matRes, m_rectROI, GREEN_COLOR, 2, cv::LINE_AA);
 
 		char chTemp[256] = {};
 		sprintf_s(chTemp, "%i", count);
-		cv::putText(matBGR, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, GREEN_COLOR, 2, cv::LINE_AA);
+		cv::putText(matRes, chTemp, cv::Point(m_rectROI.x + m_rectROI.width / 2 - 10, m_rectROI.y + m_rectROI.height / 2 + 10), cv::FONT_HERSHEY_PLAIN, 1.5, GREEN_COLOR, 2, cv::LINE_AA);
 
 		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bInspectCompleted = TRUE;
 		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_bResultStatus = TRUE;
 		m_pInterface->GetResult_FakeCamControl()->m_NVisonInspectResCntPxl.m_fNumberOfPixel = count;
 
-		m_pInterface->SetResultBuffer_FakeCam(0, matBGR.data);
+		m_pInterface->SetResultBuffer_FakeCam(0, matRes.data);
 		m_pInterface->InspectComplete_FakeCam(InspectTool_CountPixel);
 	}
 
 	return bRes;
 }
 
-BOOL CNVisionInspectCore::Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer)
+BOOL CNVisionInspectCore::Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuffer, cv::Mat& matRes)
 {
 	if (pBuffer == NULL)
 		return FALSE;
@@ -899,7 +920,7 @@ BOOL CNVisionInspectCore::Algorithm_Decode(int nCamIdx, int nROIIdx, LPBYTE pBuf
 	return bRet;
 }
 
-BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer)
+BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer, cv::Mat& matRes)
 {
 	if (pBuffer == NULL)
 		return FALSE;
@@ -911,11 +932,11 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer)
 	int nBuff = 0;
 	int nFrame = 0;
 
-	cv::Mat matGray, matBGR;
+	cv::Mat matGray;
 	cv::Mat matSrc(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC3, pBuffer);
 
 	cv::cvtColor(matSrc, matGray, cv::COLOR_BGR2GRAY);
-	matSrc.copyTo(matBGR);
+	matSrc.copyTo(matRes);
 
 	//cv::imshow("gray", matGray);
 
@@ -997,10 +1018,10 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer)
 	//m_pInterface->AlarmMessage(_T("Saved Image Template Success!"));
 
 	// make inner ROI, outer ROI and draw
-	/*cv::Rect rectInner(nRectInner_X, nRectInner_Y, nRectInner_Width, nRectInner_Height);
+	cv::Rect rectInner(nRectInner_X, nRectInner_Y, nRectInner_Width, nRectInner_Height);
 	cv::Rect rectOuter(nRectOuter_X, nRectOuter_Y, nRectOuter_Width, nRectOuter_Height);
-	cv::rectangle(matBGR, rectInner, GREEN_COLOR, 2, cv::LINE_AA);
-	cv::rectangle(matBGR, rectOuter, BLUE_COLOR, 2, cv::LINE_AA);*/
+	cv::rectangle(matRes, rectInner, PINK_COLOR, 2, cv::LINE_AA);
+	cv::rectangle(matRes, rectOuter, BLUE_COLOR, 2, cv::LINE_AA);
 
 	// 3. Find center
 	// Template matching
@@ -1021,8 +1042,8 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer)
 	if (dMatchingRate < dMatchingRateLimit)
 	{
 		// NG
-		cv::putText(matBGR, "Can't Find Template", cv::Point(matBGR.rows - 20, 80), cv::FONT_HERSHEY_SIMPLEX, 2.0, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
-		m_pInterface->SetResultBuffer(0, 0, matBGR.data);
+		cv::putText(matRes, "Can't Find Template", cv::Point(matRes.rows - 20, 80), cv::FONT_HERSHEY_SIMPLEX, 2.0, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+		m_pInterface->SetResultBuffer(0, 0, matRes.data);
 
 		return bRes = FALSE;
 	}
@@ -1076,8 +1097,16 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer)
 	}
 	}
 
+	// draw center pt result
+	cv::circle(matRes, cv::Point(ptResult_X, ptResult_Y), 3, YELLOW_COLOR, cv::FILLED);
+
+	// draw center pt text
+	char ch2[256];
+	sprintf_s(ch2, sizeof(ch2), "(x: %d, y: %d)", ptResult_X, ptResult_Y);
+	cv::putText(matRes, ch2, cv::Point(ptResult_X + 10, ptResult_Y - 10), cv::FONT_HERSHEY_PLAIN, 1.0, CYAN_COLOR);
+
 	// set result to buffer
-	m_pInterface->SetResultBuffer(nBuff, nFrame, matBGR.data);
+	m_pInterface->SetResultBuffer(nBuff, nFrame, matRes.data);
 
 	return bRes;
 }
@@ -1118,18 +1147,18 @@ void CNVisionInspectCore::ProcessFrame_Cam1(LPBYTE pBuffer)
 	CNVisionInspectRecipe* pRecipe = m_pInterface->GetRecipeControl();
 	CNVisionInspectResult* pResult = m_pInterface->GetResultControl();
 
-	cv::Mat matSrc(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC1);
+	cv::Mat matSrc(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC3);
 	cv::Mat matResult(pCamSetting->m_nFrameHeight, pCamSetting->m_nFrameWidth, CV_8UC3);
 
 	DWORD dFrameSize = pCamSetting->m_nFrameHeight * pCamSetting->m_nFrameWidth * pCamSetting->m_nChannels;
 	memcpy(matSrc.data, (LPBYTE)pBuffer, dFrameSize);
 
-	cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
+	//cv::cvtColor(matSrc, matResult, cv::COLOR_GRAY2BGR);
 
 	BOOL bRes = FALSE;
 
 	// 1. LOCATOR
-	bRes = Algorithm_Locator(0, pBuffer);
+	bRes = Algorithm_Locator(0, pBuffer, matResult);
 
 	if (bRes == FALSE)
 	{
@@ -1141,7 +1170,7 @@ void CNVisionInspectCore::ProcessFrame_Cam1(LPBYTE pBuffer)
 	// 2. COUNT PIXEL
 	for (int i = 0; i < MAX_COUNT_PIXEL_TOOL_COUNT_CAM1; i++)
 	{
-		bRes = Algorithm_CountPixel(nCamIdx, i, pBuffer);
+		bRes = Algorithm_CountPixel(nCamIdx, i, pBuffer, matResult);
 	}
 
 	// Set FakeCam = TRUE
@@ -1149,6 +1178,8 @@ void CNVisionInspectCore::ProcessFrame_Cam1(LPBYTE pBuffer)
 
 	pResult->m_NVisionInspRes_Cam1.m_bInspectCompleted = TRUE;
 	pResult->m_NVisionInspRes_Cam1.m_bResultStatus = bRes;
+
+	m_pInterface->SetResultBuffer(nCamIdx, 0, matResult.data);
 
 	if (pStatus->GetInspectRunning() == TRUE)
 		m_pInterface->InspectComplete(nCamIdx, FALSE);
