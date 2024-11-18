@@ -135,6 +135,7 @@ namespace NVisionInspectGUI.ViewModels
             this.InspectCmd = new InspectCmd();
             this.ReadCodeCmd = new ReadCodeCmd();
             this.NextPrevCmd = new NextPrevImageCmd();
+            this.InspectSimulatorCmd = new InspectSimulatorCmd();
 
             m_xmlManagement.Load(Defines.StartupProgPath + "\\VisionSettings\\Settings\\PlcSettings.config");
 
@@ -1732,6 +1733,7 @@ namespace NVisionInspectGUI.ViewModels
         public ICommand LoadImageCmd { get; }
         public ICommand LocateCmd { get; }
         public ICommand InspectCmd { get; }
+        public ICommand InspectSimulatorCmd { get; }
         public ICommand ReadCodeCmd { get; }
         public ICommand NextPrevCmd { get; }
 

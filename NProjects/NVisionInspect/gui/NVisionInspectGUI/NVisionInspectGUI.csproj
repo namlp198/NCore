@@ -152,6 +152,7 @@
     <Compile Include="Command\Cmd\ExportExcelFileCmd.cs" />
     <Compile Include="Command\Cmd\InitializeCmd.cs" />
     <Compile Include="Command\Cmd\ColorSpaceCmd.cs" />
+    <Compile Include="Command\Cmd\InspectSimulatorCmd.cs" />
     <Compile Include="Command\Cmd\NextPrevImageCmd.cs" />
     <Compile Include="Command\Cmd\LoginCmd.cs" />
     <Compile Include="Command\Cmd\ReadCodeCmd.cs" />
