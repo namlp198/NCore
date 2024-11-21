@@ -16,8 +16,8 @@ namespace SealingInspectGUI.ViewModels
         private readonly Dispatcher _dispatcher;
         private UcResultView _resultView;
 
-        private EInspectResult m_inspResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
-        private EInspectResult m_inspResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
+        private emInspectResult m_inspResultFinal_Cavity1 = emInspectResult.InspectResult_UNKNOWN;
+        private emInspectResult m_inspResultFinal_Cavity2 = emInspectResult.InspectResult_UNKNOWN;
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace SealingInspectGUI.ViewModels
         #region Properties
         public UcResultView ResultView { get { return _resultView; } }
 
-        public EInspectResult InspectionResultFinal_Cavity1
+        public emInspectResult InspectionResultFinal_Cavity1
         {
             get => m_inspResultFinal_Cavity1;
             set
@@ -43,7 +43,7 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
-        public EInspectResult InspectionResultFinal_Cavity2
+        public emInspectResult InspectionResultFinal_Cavity2
         {
             get => m_inspResultFinal_Cavity2;
             set

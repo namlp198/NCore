@@ -21,7 +21,7 @@ namespace SealingInspectGUI.Manager.Class
         private Task _previewTask;
         private BufferViewerSimple m_bufferViewerSimple;
 
-        public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSimple ucBuffV, NCore.Wpf.BufferViewerSimple.ModeView modeView)
+        public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSimple ucBuffV, NCore.Wpf.BufferViewerSimple.emModeView modeView)
         {
             this._frameWidth = frameWidth;
             this._frameHeight = frameHeight;

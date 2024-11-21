@@ -843,11 +843,11 @@ namespace ReadCodeGUI.ViewModels
 
                 if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
                 {
-                    SettingView.buffVSSettings.InspectResult = EInspectResult.InspectResult_OK;
+                    SettingView.buffVSSettings.InspectResult = emInspectResult.InspectResult_OK;
                 }
                 else
                 {
-                    SettingView.buffVSSettings.InspectResult = EInspectResult.InspectResult_NG;
+                    SettingView.buffVSSettings.InspectResult = emInspectResult.InspectResult_NG;
                 }
 
                 string resStr = InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_sResultString;
