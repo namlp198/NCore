@@ -48,7 +48,7 @@ namespace SealingInspectGUI.ViewModels
         private string m_strCameraSelected = string.Empty;
         private string m_strFrameSelected = string.Empty;
         private ECameraList m_cameraSelected = new ECameraList();
-        private EInspectResult m_inspectResult = new EInspectResult();
+        private emInspectResult m_inspectResult = new emInspectResult();
         private int m_nBuffIdx = 0;
         private int m_nFrame = 0;
         private int m_nCoreIdx = 0;
@@ -81,7 +81,7 @@ namespace SealingInspectGUI.ViewModels
 
             _settingView.buffVSSettings.CameraIndex = 99;
 
-            _settingView.buffVSSettings.ModeView = NCore.Wpf.BufferViewerSimple.ModeView.Color;
+            _settingView.buffVSSettings.ModeView = NCore.Wpf.BufferViewerSimple.emModeView.Color;
             _settingView.buffVSSettings.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
 
             this.LoadImageCmd = new LoadImageCmd();
@@ -289,7 +289,7 @@ namespace SealingInspectGUI.ViewModels
                 }
             }
         }
-        public EInspectResult InspectResult
+        public emInspectResult InspectResult
         {
             get => m_inspectResult;
             set
@@ -3345,9 +3345,9 @@ namespace SealingInspectGUI.ViewModels
                 bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetResultBuffer_SIDE(nBuff, nFrame);
             await bufferSimple.UpdateImage();
 
-            if (nStatus == 1) bufferSimple.InspectResult = EInspectResult.InspectResult_OK;
-            else if (nStatus == 0) bufferSimple.InspectResult = EInspectResult.InspectResult_NG;
-            else bufferSimple.InspectResult = EInspectResult.InspectResult_UNKNOWN;
+            if (nStatus == 1) bufferSimple.InspectResult = emInspectResult.InspectResult_OK;
+            else if (nStatus == 0) bufferSimple.InspectResult = emInspectResult.InspectResult_NG;
+            else bufferSimple.InspectResult = emInspectResult.InspectResult_UNKNOWN;
         }
         #endregion
 

@@ -23,7 +23,9 @@ namespace NVisionInspectGUI.Models.FakeCam.Result
     {
         public int m_bResultStatus;
         public int m_bInspectCompleted;
-        public float m_fNumberOfPixel;
+        public int m_fNumberOfPixel;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public int[] m_arrROICntPxl;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

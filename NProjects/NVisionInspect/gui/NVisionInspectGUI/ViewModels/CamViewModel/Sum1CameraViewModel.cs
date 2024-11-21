@@ -19,6 +19,7 @@ using System.IO;
 using System.Threading;
 using NCore.Wpf.BufferViewerSimple;
 using NVisionInspectGUI.Views.CamView;
+using NCore.Wpf.BufferViewerSimple.Model;
 
 namespace NVisionInspectGUI.ViewModels
 {
@@ -40,10 +41,20 @@ namespace NVisionInspectGUI.ViewModels
             int nWidthCam1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameWidth;
             int nHeightCam1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameHeight;
 
+            // set rect outer draw to on image
+            int[] rectOuter = new int[4]
+            {
+                MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_OuterX,
+                MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_OuterY,
+                MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_Outer_Width,
+                MainViewModel.Instance.SettingVM.NVisionInspectRecipePropertyGrid.RecipeCam1_PropertyGrid.TemplateROI_Outer_Height
+            };
+
             m_ucSum1CameraView.buffCam.CameraIndex = 0;
-            m_ucSum1CameraView.buffCam.ModeView = ModeView.Color;
+            m_ucSum1CameraView.buffCam.ModeView = emModeView.Mono;
             m_ucSum1CameraView.buffCam.CameraName = "[Cam 1]";
-            m_ucSum1CameraView.buffCam.SetParamsModeColor(nWidthCam1, nHeightCam1);
+            m_ucSum1CameraView.buffCam.SetParamsModeMono(nWidthCam1, nHeightCam1);
+            m_ucSum1CameraView.buffCam.InitModels(Defines.MAX_COUNT_PIXEL_TOOL_COUNT_CAM1, rectOuter);
             m_ucSum1CameraView.buffCam.ShowDetail += BuffCam1_ShowDetail;
 
             InterfaceManager.InspectionComplete += new InterfaceManager.InspectionComplete_Handler(InspectionComplete);
@@ -145,6 +156,21 @@ namespace NVisionInspectGUI.ViewModels
                     case 0:
                         InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetInspectionResult(ref InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult);
 
+                        Sum1CameraView.buffCam.LocatorModel.CenterPt[0] = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResLocator.m_nCoordinateX;
+                        Sum1CameraView.buffCam.LocatorModel.CenterPt[1] = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResLocator.m_nCoordinateY;
+                        Sum1CameraView.buffCam.LocatorModel.Result = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResLocator.m_bResultStatus == 1 ? true : false;
+
+                        for (int i = 0; i < InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl.Length; i++)
+                        {
+                            Sum1CameraView.buffCam.CountPixelModels[i].ROI_CountPixel[0] = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl[i].m_arrROICntPxl[0];
+                            Sum1CameraView.buffCam.CountPixelModels[i].ROI_CountPixel[1] = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl[i].m_arrROICntPxl[1];
+                            Sum1CameraView.buffCam.CountPixelModels[i].ROI_CountPixel[2] = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl[i].m_arrROICntPxl[2];
+                            Sum1CameraView.buffCam.CountPixelModels[i].ROI_CountPixel[3] = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl[i].m_arrROICntPxl[3];
+
+                            Sum1CameraView.buffCam.CountPixelModels[i].NumberOfPixel = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl[i].m_fNumberOfPixel;
+                            Sum1CameraView.buffCam.CountPixelModels[i].Result = InterfaceManager.Instance.m_processorManager.m_NVisionInspectResult.m_NVisionInspRes_Cam1.m_NVisonInspectResCntPxl[i].m_bResultStatus == 1? true : false;
+                        }
+
                         Sum1CameraView.buffCam.BufferView = InterfaceManager.Instance.m_processorManager.m_NVisionInspectProcessorDll.GetResultBuffer(nBuff, nFrame);
                         await Sum1CameraView.buffCam.UpdateImage();
 
@@ -170,7 +196,7 @@ namespace NVisionInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = m_ucSum1CameraView.buffCam.CameraIndex;
             ucShowDetail.buffVS.CameraName = m_ucSum1CameraView.buffCam.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(nWidth, nHeight);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
 

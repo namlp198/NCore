@@ -87,7 +87,8 @@
     <Reference Include="NCore.Wpf.BufferViewerSettingPRO">
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSettingPRO.dll</HintPath>
     </Reference>
-    <Reference Include="NCore.Wpf.BufferViewerSimple">
+    <Reference Include="NCore.Wpf.BufferViewerSimple, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NCoreWpf\Binaries\Release\NCore.Wpf.BufferViewerSimple.dll</HintPath>
     </Reference>
     <Reference Include="Npc.Foundation">
@@ -110,6 +111,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\..\..\..\Libraries\packages\System.Windows.Interactivity.dll</HintPath>
     </Reference>

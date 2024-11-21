@@ -78,37 +78,37 @@ namespace SealingInspectGUI.ViewModels
 
             // cavity 1
             _sumCameraView.buffTopCam1_Frame1.CameraIndex = 0;
-            _sumCameraView.buffTopCam1_Frame1.ModeView = ModeView.Color;
+            _sumCameraView.buffTopCam1_Frame1.ModeView = emModeView.Color;
             _sumCameraView.buffTopCam1_Frame1.CameraName = "[Top Cam 1 - Ring]";
             _sumCameraView.buffTopCam1_Frame1.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam1_Frame1.ShowDetail += BuffTopCam1_Frame1_ShowDetail;
 
             _sumCameraView.buffTopCam1_Frame2.CameraIndex = 0;
-            _sumCameraView.buffTopCam1_Frame2.ModeView = ModeView.Color;
+            _sumCameraView.buffTopCam1_Frame2.ModeView = emModeView.Color;
             _sumCameraView.buffTopCam1_Frame2.CameraName = "[Top Cam 1 - 4Bar]";
             _sumCameraView.buffTopCam1_Frame2.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam1_Frame2.ShowDetail += BuffTopCam1_Frame2_ShowDetail;
 
             _sumCameraView.buffSideCam1.CameraIndex = 2;
-            _sumCameraView.buffSideCam1.ModeView = ModeView.Color;
+            _sumCameraView.buffSideCam1.ModeView = emModeView.Color;
             _sumCameraView.buffSideCam1.CameraName = "[Side Cam 1]";
             _sumCameraView.buffSideCam1.ShowDetail += BuffSideCam1_ShowDetail;
 
             // cavity 2
             _sumCameraView.buffTopCam2_Frame1.CameraIndex = 1;
-            _sumCameraView.buffTopCam2_Frame1.ModeView = ModeView.Color;
+            _sumCameraView.buffTopCam2_Frame1.ModeView = emModeView.Color;
             _sumCameraView.buffTopCam2_Frame1.CameraName = "[Top Cam 2 - Ring]";
             _sumCameraView.buffTopCam2_Frame1.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam2_Frame1.ShowDetail += BuffTopCam2_Frame1_ShowDetail;
 
             _sumCameraView.buffTopCam2_Frame2.CameraIndex = 1;
-            _sumCameraView.buffTopCam2_Frame2.ModeView = ModeView.Color;
+            _sumCameraView.buffTopCam2_Frame2.ModeView = emModeView.Color;
             _sumCameraView.buffTopCam2_Frame2.CameraName = "[Top Cam 2 - 4Bar]";
             _sumCameraView.buffTopCam2_Frame2.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             _sumCameraView.buffTopCam2_Frame2.ShowDetail += BuffTopCam2_Frame2_ShowDetail;
 
             _sumCameraView.buffSideCam2.CameraIndex = 3;
-            _sumCameraView.buffSideCam2.ModeView = ModeView.Color;
+            _sumCameraView.buffSideCam2.ModeView = emModeView.Color;
             _sumCameraView.buffSideCam2.CameraName = "[Side Cam 2]";
             _sumCameraView.buffSideCam2.ShowDetail += BuffSideCam2_ShowDetail;
 
@@ -168,7 +168,7 @@ namespace SealingInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffSideCam2.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffSideCam2.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_SIDECAM, Defines.FRAME_HEIGHT_SIDECAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffSideCam2.BufferView != IntPtr.Zero)
@@ -184,7 +184,7 @@ namespace SealingInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam2_Frame2.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam2_Frame2.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam2_Frame2.BufferView != IntPtr.Zero)
@@ -200,7 +200,7 @@ namespace SealingInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam2_Frame1.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam2_Frame1.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam2_Frame1.BufferView != IntPtr.Zero)
@@ -216,7 +216,7 @@ namespace SealingInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffSideCam1.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffSideCam1.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_SIDECAM, Defines.FRAME_HEIGHT_SIDECAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffSideCam1.BufferView != IntPtr.Zero)
@@ -232,7 +232,7 @@ namespace SealingInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam1_Frame2.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam1_Frame2.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam1_Frame2.BufferView != IntPtr.Zero)
@@ -248,7 +248,7 @@ namespace SealingInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = _sumCameraView.buffTopCam1_Frame1.CameraIndex;
             ucShowDetail.buffVS.CameraName = _sumCameraView.buffTopCam1_Frame1.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(Defines.FRAME_WIDTH_TOPCAM, Defines.FRAME_HEIGHT_TOPCAM);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
             if (_sumCameraView.buffTopCam1_Frame1.BufferView != IntPtr.Zero)
@@ -351,7 +351,7 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsJudgement_1_OKNG = true;
                     PLC_Wecon.IsInspect_1_Completed = true;
                 }
-                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_OK;
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = emInspectResult.InspectResult_OK;
                 OK_Cavity1++;
             }
             else if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity1) == 0)
@@ -361,10 +361,10 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsJudgement_1_OKNG = false;
                     PLC_Wecon.IsInspect_1_Completed = true;
                 }
-                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_NG;
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = emInspectResult.InspectResult_NG;
                 NG_Cavity1++;
             }
-            else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = EInspectResult.InspectResult_UNKNOWN;
+            else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity1 = emInspectResult.InspectResult_UNKNOWN;
 
             Total_Cavity1++;
             Yield_Cavity1 = (OK_Cavity2 / Total_Cavity1) * 100;
@@ -454,7 +454,7 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsJudgement_2_OKNG = true;
                     PLC_Wecon.IsInspect_2_Completed = true;
                 }
-                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_OK;
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = emInspectResult.InspectResult_OK;
                 OK_Cavity2++;
             }
             else if (CheckStatusFinal(emInspectCavity.emInspectCavity_Cavity2) == 0)
@@ -464,10 +464,10 @@ namespace SealingInspectGUI.ViewModels
                     PLC_Wecon.IsJudgement_2_OKNG = false;
                     PLC_Wecon.IsInspect_2_Completed = true;
                 }
-                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_NG;
+                MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = emInspectResult.InspectResult_NG;
                 NG_Cavity2++;
             }
-            else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = EInspectResult.InspectResult_UNKNOWN;
+            else MainViewModel.Instance.RunVM.ResultVM.InspectionResultFinal_Cavity2 = emInspectResult.InspectResult_UNKNOWN;
 
             Total_Cavity2++;
             Yield_Cavity2 = (OK_Cavity2 / Total_Cavity2) * 100;
@@ -518,9 +518,9 @@ namespace SealingInspectGUI.ViewModels
                 bufferSimple.BufferView = InterfaceManager.Instance.m_sealingInspectProcessorManager.m_sealingInspProcessorDll.GetResultBuffer_SIDE(nBuff, nFrame);
             await bufferSimple.UpdateImage();
 
-            if (nStatus == 1) bufferSimple.InspectResult = EInspectResult.InspectResult_OK;
-            else if (nStatus == 0) bufferSimple.InspectResult = EInspectResult.InspectResult_NG;
-            else bufferSimple.InspectResult = EInspectResult.InspectResult_UNKNOWN;
+            if (nStatus == 1) bufferSimple.InspectResult = emInspectResult.InspectResult_OK;
+            else if (nStatus == 0) bufferSimple.InspectResult = emInspectResult.InspectResult_NG;
+            else bufferSimple.InspectResult = emInspectResult.InspectResult_UNKNOWN;
         }
         private int CheckStatusFinal(emInspectCavity emInspectCavity)
         {

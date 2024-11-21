@@ -83,7 +83,7 @@ public:
 	void                       HSVTrain(int nCamIdx, int nFrame, CNVisionInspectRecipe_HSV* pRecipeHSV);
 
 public:
-	void                       MakeROI(int nCamIdx, int nROIIdx, LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
+	void                       MakeROI(int nCamIdx, int nROIIdx, cv::Mat mat, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
 	void                       MakeROI_FakeCam(LPBYTE pBuffer, int nROIX, int nROIY, int nROIWidth, int nROIHeight);
 
 public:

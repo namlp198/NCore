@@ -23,7 +23,7 @@ namespace ReadCodeGUI.Manager.Class
         private BufferViewerSimple m_bufferViewerSimple;
         private BufferViewerSetting m_bufferViewerSetting;
 
-        public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSimple ucBuffV, NCore.Wpf.BufferViewerSimple.ModeView modeView)
+        public CameraStreamingController(int frameWidth, int frameHeight, BufferViewerSimple ucBuffV, NCore.Wpf.BufferViewerSimple.emModeView modeView)
         {
             this._frameWidth = frameWidth;
             this._frameHeight = frameHeight;

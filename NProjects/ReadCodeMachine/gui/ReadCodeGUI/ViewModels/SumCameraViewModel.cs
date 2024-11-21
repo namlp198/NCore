@@ -38,7 +38,7 @@ namespace ReadCodeGUI.ViewModels
             _sumCameraView = sumCameraView;
 
             _sumCameraView.buffCam.CameraIndex = 0;
-            _sumCameraView.buffCam.ModeView = ModeView.Color;
+            _sumCameraView.buffCam.ModeView = emModeView.Color;
             _sumCameraView.buffCam.CameraName = "[Cam 1 - Read Code]";
             _sumCameraView.buffCam.SetParamsModeColor(Defines.FRAME_WIDTH, Defines.FRAME_HEIGHT);
             //_sumCameraView.buffCam.ShowDetail += BuffCam_ShowDetail;
@@ -76,7 +76,7 @@ namespace ReadCodeGUI.ViewModels
 
                 if (InterfaceManager.Instance.m_processorManager.m_readCodeResult[0].m_bResultStatus == 1)
                 {
-                    SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_OK;
+                    SumCameraView.buffCam.InspectResult = emInspectResult.InspectResult_OK;
                     m_Plc_Delta.StartAddressBitM += 1; // Out Y3
                     m_Plc_Delta.SetOutputPlc(true);
                     Thread.Sleep(5);
@@ -86,7 +86,7 @@ namespace ReadCodeGUI.ViewModels
                 }
                 else
                 {
-                    SumCameraView.buffCam.InspectResult = EInspectResult.InspectResult_NG;
+                    SumCameraView.buffCam.InspectResult = emInspectResult.InspectResult_NG;
                     m_Plc_Delta.StartAddressBitM += 0; // Out Y2
                     m_Plc_Delta.SetOutputPlc(true);
                     Thread.Sleep(5);
