@@ -16,7 +16,8 @@ struct CNVisionInspectResult_CountPixel
 public:
 	BOOL m_bResultStatus;
 	BOOL m_bInspectCompleted;
-	float m_fNumberOfPixel;
+	int m_fNumberOfPixel;
+	int m_arrROICntPxl[4]; // x, y, width, height
 };
 struct CNVisionInspectResult_Decode
 {

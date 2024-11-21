@@ -1906,7 +1906,9 @@ BOOL CNVisionInspectProcessor::SelectROI(int nCamIdx, int nROIIdx, int nFrom, in
 	if (pBuffer == NULL)
 		return FALSE;
 
-	m_pNVisionInspectCore[nCoreIdx]->MakeROI(nCamIdx, nROIIdx, pBuffer, nROIX, nROIY, nROIWidth, nROIHeight);
+	cv::Mat mat(m_pSimulatorBuffer[nCamIdx]->GetFrameHeight(), m_pSimulatorBuffer[nCamIdx]->GetFrameWidth(), CV_8UC3, pBuffer);
+
+	m_pNVisionInspectCore[nCoreIdx]->MakeROI(nCamIdx, nROIIdx, mat, nROIX, nROIY, nROIWidth, nROIHeight);
 
 	return TRUE;
 }
