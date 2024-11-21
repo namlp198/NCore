@@ -85,8 +85,6 @@ namespace NVisionInspectGUI.ViewModels
                 lstCameras.Add(sCamera);
             }
 
-            AddSumCamViewToRunView(nNumberOfCamInsp);
-
             // Load Recipe
             SettingVM.LoadRecipe(nNumberOfCamInsp);
 
@@ -102,6 +100,8 @@ namespace NVisionInspectGUI.ViewModels
             // Load Camera List to Combobox
             SettingVM.SettingView.buffSettingPRO.CameraList = lstCameras;
             SettingVM.LoadPlcSettings();
+
+            AddSumCamViewToRunView(nNumberOfCamInsp);
 
             // Init PLC and start inspect
             if (InterfaceManager.Instance.m_processorManager.m_NVisionInspectSysSettings.m_bSimulation == 0)

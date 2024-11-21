@@ -943,7 +943,7 @@ namespace NVisionInspectGUI.ViewModels
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI1_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_PixelCount_Max;
                                         break;
                                     case 1:
-                                        // ROI 1
+                                        // ROI 2
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_ROI_X;
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_ROI_Y;
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_ROI_Width;
@@ -960,7 +960,7 @@ namespace NVisionInspectGUI.ViewModels
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI2_PixelCount_Max = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_PixelCount_Max;
                                         break;
                                     case 2:
-                                        // ROI 1
+                                        // ROI 3
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_X = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_ROI_X;
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_Y = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_ROI_Y;
                                         NVIRecipe_PropGrid.RecipeCam1_PropertyGrid.CountPixel_ROI3_Width = InterfaceManager.Instance.m_processorManager.m_NVisionInspectRecipe.m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_CntPxl[i].m_nCountPixel_ROI_Width;

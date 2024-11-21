@@ -40,7 +40,7 @@ namespace NVisionInspectGUI.ViewModels
             int nWidthCam1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameWidth;
             int nHeightCam1 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[0].m_nFrameHeight;
             m_ucSum2CameraView.buffCam1.CameraIndex = 0;
-            m_ucSum2CameraView.buffCam1.ModeView = ModeView.Color;
+            m_ucSum2CameraView.buffCam1.ModeView = emModeView.Color;
             m_ucSum2CameraView.buffCam1.CameraName = "[Cam 1]";
             m_ucSum2CameraView.buffCam1.SetParamsModeColor(nWidthCam1, nHeightCam1);
             m_ucSum2CameraView.buffCam1.ShowDetail += BuffCam1_ShowDetail;
@@ -48,7 +48,7 @@ namespace NVisionInspectGUI.ViewModels
             int nWidthCam2 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[1].m_nFrameWidth;
             int nHeightCam2 = InterfaceManager.Instance.m_processorManager.m_NVisionInspectCamSetting[1].m_nFrameHeight;
             m_ucSum2CameraView.buffCam2.CameraIndex = 1;
-            m_ucSum2CameraView.buffCam2.ModeView = ModeView.Color;
+            m_ucSum2CameraView.buffCam2.ModeView = emModeView.Color;
             m_ucSum2CameraView.buffCam2.CameraName = "[Cam 2]";
             m_ucSum2CameraView.buffCam2.SetParamsModeColor(nWidthCam2, nHeightCam2);
             m_ucSum2CameraView.buffCam2.ShowDetail += BuffCam2_ShowDetail;
@@ -237,7 +237,7 @@ namespace NVisionInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = m_ucSum2CameraView.buffCam1.CameraIndex;
             ucShowDetail.buffVS.CameraName = m_ucSum2CameraView.buffCam1.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(nWidth, nHeight);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
 
@@ -256,7 +256,7 @@ namespace NVisionInspectGUI.ViewModels
             UcShowDetail ucShowDetail = new UcShowDetail();
             ucShowDetail.buffVS.CameraIndex = m_ucSum2CameraView.buffCam2.CameraIndex;
             ucShowDetail.buffVS.CameraName = m_ucSum2CameraView.buffCam2.CameraName;
-            ucShowDetail.buffVS.ModeView = ModeView.Color;
+            ucShowDetail.buffVS.ModeView = emModeView.Color;
             ucShowDetail.buffVS.SetParamsModeColor(nWidth, nHeight);
             MainViewModel.Instance.RunVM.RunView.contentCamView.Content = ucShowDetail;
 
