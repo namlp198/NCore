@@ -1,5 +1,6 @@
-﻿#define _DRAW_RESULT
+﻿#define DRAW_RESULT
 
+using NCore.Wpf.BufferViewerSimple.Model;
 using NpcCore.Wpf.Controls;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ using System.Windows.Shapes;
 
 namespace NCore.Wpf.BufferViewerSimple
 {
-    public enum ModeView { Mono, Color }
-    public enum EInspectResult { InspectResult_UNKNOWN, InspectResult_OK, InspectResult_NG }
+    public enum emModeView { Mono, Color }
+    public enum emInspectResult { InspectResult_UNKNOWN, InspectResult_OK, InspectResult_NG }
 
     /// <summary>
     /// Interaction logic for BufferViewerSimple.xaml
@@ -50,8 +51,8 @@ namespace NCore.Wpf.BufferViewerSimple
         private const int _resolutionX = 96;
         private const int _resolutionY = 96;
 
-        private ModeView _eModeView = ModeView.Mono;
-        private EInspectResult _eInspectResult = EInspectResult.InspectResult_UNKNOWN;
+        private emModeView _eModeView = emModeView.Mono;
+        private emInspectResult _eInspectResult = emInspectResult.InspectResult_UNKNOWN;
         #endregion
 
         public BufferViewerSimple()
@@ -118,7 +119,7 @@ namespace NCore.Wpf.BufferViewerSimple
             set { _bufferSize = value; }
         }
 
-        public ModeView ModeView
+        public emModeView ModeView
         {
             get { return _eModeView; }
             set
@@ -129,7 +130,7 @@ namespace NCore.Wpf.BufferViewerSimple
                 }
             }
         }
-        public EInspectResult InspectResult
+        public emInspectResult InspectResult
         {
             get => _eInspectResult;
             set
@@ -162,15 +163,49 @@ namespace NCore.Wpf.BufferViewerSimple
                 }
             }
         }
+
+        private int m_nNumberOfROICntPxl;
+        public int NumberOfROICntPxl
+        {
+            get => m_nNumberOfROICntPxl;
+            set => m_nNumberOfROICntPxl = value;
+        }
+
+        private LocatorModel m_locatorModel;
+        public LocatorModel LocatorModel { get => m_locatorModel; set => m_locatorModel = value; }
+        private CountPixelModel[] m_cntPxlModels;
+        public CountPixelModel[] CountPixelModels { get => m_cntPxlModels; set => m_cntPxlModels = value; }
         #endregion
 
         #region Methods
+        public void InitModels(int nNumberOfROICntPxl, params int[] rectOuter)
+        {
+            this.m_nNumberOfROICntPxl = nNumberOfROICntPxl;
+
+            m_locatorModel = new LocatorModel();
+            m_locatorModel.Init();
+            m_locatorModel.RectOuter = rectOuter;
+
+            m_cntPxlModels = new CountPixelModel[m_nNumberOfROICntPxl];
+            for(int i = 0; i < m_cntPxlModels.Length; i++)
+            {
+                m_cntPxlModels[i] = new CountPixelModel();
+                m_cntPxlModels[i].Init();
+            }
+        }
         public void SetParamsModeColor(int fwidth, int fheight)
         {
             FrameWidth = fwidth;
             FrameHeight = fheight;
             Stride = FrameWidth * 3;
             BufferSize = FrameWidth * FrameHeight * 3;
+        }
+        public void SetParamsModeMono(int fwidth, int fheight)
+        {
+            FrameWidth = fwidth;
+            FrameHeight = fheight;
+            Stride = FrameWidth * 1;
+            BufferSize = FrameWidth * FrameHeight * 1;
         }
 
         public async Task UpdateImage()
@@ -180,7 +215,7 @@ namespace NCore.Wpf.BufferViewerSimple
                 if (_bufferView == IntPtr.Zero)
                     return;
 
-                if (_eModeView == ModeView.Mono)
+                if (_eModeView == emModeView.Mono)
                 {
                     // create "empty" all zeros 24bpp bitmap object
                     Bitmap bmp = new Bitmap(_frameWidth, _frameHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
@@ -219,7 +254,7 @@ namespace NCore.Wpf.BufferViewerSimple
                         imageViewer.Source = bmpSrc;
                     });
                 }
-                else if (_eModeView == ModeView.Color)
+                else if (_eModeView == emModeView.Color)
                 {
                     BitmapSource bmpSrc = BitmapSource.Create(FrameWidth, FrameHeight, _resolutionX, _resolutionY, PixelFormats.Bgr24, _palette, _bufferView, BufferSize, stride: Stride);
                     bmpSrc.Freeze();
@@ -240,14 +275,14 @@ namespace NCore.Wpf.BufferViewerSimple
 
             Graphics g = Graphics.FromImage(bp);
             // Create a brush while specifying its color
-            if (m_bAllInspectionOK && m_TemplateMatchingResult.m_bResult)
+            if (LocatorModel.Result)
             {
-                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(m_TemplateMatchingResult.m_nLeft, m_TemplateMatchingResult.m_nTop,
-                    m_TemplateMatchingResult.m_nWidth, m_TemplateMatchingResult.m_nHeight);
+                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(LocatorModel.RectOuter[0], LocatorModel.RectOuter[1],
+                    LocatorModel.RectOuter[2], LocatorModel.RectOuter[3]);
 
                 System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Blue));
                 // Create a pen
-                System.Drawing.Pen pen = new System.Drawing.Pen(brush, 2.0f);
+                System.Drawing.Pen pen = new System.Drawing.Pen(brush, 3.0f);
 
                 g.DrawRectangle(pen, rect);
             }
@@ -259,6 +294,52 @@ namespace NCore.Wpf.BufferViewerSimple
 
                 g.TextRenderingHint = TextRenderingHint.AntiAlias;
                 g.DrawString("Can't Find Template", font, solidBrush, new PointF(20, 20));
+            }
+
+            foreach (CountPixelModel cntpxl in CountPixelModels)
+            {
+                if (cntpxl.Result)
+                {
+                    int centerPtx = cntpxl.ROI_CountPixel[0] + cntpxl.ROI_CountPixel[2] / 2;
+                    int centerPty = cntpxl.ROI_CountPixel[1] + cntpxl.ROI_CountPixel[3] / 2;
+
+                    System.Drawing.Rectangle rect = new System.Drawing.Rectangle(cntpxl.ROI_CountPixel[0], cntpxl.ROI_CountPixel[1],
+                        cntpxl.ROI_CountPixel[2], cntpxl.ROI_CountPixel[3]);
+
+                    System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Green));
+                    // Create a pen
+                    System.Drawing.Pen pen = new System.Drawing.Pen(brush, 3.0f);
+
+                    var fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
+                    var font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
+                    var solidBrush = new SolidBrush(System.Drawing.Color.Green);
+
+                    g.TextRenderingHint = TextRenderingHint.AntiAlias;
+                    g.DrawString(cntpxl.NumberOfPixel + "", font, solidBrush, new PointF(centerPtx, centerPty));
+
+                    g.DrawRectangle(pen, rect);
+                }
+                else
+                {
+                    int centerPtx = cntpxl.ROI_CountPixel[0] + cntpxl.ROI_CountPixel[2] / 2;
+                    int centerPty = cntpxl.ROI_CountPixel[1] + cntpxl.ROI_CountPixel[3] / 2;
+
+                    System.Drawing.Rectangle rect = new System.Drawing.Rectangle(cntpxl.ROI_CountPixel[0], cntpxl.ROI_CountPixel[1],
+                        cntpxl.ROI_CountPixel[2], cntpxl.ROI_CountPixel[3]);
+
+                    System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Red));
+                    // Create a pen
+                    System.Drawing.Pen pen = new System.Drawing.Pen(brush, 3.0f);
+
+                    var fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
+                    var font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
+                    var solidBrush = new SolidBrush(System.Drawing.Color.Red);
+
+                    g.TextRenderingHint = TextRenderingHint.AntiAlias;
+                    g.DrawString(cntpxl.NumberOfPixel + "", font, solidBrush, new PointF(centerPtx, centerPty));
+
+                    g.DrawRectangle(pen, rect);
+                }
             }
 
             return bp;

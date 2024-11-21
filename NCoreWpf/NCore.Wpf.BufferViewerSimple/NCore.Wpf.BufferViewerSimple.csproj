@@ -74,6 +74,8 @@
       <DependentUpon>BufferViewerSimple.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\EnumResultToBackgroundConverter.cs" />
+    <Compile Include="Model\CountPixelModel.cs" />
+    <Compile Include="Model\LocatorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

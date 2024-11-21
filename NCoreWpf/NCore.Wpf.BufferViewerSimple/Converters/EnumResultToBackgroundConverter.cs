@@ -16,14 +16,14 @@ namespace NCore.Wpf.BufferViewerSimple.Converters
         {
             if (value != null)
             {
-                EInspectResult inspectResult = (EInspectResult)value;
+                emInspectResult inspectResult = (emInspectResult)value;
                 switch (inspectResult)
                 {
-                    case EInspectResult.InspectResult_UNKNOWN:
+                    case emInspectResult.InspectResult_UNKNOWN:
                         return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
-                    case EInspectResult.InspectResult_OK:
+                    case emInspectResult.InspectResult_OK:
                         return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#009900");
-                    case EInspectResult.InspectResult_NG:
+                    case emInspectResult.InspectResult_NG:
                         return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#CC0000");
                     default:
                         return (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#808080");
@@ -44,14 +44,14 @@ namespace NCore.Wpf.BufferViewerSimple.Converters
         {
             if (value != null)
             {
-                EInspectResult inspectResult = (EInspectResult)value;
+                emInspectResult inspectResult = (emInspectResult)value;
                 switch (inspectResult)
                 {
-                    case EInspectResult.InspectResult_UNKNOWN:
+                    case emInspectResult.InspectResult_UNKNOWN:
                         return "NONE";
-                    case EInspectResult.InspectResult_OK:
+                    case emInspectResult.InspectResult_OK:
                         return "OK";
-                    case EInspectResult.InspectResult_NG:
+                    case emInspectResult.InspectResult_NG:
                         return "NG";
                     default:
                         return "NONE";
