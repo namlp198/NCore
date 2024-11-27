@@ -51,6 +51,16 @@ namespace NCore.Wpf.BufferViewerSimple
         private const int _resolutionX = 96;
         private const int _resolutionY = 96;
 
+        System.Drawing.Pen penBlue;
+        System.Drawing.Pen penYellow;
+        System.Drawing.Pen penRed;
+        System.Drawing.FontFamily fontFamily;
+        Font font;
+        SolidBrush solidBrushYellow;
+        SolidBrush solidBrushRed;
+        SolidBrush solidBrushBlue;
+        SolidBrush solidBrushGreen;
+
         private emModeView _eModeView = emModeView.Mono;
         private emInspectResult _eInspectResult = emInspectResult.InspectResult_UNKNOWN;
         #endregion
@@ -70,6 +80,17 @@ namespace NCore.Wpf.BufferViewerSimple
 
             _bufferSize = _frameWidth * _frameHeight * 3;
             _stride = _frameWidth * 3;
+
+            fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
+            font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
+            solidBrushYellow = new SolidBrush(System.Drawing.Color.Yellow);
+            solidBrushRed = new SolidBrush(System.Drawing.Color.Red);
+            solidBrushBlue = new SolidBrush(System.Drawing.Color.Blue);
+            solidBrushGreen = new SolidBrush(System.Drawing.Color.Green);
+
+            penBlue = new System.Drawing.Pen(solidBrushBlue, 3.0f);
+            penRed = new System.Drawing.Pen(solidBrushRed, 3.0f);
+            penYellow = new System.Drawing.Pen(solidBrushYellow, 3.0f);
         }
 
         #region Properties
@@ -280,20 +301,25 @@ namespace NCore.Wpf.BufferViewerSimple
                 System.Drawing.Rectangle rect = new System.Drawing.Rectangle(LocatorModel.RectOuter[0], LocatorModel.RectOuter[1],
                     LocatorModel.RectOuter[2], LocatorModel.RectOuter[3]);
 
-                System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Blue));
+                System.Drawing.Brush brushBlue = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Blue));
+                System.Drawing.Brush brushYellow = new SolidBrush(System.Drawing.Color.FromKnownColor(KnownColor.Yellow));
                 // Create a pen
-                System.Drawing.Pen pen = new System.Drawing.Pen(brush, 3.0f);
+                System.Drawing.Pen penBlue = new System.Drawing.Pen(brushBlue, 3.0f);
+                System.Drawing.Pen penYellow = new System.Drawing.Pen(brushYellow, 5.0f);
 
-                g.DrawRectangle(pen, rect);
+                int cnt_x = LocatorModel.CenterPt[0];
+                int cnt_y = LocatorModel.CenterPt[1];
+                string s = string.Format("(x:{0}-y:{1})", cnt_x, cnt_y);
+
+                g.DrawRectangle(penBlue, rect);
+                g.DrawEllipse(penYellow, cnt_x, cnt_y, 3, 3);
+
+                g.DrawString(s, font, solidBrushYellow, new PointF(cnt_x + 10, cnt_y - 10));
             }
             else
             {
-                var fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
-                var font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
-                var solidBrush = new SolidBrush(System.Drawing.Color.Red);
-
                 g.TextRenderingHint = TextRenderingHint.AntiAlias;
-                g.DrawString("Can't Find Template", font, solidBrush, new PointF(20, 20));
+                g.DrawString("Can't Find Template", font, solidBrushRed, new PointF(20, 20));
             }
 
             foreach (CountPixelModel cntpxl in CountPixelModels)
@@ -310,12 +336,8 @@ namespace NCore.Wpf.BufferViewerSimple
                     // Create a pen
                     System.Drawing.Pen pen = new System.Drawing.Pen(brush, 3.0f);
 
-                    var fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
-                    var font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
-                    var solidBrush = new SolidBrush(System.Drawing.Color.Green);
-
                     g.TextRenderingHint = TextRenderingHint.AntiAlias;
-                    g.DrawString(cntpxl.NumberOfPixel + "", font, solidBrush, new PointF(centerPtx, centerPty));
+                    g.DrawString(cntpxl.NumberOfPixel + "", font, solidBrushGreen, new PointF(centerPtx, centerPty));
 
                     g.DrawRectangle(pen, rect);
                 }
@@ -331,12 +353,8 @@ namespace NCore.Wpf.BufferViewerSimple
                     // Create a pen
                     System.Drawing.Pen pen = new System.Drawing.Pen(brush, 3.0f);
 
-                    var fontFamily = new System.Drawing.FontFamily("Microsoft Sans Serif");
-                    var font = new Font(fontFamily, 20, GraphicsUnit.Pixel);
-                    var solidBrush = new SolidBrush(System.Drawing.Color.Red);
-
                     g.TextRenderingHint = TextRenderingHint.AntiAlias;
-                    g.DrawString(cntpxl.NumberOfPixel + "", font, solidBrush, new PointF(centerPtx, centerPty));
+                    g.DrawString(cntpxl.NumberOfPixel + "", font, solidBrushRed, new PointF(centerPtx, centerPty));
 
                     g.DrawRectangle(pen, rect);
                 }
