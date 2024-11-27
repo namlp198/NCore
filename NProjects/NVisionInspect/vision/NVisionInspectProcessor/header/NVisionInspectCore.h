@@ -38,6 +38,7 @@ interface INVisionInspectCoreToParent
 	virtual void                                   InspectComplete_FakeCam(emInspectTool eInspTool) = 0;
 	virtual void                                   LocatorTrainComplete(int CamIdx) = 0;
 	virtual void                                   HSVTrainComplete(int nCamIdx) = 0;
+	virtual CString                                GetTemplateImagePath(int nCamIdx) = 0;
 };
 
 class AFX_EXT_CLASS CNVisionInspectCoreThreadData : public CWorkThreadData

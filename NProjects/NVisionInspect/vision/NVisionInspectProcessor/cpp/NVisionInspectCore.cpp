@@ -949,10 +949,7 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer, cv::Mat
 
 	//cv::imshow("gray", matGray);
 
-	int nRectInner_X = 0;
-	int nRectInner_Y = 0;
-	int nRectInner_Width = 0;
-	int nRectInner_Height = 0;
+	CString csTemplateImagePath;
 
 	int nRectOuter_X = 0;
 	int nRectOuter_Y = 0;
@@ -967,10 +964,7 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer, cv::Mat
 	{
 	case 0:
 	{
-		nRectInner_X = pRecipe->m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_Locator.m_nTemplateROI_InnerX;
-		nRectInner_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_Locator.m_nTemplateROI_InnerY;
-		nRectInner_Width = pRecipe->m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_Locator.m_nTemplateROI_Inner_Width;
-		nRectInner_Height = pRecipe->m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_Locator.m_nTemplateROI_Inner_Height;
+		csTemplateImagePath = m_pInterface->GetTemplateImagePath(nCamIdx);
 
 		nRectOuter_X = pRecipe->m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_Locator.m_nTemplateROI_OuterX;
 		nRectOuter_Y = pRecipe->m_NVisionInspRecipe_Cam1.m_NVisionInspRecipe_Locator.m_nTemplateROI_OuterY;
@@ -1011,9 +1005,9 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer, cv::Mat
 	}
 
 	// 2. Get image template
-	cv::Mat imgTemplate(nRectInner_Height, nRectInner_Width, CV_8UC1);
-	for (size_t i = 0; i < imgTemplate.rows; i++)
-		memcpy(&imgTemplate.data[i * imgTemplate.step1()], &matGray.data[(i + nRectInner_Y) * matGray.step1() + nRectInner_X], imgTemplate.cols);
+	CT2CA pszConvertedAnsiString(csTemplateImagePath);
+	std::string imgPath(pszConvertedAnsiString);
+	cv::Mat imgTemplate = cv::imread(imgPath, CV_8UC1);
 
 	//cv::imshow("template", imgTemplate);
 
@@ -1044,7 +1038,7 @@ BOOL CNVisionInspectCore::Algorithm_Locator(int nCamIdx, LPBYTE pBuffer, cv::Mat
 
 	ptFindResult.x = float(ptLeftTop.x) + (imgTemplate.cols / 2.0);
 	ptFindResult.y = float(ptLeftTop.y) + (imgTemplate.rows / 2.0);
-	dMatchingRate = dMatchingRate * 100.0;
+	//dMatchingRate = dMatchingRate;
 
 	if (dMatchingRate < dMatchingRateLimit)
 	{
@@ -1171,6 +1165,15 @@ void CNVisionInspectCore::ProcessFrame_Cam1(LPBYTE pBuffer)
 	{
 		pResult->m_NVisionInspRes_Cam1.m_bInspectCompleted = TRUE;
 		pResult->m_NVisionInspRes_Cam1.m_bResultStatus = bRes;
+
+		cv::cvtColor(matResult, matResult, cv::COLOR_BGR2GRAY);
+		m_pInterface->SetResultBuffer(nCamIdx, 0, matResult.data);
+
+		if (pStatus->GetInspectRunning() == TRUE)
+			m_pInterface->InspectComplete(nCamIdx, FALSE);
+		else
+			m_pInterface->InspectComplete(nCamIdx, TRUE);
+
 		return;
 	}
 
