@@ -16,6 +16,11 @@ CNVisionInspectProcessor::CNVisionInspectProcessor()
 
 	m_csSysSettingsPath = GetCurrentPathApp() + _T("VisionSettings\\Settings\\SystemSettings.config");
 
+	for (int i = 0; i < MAX_CAMERA_INSPECT_COUNT; i++)
+	{
+		m_csTemplateImagePath[i].Format(_T("%sVisionSettings\\TemplateImage\\%s%d\\%s.png"), GetCurrentPathApp(), _T("Cam"), i + 1, _T("template"));
+	}
+
 	m_pLogView = new CLogView();
 
 #ifndef _DEBUG
@@ -2050,7 +2055,7 @@ BOOL CNVisionInspectProcessor::CreateResultBuffer()
 		DWORD dwFrameHeight = (DWORD)m_pNVisionInspectCameraSetting[i]->m_nFrameHeight;
 		DWORD dwFrameCount = 0;
 
-		dwFrameSize = dwFrameWidth * dwFrameHeight * (DWORD)NUMBER_OF_CHANNEL_BGR;
+		dwFrameSize = dwFrameWidth * dwFrameHeight * m_pNVisionInspectCameraSetting[i]->m_nChannels;
 
 		if (m_pResultBuffer[i] != NULL)
 		{
@@ -2192,7 +2197,7 @@ BOOL CNVisionInspectProcessor::CreateSimulatorBuffer()
 		DWORD64 dw64Size_Side = (DWORD64)dwFrameCount * dwFrameSize;
 
 		CString strMemory_Side;
-		strMemory_Side.Format(_T("%s_%d"), "ResultBuffer", i);
+		strMemory_Side.Format(_T("%s_%d"), "SimulatorBuffer", i);
 
 		bRetValue = m_pSimulatorBuffer[i]->CreateSharedMemory(strMemory_Side, dw64Size_Side);
 

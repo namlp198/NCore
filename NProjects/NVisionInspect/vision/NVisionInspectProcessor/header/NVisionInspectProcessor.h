@@ -50,6 +50,8 @@ public:
 	             CNVisionInspect_HikCam*               GetHikCamControl() { return m_pNVisionInspectHikCam; }
 				 CNVisionInspect_BaslerCam*            GetBaslerCamControl() { return m_pNVisionInspectBaslerCam; }
 				 std::vector<int>                      GetVecCameras() { return m_vecCameras; }
+    virtual      CString                               GetTemplateImagePath(int nCamIdx) { return m_csTemplateImagePath[nCamIdx]; }
+    
 
 public:
 	BOOL                       InspectStart(int nThreadCount, int nCamCount);
@@ -192,6 +194,8 @@ private:
 	CString                                     m_csRecipeFakeCamPath;
 	CString                                     m_csCamSettingPath;
 	CString                                     m_csFakeCamSettingPath;
+
+	CString                                     m_csTemplateImagePath[MAX_CAMERA_INSPECT_COUNT];
 											    
 	cv::Mat                                     m_matBGR;
 	cv::Mat                                     m_matRGB;
